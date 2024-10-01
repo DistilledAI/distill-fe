@@ -158,9 +158,9 @@ const MainContainer: React.FC<{
               className="flex-items-center mt-2 cursor-pointer justify-center gap-2"
               onClick={() => setOpenFYIPopupp(true)}
             >
-              <FilledShieldCheckedIcon />
-              <span className="text-base-m text-mercury-800">
-                How Your Data is Secure in Private Intelligence?
+              <FilledShieldCheckedIcon color="#A2845E" />
+              <span className="text-base-m text-brown-10">
+                How do we protect your private data?
               </span>
             </div>
           </div>

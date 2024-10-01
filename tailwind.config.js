@@ -52,6 +52,9 @@ export default {
         yellow: {
           10: "#FC0",
         },
+        brown: {
+          10: "#A2845E",
+        },
         code: {
           agent: {
             1: "#DC6D1E",
