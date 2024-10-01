@@ -1,3 +1,4 @@
+import DotLoading from "@components/DotLoading"
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { DatabaseImportIcon } from "@components/Icons/DatabaseImportIcon"
 import { EmailUpIcon } from "@components/Icons/EmailUpIcon"
@@ -28,9 +29,10 @@ const MyEchoContent: React.FC<{ connectWalletLoading: boolean }> = ({
       return (
         <div className="absolute top-1/2 flex -translate-y-[230px] flex-col items-center gap-2">
           <ExploreFilledIcon />
-          <span className="text-base font-medium">
-            &#8226; Creating your account
-          </span>
+          <div className="flex-items-center">
+            <DotLoading />
+            <span className="text-base font-medium">Creating your account</span>
+          </div>
         </div>
       )
 
@@ -40,7 +42,7 @@ const MyEchoContent: React.FC<{ connectWalletLoading: boolean }> = ({
         <span className="text-center text-24 text-mercury-800">
           <span className="font-semibold text-mercury-950">
             Create an account
-          </span>{" "}
+          </span>
           <br />
           to start your own Private agent.
         </span>

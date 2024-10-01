@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react"
 
-export function useHover() {
-  const ref = useRef<HTMLDivElement | null>(null)
+export function useHover(): [any, boolean] {
+  const ref = useRef<any>(null)
   const [isHovered, setIsHovered] = useState<boolean>(false)
 
   const handleMouseHover = useCallback(() => {

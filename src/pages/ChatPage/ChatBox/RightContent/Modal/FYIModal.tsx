@@ -13,8 +13,14 @@ const FYIModal: React.FC<{ openPopup: boolean; setOpenPopup: any }> = ({
     setCounter(10)
   }
 
+  const handleAnimation = () => {
+    if (openPopup && counter < 100) {
+      setTimeout(() => setCounter(counter + 10), 20)
+    }
+  }
+
   useEffect(() => {
-    openPopup && counter < 100 && setTimeout(() => setCounter(counter + 10), 20)
+    handleAnimation()
   }, [counter, openPopup])
 
   return (
