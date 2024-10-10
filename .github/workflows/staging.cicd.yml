@@ -1,0 +1,56 @@
+name: deploy staging
+
+on:
+  push:
+    branches:
+      - 'cicd'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install SSH Key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_PRIVATE_KEY_STAGING }}
+          known_hosts: unnecessary
+      - name: Get Git Tag
+        id: get-git-tag
+        run: echo ::set-output name=GIT_TAG::$(echo $GITHUB_REF | cut -d '/' -f 3)
+        
+      - name: Build and push app
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: oraichain/airight-frontend-v3:${{ steps.get-git-tag.outputs.GIT_TAG }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Pull From Github
+        uses: appleboy/ssh-action@v0.1.5
+        with:
+          host: ${{ secrets.SSH_HOST_STAGING }}
+          key: ${{ secrets.SSH_PRIVATE_KEY_STAGING }}
+          username: ${{ secrets.SSH_USER_STAGING }}
+          script: |
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+            cd /root/distill-fe
+            nvm use v16.14.0
+            yarn build 
+            pm2 restart 2
