@@ -27,19 +27,6 @@ jobs:
         with:
           key: ${{ secrets.SSH_PRIVATE_KEY_STAGING }}
           known_hosts: unnecessary
-      - name: Get Git Tag
-        id: get-git-tag
-        run: echo ::set-output name=GIT_TAG::$(echo $GITHUB_REF | cut -d '/' -f 3)
-        
-      - name: Build and push app
-        uses: docker/build-push-action@v3
-        with:
-          context: .
-          file: ./Dockerfile
-          push: true
-          tags: oraichain/airight-frontend-v3:${{ steps.get-git-tag.outputs.GIT_TAG }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
 
       - name: Pull From Github
         uses: appleboy/ssh-action@v0.1.5
@@ -51,6 +38,7 @@ jobs:
             export NVM_DIR="$HOME/.nvm"
             [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
             cd /root/distill-fe
+            git pull
             nvm use v16.14.0
             yarn build 
             pm2 restart 2
