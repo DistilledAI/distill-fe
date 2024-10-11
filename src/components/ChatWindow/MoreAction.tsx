@@ -93,7 +93,7 @@ const MoreAction: React.FC = () => {
             <>
               <FilledUserIcon size={20} />
               <span className="text-base text-mercury-900 transition-all duration-500 ease-in-out">
-                Delegate to your Private agent
+                Delegate to your Private Agent
               </span>
             </>
           )}
