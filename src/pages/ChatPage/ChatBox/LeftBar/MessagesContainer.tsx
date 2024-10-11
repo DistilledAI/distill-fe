@@ -1,7 +1,12 @@
 import AvatarContainer from "@components/AvatarContainer"
 import DotLoading from "@components/DotLoading"
+import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { FilledSearchIcon } from "@components/Icons/SearchIcon"
 import { FilledUserIcon, FilledUsersPlusIcon } from "@components/Icons/UserIcon"
+import { RoleUser } from "@constants/index"
+import useAuthState from "@hooks/useAuthState"
+import { IUser } from "@reducers/user/UserSlice"
+import { useChatMessage } from "providers/MessageProvider"
 import { useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { Virtuoso } from "react-virtuoso"
@@ -11,11 +16,6 @@ import { getAvatarGroupChat, getRoleUser } from "./helpers"
 import MoreChatAction from "./MoreChatAction"
 import { ContentDisplayMode, DISPLAY_MODES } from "./PrivateAI"
 import useFetchGroups, { TypeGroup } from "./useFetchGroups"
-import { RoleUser } from "@constants/index"
-import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
-import { IUser } from "@reducers/user/UserSlice"
-import { useChatMessage } from "providers/MessageProvider"
-import useAuthState from "@hooks/useAuthState"
 
 const LIMIT = 10
 
@@ -73,7 +73,12 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
       <div className="flex-items-center mb-4 justify-between px-2">
         <span className="text-base-14">Messages</span>
         <div className="flex-items-center gap-4">
-          <FilledUsersPlusIcon />
+          <div
+            className="cursor-pointer"
+            onClick={() => onChangeDisplayMode(DISPLAY_MODES.CREATE_GROUP)}
+          >
+            <FilledUsersPlusIcon />
+          </div>
           <div
             onClick={() => onChangeDisplayMode(DISPLAY_MODES.SEARCH)}
             className="cursor-pointer"
