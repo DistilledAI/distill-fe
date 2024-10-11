@@ -73,7 +73,10 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
       <div className="flex-items-center mb-4 justify-between px-2">
         <span className="text-base-14">Messages</span>
         <div className="flex-items-center gap-4">
-          <div className="opacity-30">
+          <div
+            className="cursor-pointer"
+            onClick={() => onChangeDisplayMode(DISPLAY_MODES.CREATE_GROUP)}
+          >
             <FilledUsersPlusIcon />
           </div>
           <div
