@@ -13,6 +13,7 @@
   "dependencies": {
     "@auth0/auth0-react": "^2.2.4",
     "@babel/plugin-transform-runtime": "^7.25.7",
+    "@babel/runtime": "^7.25.7",
     "@fingerprintjs/fingerprintjs": "^4.2.1",
     "@nextui-org/react": "^2.4.8",
     "@rainbow-me/rainbowkit": "^2.1.7",

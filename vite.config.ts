@@ -10,13 +10,15 @@ export default defineConfig(() => {
     plugins: [
       react(),
       tsconfigPaths(),
-      babel({
-        babelConfig: {
-          babelrc: false,
-          configFile: false,
-          plugins: ["@babel/plugin-transform-runtime"],
-        },
-      }),
+      babel(),
+
+      // babel({
+      //   babelConfig: {
+      //     babelrc: false,
+      //     configFile: false,
+      //     plugins: ["@babel/plugin-transform-runtime"],
+      //   },
+      // }),
       // legacy({
       //   targets: ["defaults", "not IE 11"],
       //   additionalLegacyPolyfills: ["regenerator-runtime/runtime"],
