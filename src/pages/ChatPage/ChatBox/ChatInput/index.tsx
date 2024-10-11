@@ -15,7 +15,7 @@ import { RoleChat } from "../ChatMessages/helpers"
 import { useStyleBoxChat } from "../StyleProvider"
 import VoiceChat from "./Voice"
 
-const ChatInput = () => {
+const ChatInput: React.FC<{isDisabledInput: boolean}> = ({isDisabledInput}) => {
   const { setMessages: setMessageContext } = useChatMessage()
   const { transcript, listening, resetTranscript } = useSpeechRecognition()
   const { chatId, privateChatId } = useParams()
@@ -109,6 +109,7 @@ const ChatInput = () => {
         onBlur={() => setIsFocus(false)}
         onValueChange={setMessages}
         value={messages}
+        isDisabled={isDisabledInput}
       />
       <VoiceChat
         resetTranscript={resetTranscript}

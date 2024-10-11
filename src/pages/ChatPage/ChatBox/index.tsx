@@ -14,7 +14,10 @@ const ChatBox = () => {
   const { loading, connectWallet } = useConnectWallet()
   const { chatId } = useParams()
   const { isLogin } = useAuthState()
+  const { privateChatId } = useParams()
+
   useMessageSocket()
+  const isEnableTextInput = isLogin && (privateChatId || chatId)
 
   return (
     <div className="flex h-full items-center justify-center pb-10 pt-[18px]">
@@ -38,7 +41,7 @@ const ChatBox = () => {
                   connectWallet={connectWallet}
                 />
               )}
-              <ChatInput />
+              <ChatInput isDisabledInput={!isEnableTextInput} />
             </div>
           </StyleBoxChatProvider>
         </div>
