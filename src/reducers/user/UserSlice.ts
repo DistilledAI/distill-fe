@@ -18,6 +18,7 @@ export interface IUser {
   description?: string
   owner?: number
   typeBot?: TYPE_BOT
+  configBot?: string
 }
 
 interface LoginSuccessPayload {

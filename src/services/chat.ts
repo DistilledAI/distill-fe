@@ -1,3 +1,4 @@
+import { IUser } from "@reducers/user/UserSlice"
 import endpoint from "./endpoint"
 import { fetchApiAuth } from "./fetchApi"
 
@@ -151,5 +152,19 @@ export const checkStatusBotInGroup = async (groupId: string | undefined) => {
   return fetchApiAuth({
     method: "get",
     url: endpoint.CHECK_STATUS_BOT_IN_GROUP(groupId),
+  })
+}
+
+export const postTextToSpeech = (text: string, speaker: IUser["configBot"]) => {
+  return fetchApiAuth({
+    method: "POST",
+    url: "https://ai-dev.cupiee.com/voice/text_to_speech",
+    data: {
+      text,
+      lang: "en",
+      speaker,
+      pitch: 1,
+      ref_voice: "",
+    },
   })
 }

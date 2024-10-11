@@ -1,6 +1,8 @@
 import FingerprintJS from "@fingerprintjs/fingerprintjs"
+// import { IUser } from "@reducers/user/UserSlice"
 import { cloneElement, createElement } from "react"
 import { toast } from "react-toastify"
+// import { postTextToSpeech } from "services/chat"
 
 export function defineElement(element: any, props = {}) {
   if (element) {
@@ -71,3 +73,50 @@ export const textToVoice = (text: string) => {
   utter.rate = 1
   speechSynthesis.speak(utter)
 }
+
+// export const textToVoice = async (
+//   text: string,
+//   speaker: IUser["configBot"],
+// ) => {
+//   if (!window.speechSynthesis) {
+//     console.error("Not support Speech Synthesis.")
+//     return
+//   }
+
+//   const res = await postTextToSpeech(text, speaker)
+
+//   console.log({ res })
+
+//   const maleVoices = [
+//     "Google US English Male",
+//     "Microsoft David Desktop - English (United States)",
+//   ]
+
+//   const speakText = () => {
+//     window.speechSynthesis.cancel()
+
+//     const voices = window.speechSynthesis.getVoices()
+//     const foundVoice = voices.find(({ name }) => maleVoices.includes(name))
+
+//     if (foundVoice) {
+//       console.log("Using male voice:", foundVoice.name)
+//       const utter = new SpeechSynthesisUtterance(text)
+//       utter.voice = foundVoice
+//       utter.rate = 1
+//       window.speechSynthesis.speak(utter)
+//     } else {
+//       console.log("No male voice found, using default")
+//       const utter = new SpeechSynthesisUtterance(text)
+//       utter.rate = 1
+//       window.speechSynthesis.speak(utter)
+//     }
+//   }
+
+//   if (window.speechSynthesis.getVoices().length === 0) {
+//     window.speechSynthesis.addEventListener("voiceschanged", () => {
+//       speakText()
+//     })
+//   } else {
+//     speakText()
+//   }
+// }

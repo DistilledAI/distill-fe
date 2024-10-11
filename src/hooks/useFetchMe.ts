@@ -33,6 +33,8 @@ const useFetchMe = () => {
         } else {
           dispatch(updateUser({ user: res.data }))
         }
+      } else {
+        dispatch(logout())
       }
     } catch (error: any) {
       console.error(error)

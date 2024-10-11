@@ -65,7 +65,7 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
   }
 
   const getNameGroup = (userA: IUser, userB: IUser) => {
-    return userA.id === user?.id ? userB.username : userA.username
+    return userA?.id === user?.id ? userB?.username : userA?.username
   }
 
   return (
