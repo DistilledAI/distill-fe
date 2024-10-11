@@ -14,6 +14,8 @@ export interface IUser {
   typeLogin: string
   username: string
   avatar?: string
+  description?: string
+  owner?: number
 }
 
 interface LoginSuccessPayload {

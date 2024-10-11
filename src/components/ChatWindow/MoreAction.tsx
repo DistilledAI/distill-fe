@@ -52,7 +52,7 @@ const MoreAction: React.FC = () => {
       const response = await changeStatusBotInGroup(payloadData)
       if (response) {
         callCheckStatusBotInGroup()
-        setShowNotification(true)
+        // setShowNotification(true)
       }
     } catch (error) {
       console.log("error", error)

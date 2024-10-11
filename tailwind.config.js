@@ -35,6 +35,7 @@ export default {
       colors: {
         mercury: {
           30: "#FAFAFA",
+          50: "#F6F6F6",
           70: "#F4F4F5",
           100: "#E6E6E6",
           200: "#DFDFDF",

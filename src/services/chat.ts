@@ -81,11 +81,15 @@ export const getChatHistoryById = async ({
   })
 }
 
-export const getUserById = async (keyword: string) => {
+export const getUserById = async (
+  keyword: string,
+  role?: number,
+  status?: number,
+) => {
   return fetchApiAuth({
     method: "get",
     url: endpoint.SEARCH_USER,
-    params: { filter: JSON.stringify({ username: keyword }) },
+    params: { filter: JSON.stringify({ username: keyword, role, status }) },
   })
 }
 

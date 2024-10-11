@@ -81,7 +81,7 @@ const ChatMessages = () => {
       }
     }
 
-    const borderRaridusStyle = {
+    const borderRadiusStyle = {
       none: "",
       top: "rounded-t-[20px] rounded-bl-[20px] rounded-br",
       middle: "rounded-tr rounded-br rounded-tl-[20px] rounded-bl-[20px]",
@@ -89,20 +89,20 @@ const ChatMessages = () => {
     }[groupType]
 
     const paddingBottomStyle = {
-      none: "pb-3",
+      none: "pb-4",
       top: "pb-[3px]",
       middle: "pb-[3px]",
-      bottom: "pb-3",
+      bottom: "pb-4",
     }[groupType]
 
     return {
-      borderRaridusStyle,
+      borderRadiusStyle,
       paddingBottomStyle,
     }
   }
 
   const renderMessage = (index: number, message: IMessageBox) => {
-    const { paddingBottomStyle, borderRaridusStyle } = groupedMessages(
+    const { paddingBottomStyle, borderRadiusStyle } = groupedMessages(
       index,
       message,
       messages,
@@ -111,7 +111,7 @@ const ChatMessages = () => {
       <>
         <div
           className={twMerge(
-            "px-3 pb-3",
+            "px-3 pb-4",
             message.role === RoleChat.OWNER && paddingBottomStyle,
           )}
           key={index}
@@ -130,7 +130,7 @@ const ChatMessages = () => {
           {message.role === RoleChat.OWNER ? (
             <SenderMessage
               content={message.content}
-              baseClassName={twMerge("bg-lgd-code-agent-1", borderRaridusStyle)}
+              baseClassName={twMerge("bg-lgd-code-agent-1", borderRadiusStyle)}
             />
           ) : null}
         </div>

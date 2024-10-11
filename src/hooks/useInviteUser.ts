@@ -17,7 +17,7 @@ const useInviteUser = () => {
     storageKey.ACCESS_TOKEN,
   )
 
-  const handleInviteUserLoggedIn = async () => {
+  const handleInviteUserLoggedIn = async (userId: number) => {
     try {
       const checkGroupDirectResponse = await checkGroupDirect({
         members: [userId],
@@ -52,7 +52,7 @@ const useInviteUser = () => {
           accessToken,
           expiry,
         )
-        handleInviteUserLoggedIn()
+        handleInviteUserLoggedIn(userId)
       } else {
         console.log("Access token not found in response")
       }
@@ -69,11 +69,11 @@ const useInviteUser = () => {
 
   useEffect(() => {
     if (isInvitePathName && user?.id !== userId && isLogin) {
-      handleInviteUserLoggedIn()
+      handleInviteUserLoggedIn(userId)
     }
   }, [pathname, userId, user?.id, isLogin])
 
-  return {}
+  return { handleInviteUserLoggedIn }
 }
 
 export default useInviteUser

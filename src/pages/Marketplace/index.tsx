@@ -4,53 +4,68 @@ import { FilledSquareCircleIcon } from "@components/Icons/FilledSquareCircleIcon
 import { Button, useDisclosure } from "@nextui-org/react"
 import { useState } from "react"
 import { twMerge } from "tailwind-merge"
-
-const CATEGORIES = [
-  {
-    key: "private-agents",
-    name: "Private agents",
-  },
-  {
-    key: "productivity",
-    name: "Productivity",
-  },
-  {
-    key: "gen-ai-tools",
-    name: "GenAI Tools",
-  },
-  {
-    key: "learning",
-    name: "Learning",
-  },
-  {
-    key: "wellness",
-    name: "Wellness",
-  },
-  {
-    key: "search-engine",
-    name: "Search engine",
-  },
-  {
-    key: "foundational-access",
-    name: "Foundational access",
-  },
-  {
-    key: "sns",
-    name: "SNS",
-  },
-  {
-    key: "finance",
-    name: "Finance",
-  },
-  {
-    key: "characters-org",
-    name: "Characters & Org",
-  },
-]
+import PrivateAgents from "./PrivateAgents"
+// import Productivity from "./Productivity"
+// import GenAITools from "./GenAITools"
+import useAuthState from "@hooks/useAuthState"
 
 const Marketplace = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [slider, setSlider] = useState<number>(0)
+  const { isLogin } = useAuthState()
+
+  const CATEGORIES = [
+    {
+      key: "private-agents",
+      name: "Private agents",
+      component: <PrivateAgents onClose={onClose} />,
+    },
+    {
+      key: "productivity",
+      name: "Productivity",
+      component: <div className="text-base-md">Coming soon...</div>,
+    },
+    {
+      key: "gen-ai-tools",
+      name: "GenAI Tools",
+      component: <div className="text-base-md">Coming soon...</div>,
+    },
+    {
+      key: "learning",
+      name: "Learning",
+      component: <div className="text-base-md">Coming soon...</div>,
+    },
+    {
+      key: "wellness",
+      name: "Wellness",
+      component: <div className="text-base-md">Coming soon...</div>,
+    },
+    {
+      key: "search-engine",
+      name: "Search engine",
+      component: <div className="text-base-md">Coming soon...</div>,
+    },
+    {
+      key: "foundational-access",
+      name: "Foundational access",
+      component: <div className="text-base-md">Coming soon...</div>,
+    },
+    {
+      key: "sns",
+      name: "SNS",
+      component: <div className="text-base-md">Coming soon...</div>,
+    },
+    {
+      key: "finance",
+      name: "Finance",
+      component: <div className="text-base-md">Coming soon...</div>,
+    },
+    {
+      key: "characters-org",
+      name: "Characters & Org",
+      component: <div className="text-base-md">Coming soon...</div>,
+    },
+  ]
 
   const onPrevSlider = () => {
     if (slider === 0) return
@@ -64,7 +79,11 @@ const Marketplace = () => {
 
   return (
     <>
-      <Button onClick={onOpen} isDisabled className="btn-primary !h-[62px]">
+      <Button
+        onClick={onOpen}
+        isDisabled={!isLogin}
+        className="btn-primary !h-[62px]"
+      >
         <div>
           <FilledSquareCircleIcon />
         </div>
@@ -115,13 +134,17 @@ const Marketplace = () => {
               </h6>
               <div
                 className={twMerge(
-                  "shadow-5 h-full min-w-[350px] rounded-[22px] bg-mercury-30 p-4",
+                  "h-full min-w-[350px] rounded-[22px] bg-mercury-30 p-1 shadow-5",
                 )}
-              ></div>
+              >
+                <div className="max-h-[88%] overflow-y-auto p-3 pb-10">
+                  {category.component}
+                </div>
+              </div>
             </div>
           ))}
           <Button
-            className="shadow-5 fixed left-4 h-[68px] min-w-[68px] rounded-full border border-mercury-100 bg-white"
+            className="fixed left-4 h-[68px] min-w-[68px] rounded-full border border-mercury-100 bg-white shadow-5"
             onClick={onPrevSlider}
           >
             <div className="rotate-90">
@@ -129,7 +152,7 @@ const Marketplace = () => {
             </div>
           </Button>
           <Button
-            className="shadow-5 fixed right-4 h-[68px] min-w-[68px] rounded-full border border-mercury-100 bg-white"
+            className="fixed right-4 h-[68px] min-w-[68px] rounded-full border border-mercury-100 bg-white shadow-5"
             onClick={onNextSlider}
           >
             <div className="-rotate-90">
