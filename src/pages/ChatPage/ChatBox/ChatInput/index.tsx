@@ -15,7 +15,9 @@ import { RoleChat } from "../ChatMessages/helpers"
 import { useStyleBoxChat } from "../StyleProvider"
 import VoiceChat from "./Voice"
 
-const ChatInput: React.FC<{isDisabledInput: boolean}> = ({isDisabledInput}) => {
+const ChatInput: React.FC<{ isDisabledInput: boolean }> = ({
+  isDisabledInput,
+}) => {
   const { setMessages: setMessageContext } = useChatMessage()
   const { transcript, listening, resetTranscript } = useSpeechRecognition()
   const { chatId, privateChatId } = useParams()
@@ -117,6 +119,7 @@ const ChatInput: React.FC<{isDisabledInput: boolean}> = ({isDisabledInput}) => {
         SpeechRecognition={SpeechRecognition}
         transcript={transcript}
         setMessages={setMessages}
+        isDisabled={isDisabledInput}
       />
       <Button
         onClick={onSubmit}

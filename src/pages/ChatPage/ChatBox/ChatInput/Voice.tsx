@@ -10,12 +10,14 @@ const VoiceChat: React.FC<{
   SpeechRecognition: SpeechRecognition
   isListening: boolean
   resetTranscript: () => void
+  isDisabled: boolean
 }> = ({
   setMessages,
   transcript,
   SpeechRecognition,
   isListening,
   resetTranscript,
+  isDisabled,
 }) => {
   const startVoice = () => {
     if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
@@ -52,6 +54,7 @@ const VoiceChat: React.FC<{
         <Button
           onClick={startVoice}
           isIconOnly
+          isDisabled={isDisabled}
           className="rounded-full bg-mercury-200"
         >
           <MicrophoneFilledIcon />
