@@ -1,19 +1,19 @@
 import { ArrowUpFilledIcon } from "@components/Icons/Arrow"
 import { PaperClipFilledIcon } from "@components/Icons/PaperClip"
+import { RoleUser } from "@constants/index"
 import { Button, Textarea } from "@nextui-org/react"
+import { makeId } from "@utils/index"
 import { useChatMessage } from "providers/MessageProvider"
 import { useEffect, useRef, useState } from "react"
 import { useParams } from "react-router-dom"
-import { postChatToGroup } from "services/chat"
-import { RoleChat } from "../ChatMessages/helpers"
-import { makeId } from "@utils/index"
-import { useStyleBoxChat } from "../StyleProvider"
-import { RoleUser } from "@constants/index"
-import { twMerge } from "tailwind-merge"
-import VoiceChat from "./Voice"
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition"
+import { postChatToGroup } from "services/chat"
+import { twMerge } from "tailwind-merge"
+import { RoleChat } from "../ChatMessages/helpers"
+import { useStyleBoxChat } from "../StyleProvider"
+import VoiceChat from "./Voice"
 
 const ChatInput = () => {
   const { setMessages: setMessageContext } = useChatMessage()
@@ -109,6 +109,7 @@ const ChatInput = () => {
         onBlur={() => setIsFocus(false)}
         onValueChange={setMessages}
         value={messages}
+        isDisabled
       />
       <VoiceChat
         resetTranscript={resetTranscript}

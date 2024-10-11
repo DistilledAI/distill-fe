@@ -9,7 +9,7 @@ import { Input } from "@nextui-org/react"
 import { debounce } from "lodash"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { checkGroupDirect, createGroupChat, getUserById } from "services/chat"
+import { checkGroupDirect, createGroupChat, searchUsers } from "services/chat"
 import { ContentDisplayMode, DISPLAY_MODES } from "./PrivateAI"
 
 const SearchContainer: React.FC<ContentDisplayMode> = ({
@@ -20,20 +20,26 @@ const SearchContainer: React.FC<ContentDisplayMode> = ({
   const [query, setQuery] = useState<string>("")
   const [data, setData] = useState<any[]>([])
   const [_, setLoading] = useState<boolean>(true)
+  const activeStatus = 1
 
   useEffect(() => {
     inputRef?.current?.focus()
-    onSearch("")
+    onSearch("", RoleUser.BOT)
   }, [])
 
   const onBackToBoxMessage = () => {
     onChangeDisplayMode(DISPLAY_MODES.MESSAGES)
   }
 
-  const onSearch = async (value: string) => {
+  const onSearch = async (keyword: string, role?: number) => {
     try {
       setLoading(true)
-      const response = await getUserById(value)
+      const payloadData = {
+        username: keyword,
+        status: activeStatus,
+        role: keyword === "" ? RoleUser.BOT : role,
+      }
+      const response = await searchUsers(JSON.stringify(payloadData))
       if (response) {
         return setData(response?.data?.items)
       }

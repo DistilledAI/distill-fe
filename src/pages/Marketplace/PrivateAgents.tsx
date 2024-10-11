@@ -9,7 +9,7 @@ import { Button } from "@nextui-org/react"
 import { IUser } from "@reducers/user/UserSlice"
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { getUserById } from "services/chat"
+import { searchUsers } from "services/chat"
 
 interface PrivateAgentsProps {
   onClose: () => void
@@ -35,7 +35,12 @@ const PrivateAgents = ({ onClose }: PrivateAgentsProps) => {
   useEffect(() => {
     ;(async () => {
       try {
-        const res = await getUserById("", RoleUser.BOT, STATUS_AGENT.ACTIVE)
+        const payloadData = {
+          username: "",
+          status: STATUS_AGENT.ACTIVE,
+          role: RoleUser.BOT,
+        }
+        const res = await searchUsers(JSON.stringify(payloadData))
         if (res?.data?.items?.length) {
           setAgents(res?.data?.items)
         }

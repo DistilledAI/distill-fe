@@ -6,9 +6,9 @@ import ChatInput from "./ChatInput"
 import ChatMessages from "./ChatMessages"
 import LeftBar from "./LeftBar"
 import MyPrivateAgentContent from "./RightContent/MyPrivateAgentContent"
+import { StyleBoxChatProvider } from "./StyleProvider"
 import UserAuth from "./UserAuth"
 import useMessageSocket from "./useMessageSocket"
-import { StyleBoxChatProvider } from "./StyleProvider"
 
 const ChatBox = () => {
   const { loading, connectWallet } = useConnectWallet()
