@@ -167,6 +167,7 @@ const ChatWindow = ({
             index: "LAST",
             align: "end",
           }}
+          increaseViewportBy={500}
           onScroll={onScroll}
           components={{
             Header: () => (isLoadMore ? renderDotLoading("my-4") : <></>),
@@ -179,7 +180,7 @@ const ChatWindow = ({
             <article
               className={twMerge(
                 "px-3 pb-3",
-                lastMsgIndex === index && "mb-3",
+                // lastMsgIndex === index && "mb-3",
                 msgBoxClassName,
               )}
               key={index}
