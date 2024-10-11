@@ -4,8 +4,9 @@ import { useSocket } from "providers/SocketProvider"
 import { useEffect, useRef } from "react"
 import { useParams } from "react-router-dom"
 import { RoleChat } from "./ChatMessages/helpers"
-import { makeId } from "@utils/index"
+import { makeId, textToVoice } from "@utils/index"
 import { useChatMessage } from "providers/MessageProvider"
+import { TYPE_BOT } from "@constants/index"
 
 interface IDataListen {
   event: string
@@ -95,7 +96,7 @@ const useMessageSocket = () => {
 
   const handleWithDone = (e: IDataListen) => {
     const isNeedAppendWhenDone = indexResRef.current !== 0
-    if (isNeedAppendWhenDone)
+    if (isNeedAppendWhenDone) {
       setMessages((prev) =>
         prev.map((item) => {
           if (item.id === e.msgId) {
@@ -108,6 +109,9 @@ const useMessageSocket = () => {
           return item
         }),
       )
+      console.log("XXXX", e)
+      if (e.user.typeBot === TYPE_BOT.VOICE) textToVoice(e.messages)
+    }
   }
 
   const handleResponseForMessage = (e: IDataListen) => {

@@ -1,3 +1,4 @@
+import { TYPE_BOT } from "@constants/index"
 import { createSlice } from "@reduxjs/toolkit"
 import {
   storageKey,
@@ -16,6 +17,7 @@ export interface IUser {
   avatar?: string
   description?: string
   owner?: number
+  typeBot?: TYPE_BOT
 }
 
 interface LoginSuccessPayload {

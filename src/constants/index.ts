@@ -36,3 +36,7 @@ export const STATUS_AGENT = {
   DELETED: 3,
   PENDING: 4,
 }
+
+export enum TYPE_BOT {
+  VOICE = 2,
+}

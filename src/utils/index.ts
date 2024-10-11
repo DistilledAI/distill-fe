@@ -49,3 +49,25 @@ export const makeId = (length = 8) => {
   }
   return result
 }
+
+export const textToVoice = (text: string) => {
+  if (!window.speechSynthesis) {
+    console.error("Not support Speech Synthesis.")
+    return
+  }
+
+  const maleVoices = [
+    "Google US English Male",
+    "Microsoft David Desktop - English (United States)",
+  ]
+
+  const foundVoice = window.speechSynthesis
+    .getVoices()
+    .find(({ name }) => maleVoices.includes(name))
+  window.speechSynthesis.cancel()
+  const utter = new SpeechSynthesisUtterance(text)
+  if (foundVoice) utter.voice = foundVoice
+  else console.log("no voice found, using default")
+  utter.rate = 1
+  speechSynthesis.speak(utter)
+}
