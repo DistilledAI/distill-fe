@@ -7,23 +7,7 @@ import tsconfigPaths from "vite-tsconfig-paths"
 export default defineConfig(() => {
   return {
     root: ".",
-    plugins: [
-      react(),
-      tsconfigPaths(),
-      babel(),
-
-      // babel({
-      //   babelConfig: {
-      //     babelrc: false,
-      //     configFile: false,
-      //     plugins: ["@babel/plugin-transform-runtime"],
-      //   },
-      // }),
-      // legacy({
-      //   targets: ["defaults", "not IE 11"],
-      //   additionalLegacyPolyfills: ["regenerator-runtime/runtime"],
-      // }),
-    ],
+    plugins: [react(), tsconfigPaths(), babel()],
     resolve: {
       alias: {
         "@": path.resolve(__dirname, "src"),
