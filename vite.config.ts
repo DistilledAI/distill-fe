@@ -1,4 +1,3 @@
-import legacy from "@vitejs/plugin-legacy"
 import react from "@vitejs/plugin-react"
 import path from "path"
 import { defineConfig } from "vite"
@@ -18,10 +17,10 @@ export default defineConfig(() => {
           plugins: ["@babel/plugin-transform-runtime"],
         },
       }),
-      legacy({
-        targets: ["defaults", "not IE 11"],
-        additionalLegacyPolyfills: ["regenerator-runtime/runtime"],
-      }),
+      // legacy({
+      //   targets: ["defaults", "not IE 11"],
+      //   additionalLegacyPolyfills: ["regenerator-runtime/runtime"],
+      // }),
     ],
     resolve: {
       alias: {
