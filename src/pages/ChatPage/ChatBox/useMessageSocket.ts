@@ -65,6 +65,8 @@ const useMessageSocket = () => {
 
   const handleWithUpdate = (e: IDataListen) => {
     if (isReloadWhenResponse(e.index)) return
+    const isBotVoice = e.user.typeBot === TYPE_BOT.VOICE
+    if (isBotVoice) return
     setMessages((prev) =>
       prev.map((item) => {
         if (item.id === e.msgId) {
@@ -96,6 +98,8 @@ const useMessageSocket = () => {
 
   const handleWithDone = (e: IDataListen) => {
     const isNeedAppendWhenDone = indexResRef.current !== 0
+    const isBotVoice = e.user.typeBot === TYPE_BOT.VOICE
+    if (isBotVoice) textToVoice(e.messages)
     if (isNeedAppendWhenDone) {
       setMessages((prev) =>
         prev.map((item) => {
@@ -109,8 +113,6 @@ const useMessageSocket = () => {
           return item
         }),
       )
-      console.log("XXXX", e)
-      if (e.user.typeBot === TYPE_BOT.VOICE) textToVoice(e.messages)
     }
   }
 
