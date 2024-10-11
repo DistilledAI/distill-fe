@@ -1,20 +1,26 @@
 import { ArrowUpFilledIcon } from "@components/Icons/Arrow"
-import { MicrophoneFilledIcon } from "@components/Icons/Microphone"
 import { PaperClipFilledIcon } from "@components/Icons/PaperClip"
 import { Button, Textarea } from "@nextui-org/react"
 import { useChatMessage } from "providers/MessageProvider"
 import { useEffect, useRef, useState } from "react"
 import { useParams } from "react-router-dom"
 import { postChatToGroup } from "services/chat"
-import { RoleChat } from "./ChatMessages/helpers"
+import { RoleChat } from "../ChatMessages/helpers"
 import { makeId } from "@utils/index"
-import { useStyleBoxChat } from "./StyleProvider"
+import { useStyleBoxChat } from "../StyleProvider"
 import { RoleUser } from "@constants/index"
+import { twMerge } from "tailwind-merge"
+import VoiceChat from "./Voice"
+import SpeechRecognition, {
+  useSpeechRecognition,
+} from "react-speech-recognition"
 
 const ChatInput = () => {
   const { setMessages: setMessageContext } = useChatMessage()
+  const { transcript, listening, resetTranscript } = useSpeechRecognition()
   const { chatId, privateChatId } = useParams()
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isFocus, setIsFocus] = useState(false)
   const [messages, setMessages] = useState("")
   const boxRef = useRef<HTMLDivElement>(null)
   const heightBoxRef = useRef(0)
@@ -35,6 +41,8 @@ const ChatInput = () => {
       },
     ])
     setMessages("")
+    SpeechRecognition.stopListening()
+
     await postChatToGroup({
       groupId: Number(groupId),
       messages,
@@ -51,6 +59,7 @@ const ChatInput = () => {
         setTimeout(() => {
           setIsSubmitting(false)
           setMessages("")
+          SpeechRecognition.stopListening()
         }, 1)
       }
     }
@@ -73,7 +82,10 @@ const ChatInput = () => {
   return (
     <div
       ref={boxRef}
-      className="absolute -bottom-[82px] left-0 z-[11] flex w-full items-center gap-4 rounded-[35px] bg-mercury-200 p-3 duration-500"
+      className={twMerge(
+        "absolute -bottom-[82px] left-0 z-[11] flex w-full items-center gap-4 rounded-[35px] border-1 bg-mercury-200 p-3 duration-500",
+        isFocus ? "border-mercury-300" : "border-mercury-200",
+      )}
     >
       <Button
         isDisabled
@@ -93,12 +105,18 @@ const ChatInput = () => {
         minRows={1}
         maxRows={4}
         onKeyUp={handleCheckHeight}
+        onFocus={() => setIsFocus(true)}
+        onBlur={() => setIsFocus(false)}
         onValueChange={setMessages}
         value={messages}
       />
-      <Button isDisabled isIconOnly className="rounded-full bg-mercury-200">
-        <MicrophoneFilledIcon />
-      </Button>
+      <VoiceChat
+        resetTranscript={resetTranscript}
+        isListening={listening}
+        SpeechRecognition={SpeechRecognition}
+        transcript={transcript}
+        setMessages={setMessages}
+      />
       <Button
         onClick={onSubmit}
         isDisabled={!messages}

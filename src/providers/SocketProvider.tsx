@@ -49,7 +49,7 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
 
       initSocket.on("disconnect", (reason) => {
         console.log(`Socket disconnected: ${reason}`)
-        if (reason !== "io client disconnect") initSocket?.connect()
+        initSocket.connect()
       })
 
       initSocket.on("reconnect", (attempt) => {

@@ -60,3 +60,18 @@
     @apply !h-11 !rounded-full border !border-white !bg-mercury-30 !text-16 !text-mercury-900;
   }
 }
+
+@keyframes bounce {
+  0% {
+    transform: scale(1);
+  }
+  25% {
+    transform: scale(1.35);
+  }
+  75% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.25);
+  }
+}
