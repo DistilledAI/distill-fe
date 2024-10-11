@@ -109,7 +109,6 @@ const ChatInput = () => {
         onBlur={() => setIsFocus(false)}
         onValueChange={setMessages}
         value={messages}
-        isDisabled
       />
       <VoiceChat
         resetTranscript={resetTranscript}
