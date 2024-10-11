@@ -158,8 +158,8 @@ const MainContainer: React.FC<{
           {children}
           <div className="absolute bottom-[60px]">
             <span className="text-base-m text-mercury-800">
-              Your Private Agent is private to you only, unless you publish it
-              to the Marketplace.
+              Your Private Agent is exclusively accessible to you unless you
+              choose to publish it on the Marketplace.
             </span>
 
             <div
