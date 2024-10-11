@@ -83,7 +83,7 @@ const ChatInput = () => {
     <div
       ref={boxRef}
       className={twMerge(
-        "absolute -bottom-[82px] left-0 z-[11] flex w-full items-center gap-4 rounded-[35px] border-1 bg-mercury-200 p-3 duration-500",
+        "absolute -bottom-[79px] left-0 z-[11] flex w-full items-center gap-4 rounded-[35px] border-1 bg-mercury-200 p-3 py-[7.89px] duration-500",
         isFocus ? "border-mercury-300" : "border-mercury-200",
       )}
     >

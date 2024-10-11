@@ -82,7 +82,7 @@ const Marketplace = () => {
       <Button
         onClick={onOpen}
         isDisabled={!isLogin}
-        className="btn-primary !h-[62px]"
+        className="btn-primary min-h-[60px]"
       >
         <div>
           <FilledSquareCircleIcon />

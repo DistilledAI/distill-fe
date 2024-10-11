@@ -3,7 +3,7 @@ import { Button } from "@nextui-org/react"
 
 const Playground = () => {
   return (
-    <Button isDisabled className="btn-primary !h-[62px]">
+    <Button isDisabled className="btn-primary min-h-[60px]">
       <div>
         <FilledWindowIcon />
       </div>
