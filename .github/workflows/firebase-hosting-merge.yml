@@ -44,10 +44,17 @@ jobs:
           VITE_SOCKET_URL: wss://api-echo.distilled.ai
           VITE_GROUP_DEFAULT_FOR_PRIVATE_AGENT: 396
 
-      - uses: FirebaseExtended/action-hosting-deploy@v0
-        with:
-          repoToken: '${{ secrets.GITHUB_TOKEN }}'
-          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_MESS_DISTILLED_AI }}'
-          channelId: live
-          projectId: oraichain-dapp
-          target: mesh-distilled-ai
+      - name: Import Firebase service account credentials
+        id: import-credentials
+        run : |
+          echo ${{ secrets.FIREBASE_SERVICE_ACCOUNT_MESS_DISTILLED_AI }} | base64 -d > $(pwd)/serviceaccount.json
+          echo "file_path=$(pwd)/serviceaccount.json" >> $GITHUB_OUTPUT
+  
+      - name: Deploy to Firebase
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ steps.import-credentials.outputs.file_path }}
+        run: yarn firebase deploy --only hosting:mesh-distilled-ai
+  
+      - name: Remove credentials file
+        if: success() || failure()
+        run: rm ${{ steps.import-credentials.outputs.file_path }}
