@@ -2,7 +2,7 @@ import AvatarCustom from "@components/AvatarCustom"
 import { ReactNode } from "react"
 
 interface AvatarContainerProps {
-  badgeIcon: ReactNode
+  badgeIcon?: ReactNode
   avatarUrl?: string
   userName: string
   badgeClassName: string

@@ -10,6 +10,12 @@ export interface AvatarCustomProps {
     | undefined
   badgeClassName?: string
   badgeBaseClassName?: string
+  placement?:
+    | "top-right"
+    | "top-left"
+    | "bottom-right"
+    | "bottom-left"
+    | undefined
 }
 
 const AvatarCustom: React.FC<AvatarCustomProps> = ({
@@ -18,12 +24,13 @@ const AvatarCustom: React.FC<AvatarCustomProps> = ({
   classNames,
   badgeClassName,
   badgeBaseClassName,
+  placement = "bottom-right",
 }) => {
   if (badgeIcon) {
     return (
       <Badge
         content={badgeIcon}
-        placement="bottom-right"
+        placement={placement}
         variant="solid"
         isOneChar
         classNames={{
