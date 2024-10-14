@@ -1,5 +1,12 @@
 {
   "projects": {
-    "default": "mesh-distilled-ai"
+    "default": "oraichain-dapp"
+  },
+  "target": {
+    "oraichain-dapp": {
+      "mesh-distilled-ai": [
+        "mesh-distilled-ai"
+      ]
+    }
   }
 }
