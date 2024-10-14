@@ -99,7 +99,7 @@ const useMessageSocket = () => {
   const handleWithDone = (e: IDataListen) => {
     const isNeedAppendWhenDone = indexResRef.current !== 0
     const isBotVoice = e.user.typeBot === TYPE_BOT.VOICE
-    if (isBotVoice) textToVoice(e.messages)
+    if (isBotVoice) textToVoice(e.messages, e.user.configBot)
     if (isNeedAppendWhenDone) {
       setMessages((prev) =>
         prev.map((item) => {

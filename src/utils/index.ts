@@ -1,8 +1,7 @@
 import FingerprintJS from "@fingerprintjs/fingerprintjs"
-// import { IUser } from "@reducers/user/UserSlice"
+import { IUser } from "@reducers/user/UserSlice"
 import { cloneElement, createElement } from "react"
 import { toast } from "react-toastify"
-// import { postTextToSpeech } from "services/chat"
 
 export function defineElement(element: any, props = {}) {
   if (element) {
@@ -52,71 +51,69 @@ export const makeId = (length = 8) => {
   return result
 }
 
-export const textToVoice = (text: string) => {
+export const textToVoice = async (
+  text: string,
+  speaker: IUser["configBot"],
+) => {
   if (!window.speechSynthesis) {
-    console.error("Not support Speech Synthesis.")
+    console.error("Speech Synthesis is not supported.")
     return
   }
 
-  const maleVoices = [
-    "Google US English Male",
-    "Microsoft David Desktop - English (United States)",
-  ]
+  try {
+    const response = await fetch(
+      "https://ai-dev.cupiee.com/voice/text_to_speech",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          text,
+          lang: "en",
+          speaker,
+          pitch: 1,
+          ref_voice: "",
+        }),
+      },
+    )
 
-  const foundVoice = window.speechSynthesis
-    .getVoices()
-    .find(({ name }) => maleVoices.includes(name))
-  window.speechSynthesis.cancel()
-  const utter = new SpeechSynthesisUtterance(text)
-  if (foundVoice) utter.voice = foundVoice
-  else console.log("no voice found, using default")
-  utter.rate = 1
-  speechSynthesis.speak(utter)
+    if (!response.ok) {
+      throw new Error("Network response was not ok")
+    }
+
+    const blob = await response.blob()
+
+    if (blob) {
+      const audioContext = new AudioContext()
+      const reader = new FileReader()
+
+      reader.onload = () => {
+        if (reader.result instanceof ArrayBuffer) {
+          audioContext.decodeAudioData(
+            reader.result,
+            (buffer) => {
+              const source = audioContext.createBufferSource()
+              source.buffer = buffer
+              source.connect(audioContext.destination)
+              source.start(0)
+            },
+            (error) => {
+              console.error("Error decoding audio data:", error)
+            },
+          )
+        }
+      }
+
+      reader.onerror = (error) => {
+        console.error("Error reading audio blob:", error)
+      }
+
+      reader.readAsArrayBuffer(blob)
+    } else {
+      console.error("Response is not a Blob.")
+    }
+  } catch (error) {
+    console.error("Error fetching audio data:", error)
+  }
 }
-
-// export const textToVoice = async (
-//   text: string,
-//   speaker: IUser["configBot"],
-// ) => {
-//   if (!window.speechSynthesis) {
-//     console.error("Not support Speech Synthesis.")
-//     return
-//   }
-
-//   const res = await postTextToSpeech(text, speaker)
-
-//   console.log({ res })
-
-//   const maleVoices = [
-//     "Google US English Male",
-//     "Microsoft David Desktop - English (United States)",
-//   ]
-
-//   const speakText = () => {
-//     window.speechSynthesis.cancel()
-
-//     const voices = window.speechSynthesis.getVoices()
-//     const foundVoice = voices.find(({ name }) => maleVoices.includes(name))
-
-//     if (foundVoice) {
-//       console.log("Using male voice:", foundVoice.name)
-//       const utter = new SpeechSynthesisUtterance(text)
-//       utter.voice = foundVoice
-//       utter.rate = 1
-//       window.speechSynthesis.speak(utter)
-//     } else {
-//       console.log("No male voice found, using default")
-//       const utter = new SpeechSynthesisUtterance(text)
-//       utter.rate = 1
-//       window.speechSynthesis.speak(utter)
-//     }
-//   }
-
-//   if (window.speechSynthesis.getVoices().length === 0) {
-//     window.speechSynthesis.addEventListener("voiceschanged", () => {
-//       speakText()
-//     })
-//   } else {
-//     speakText()
-//   }
-// }
