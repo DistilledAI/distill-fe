@@ -1,5 +1,4 @@
 import AvatarContainer from "@components/AvatarContainer"
-import AvatarCustom from "@components/AvatarCustom"
 import { ArrowLeftFilledIcon } from "@components/Icons/Arrow"
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { CloseFilledIcon } from "@components/Icons/DefiLens"
@@ -90,6 +89,7 @@ const CreateGroup: React.FC<ContentDisplayMode> = ({ onChangeDisplayMode }) => {
 
   const handleCreateGroup = async () => {
     const userSelectedIds = userSelected?.map((item: any) => Number(item.id))
+    if (userSelected.length === 0) return
     try {
       const createGroupResponse = await createGroupChat({
         members: userSelectedIds,
@@ -109,39 +109,21 @@ const CreateGroup: React.FC<ContentDisplayMode> = ({ onChangeDisplayMode }) => {
       )
     } catch (error: any) {
       toast.error(error?.response?.data?.message)
-    } finally {
     }
   }
 
   return (
     <>
-      <div className="flex w-full flex-col gap-1">
-        <div className="max-h-[200px] overflow-y-auto">
-          <div className="flex-items-center gap-2">
+      <div className="flex h-full w-full flex-col gap-1">
+        <div>
+          <div className="flex-items-center mb-1 gap-2">
             <div
               className="cursor-pointer"
               onClick={() => onBackToBoxMessage()}
             >
               <ArrowLeftFilledIcon />
             </div>
-            <span className="text-base-md">Add Members</span>
-          </div>
-          <div className="mb-1 mt-3 flex flex-wrap gap-2">
-            {userSelected.map((user: any) => {
-              return (
-                <div key={user.id}>
-                  <AvatarCustom
-                    badgeIcon={getBadgeIcon(user?.role)}
-                    src={user?.avatar}
-                    badgeClassName={
-                      user?.role === RoleUser.USER
-                        ? "bg-[#0FE9A4]"
-                        : "bg-yellow-10"
-                    }
-                  />
-                </div>
-              )
-            })}
+            <span className="text-[15px] text-mercury-900">Add Members</span>
           </div>
 
           <Input
@@ -172,7 +154,7 @@ const CreateGroup: React.FC<ContentDisplayMode> = ({ onChangeDisplayMode }) => {
           />
         </div>
 
-        <div className="mt-1 max-h-[calc(100%-160px)] overflow-y-auto">
+        <div className="mt-1 max-h-[calc(100%-180px)] overflow-y-auto">
           {searchResponse.map((user) => {
             const userSelectedIds = userSelected?.map((item: any) => item.id)
             const isSelected = userSelectedIds.includes(user.id)
@@ -205,10 +187,17 @@ const CreateGroup: React.FC<ContentDisplayMode> = ({ onChangeDisplayMode }) => {
       </div>
 
       <div
-        className="flex-items-center absolute bottom-10 right-2 h-10 w-10 rotate-180 cursor-pointer justify-center rounded-full bg-mercury-200"
-        onClick={() => handleCreateGroup()}
+        className="flex-items-center absolute bottom-10 right-2 z-[10] h-10 w-10 min-w-0 cursor-pointer justify-center rounded-full bg-mercury-200 p-0"
+        onClick={handleCreateGroup}
       >
-        <ArrowLeftFilledIcon />
+        <div className="rotate-180">
+          <ArrowLeftFilledIcon />
+        </div>
+        {userSelected.length > 0 && (
+          <span className="absolute right-[-6px] top-[-6px] flex h-5 w-5 items-center justify-center rounded-full bg-mercury-950 text-[13px] font-normal text-white">
+            {userSelected.length}
+          </span>
+        )}
       </div>
     </>
   )

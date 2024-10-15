@@ -16,6 +16,7 @@ import { getAvatarGroupChat, getRoleUser } from "./helpers"
 import MoreChatAction from "./MoreChatAction"
 import { ContentDisplayMode, DISPLAY_MODES } from "./PrivateAI"
 import useFetchGroups, { TypeGroup } from "./useFetchGroups"
+import AvatarGroup from "@components/AvatarGroup"
 
 const LIMIT = 10
 
@@ -126,43 +127,31 @@ const MessagesContainer: React.FC<ContentDisplayMode> = ({
                   isActive && "bg-mercury-100",
                 )}
               >
-                <AvatarContainer
-                  badgeIcon={
-                    groupItem.group.typeGroup === TypeGroup.PRIVATE_GROUP
-                      ? null
-                      : getIconGroup(
-                          groupItem.userId,
-                          groupItem.group.userA,
-                          groupItem.group.userB,
-                        )
-                  }
-                  avatarUrl={
-                    groupItem.group.typeGroup === TypeGroup.PRIVATE_GROUP
-                      ? undefined
-                      : getAvatarGroupChat(
-                          groupItem.userId,
-                          groupItem.group.userA,
-                          groupItem.group.userB,
-                        )
-                  }
-                  userName={
-                    groupItem.group.typeGroup === TypeGroup.PRIVATE_GROUP
-                      ? groupItem.group.name
-                      : getNameGroup(
-                          groupItem.group.userA,
-                          groupItem.group.userB,
-                        )
-                  }
-                  badgeClassName={
-                    groupItem.group.typeGroup === TypeGroup.PRIVATE_GROUP
-                      ? "bg-[#0FE9A4]"
-                      : getColorGroupIcon(
-                          groupItem.userId,
-                          groupItem.group.userA,
-                          groupItem.group.userB,
-                        )
-                  }
-                />
+                {groupItem.group.typeGroup === TypeGroup.PRIVATE_GROUP ? (
+                  <AvatarGroup groupName={groupItem.group.name} />
+                ) : (
+                  <AvatarContainer
+                    badgeIcon={getIconGroup(
+                      groupItem.userId,
+                      groupItem.group.userA,
+                      groupItem.group.userB,
+                    )}
+                    avatarUrl={getAvatarGroupChat(
+                      groupItem.userId,
+                      groupItem.group.userA,
+                      groupItem.group.userB,
+                    )}
+                    userName={getNameGroup(
+                      groupItem.group.userA,
+                      groupItem.group.userB,
+                    )}
+                    badgeClassName={getColorGroupIcon(
+                      groupItem.userId,
+                      groupItem.group.userA,
+                      groupItem.group.userB,
+                    )}
+                  />
+                )}
                 <ActiveEffect isActive={isActive} />
                 <div
                   aria-checked={isHasNotification(groupItem.groupId)}
