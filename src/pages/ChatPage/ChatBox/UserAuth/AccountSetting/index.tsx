@@ -1,39 +1,33 @@
+import DrawerBottom from "@components/DrawerBottom"
 import { CopyIcon } from "@components/Icons/Copy"
 import { MetamaskIconSmall } from "@components/Icons/MetamaskIcon"
 import { LogoutIcon } from "@components/Icons/OutputIcon"
+import { PATH_NAMES } from "@constants/index"
 import useAuthState from "@hooks/useAuthState"
 import { logout } from "@reducers/user/UserSlice"
 import { centerTextEllipsis, copyClipboard } from "@utils/index"
-import React from "react"
+import React, { useEffect } from "react"
 import { useDispatch } from "react-redux"
+import { useNavigate } from "react-router-dom"
 import PrivateAgent from "./Agent"
+import PrivateAgentPod from "./AgentPod"
+import AgentCreative from "./Creative"
 import MyCredits from "./Credits"
 import Language from "./Language"
 import NotificationSetting from "./Notification"
-import PrivateAgentPod from "./AgentPod"
-import AgentCreative from "./Creative"
-import VoiceChat from "./VoiceChat"
 import VoiceCharacter from "./VoiceCharacter"
-import DrawerBottom from "@components/DrawerBottom"
-<<<<<<< Updated upstream
-import { PATH_NAMES } from "@constants/index"
-import { useNavigate } from "react-router-dom"
-=======
-import { defineElement } from "@utils/index"
-import React, { useEffect, useState } from "react"
-import MyData from "./MyData"
-import MyWallet from "./MyWallet"
+import VoiceChat from "./VoiceChat"
 
 export const TYPE_CONTENT = {
   MY_WALLET: "MY_WALLET",
   MY_DATA: "MY_DATA",
 }
->>>>>>> Stashed changes
 
 const AccountSetting: React.FC<{
   isOpen: boolean
   onClose: () => void
-}> = ({ isOpen, onClose }) => {
+  setTypeContent: any
+}> = ({ isOpen, onClose, setTypeContent }) => {
   const { user } = useAuthState()
   const dispatch = useDispatch()
   const navigate = useNavigate()
