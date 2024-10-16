@@ -8,10 +8,22 @@ import { centerTextEllipsis, copyClipboard } from "@utils/index"
 import { useEffect, useState } from "react"
 import { getMyPrivateAgent } from "services/chat"
 // import AgentDescription from "./Description"
+<<<<<<< Updated upstream
+=======
+import { brainAIIcon } from "@assets/svg"
+import { STATUS_AGENT } from "@constants/index"
+import { TYPE_CONTENT } from ".."
+>>>>>>> Stashed changes
 import ShareAgent from "./ShareAgent"
 import { STATUS_AGENT } from "@constants/index"
 
+<<<<<<< Updated upstream
 const PrivateAgent = () => {
+=======
+const PrivateAgent: React.FC<{ setTypeContent: any }> = ({
+  setTypeContent,
+}) => {
+>>>>>>> Stashed changes
   const [listBot, setListBot] = useState<any[]>([])
   const firstBot = listBot?.[0]
   const status = firstBot?.status
@@ -88,6 +100,25 @@ const PrivateAgent = () => {
           <MetamaskIconSmall />
         </div>
       </div>
+<<<<<<< Updated upstream
+=======
+
+      <div className="flex items-center justify-between">
+        <span className="text-mercury-600">My data:</span>
+        <div className="flex items-center gap-2">
+          <span className="line-clamp-1 whitespace-nowrap text-mercury-900">
+            2 days ago
+          </span>
+          <Button
+            className="h-auto w-auto min-w-0 bg-transparent p-0"
+            onClick={() => setTypeContent(TYPE_CONTENT.MY_DATA)}
+          >
+            <span className="text-base-md text-[#A2845E]">Manage</span>
+          </Button>
+        </div>
+      </div>
+
+>>>>>>> Stashed changes
       <div className="flex items-center justify-between gap-2">
         <ShareAgent agentData={firstBot} isDisabled={isPending || !firstBot} />
         <Button

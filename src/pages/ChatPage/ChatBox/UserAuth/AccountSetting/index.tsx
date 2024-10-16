@@ -15,8 +15,20 @@ import AgentCreative from "./Creative"
 import VoiceChat from "./VoiceChat"
 import VoiceCharacter from "./VoiceCharacter"
 import DrawerBottom from "@components/DrawerBottom"
+<<<<<<< Updated upstream
 import { PATH_NAMES } from "@constants/index"
 import { useNavigate } from "react-router-dom"
+=======
+import { defineElement } from "@utils/index"
+import React, { useEffect, useState } from "react"
+import MyData from "./MyData"
+import MyWallet from "./MyWallet"
+
+export const TYPE_CONTENT = {
+  MY_WALLET: "MY_WALLET",
+  MY_DATA: "MY_DATA",
+}
+>>>>>>> Stashed changes
 
 const AccountSetting: React.FC<{
   isOpen: boolean
@@ -25,6 +37,10 @@ const AccountSetting: React.FC<{
   const { user } = useAuthState()
   const dispatch = useDispatch()
   const navigate = useNavigate()
+
+  useEffect(() => {
+    setTypeContent(TYPE_CONTENT.MY_WALLET)
+  }, [isOpen])
 
   return (
     <DrawerBottom isOpen={isOpen} onClose={onClose}>
