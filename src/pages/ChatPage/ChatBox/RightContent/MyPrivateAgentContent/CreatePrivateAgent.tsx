@@ -9,7 +9,8 @@ import { PDFTypeIcon } from "@components/Icons/PDFTypeIcon"
 import { PhotoPlusIcon } from "@components/Icons/PhotoPlusIcon"
 import { SocialLinkIcon, ThreeDotsIcon } from "@components/Icons/SocialLinkIcon"
 import { useAppSelector } from "@hooks/useAppRedux"
-import { useHover } from "@hooks/useHover"
+import { message, Upload } from "antd"
+import { RcFile } from "antd/es/upload"
 import mainContentBg from "assets/images/main-content-bg.jpg"
 import { useState } from "react"
 import { twMerge } from "tailwind-merge"
@@ -24,7 +25,47 @@ const CreatePrivateAgent: React.FC<{
 }> = ({ connectWalletLoading, connectWallet, setCreated }) => {
   const isLogin = useAppSelector((state) => state.user.isLogin)
   const [openPopup, setOpenPopup] = useState<boolean>(false)
-  const [ref, isHovered] = useHover()
+  // const [ref,  isHovered] = useHover()
+  const isHovered = true
+
+  const beforeUpload = (file: RcFile) => {
+    const isLt2M = file.size / 1024 / 1024 < 2
+    if (!isLt2M) {
+      return message.error("The file size must be less than 2MB!")
+    }
+
+    return isLt2M
+  }
+
+  const handleUploadImage = async (file: any) => {
+    const bodyFormData = new FormData()
+    bodyFormData.append("file", file)
+    // const res = await uploadImage(bodyFormData)
+    // if (res?.data) {
+    // const finalValue = generalInfo.map((item) => {
+    //   if (item.fieldType === AVATAR_URL) {
+    //     return {
+    //       ...item,
+    //       originalValue: res?.data?.fileUrl,
+    //     }
+    //   }
+
+    //   return item
+    // })
+    // setUploading(false)
+    // }
+  }
+
+  const uploadProps: any = {
+    onChange({ file }: { file: any }) {
+      if (file.status !== "uploading") {
+        handleUploadImage(file?.originFileObj)
+      }
+    },
+    showUploadList: false,
+    maxCount: 1,
+    beforeUpload: beforeUpload,
+  }
 
   const renderCreateAccountAction = () => {
     if (connectWalletLoading)
@@ -69,7 +110,10 @@ const CreatePrivateAgent: React.FC<{
   return (
     <>
       <MainContainer>
-        <div className="absolute h-[60%] w-[80%]" ref={ref}>
+        <div
+          className="absolute h-[60%] w-[80%]"
+          // ref={ref}
+        >
           <div className="absolute left-1/2 top-1/2 z-30 -translate-x-1/2 -translate-y-1/2">
             <HugeButton
               icon={
@@ -109,11 +153,9 @@ const CreatePrivateAgent: React.FC<{
               isHovered && "-translate-x-[280px] -translate-y-1/4",
             )}
           >
-            <HugeButton
-              icon={<PhotoPlusIcon />}
-              label="Photos & Videos"
-              isDisable={true}
-            />
+            <Upload {...uploadProps}>
+              <HugeButton icon={<PhotoPlusIcon />} label="Photos & Videos" />
+            </Upload>
           </div>
           <div
             className={twMerge(
@@ -132,6 +174,7 @@ const CreatePrivateAgent: React.FC<{
           </div>
         </div>
       </MainContainer>
+
       <CreatPrivateAgentModal
         openPopup={openPopup}
         setOpenPopup={setOpenPopup}

@@ -153,3 +153,18 @@ export const checkStatusBotInGroup = async (groupId: string | undefined) => {
     url: endpoint.CHECK_STATUS_BOT_IN_GROUP(groupId),
   })
 }
+
+export const uploadMyDataToBot = async (files: any) => {
+  return fetchApiAuth({
+    method: "post",
+    url: endpoint.UPLOAD_MY_DATA_TO_BOT,
+    data: files,
+  })
+}
+
+export const getMyDataList = async (botId: number) => {
+  return fetchApiAuth({
+    method: "get",
+    url: endpoint.MY_DATA_BOT_LIST(botId),
+  })
+}

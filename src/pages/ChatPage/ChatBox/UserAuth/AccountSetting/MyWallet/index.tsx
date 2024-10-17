@@ -16,7 +16,10 @@ import NotificationSetting from "../Notification"
 import VoiceCharacter from "../VoiceCharacter"
 import VoiceChat from "../VoiceChat"
 
-const MyWallet: React.FC<{ onClose?: any }> = ({ onClose }) => {
+const MyWallet: React.FC<{ onClose?: any; setTypeContent?: any }> = ({
+  onClose,
+  setTypeContent,
+}) => {
   const { user } = useAuthState()
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -80,7 +83,7 @@ const MyWallet: React.FC<{ onClose?: any }> = ({ onClose }) => {
         </div>
         <div className="w-[calc(44%-12px)]">
           <div>
-            <PrivateAgent />
+            <PrivateAgent setTypeContent={setTypeContent} />
           </div>
           <div className="mt-4">
             <PrivateAgentPod />

@@ -16,6 +16,8 @@ const endpoint = {
   CHANGE_STATUS_BOT_IN_GROUP: withBaseURL("/group/change-status-bot-in-group"),
   CHECK_STATUS_BOT_IN_GROUP: (groupId: string | undefined) =>
     withBaseURL(`/group/check-status-bot-in-group/${groupId}`),
+  UPLOAD_MY_DATA_TO_BOT: withBaseURL("/my-data/upload"),
+  MY_DATA_BOT_LIST: (botId: number) => withBaseURL(`/my-data/list/${botId}`),
 
   //chat
   GET_MY_CHAT_GROUP_LIST: withBaseURL("/chat/group/list"),

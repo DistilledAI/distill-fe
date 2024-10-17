@@ -10,9 +10,12 @@ import { getMyPrivateAgent } from "services/chat"
 // import AgentDescription from "./Description"
 import { brainAIIcon } from "@assets/svg"
 import { STATUS_AGENT } from "@constants/index"
+import { TYPE_CONTENT } from ".."
 import ShareAgent from "./ShareAgent"
 
-const PrivateAgent: React.FC = () => {
+const PrivateAgent: React.FC<{ setTypeContent: any }> = ({
+  setTypeContent,
+}) => {
   const [listBot, setListBot] = useState<any[]>([])
   const firstBot = listBot?.[0]
   const status = firstBot?.status
@@ -90,7 +93,7 @@ const PrivateAgent: React.FC = () => {
         </div>
       </div>
 
-      {/* <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between">
         <span className="text-mercury-600">My data:</span>
         <div className="flex items-center gap-2">
           <span className="line-clamp-1 whitespace-nowrap text-mercury-900">
@@ -103,7 +106,7 @@ const PrivateAgent: React.FC = () => {
             <span className="text-base-md text-[#A2845E]">Manage</span>
           </Button>
         </div>
-      </div> */}
+      </div>
 
       <div className="flex items-center justify-between gap-2">
         <ShareAgent agentData={firstBot} isDisabled={isPending || !firstBot} />
