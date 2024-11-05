@@ -24,7 +24,7 @@ const AuthorProfile: React.FC = () => {
       </div>
       <AuthorUsername />
       <div className="flex items-center justify-between">
-        <span className="text-mercury-600">Description:</span>
+        <span className="text-mercury-600">Bio:</span>
         <div className="flex items-center gap-2">
           <span className="line-clamp-1 block max-w-36 text-ellipsis whitespace-nowrap text-mercury-900 focus:border-none focus:outline-none">
             {user?.description ?? "-"}

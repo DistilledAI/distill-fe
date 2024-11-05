@@ -1,14 +1,16 @@
 import HeadSectionData from "../Components/HeadSectionData"
 // import { EditPenFilledIcon } from "@components/Icons/Edit"
-import TableData from "../Components/TableData"
+import { InfoCircleIcon } from "@components/Icons/InfoCircleIcon"
 import { PDFTypeIcon } from "@components/Icons/PDFTypeIcon"
 import useWindowSize from "@hooks/useWindowSize"
-import TableDataMobile from "../Components/TableDataMobile"
-import React from "react"
-import moment from "moment"
-import DeleteData from "../DeleteData"
-import useFetchByCategory from "../useFetchByCategory"
 import { BotDataTypeKey } from "@types"
+import moment from "moment"
+import React from "react"
+import TableData from "../Components/TableData"
+import TableDataMobile from "../Components/TableDataMobile"
+import DeleteData from "../DeleteData"
+import SyncData from "../SyncData"
+import useFetchByCategory from "../useFetchByCategory"
 
 enum ColumnKey {
   Name = "name",
@@ -48,6 +50,8 @@ const FileData: React.FC<{
   } = useFetchByCategory(category, botId)
 
   const renderCell = (item: Record<string, any>, columnKey: string) => {
+    const dataId = item?.id
+
     switch (columnKey) {
       case ColumnKey.Type:
         return (
@@ -72,15 +76,23 @@ const FileData: React.FC<{
               ids={[item.id]}
               category={category}
             />
+            <SyncData botId={botId} dataId={dataId} />
           </div>
         )
       case ColumnKey.Name:
         return (
-          <a className="hover:underline" href={item.value} target="_blank">
-            <span className="line-clamp-1 text-base text-mercury-950">
-              {item[columnKey]}
-            </span>
-          </a>
+          <div className="flex flex-row items-center gap-1">
+            <InfoCircleIcon />
+            <a
+              className="max-w-[150px] truncate hover:underline"
+              href={item.value}
+              target="_blank"
+            >
+              <span className="text-base text-mercury-950">
+                {item[columnKey]}
+              </span>
+            </a>
+          </div>
         )
 
       default:
@@ -116,6 +128,7 @@ const FileData: React.FC<{
         title="PDFs"
         addTitle="Add pdf"
       />
+
       <div className="mt-4">
         {isMobile ? (
           <TableDataMobile

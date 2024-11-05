@@ -1,6 +1,7 @@
 import { SocialLinkIcon } from "@components/Icons/SocialLinkIcon"
 import HeadSectionData from "../Components/HeadSectionData"
 // import { EditPenFilledIcon } from "@components/Icons/Edit"
+import { InfoCircleIcon } from "@components/Icons/InfoCircleIcon"
 import useWindowSize from "@hooks/useWindowSize"
 import { TYPE_DATA_KEY } from "@pages/ChatPage/ChatBox/RightContent/MyPrivateAgentContent/CreatePrivateAgent"
 import { BotDataTypeKey } from "@types"
@@ -10,6 +11,7 @@ import React from "react"
 import TableData from "../Components/TableData"
 import TableDataMobile from "../Components/TableDataMobile"
 import DeleteData from "../DeleteData"
+import SyncData from "../SyncData"
 import useFetchByCategory from "../useFetchByCategory"
 
 enum ColumnKey {
@@ -51,7 +53,7 @@ const LinkData: React.FC<{
 
   const renderCell = (item: Record<string, any>, columnKey: string) => {
     const isSocialMediaType = item?.key === TYPE_DATA_KEY.SOCIAL_MEDIA
-
+    const dataId = item?.id
     switch (columnKey) {
       case ColumnKey.Type:
         return (
@@ -78,15 +80,23 @@ const LinkData: React.FC<{
               ids={[item.id]}
               category={category}
             />
+            <SyncData botId={botId} dataId={dataId} />
           </div>
         )
       case ColumnKey.Name:
         return (
-          <a className="hover:underline" href={item.value} target="_blank">
-            <span className="line-clamp-1 text-base text-mercury-950">
-              {isSocialMediaType ? item?.value : item[columnKey]}
-            </span>
-          </a>
+          <div className="flex flex-row items-center gap-1">
+            <InfoCircleIcon />
+            <a
+              className="max-w-[150px] truncate hover:underline"
+              href={item.value}
+              target="_blank"
+            >
+              <span className="text-base text-mercury-950">
+                {isSocialMediaType ? item?.value : item[columnKey]}
+              </span>
+            </a>
+          </div>
         )
 
       default:

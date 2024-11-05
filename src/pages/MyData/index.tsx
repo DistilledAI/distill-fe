@@ -1,15 +1,15 @@
+import { ArrowLeftFilledIcon } from "@components/Icons/Arrow"
 import useWindowSize from "@hooks/useWindowSize"
+import { Button } from "@nextui-org/react"
+import { BotDataTypeKey } from "@types"
+import { useNavigate } from "react-router-dom"
 import AddData from "./AddData"
+import CvData from "./Cv"
 import FileData from "./File"
+import { getTimeLastCollected } from "./helpers"
 import LinkData from "./Link"
 import MediaData from "./Media"
-import { Button } from "@nextui-org/react"
-import { useNavigate } from "react-router-dom"
-import { ArrowLeftFilledIcon } from "@components/Icons/Arrow"
 import useFetchMyData from "./useFetch"
-import { getTimeLastCollected } from "./helpers"
-import { BotDataTypeKey } from "@types"
-import CvData from "./Cv"
 
 const MyData: React.FC = () => {
   const { isMobile } = useWindowSize()

@@ -38,6 +38,7 @@ const endpoint = {
   MAP_MY_DATA_TO_BOT: withBaseURL("/my-data/map-bot"),
   GET_MY_BOT_DATA: (botId: number) => withBaseURL(`/my-data/list/${botId}`),
   DELETE_MY_BOT_DATA: withBaseURL("/my-data/delete"),
+  TRAIN_DATA_MY_DATA: withBaseURL("/my-data/train-data"),
 }
 
 export default endpoint

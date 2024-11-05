@@ -256,3 +256,16 @@ export const inviteUserJoinGroup = async (data: InviteUser, headers = {}) => {
     data,
   })
 }
+
+interface TrainData {
+  botId: number
+  id: number
+}
+
+export const trainData = async (data: TrainData) => {
+  return fetchApiAuth({
+    method: "post",
+    url: endpoint.TRAIN_DATA_MY_DATA,
+    data,
+  })
+}
