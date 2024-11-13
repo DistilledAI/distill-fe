@@ -1,9 +1,15 @@
 import Behaviors from "@pages/ChatPage/AgentDetail/Behaviors"
 import GeneralInfo from "@pages/ChatPage/AgentDetail/GeneralInfo"
 import { FormProvider, useForm } from "react-hook-form"
+import { toast } from "react-toastify"
+import { createBot } from "services/chat"
 import Header from "./Header"
 
-const AgentInitialization: React.FC = () => {
+interface AgentInitializationProps {
+  botId: string
+}
+
+const AgentInitialization: React.FC<AgentInitializationProps> = () => {
   const methods = useForm<any>({
     defaultValues: {
       username: "",
@@ -13,16 +19,15 @@ const AgentInitialization: React.FC = () => {
   })
 
   const onSubmit = async () => {
-    // const agentIdNumber = Number(agentId)
-    // try {
-    //   const res = await updateAgent({
-    //     ...data,
-    //     botId: agentIdNumber,
-    //   })
-    //   console.log("🚀 ~ onSubmit ~ res:", res)
-    // } catch (error) {
-    //   console.log("error", error)
-    // }
+    try {
+      const createBotResponse = await createBot({ name: "Unnamed" })
+      if (createBotResponse) {
+        toast.success("Created bot successfully")
+      }
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message)
+      console.log("error", error)
+    }
   }
 
   return (
