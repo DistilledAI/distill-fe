@@ -18,9 +18,13 @@ const AgentInitialization: React.FC<AgentInitializationProps> = () => {
     },
   })
 
-  const onSubmit = async () => {
+  const onSubmit = async (data: any) => {
+    const payloadData = {
+      name: data?.username,
+    }
+
     try {
-      const createBotResponse = await createBot({ name: "Unnamed" })
+      const createBotResponse = await createBot(payloadData)
       if (createBotResponse) {
         toast.success("Created bot successfully")
       }
