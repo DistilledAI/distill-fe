@@ -21,6 +21,7 @@ import Monetization from "./Monetization"
 import Preferences from "./Preferences"
 import ToxicPolicies from "./ToxicPolicies"
 import { isPassRuleAgentInfo } from "./helpers"
+import Tabs, { TabList } from "@components/Tabs"
 
 const AgentDetail: React.FC = () => {
   const { agentId } = useParams()
@@ -149,12 +150,40 @@ const AgentDetail: React.FC = () => {
     }
   }
 
+  const LIST_TAB: TabList[] = [
+    {
+      key: "display_info",
+      tab: "Display Info",
+      content: <GeneralInfo agentData={agentData} />,
+    },
+    {
+      key: "agent_behavior",
+      tab: "Agent Behaviors",
+      content: (
+        <AgentBehaviors
+          onSelectBehaviors={handleSelectBehaviors}
+          selectedBehaviors={{
+            agentPersonal: methods.watch("agentPersonal"),
+            agentCommunication: methods.watch("agentCommunication"),
+          }}
+          valueCustomDefault={valueCustomDefault}
+        />
+      ),
+    },
+    {
+      key: "advanced_configuration",
+      tab: "Advanced Configuration",
+      content: <AdvancedConfig />,
+    },
+  ]
+
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onSubmit)}>
         <Header submitLoading={loading} agentData={agentData} />
         <div className="mx-auto max-w-[800px] px-4 py-5 max-md:min-h-dvh max-md:bg-mercury-70 max-md:pt-[70px] max-sm:pb-20 max-sm:pt-6">
-          <GeneralInfo agentData={agentData} />
+          <Tabs list={LIST_TAB} />
+          {/* <GeneralInfo agentData={agentData} />
           <Divider className="my-9" />
           <AgentBehaviors
             onSelectBehaviors={handleSelectBehaviors}
@@ -170,7 +199,7 @@ const AgentDetail: React.FC = () => {
           <Preferences />
           <ToxicPolicies />
           <Divider className="my-9" />
-          <Monetization />
+          <Monetization /> */}
         </div>
       </form>
     </FormProvider>
