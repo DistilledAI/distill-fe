@@ -102,3 +102,40 @@ export const DatabaseIcon = ({ size = 24, color = "#545454" }: IconProps) => {
     </svg>
   )
 }
+
+export const DatabaseSettingIcon = ({
+  size = 24,
+  color = "#A2845E",
+}: IconProps) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 25 24"
+      fill="none"
+    >
+      <path
+        d="M4.5 6C4.5 7.657 8.082 9 12.5 9C16.918 9 20.5 7.657 20.5 6C20.5 4.343 16.918 3 12.5 3C8.082 3 4.5 4.343 4.5 6Z"
+        stroke={color}
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M4.5 6V12C4.5 13.657 8.082 15 12.5 15C12.7107 15 12.9193 14.9967 13.126 14.99M20.5 11.5V6"
+        stroke={color}
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M4.5 12V18C4.5 19.657 8.082 21 12.5 21M19.501 21C18.9706 21 18.4619 20.7893 18.0868 20.4142C17.7117 20.0391 17.501 19.5304 17.501 19C17.501 18.4696 17.7117 17.9609 18.0868 17.5858C18.4619 17.2107 18.9706 17 19.501 17M19.501 21C20.0314 21 20.5401 20.7893 20.9152 20.4142C21.2903 20.0391 21.501 19.5304 21.501 19C21.501 18.4696 21.2903 17.9609 20.9152 17.5858C20.5401 17.2107 20.0314 17 19.501 17M19.501 21V22.5M19.501 17V15.5M22.532 17.25L21.233 18M17.77 20L16.47 20.75M16.47 17.25L17.77 18M21.233 20L22.533 20.75"
+        stroke={color}
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}

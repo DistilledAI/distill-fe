@@ -3,7 +3,6 @@ import {
   PATH_NAMES,
   PERSONALITY_LIST,
 } from "@constants/index"
-import { Divider } from "@nextui-org/react"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { useEffect, useState } from "react"
 import { FormProvider, useForm } from "react-hook-form"
@@ -12,16 +11,16 @@ import { toast } from "react-toastify"
 import { getAgentDetail, updateAgent } from "services/agent"
 import { updateAvatarUser } from "services/user"
 import { QueryDataKeys } from "types/queryDataKeys"
-import AIAgentGenerate from "./AIAgentGenerate"
-import AdvancedConfig from "./AdvancedConfig"
 import AgentBehaviors, { SelectedBehaviors } from "./AgentBehaviors"
 import GeneralInfo from "./GeneralInfo"
 import Header from "./Header"
 import Monetization from "./Monetization"
-import Preferences from "./Preferences"
-import ToxicPolicies from "./ToxicPolicies"
 import { isPassRuleAgentInfo } from "./helpers"
-import Tabs, { TabList } from "@components/Tabs"
+import SmoothScrollTo from "@components/SmoothScrollTo"
+import SocialFunction from "./SocialFunction"
+import KnowledgeAgent from "./Knowledge"
+import TargetAudience from "./TargetAudience"
+import { INTERACTION_FREQUENCY_CONTENT } from "./AgentBehaviors/constants"
 
 const AgentDetail: React.FC = () => {
   const { agentId } = useParams()
@@ -98,6 +97,7 @@ const AgentDetail: React.FC = () => {
       avatar: "",
       agentPersonal: [],
       agentCommunication: [],
+      interactionFrequency: INTERACTION_FREQUENCY_CONTENT.Occasionally,
     },
   })
 
@@ -150,15 +150,17 @@ const AgentDetail: React.FC = () => {
     }
   }
 
-  const LIST_TAB: TabList[] = [
+  const componentScrollTo = [
     {
-      key: "display_info",
-      tab: "Display Info",
+      title: "Display Info",
       content: <GeneralInfo agentData={agentData} />,
     },
     {
-      key: "agent_behavior",
-      tab: "Agent Behaviors",
+      title: "Functions",
+      content: <SocialFunction />,
+    },
+    {
+      title: "Behaviors",
       content: (
         <AgentBehaviors
           onSelectBehaviors={handleSelectBehaviors}
@@ -171,9 +173,16 @@ const AgentDetail: React.FC = () => {
       ),
     },
     {
-      key: "advanced_configuration",
-      tab: "Advanced Configuration",
-      content: <AdvancedConfig />,
+      title: "Knowledge",
+      content: <KnowledgeAgent />,
+    },
+    {
+      title: "Target Audience",
+      content: <TargetAudience />,
+    },
+    {
+      title: "Monetization",
+      content: <Monetization />,
     },
   ]
 
@@ -181,25 +190,16 @@ const AgentDetail: React.FC = () => {
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onSubmit)}>
         <Header submitLoading={loading} agentData={agentData} />
-        <div className="mx-auto max-w-[800px] px-4 py-5 max-md:min-h-dvh max-md:bg-mercury-70 max-md:pt-[70px] max-sm:pb-20 max-sm:pt-6">
-          <Tabs list={LIST_TAB} />
-          {/* <GeneralInfo agentData={agentData} />
-          <Divider className="my-9" />
-          <AgentBehaviors
-            onSelectBehaviors={handleSelectBehaviors}
-            selectedBehaviors={{
-              agentPersonal: methods.watch("agentPersonal"),
-              agentCommunication: methods.watch("agentCommunication"),
+        <div className="sticky left-0 top-[192px] h-[1px] w-full bg-mercury-100"></div>
+        <div className="relative mx-auto max-w-[800px] px-4 pb-5 max-md:min-h-dvh max-md:bg-mercury-70 max-md:pt-[70px] max-sm:pb-20 max-sm:pt-6">
+          <SmoothScrollTo
+            components={componentScrollTo}
+            offsetAdjustment={220}
+            classNames={{
+              headerWrapper: "sticky -mt-[1px] top-[152px] bg-white z-10",
+              contentWrapper: "pt-5",
             }}
-            valueCustomDefault={valueCustomDefault}
           />
-          <Divider className="my-9" />
-          <AdvancedConfig />
-          <AIAgentGenerate />
-          <Preferences />
-          <ToxicPolicies />
-          <Divider className="my-9" />
-          <Monetization /> */}
         </div>
       </form>
     </FormProvider>

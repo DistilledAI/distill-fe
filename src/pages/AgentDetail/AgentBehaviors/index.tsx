@@ -4,7 +4,7 @@ import { COMMUNICATION_STYLE_LIST, PERSONALITY_LIST } from "@constants/index"
 import { Button, Input, Switch, Textarea } from "@nextui-org/react"
 import React, { useEffect, useState } from "react"
 import { twMerge } from "tailwind-merge"
-import CategoryLabel, { FieldLabel } from "./CategoryLabel"
+import CategoryLabel, { FieldLabel } from "../CategoryLabel"
 import { Controller, useFormContext } from "react-hook-form"
 import {
   BriefIcon,

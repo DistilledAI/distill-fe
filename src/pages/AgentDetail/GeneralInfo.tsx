@@ -1,6 +1,14 @@
 import AvatarCustom from "@components/AvatarCustom"
 import { ClipboardTextIcon } from "@components/Icons/ClipboardTextIcon"
-import { Input, Textarea } from "@nextui-org/react"
+import {
+  Button,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
+  Input,
+  Textarea,
+} from "@nextui-org/react"
 import { Controller, useFormContext } from "react-hook-form"
 import { IAgentData } from "types/user"
 import CategoryLabel, { FieldLabel } from "./CategoryLabel"
@@ -9,6 +17,8 @@ import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { fileToBase64, isPassFileSize } from "@utils/index"
 import { toast } from "react-toastify"
 import { twMerge } from "tailwind-merge"
+import { QuestionUserIconOutline } from "@components/Icons/UserIcon"
+import { ChevronDownIcon } from "@components/Icons/ChevronDownIcon"
 
 export const DESC_MAX_LENGTH = 200
 
@@ -126,6 +136,32 @@ const GeneralInfo: React.FC<{
             )
           }}
         />
+      </div>
+      <div className="flex w-full justify-between pt-3 max-md:flex-col">
+        <div className="max-md:mb-5">
+          <p className="font-semibold text-mercury-950">
+            Your Agent's Primary purpose
+          </p>
+          <span className="text-mercury-700">
+            What is the main role of the Agent?
+          </span>
+        </div>
+        <Dropdown classNames={{ base: "mt-1" }}>
+          <DropdownTrigger>
+            <Button className="z-[1] flex h-12 max-w-[230px] items-center bg-mercury-30">
+              <QuestionUserIconOutline />
+              <span className="text-16 font-medium text-mercury-900">
+                Customer Support
+              </span>
+              <ChevronDownIcon />
+            </Button>
+          </DropdownTrigger>
+          <DropdownMenu aria-label="Dynamic Actions">
+            <DropdownItem color="default" key="support">
+              <span className="font-medium">Customer Support</span>
+            </DropdownItem>
+          </DropdownMenu>
+        </Dropdown>
       </div>
     </div>
   )

@@ -11,7 +11,7 @@ const MainContainerCreate: React.FC<{
   botId?: number | string
 }> = ({ children, botId }) => {
   const navigate = useNavigate()
-  const [openFYIPopup, setOpenFYIPopupp] = useState<boolean>(false)
+  const [openFYIPopup, setOpenFYIPopup] = useState<boolean>(false)
 
   return (
     <div
@@ -35,7 +35,7 @@ const MainContainerCreate: React.FC<{
               </p>
               <div
                 className="flex-items-center mt-2 cursor-pointer gap-2 max-md:mb-2 max-md:justify-center"
-                onClick={() => setOpenFYIPopupp(true)}
+                onClick={() => setOpenFYIPopup(true)}
               >
                 <FilledShieldCheckedIcon color="#A2845E" />
                 <span className="text-16 font-medium text-brown-500">
@@ -55,7 +55,7 @@ const MainContainerCreate: React.FC<{
           <></>
         )}
       </>
-      <FYIModal openPopup={openFYIPopup} setOpenPopup={setOpenFYIPopupp} />
+      <FYIModal openPopup={openFYIPopup} setOpenPopup={setOpenFYIPopup} />
     </div>
   )
 }
