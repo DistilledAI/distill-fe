@@ -11,7 +11,6 @@ import { toast } from "react-toastify"
 import { getAgentDetail, updateAgent } from "services/agent"
 import { updateAvatarUser } from "services/user"
 import { QueryDataKeys } from "types/queryDataKeys"
-import AgentBehaviors, { SelectedBehaviors } from "./AgentBehaviors"
 import GeneralInfo from "./GeneralInfo"
 import Header from "./Header"
 import Monetization from "./Monetization"
@@ -20,7 +19,11 @@ import SmoothScrollTo from "@components/SmoothScrollTo"
 import SocialFunction from "./SocialFunction"
 import KnowledgeAgent from "./Knowledge"
 import TargetAudience from "./TargetAudience"
-import { INTERACTION_FREQUENCY_CONTENT } from "./AgentBehaviors/constants"
+import {
+  INTERACTION_FREQUENCY_KEY,
+  RESPONSE_LENGTH_KEY,
+} from "./AgentBehaviors/constants"
+import AgentBehaviors, { SelectedBehaviors } from "./AgentBehaviors"
 
 const AgentDetail: React.FC = () => {
   const { agentId } = useParams()
@@ -56,6 +59,12 @@ const AgentDetail: React.FC = () => {
     : {}
   const agentPersonalData = agentBehaviors?.agentPersonal || []
   const agentCommunicationData = agentBehaviors?.agentCommunication || []
+  const agentInteractionFrequency =
+    agentBehaviors?.agentInteractionFrequency ||
+    INTERACTION_FREQUENCY_KEY.Occasionally
+  const agentToneAdaptation = agentBehaviors?.toneAdaptation || false
+  const agentResponseLength =
+    agentBehaviors?.responseLength || RESPONSE_LENGTH_KEY.Moderate
 
   const handleSetValueCustomDefaultDisplay = (
     data: any,
@@ -97,7 +106,9 @@ const AgentDetail: React.FC = () => {
       avatar: "",
       agentPersonal: [],
       agentCommunication: [],
-      interactionFrequency: INTERACTION_FREQUENCY_CONTENT.Occasionally,
+      interactionFrequency: INTERACTION_FREQUENCY_KEY.Occasionally,
+      toneAdaptation: false,
+      responseLength: RESPONSE_LENGTH_KEY.Moderate,
     },
   })
 
@@ -115,6 +126,9 @@ const AgentDetail: React.FC = () => {
       avatar: avatarData,
       agentPersonal: agentPersonalData,
       agentCommunication: agentCommunicationData,
+      interactionFrequency: agentInteractionFrequency,
+      toneAdaptation: agentToneAdaptation,
+      responseLength: agentResponseLength,
     }
     methods.reset(defaults)
   }, [agentData, methods.reset])

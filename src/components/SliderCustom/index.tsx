@@ -6,8 +6,9 @@ const SliderCustom: React.FC<{
   step: number
   maxValue: number
   minValue: number
+  onChange?: (val: number | number[]) => void
   defaultValue?: number
-}> = ({ step, minValue, maxValue, defaultValue }) => {
+}> = ({ step, minValue, maxValue, defaultValue, onChange }) => {
   return (
     <Slider
       size="lg"
@@ -22,6 +23,7 @@ const SliderCustom: React.FC<{
         step: "bg-mercury-300 w-[1px] h-2 data-[in-range=true]:bg-mercury-300",
         trackWrapper: "border-1 border-mercury-300 rounded-full",
       }}
+      onChange={onChange}
       renderThumb={(props) => (
         <div
           {...props}

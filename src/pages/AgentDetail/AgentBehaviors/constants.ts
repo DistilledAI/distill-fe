@@ -1,9 +1,4 @@
-export enum INTERACTION_FREQUENCY_VALUE {
-  Never = 0,
-  Occasionally = 3,
-  Frequently = 9,
-}
-export enum INTERACTION_FREQUENCY_CONTENT {
+export enum INTERACTION_FREQUENCY_KEY {
   Never = "Never",
   Occasionally = "Occasionally",
   Frequently = "Frequently",
@@ -11,18 +6,45 @@ export enum INTERACTION_FREQUENCY_CONTENT {
 
 export const INTERACTION_FREQUENCY = [
   {
-    value: INTERACTION_FREQUENCY_VALUE.Never,
+    key: INTERACTION_FREQUENCY_KEY.Never,
     title: "Never",
-    content: INTERACTION_FREQUENCY_CONTENT.Never,
   },
   {
-    value: INTERACTION_FREQUENCY_VALUE.Occasionally,
+    key: INTERACTION_FREQUENCY_KEY.Occasionally,
     title: "Occasionally",
-    content: INTERACTION_FREQUENCY_CONTENT.Occasionally,
   },
   {
-    value: INTERACTION_FREQUENCY_VALUE.Frequently,
+    key: INTERACTION_FREQUENCY_KEY.Frequently,
     title: "Frequently",
-    content: INTERACTION_FREQUENCY_CONTENT.Frequently,
+  },
+]
+
+export enum RESPONSE_LENGTH_KEY {
+  Brief = "Brief",
+  Moderate = "Moderate",
+  Detailed = "Detailed",
+}
+
+export enum RESPONSE_LENGTH_VALUE {
+  Brief = 0,
+  Moderate = 3,
+  Detailed = 6,
+}
+
+export const RESPONSE_LENGTH = [
+  {
+    key: RESPONSE_LENGTH_KEY.Brief,
+    title: "Brief",
+    value: RESPONSE_LENGTH_VALUE.Brief,
+  },
+  {
+    key: RESPONSE_LENGTH_KEY.Moderate,
+    title: "Moderate",
+    value: RESPONSE_LENGTH_VALUE.Moderate,
+  },
+  {
+    key: RESPONSE_LENGTH_KEY.Detailed,
+    title: "Detailed",
+    value: RESPONSE_LENGTH_VALUE.Detailed,
   },
 ]

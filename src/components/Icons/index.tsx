@@ -301,7 +301,7 @@ export const AsteriskIcon = ({ size = 14, color = "#545454" }: IconProps) => {
 }
 
 export const SyncOutlineIcon = ({
-  size = 15,
+  size = 20,
   color = "#545454",
 }: IconProps) => {
   return (
@@ -364,6 +364,96 @@ export const TargetIcon = ({ size = 25, color = "#A2845E" }: IconProps) => {
         d="M15.5 9V6L18.5 3V6H21.5L18.5 9H15.5ZM15.5 9L12.5 12"
         stroke={color}
         strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}
+
+export const CircleRelativeIcon = ({
+  size = 20,
+  color = "#545454",
+}: IconProps) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 20 20"
+      fill="none"
+    >
+      <path
+        d="M7.32168 10.065C6.6028 9.92064 5.85637 10.0173 5.198 10.3401C4.53963 10.6629 4.00606 11.1937 3.67992 11.8505C3.35378 12.5072 3.25328 13.2531 3.39398 13.9727C3.53467 14.6923 3.90872 15.3455 4.45819 15.831C5.00765 16.3165 5.70187 16.6073 6.43333 16.6583C7.16479 16.7094 7.89267 16.5178 8.50424 16.1133C9.11581 15.7088 9.57694 15.1139 9.81622 14.4208C10.0555 13.7278 10.0596 12.9751 9.82779 12.2795"
+        stroke={color}
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M12.6745 9.93391C13.3941 10.079 14.1416 9.98249 14.8007 9.65931C15.4599 9.33614 15.9939 8.80439 16.3199 8.14663C16.646 7.48886 16.7457 6.74186 16.6037 6.0216C16.4617 5.30134 16.0859 4.64809 15.5346 4.16328C14.9834 3.67847 14.2875 3.3892 13.555 3.34039C12.8225 3.29157 12.0943 3.48594 11.4836 3.89332C10.8729 4.3007 10.4137 4.8983 10.1774 5.59336C9.9411 6.28841 9.94086 7.04204 10.1767 7.73725"
+        stroke={color}
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}
+
+export const Stack2Icon = ({ size = 20, color = "#545454" }: IconProps) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 21 20"
+      fill="none"
+    >
+      <path
+        d="M3.83203 11.6667L10.4987 15L17.1654 11.6667M10.4987 5L3.83203 8.33333L10.4987 11.6667L17.1654 8.33333L10.4987 5Z"
+        stroke={color}
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}
+
+export const Stack3Icon = ({ size = 20, color = "#545454" }: IconProps) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 21 20"
+      fill="none"
+    >
+      <path
+        d="M3.83203 9.99992L10.4987 13.3333L17.1654 9.99992M3.83203 13.3333L10.4987 16.6666L17.1654 13.3333M10.4987 3.33325L3.83203 6.66659L10.4987 9.99992L17.1654 6.66659L10.4987 3.33325Z"
+        stroke={color}
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}
+
+export const Stack5Icon = ({ size = 20, color = "#545454" }: IconProps) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 21 20"
+      fill="none"
+    >
+      <path
+        d="M3.83203 8.33342L10.4987 11.6667L17.1654 8.33342M3.83203 15.0001L10.4987 18.3334L17.1654 15.0001M3.83203 11.6667L10.4987 15.0001L17.1654 11.6667M10.4987 1.66675L3.83203 5.00008L10.4987 8.33342L17.1654 5.00008L10.4987 1.66675Z"
+        stroke={color}
+        strokeWidth="1.5"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
