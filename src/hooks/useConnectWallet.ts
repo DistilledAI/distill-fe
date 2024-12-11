@@ -74,10 +74,11 @@ const useConnectWallet = () => {
   }
 
   const connectOwallet = async () => {
+    console.log("hiiii", window.ethereum)
     //@ts-ignore
     const isOwallet = isMobile
       ? //@ts-ignore
-        window.owallet.isOwallet
+        window.ethereum.isOWallet
       : //@ts-ignore
         window.eth_owallet && window.owallet.isOwallet
 
@@ -108,11 +109,58 @@ const useConnectWallet = () => {
       const provider = new ethers.providers.Web3Provider(ethereumProvider)
       //@ts-ignore
       if (isMobile) {
-        await window.ethereum.request!({
-          method: "wallet_switchEthereumChain",
-          chainId: "0x01",
-          params: [{ chainId: "0x01" }],
-        })
+        // await window.ethereum.request!({
+        //   method: "wallet_switchEthereumChain",
+        //   chainId: "0x01",
+        //   params: [{ chainId: "0x01" }],
+        // })
+
+        try {
+          await provider.send("eth_requestAccounts", [])
+        } catch (error: any) {
+          console.log("🚀 ~ connectOwal ~ error:", error)
+          throw error
+        }
+        const signer = await provider.getSigner()
+        const publicAddress = await getPublicAddress(signer)
+
+        const domain = {}
+        const types = {
+          Data: [
+            { name: "action", type: "string" },
+            { name: "publicAddress", type: "address" },
+            { name: "timestamp", type: "uint256" },
+          ],
+        }
+        const value = {
+          action: "Login to Distilled",
+          publicAddress,
+          timestamp,
+        }
+
+        const signature = (await signer._signTypedData(
+          domain,
+          types,
+          value,
+        )) as any
+        const digest = ethers.utils._TypedDataEncoder.hash(domain, types, value)
+        const publicKey = ethers.utils.recoverPublicKey(digest, signature)
+
+        const input: IDataSignatureAuth = {
+          data: {
+            action: "Login to Distilled",
+            publicAddress,
+            timestamp,
+          },
+          signData: {
+            signature,
+            publicKey,
+          },
+          typeLogin: "evm",
+        }
+
+        await login(input)
+        dispatch(updateModalStatus(false))
       } else {
         //@ts-ignore
         await window.eth_owallet.request!({
@@ -120,48 +168,53 @@ const useConnectWallet = () => {
           chainId: "0x01",
           params: [{ chainId: "0x01" }],
         })
-      }
-      //@ts-ignore
-      await window?.owallet.enable("0x01")
-      await provider.send("eth_requestAccounts", [])
 
-      const signer = await provider.getSigner()
-      const publicAddress = await getPublicAddress(signer)
+        //@ts-ignore
+        await window?.owallet.enable("0x01")
+        await provider.send("eth_requestAccounts", [])
 
-      const domain = {}
-      const types = {
-        Data: [
-          { name: "action", type: "string" },
-          { name: "publicAddress", type: "address" },
-          { name: "timestamp", type: "uint256" },
-        ],
-      }
-      const value = {
-        action: "Login to Distilled",
-        publicAddress,
-        timestamp,
-      }
+        const signer = await provider.getSigner()
+        const publicAddress = await getPublicAddress(signer)
 
-      let signature = (await signer._signTypedData(domain, types, value)) as any
-      signature = signature?.result
-      const digest = ethers.utils._TypedDataEncoder.hash(domain, types, value)
-      const publicKey = ethers.utils.recoverPublicKey(digest, signature)
-
-      const input: IDataSignatureAuth = {
-        data: {
+        const domain = {}
+        const types = {
+          Data: [
+            { name: "action", type: "string" },
+            { name: "publicAddress", type: "address" },
+            { name: "timestamp", type: "uint256" },
+          ],
+        }
+        const value = {
           action: "Login to Distilled",
           publicAddress,
           timestamp,
-        },
-        signData: {
-          signature,
-          publicKey,
-        },
-        typeLogin: "evm",
-      }
+        }
 
-      await login(input)
-      dispatch(updateModalStatus(false))
+        let signature = (await signer._signTypedData(
+          domain,
+          types,
+          value,
+        )) as any
+        signature = signature?.result
+        const digest = ethers.utils._TypedDataEncoder.hash(domain, types, value)
+        const publicKey = ethers.utils.recoverPublicKey(digest, signature)
+
+        const input: IDataSignatureAuth = {
+          data: {
+            action: "Login to Distilled",
+            publicAddress,
+            timestamp,
+          },
+          signData: {
+            signature,
+            publicKey,
+          },
+          typeLogin: "evm",
+        }
+
+        await login(input)
+        dispatch(updateModalStatus(false))
+      }
     } catch (error: any) {
       console.error(error, "error")
       toast.error(error?.message)
