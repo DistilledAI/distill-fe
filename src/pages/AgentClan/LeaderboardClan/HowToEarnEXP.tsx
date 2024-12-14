@@ -19,7 +19,7 @@ const HowToEarnEXP = () => {
 
   return (
     <div
-      className="h-[291px] border-b border-b-mercury-200 bg-cover bg-center bg-no-repeat"
+      className="h-[356px] border-b border-b-mercury-200 bg-cover bg-center bg-no-repeat"
       style={{
         backgroundImage: `url(${distilledAIPurpleBg})`,
       }}
@@ -61,8 +61,11 @@ const HowToEarnEXP = () => {
             <XPBadge xpValue={0.5} operation="plus" />
           </div>
         </div>
+        <p className="text-14 text-mercury-600">
+          Note: To accomplish the missions, you must use a Web3 wallet that has
+          completed at least one blockchain transaction.
+        </p>
       </div>
-
       <ProgressDays />
     </div>
   )

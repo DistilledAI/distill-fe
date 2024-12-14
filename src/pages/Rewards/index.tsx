@@ -112,10 +112,10 @@ const Rewards: React.FC = () => {
             <br />
             Plus, your referred friend also earns 10 xDSTL!
           </span>
-          <span className="mt-1 text-mercury-600">
+          <p className="mt-1 text-mercury-600">
             Note: Your friends must log in to Mesh using a Web3 wallet that has
             conducted at least one blockchain transaction
-          </span>
+          </p>
         </div>
         <div
           style={{
