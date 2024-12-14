@@ -86,12 +86,16 @@ const Rewards: React.FC = () => {
       <div className="sticky top-[50px] z-[11] flex items-center justify-center bg-white bg-lgd-muted-beige p-3 max-sm:px-4 md:top-[68px]">
         <div className="flex w-full max-w-[800px] flex-wrap items-center justify-between px-4 max-sm:flex-col max-sm:items-start max-sm:px-0">
           <div className="flex flex-col">
-            <span className="text-24 font-semibold text-mercury-950 max-sm:text-18">
+            <h3 className="text-24 font-semibold text-mercury-950 max-sm:text-18">
               Mesh Rewards Hub
-            </span>
-            <span className="text-base font-medium text-mercury-500 max-sm:text-14">
+            </h3>
+            <p className="text-16 font-medium text-mercury-500">
               Earn xDSTL points by completing objectives and referring friends.
-            </span>
+            </p>
+            <p className="text-16 text-mercury-600">
+              Note: To accomplish the missions, you must use a Web3 wallet that
+              has completed at least one blockchain transaction.
+            </p>
           </div>
           <div className="flex gap-3 max-sm:mt-2 max-sm:flex-wrap max-sm:gap-1" />
         </div>
