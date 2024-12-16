@@ -129,7 +129,7 @@ const ChatClans: React.FC = () => {
             ref={nextRef}
             className={twMerge(
               "absolute right-[-5px] top-1/2 z-10 flex h-6 w-6 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full bg-[rgba(84,84,84,0.1)] backdrop-blur-[10px] duration-300",
-              isLastSlide && "invisible",
+              (isLastSlide || dataSorted.length < 4) && "invisible",
               sidebarCollapsed && "hidden",
             )}
           >

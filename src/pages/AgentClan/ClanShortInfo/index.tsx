@@ -12,7 +12,6 @@ import { useRef } from "react"
 const ClanShortInfo = () => {
   const queryClient = useQueryClient()
   const { chatId } = useParams()
-  const expRef = useRef<any>()
   const rewardRef = useRef<any>()
   const { data: chatIdParam } = useQuery({
     queryKey: [QueryDataKeys.CHAT_ID_BY_USERNAME, chatId],
@@ -46,7 +45,9 @@ const ClanShortInfo = () => {
     )
   }
 
-  const handleRefetchXpPoint = () => {
+  const handleRefetchXpPoint = (e?: any) => {
+    e.preventDefault()
+    e.stopPropagation()
     queryClient.invalidateQueries({
       queryKey: [QueryDataKeys.TOTAL_EXP_POINT_USER, groupId],
     })
@@ -62,17 +63,17 @@ const ClanShortInfo = () => {
   return (
     <>
       <div className="w-full pb-1 max-md:my-1 max-md:px-4">
-        <div className="flex w-full items-center rounded-full bg-mercury-30 px-4 py-2 max-md:bg-white max-md:px-2">
+        <div
+          ref={rewardRef}
+          onClick={handleOpenLeaderboard}
+          className="flex w-full items-center rounded-full bg-mercury-30 px-4 py-2 max-md:bg-white max-md:px-2"
+        >
           <div className="relative flex w-full items-center justify-between">
             <div className="absolute left-1/2 h-[26px] w-[1px] -translate-x-1/2 bg-mercury-200 max-md:hidden" />
             <div className="flex w-[calc(50%-15px)] items-center justify-between gap-3 max-md:w-auto max-md:flex-row-reverse">
               <div className="flex items-center gap-1 md:gap-2">
                 <p className="text-12 text-mercury-900 md:text-14">Rewards</p>
-                <div
-                  onClick={handleOpenLeaderboard}
-                  className="flex cursor-pointer items-center gap-1"
-                  ref={rewardRef}
-                >
+                <div className="flex cursor-pointer items-center gap-1">
                   <img
                     src={xDSTL}
                     alt="xdstl"
@@ -112,11 +113,7 @@ const ClanShortInfo = () => {
                     strokeWidth={4}
                   />
                 </button>
-                <div
-                  ref={expRef}
-                  onClick={handleOpenLeaderboard}
-                  className="flex cursor-pointer items-center gap-3"
-                >
+                <div className="flex cursor-pointer items-center gap-3">
                   <div className="flex items-center gap-1 max-md:hidden">
                     <div>
                       <TrophyIcon />
@@ -143,7 +140,7 @@ const ClanShortInfo = () => {
           </div>
         </div>
       </div>
-      <LeaderboardClan refIgnoreOutsideArr={[rewardRef, expRef]} />
+      <LeaderboardClan refIgnoreOutsideArr={[rewardRef]} />
     </>
   )
 }
