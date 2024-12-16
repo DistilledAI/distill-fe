@@ -46,8 +46,8 @@ const ClanShortInfo = () => {
   }
 
   const handleRefetchXpPoint = (e?: any) => {
-    e.preventDefault()
-    e.stopPropagation()
+    e?.preventDefault()
+    e?.stopPropagation()
     queryClient.invalidateQueries({
       queryKey: [QueryDataKeys.TOTAL_EXP_POINT_USER, groupId],
     })
