@@ -7,10 +7,8 @@ import { DatabaseSearchIcon } from "@components/Icons/DatabaseImportIcon"
 import { SearchUserIconOutline } from "@components/Icons/UserIcon"
 import { PATH_NAMES } from "@constants/index"
 import AnalyticsInfoWrap from "@pages/ChatPage/ChatBox/LeftBar/AnalyticsInfoWrap"
-import { useQuery } from "@tanstack/react-query"
 import { useNavigate } from "react-router-dom"
-import { getMyPrivateAgent } from "services/chat"
-import { QueryDataKeys } from "types/queryDataKeys"
+import { useAppSelector } from "@hooks/useAppRedux"
 
 interface Props {
   isOpen: boolean
@@ -19,12 +17,8 @@ interface Props {
 
 const DrawerLeft: React.FC<Props> = ({ isOpen, onClose }) => {
   const navigate = useNavigate()
-  const { data } = useQuery({
-    queryKey: [QueryDataKeys.MY_BOT_LIST],
-    queryFn: getMyPrivateAgent,
-    refetchOnWindowFocus: false,
-  })
-  const hasBot = data ? data.data.items.length > 0 : false
+  const myAgent = useAppSelector((state) => state.agents.myAgent)
+  const hasBot = !!myAgent
   const isHiddenMyData = !hasBot
 
   const MENU = [

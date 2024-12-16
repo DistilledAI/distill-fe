@@ -6,37 +6,24 @@ import { DatabaseSearchIcon } from "@components/Icons/DatabaseImportIcon"
 import { SearchUserIconOutline } from "@components/Icons/UserIcon"
 import { WalletIcon } from "@components/Icons/Wallet"
 import { PATH_NAMES, RoleUser } from "@constants/index"
+import { useAppSelector } from "@hooks/useAppRedux"
 import useAuthState from "@hooks/useAuthState"
 import { Button } from "@nextui-org/react"
 import useFetchDetail from "@pages/ChatPage/Mobile/ChatDetail/useFetch"
-import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { getActiveColorRandomById } from "@utils/index"
 import { useNavigate } from "react-router-dom"
-import { getMyPrivateAgent } from "services/chat"
 import { twMerge } from "tailwind-merge"
-import { QueryDataKeys } from "types/queryDataKeys"
 
 interface UserAuthProps {
   connectWallet: any
   loading?: boolean
 }
 const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
-  const { isAnonymous, user, isLogin } = useAuthState()
+  const { user } = useAuthState()
   const navigate = useNavigate()
   const { groupDetail, chatId } = useFetchDetail()
-  const queryClient = useQueryClient()
-  const cachedData = queryClient.getQueryData([QueryDataKeys.MY_BOT_LIST])
-  const { data } = useQuery<any>({
-    queryKey: [QueryDataKeys.MY_BOT_LIST],
-    queryFn: async () => {
-      if (!cachedData) {
-        return await getMyPrivateAgent()
-      }
-      return cachedData
-    },
-    enabled: !isAnonymous && isLogin,
-  })
-  const hasBot = data ? data?.data?.items?.length > 0 : false
+  const myAgent = useAppSelector((state) => state.agents.myAgent)
+  const hasBot = !!myAgent
 
   const { textColor } = getActiveColorRandomById(chatId)
   const isHiddenMyData = !hasBot

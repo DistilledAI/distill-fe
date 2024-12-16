@@ -15,4 +15,10 @@ export interface IGroupDetail {
   createdAt: string
   description?: string
   groupUser?: Array<any>
+  groupMemberStats?: {
+    id: number
+    groupId: number
+    total: number
+    createdAt: string
+  }
 }

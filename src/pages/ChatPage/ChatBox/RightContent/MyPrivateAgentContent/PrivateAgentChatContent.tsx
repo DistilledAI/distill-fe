@@ -12,18 +12,18 @@ import {
 } from "@constants/index"
 import useSubmitChat from "@hooks/useSubmitChat"
 import useFetchMyData from "@pages/MyData/useFetch"
-import { useQuery, useQueryClient } from "@tanstack/react-query"
+import { useQuery } from "@tanstack/react-query"
 import { useStyleSpacing } from "providers/StyleSpacingProvider"
 import { useRef } from "react"
 import { useParams } from "react-router-dom"
 import SpeechRecognition from "react-speech-recognition"
-import { getMyPrivateAgent } from "services/chat"
 import { twMerge } from "tailwind-merge"
 import { QueryDataKeys } from "types/queryDataKeys"
 import ChatInput from "../../ChatInput"
 import ChatActions from "../../ChatMessages/ChatActions"
 import { IMessageBox, RoleChat } from "../../ChatMessages/helpers"
 import useFetchMessages from "../../ChatMessages/useFetchMessages"
+import { useAppSelector } from "@hooks/useAppRedux"
 
 const PrivateAgentChatContent: React.FC<{
   hasInputChat?: boolean
@@ -45,21 +45,13 @@ const PrivateAgentChatContent: React.FC<{
     callbackDone: SpeechRecognition.stopListening,
   })
   const { list: listMyData, isFetched: isFetchedMyData } = useFetchMyData()
-  const queryClient = useQueryClient()
   const { data: isChatting } = useQuery<boolean>({
     initialData: false,
     queryKey: [QueryDataKeys.IS_CHATTING, groupId],
     enabled: !!groupId,
   })
-  const cachedData = queryClient.getQueryData([QueryDataKeys.MY_BOT_LIST])
-  const { data } = useQuery<any>({
-    queryKey: [QueryDataKeys.MY_BOT_LIST],
-    queryFn: getMyPrivateAgent,
-    refetchOnWindowFocus: false,
-    enabled: !cachedData,
-  })
-  const agent = data?.data?.items?.[0]
-  const isBotActive = agent && agent?.status === STATUS_AGENT.ACTIVE
+  const agent = useAppSelector((state) => state.agents.myAgent)
+  const isBotActive = !!agent && agent?.status === STATUS_AGENT.ACTIVE
   const isShowAddData =
     listMyData.length === 0 && isFetchedMyData && isBotActive
 

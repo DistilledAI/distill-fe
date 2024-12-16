@@ -31,7 +31,6 @@ const persistConfig = {
   key: "root",
   storage: localStorage,
   whitelist: [
-    "agents",
     "sidebarCollapsed",
     "user",
     "instructBanner",

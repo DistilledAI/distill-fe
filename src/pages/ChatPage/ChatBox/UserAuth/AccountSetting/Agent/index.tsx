@@ -12,34 +12,17 @@ import {
 } from "@constants/index"
 import { Button } from "@nextui-org/react"
 import { centerTextEllipsis, copyClipboard } from "@utils/index"
-import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { getMyPrivateAgent } from "services/chat"
 import ShareAgent from "./ShareAgent"
+import { useAppSelector } from "@hooks/useAppRedux"
 
 const PrivateAgent: React.FC<{
   onClose: () => void
 }> = ({ onClose }) => {
-  const [listBot, setListBot] = useState<any[]>([])
   const navigate = useNavigate()
-  const firstBot = listBot?.[0]
-  const status = firstBot?.status
+  const myAgent = useAppSelector((state) => state.agents.myAgent)
+  const status = myAgent?.status as number
   const isPending = status === STATUS_AGENT.PENDING
-
-  const callGetMyPrivateAgent = async () => {
-    try {
-      const res = await getMyPrivateAgent()
-      if (res) {
-        setListBot(res?.data?.items)
-      }
-    } catch (error) {
-      console.log("error", error)
-    }
-  }
-
-  useEffect(() => {
-    callGetMyPrivateAgent()
-  }, [])
 
   return (
     <div className="flex flex-col gap-4 rounded-[22px] border-1 border-white bg-mercury-30 p-4">
@@ -54,7 +37,7 @@ const PrivateAgent: React.FC<{
           >
             {MAP_DISPLAY_FROM_STATUS_MY_AGENT[status]?.label ?? "- - -"}
           </span>
-          <AvatarCustom src={firstBot?.avatar || brainAIIcon} className="p-1" />
+          <AvatarCustom src={myAgent?.avatar || brainAIIcon} className="p-1" />
           {/* <Button className="absolute -bottom-2 -right-1 flex h-6 w-6 min-w-0 items-center justify-center rounded-full bg-white p-0">
             <EditPenOutlineIcon />
           </Button> */}
@@ -64,7 +47,7 @@ const PrivateAgent: React.FC<{
         <span className="text-mercury-600">Name:</span>
         <div className="flex items-center gap-2">
           <span className="line-clamp-1 block max-w-36 text-ellipsis whitespace-nowrap text-mercury-900 focus:border-none focus:outline-none">
-            {firstBot?.username ?? "-"}
+            {myAgent?.username ?? "-"}
           </span>
           {/* <Button className="h-auto w-auto min-w-0 bg-transparent p-0">
             <EditPenFilledIcon />
@@ -75,7 +58,7 @@ const PrivateAgent: React.FC<{
         <span className="text-mercury-600">Description:</span>
         <div className="flex items-center gap-2">
           <span className="line-clamp-1 block max-w-36 text-ellipsis whitespace-nowrap text-mercury-900 focus:border-none focus:outline-none">
-            {firstBot?.description ?? "-"}
+            {myAgent?.description ?? "-"}
           </span>
         </div>
       </div>
@@ -83,12 +66,12 @@ const PrivateAgent: React.FC<{
         <span className="text-mercury-600">Address:</span>
         <div className="flex items-center gap-2">
           <span className="line-clamp-1 whitespace-nowrap text-mercury-900">
-            {firstBot?.publicAddress
-              ? centerTextEllipsis(firstBot?.publicAddress, 6)
+            {myAgent?.publicAddress
+              ? centerTextEllipsis(myAgent?.publicAddress, 6)
               : "-"}
           </span>
           <Button
-            onClick={(e) => copyClipboard(e, firstBot?.publicAddress ?? "")}
+            onClick={(e) => copyClipboard(e, myAgent?.publicAddress ?? "")}
             className="h-auto w-auto min-w-0 bg-transparent p-0"
           >
             <CopyIcon />
@@ -102,7 +85,7 @@ const PrivateAgent: React.FC<{
       <div className="flex items-center justify-between">
         <span className="text-mercury-600">My data:</span>
         <div className="flex items-center gap-2">
-          {firstBot ? (
+          {myAgent ? (
             <div
               onClick={() => {
                 onClose()
@@ -124,8 +107,8 @@ const PrivateAgent: React.FC<{
       <div className="flex flex-col items-center justify-between gap-2 md:flex-row">
         <div className="w-full md:w-[40%]">
           <ShareAgent
-            agentData={firstBot}
-            isDisabled={isPending || !firstBot}
+            agentData={myAgent as any}
+            isDisabled={isPending || !myAgent}
           />
         </div>
         <div className="w-full md:w-[60%]">

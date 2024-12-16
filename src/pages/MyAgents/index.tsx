@@ -1,19 +1,12 @@
 import AlertBox from "@components/AlertBox"
 import HeaderMobileBack from "@components/HeaderMobileBack"
 import { PATH_NAMES, STATUS_AGENT } from "@constants/index"
+import { useAppSelector } from "@hooks/useAppRedux"
 import MyAgents from "@pages/Account/MyAgents"
 import AgentStatus from "@pages/ChatPage/ChatBox/RightContent/MyPrivateAgentContent/AgentInitialization/AgentStatus"
-import { useQuery } from "@tanstack/react-query"
-import { getMyPrivateAgent } from "services/chat"
-import { QueryDataKeys } from "types/queryDataKeys"
 
 const MyAgentPage = () => {
-  const { data } = useQuery<any>({
-    queryKey: [QueryDataKeys.MY_BOT_LIST],
-    queryFn: getMyPrivateAgent,
-    refetchOnWindowFocus: false,
-  })
-  const agents = data ? data?.data?.items : []
+  const agents = useAppSelector((state) => state.agents.myAgents)
   const agent = agents[0]
   const isAgentActive = agent && agent?.status === STATUS_AGENT.ACTIVE
 

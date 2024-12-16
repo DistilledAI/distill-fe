@@ -3,24 +3,23 @@ import { envConfig } from "@configs/env"
 import { PATH_NAMES, RoleUser } from "@constants/index"
 import useAuthState from "@hooks/useAuthState"
 import { useEffect, useState } from "react"
-import { useLocation, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { checkGroupDirect, createGroupChat } from "services/chat"
 import CreatePrivateAgent from "./CreatePrivateAgent"
-import usePrivateAgent, { PRIVATE_AGENT_STATUS } from "./usePrivateAgent"
+import { PRIVATE_AGENT_STATUS } from "./usePrivateAgent"
+import { useAppSelector } from "@hooks/useAppRedux"
 
 const MyPrivateAgentContent: React.FC<{
   connectWalletLoading: boolean
   connectWallet: any
 }> = ({ connectWalletLoading, connectWallet }) => {
   const groupDefaultForPrivateAgent = envConfig.groupDefaultForPrivateAgent
-  const { privateAgentData, callGetMyPrivateAgent } = usePrivateAgent()
-  const { isLogin, user, isAnonymous } = useAuthState()
+  const privateAgentData = useAppSelector((state) => state.agents.myAgent)
+  const { isLogin, user } = useAuthState()
   const navigate = useNavigate()
-  const [isCreated, setCreated] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(true)
-  const { pathname } = useLocation()
 
-  const privateAgentStatus = privateAgentData?.status
+  const privateAgentStatus = privateAgentData?.status as number
   const privateAgentId = privateAgentData?.id
   const MAP_MEMBER_ID_FROM_STATUS = {
     [PRIVATE_AGENT_STATUS.PENDING]: groupDefaultForPrivateAgent,
@@ -58,12 +57,6 @@ const MyPrivateAgentContent: React.FC<{
   }
 
   useEffect(() => {
-    if (isLogin && !isAnonymous) {
-      callGetMyPrivateAgent()
-    }
-  }, [isLogin, isCreated, pathname, user?.id, isAnonymous])
-
-  useEffect(() => {
     if (privateAgentStatus) checkCreatedGroupAgent()
 
     setTimeout(() => {
@@ -87,7 +80,6 @@ const MyPrivateAgentContent: React.FC<{
     <CreatePrivateAgent
       connectWalletLoading={connectWalletLoading}
       connectWallet={connectWallet}
-      setCreated={setCreated}
     />
   )
 }

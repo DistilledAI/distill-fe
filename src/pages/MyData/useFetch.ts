@@ -1,15 +1,14 @@
+import { useAppSelector } from "@hooks/useAppRedux"
 import useAuthState from "@hooks/useAuthState"
-import usePrivateAgent from "@pages/ChatPage/ChatBox/RightContent/MyPrivateAgentContent/usePrivateAgent"
 import { useQuery } from "@tanstack/react-query"
-import { useEffect } from "react"
 import { getMyBotData } from "services/user"
 import { QueryDataKeys } from "types/queryDataKeys"
 import { IBotData } from "types/user"
 
 const useFetchMyData = () => {
-  const { privateAgentData, callGetMyPrivateAgent } = usePrivateAgent()
   const { isLogin } = useAuthState()
-  const botId = privateAgentData?.id
+  const myAgent = useAppSelector((state) => state.agents.myAgent)
+  const botId = myAgent?.id as number
 
   const { data, isLoading, isFetched, refetch } = useQuery({
     queryKey: [`${QueryDataKeys.MY_BOT_DATA}-${botId}`],
@@ -20,11 +19,14 @@ const useFetchMyData = () => {
 
   const list: IBotData[] = data?.data?.items || []
 
-  useEffect(() => {
-    callGetMyPrivateAgent()
-  }, [])
-
-  return { list, isLoading, isFetched, refetch, botId, privateAgentData }
+  return {
+    list,
+    isLoading,
+    isFetched,
+    refetch,
+    botId,
+    privateAgentData: myAgent,
+  }
 }
 
 export default useFetchMyData

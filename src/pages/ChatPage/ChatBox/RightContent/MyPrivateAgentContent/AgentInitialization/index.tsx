@@ -19,10 +19,13 @@ import { updateAvatarUser } from "services/user"
 import { useQuery } from "@tanstack/react-query"
 import { QueryDataKeys } from "types/queryDataKeys"
 import { isPassRuleAgentInfo } from "@pages/AgentDetail/helpers"
+import { useDispatch } from "react-redux"
+import { refreshFetchMyAgent } from "@reducers/agentSlice"
 
 const AgentInitialization = () => {
   const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate()
+  const dispatch = useDispatch()
 
   const { data } = useQuery<any>({
     queryKey: [QueryDataKeys.MY_BOT_LIST],
@@ -59,6 +62,7 @@ const AgentInitialization = () => {
       if (res && botId) {
         toast.success("Created agent successfully")
         navigate(`${PATH_NAMES.ADD_MY_DATA}/${botId}`)
+        dispatch(refreshFetchMyAgent())
       }
       if (isUpdateAvatar) {
         const formData = new FormData()

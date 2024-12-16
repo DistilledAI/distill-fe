@@ -20,7 +20,6 @@ export const TYPE_DATA_KEY = {
 const CreatePrivateAgent: React.FC<{
   connectWalletLoading: boolean
   connectWallet: any
-  setCreated?: any
   botId?: string | number
   onCallBack?: any
 }> = ({ connectWalletLoading, connectWallet }) => {

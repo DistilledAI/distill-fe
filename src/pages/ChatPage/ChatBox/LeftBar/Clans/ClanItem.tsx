@@ -43,6 +43,7 @@ const ClanItem: React.FC<{
         publicAddress={group.name}
         avatarUrl={group.image || undefined}
         isNameDisplay={!sidebarCollapsed}
+        member={group.groupMemberStats?.total}
       />
       {!isJoined && (
         <div className="absolute right-[6px] top-[-4px] flex h-5 w-5 items-center justify-center rounded-full bg-white">
