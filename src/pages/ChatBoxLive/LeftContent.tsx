@@ -31,6 +31,8 @@ const LeftContent: React.FC<{
   const isMaxi =
     groupDetail?.group.label === "@maxisbuyin" ||
     groupDetail?.group.label === "@maxisbuyin_"
+  const isStalor = groupDetail?.group.label === "@stalor"
+  const isKaori = groupDetail?.group.label === "@kaori"
 
   useEffect(() => {
     if (!!prediction && isMaxi) onOpen()
@@ -131,7 +133,7 @@ const LeftContent: React.FC<{
               </div>
             </div>
           </div>
-        ) : (
+        ) : isStalor ? (
           <div
             style={{
               backgroundImage:
@@ -148,37 +150,60 @@ const LeftContent: React.FC<{
             />
             <AudioClanCustom audioSrc={stalorAudio} />
           </div>
+        ) : (
+          <div className="relative h-[300px] min-h-[300px] w-full overflow-hidden rounded-[32px] md:h-[400px]">
+            <Image
+              classNames={{ wrapper: "w-full h-full !max-w-full" }}
+              className="h-full w-full object-cover"
+              src="https://storage.distilled.ai/distill/avatar/0x3ba829afff178069eda5eaa018e030a6e1be2797/a7138206-2908-4a53-a411-f057e1217710.png"
+              alt="clan"
+              disableAnimation
+            />
+          </div>
         )}
-        {isFetched && groupDetail !== null ? (
+
+        {!isKaori ? (
           <>
-            <AgentSocials
-              agentInfo={agentInfo}
-              classNames={{
-                wrapper: "mt-3 hidden md:flex",
-              }}
-            />
-            <div className="mt-3 hidden md:block">
-              <TradeTokenButton isMaxi={isMaxi} />
-            </div>
-            <ContractDisplay
-              classNames={{
-                wrapper: "mt-3 hidden md:flex",
-              }}
-              icon={agentInfo?.contract ? solanaCircleIcon : ""}
-              value={agentInfo?.contract}
-            />
+            {isFetched && groupDetail !== null ? (
+              <>
+                <AgentSocials
+                  agentInfo={agentInfo}
+                  classNames={{
+                    wrapper: "mt-3 hidden md:flex",
+                  }}
+                />
+                <div className="mt-3 hidden md:block">
+                  <TradeTokenButton isMaxi={isMaxi} />
+                </div>
+                <ContractDisplay
+                  classNames={{
+                    wrapper: "mt-3 hidden md:flex",
+                  }}
+                  icon={agentInfo?.contract ? solanaCircleIcon : ""}
+                  value={agentInfo?.contract}
+                />
+              </>
+            ) : (
+              <SkeletonInfo />
+            )}
           </>
         ) : (
-          <SkeletonInfo />
+          <div className="mt-3 hidden md:block">
+            <TradeTokenButton isMaxi={isMaxi} />
+          </div>
         )}
       </div>
-      <div className="mt-2 hidden md:block">
-        {isFetched && groupDetail !== null ? (
-          <AgentDescription groupDetail={groupDetail} isMaxi={isMaxi} />
-        ) : (
-          <SkeletonDesc />
-        )}
-      </div>
+
+      {!isKaori && (
+        <div className="mt-2 hidden md:block">
+          {isFetched && groupDetail !== null ? (
+            <AgentDescription groupDetail={groupDetail} isMaxi={isMaxi} />
+          ) : (
+            <SkeletonDesc />
+          )}
+        </div>
+      )}
+
       {isOpen && <BetModal onOpenChange={onOpenChange} isOpen={isOpen} />}
     </div>
   )

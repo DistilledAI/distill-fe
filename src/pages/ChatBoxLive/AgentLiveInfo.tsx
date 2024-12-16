@@ -1,6 +1,7 @@
 import { solanaCircleIcon } from "@assets/svg"
 import CloseButton from "@components/CloseButton"
 import { InfoCircleOutlineIcon } from "@components/Icons/InfoCircleIcon"
+import { AGENT_INFO_CLANS } from "@constants/index"
 import {
   Button,
   Modal,
@@ -13,9 +14,8 @@ import {
 import { UserGroup } from "@pages/ChatPage/ChatBox/LeftBar/useFetchGroups"
 import React, { useMemo } from "react"
 import AgentDescription from "./AgentDescription"
-import ContractDisplay from "./ContractDisplay"
-import { AGENT_INFO_CLANS } from "@constants/index"
 import AgentSocials from "./AgentSocials"
+import ContractDisplay from "./ContractDisplay"
 
 const AgentLiveInfo: React.FC<{
   groupDetail: UserGroup | null
@@ -25,6 +25,7 @@ const AgentLiveInfo: React.FC<{
   const isMaxi =
     groupDetail?.group.label === "@maxisbuyin" ||
     groupDetail?.group.label === "@maxisbuyin_"
+  const isKaori = groupDetail?.group.label === "@kaori"
 
   const agentInfo = useMemo(
     () =>
@@ -64,15 +65,19 @@ const AgentLiveInfo: React.FC<{
             />
           </ModalHeader>
           <ModalBody className="gap-3 px-3 py-4">
-            <AgentSocials agentInfo={agentInfo} />
-            <ContractDisplay
-              classNames={{
-                wrapper: "mt-3",
-              }}
-              icon={agentInfo?.contract ? solanaCircleIcon : ""}
-              value={agentInfo?.contract}
-            />
-            <AgentDescription groupDetail={groupDetail} isMaxi={isMaxi} />
+            {!isKaori && <AgentSocials agentInfo={agentInfo} />}
+            {!isKaori && (
+              <>
+                <ContractDisplay
+                  classNames={{
+                    wrapper: "mt-3",
+                  }}
+                  icon={agentInfo?.contract ? solanaCircleIcon : ""}
+                  value={agentInfo?.contract}
+                />
+                <AgentDescription groupDetail={groupDetail} isMaxi={isMaxi} />
+              </>
+            )}
           </ModalBody>
           <ModalFooter className="px-3">
             <Button
