@@ -102,6 +102,8 @@ const SwiperList = () => {
             setRangeTime((eventDataConfig as any).intervalSeconds || 300)
 
             // ... expired - expired - expired - live - next(cur) - later - later
+            // const startRound = 1977
+
             const startRound =
               currentRound - (MAX_LIMIT - 1) >= 1
                 ? currentRound - (MAX_LIMIT - 1)

@@ -30,9 +30,9 @@ const ExpireCardContent = ({ roundItem }: { roundItem: any }) => {
   const userBetUp = roundItem.userOrder?.outcome?.up
   const userBetDown = roundItem.userOrder?.outcome?.down
   // !isUnDrawn &&
-  const isClaimable =
-    (userBetUp || userBetDown) &&
-    (isDraw || (userBetDown && isDown) || (userBetUp && isUp))
+  const isClaimable = userBetUp || userBetDown
+  //  &&
+  // (isDraw || (userBetDown && isDown) || (userBetUp && isUp))
 
   const downAmount = roundItem?.downAmount || 0
   const upAmount = roundItem?.upAmount || 0
@@ -60,12 +60,22 @@ const ExpireCardContent = ({ roundItem }: { roundItem: any }) => {
   const priceChange = new BigNumber(settlePrice).minus(lockPrice).toNumber()
 
   const isInvalid = !!roundItem?.outcome?.undrawn || !!roundItem.outcome.invalid
-  if (isUnDrawn) {
-    return <CalculatingCardContent roundItem={roundItem} />
-  }
+  // if (isUnDrawn) {
+  //   return <CalculatingCardContent roundItem={roundItem} />
+  // }
 
   return (
     <div className="rounded-b-[12px] border border-[#1A1C28] bg-[#13141D] p-4">
+      {userBetUp && (
+        <div className={twMerge("p-3 text-white", userBetUp && "bg-green-500")}>
+          USER BET UP: {String(userBetUp)}
+        </div>
+      )}
+      {userBetDown && (
+        <div className={twMerge("p-3 text-white", userBetDown && "bg-red-500")}>
+          USER BET DOWN: {String(userBetDown)}
+        </div>
+      )}
       {isInvalid && (
         <div
           className={twMerge(
@@ -193,7 +203,7 @@ const ExpireCardContent = ({ roundItem }: { roundItem: any }) => {
           </span>
         </div>
       </div>
-      {isClaimable && !isClaimed && wallet.publicKey && (
+      {isClaimable && (
         <button
           disabled={!wallet || loading}
           onClick={async () => {
