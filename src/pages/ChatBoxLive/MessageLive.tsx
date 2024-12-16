@@ -1,3 +1,4 @@
+import React, { useEffect } from "react"
 import AvatarCustom from "@components/AvatarCustom"
 import EmojiReactions from "@components/EmojiReactions"
 import { ImageIcon } from "@components/Icons"
@@ -8,11 +9,12 @@ import useAuthState from "@hooks/useAuthState"
 import { IMessageBox } from "@pages/ChatPage/ChatBox/ChatMessages/helpers"
 import { IReactionMsgStats } from "@pages/ChatPage/ChatBox/ChatMessages/useFetchMessages"
 import { isMarkdownImage } from "@utils/index"
-import { useState } from "react"
 import { postReactionMsg } from "services/messages"
 import { twMerge } from "tailwind-merge"
 import { emojiReactionsMap } from "./helpers"
 import { EmojiReaction, ReactionTypes } from "types/reactions"
+import { useQuery, useQueryClient } from "@tanstack/react-query"
+import { QueryDataKeys } from "types/queryDataKeys"
 
 interface MessageLiveProps {
   message: IMessageBox
@@ -25,12 +27,41 @@ const MessageLive: React.FC<MessageLiveProps> = ({
   onReply,
   groupId,
 }) => {
-  const isBot = message?.roleOwner === RoleUser.BOT
   const { user } = useAuthState()
+  const queryClient = useQueryClient()
+  const { data: emojiReactions = [] } = useQuery<IReactionMsgStats[]>({
+    queryKey: [QueryDataKeys.MESSAGE_EMOJI_REACTIONS, message.id],
+    initialData: [],
+    enabled: !!message.id,
+  })
+
+  const isBot = message?.roleOwner === RoleUser.BOT
   const isOwner = user.id === message?.userId
-  const [emojiReactions, setEmojiReactions] = useState<IReactionMsgStats[]>(
-    () => message?.reactionMsgStats || [],
-  )
+
+  useEffect(() => {
+    if (message.reactionMsgStats?.length) {
+      queryClient.setQueryData(
+        [QueryDataKeys.MESSAGE_EMOJI_REACTIONS, message.id],
+        (oldData: IReactionMsgStats[] | undefined) => {
+          const newReactions: IReactionMsgStats[] =
+            message.reactionMsgStats || []
+
+          const mergedReactions = newReactions.map((newReaction) => {
+            const existingReaction = oldData?.find(
+              (old) => old.reactionType === newReaction.reactionType,
+            )
+            return {
+              ...newReaction,
+              total: existingReaction?.total || newReaction.total,
+              isReacted: existingReaction?.isReacted || newReaction.isReacted,
+            }
+          })
+
+          return mergedReactions
+        },
+      )
+    }
+  }, [message.reactionMsgStats, message.id, queryClient])
 
   const handleEmojiReaction = async (
     item: EmojiReaction | IReactionMsgStats,
@@ -47,13 +78,25 @@ const MessageLive: React.FC<MessageLiveProps> = ({
       isReacted: boolean,
       delta: number,
     ) => {
-      updatedReactions = updatedReactions
-        .map((val) =>
-          val.reactionType === type
-            ? { ...val, total: val.total + delta, isReacted }
-            : val,
-        )
-        .filter((val) => val.total > 0)
+      const existingIndex = updatedReactions.findIndex(
+        (val) => val.reactionType === type,
+      )
+      if (existingIndex > -1) {
+        updatedReactions[existingIndex] = {
+          ...updatedReactions[existingIndex],
+          total: updatedReactions[existingIndex].total + delta,
+          isReacted,
+        }
+      } else if (delta > 0) {
+        updatedReactions.push({
+          msgId: message.id,
+          reactionType: type,
+          total: delta,
+          isReacted,
+          emoji,
+        })
+      }
+      updatedReactions = updatedReactions.filter((val) => val.total > 0)
     }
 
     if (existingReaction) {
@@ -84,16 +127,13 @@ const MessageLive: React.FC<MessageLiveProps> = ({
       }
     } else {
       // Add new reaction
-      updatedReactions.push({
-        msgId: message.id,
-        reactionType: item.reactionType,
-        total: 1,
-        isReacted: true,
-        emoji,
-      })
+      updateReaction(item.reactionType, true, 1)
     }
 
-    setEmojiReactions(updatedReactions)
+    queryClient.setQueryData(
+      [QueryDataKeys.MESSAGE_EMOJI_REACTIONS, message.id],
+      () => updatedReactions,
+    )
 
     await postReactionMsg({
       msgId: message.id,
@@ -164,7 +204,7 @@ const MessageLive: React.FC<MessageLiveProps> = ({
               return (
                 <div
                   className={twMerge(
-                    "flex h-6 min-w-6 cursor-pointer items-center gap-1 rounded-full border border-mercury-200 bg-white px-3 py-1 transition-all duration-300 ease-in-out",
+                    "flex h-6 min-w-6 cursor-pointer items-center gap-1 rounded-full border border-mercury-200 bg-white px-3 py-1 !not-italic transition-all duration-300 ease-in-out",
                     item?.isReacted && "border-brown-500 bg-brown-50",
                   )}
                   key={`${item.msgId}-${index}`}

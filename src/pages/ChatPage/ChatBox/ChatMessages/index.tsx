@@ -22,7 +22,7 @@ import { useQuery } from "@tanstack/react-query"
 import { QueryDataKeys } from "types/queryDataKeys"
 import useAuthState from "@hooks/useAuthState"
 import { useCallback, useMemo } from "react"
-import MessageActions from "./MessageActions"
+// import MessageActions from "./MessageActions"
 
 const ChatMessages = () => {
   const {
@@ -89,11 +89,11 @@ const ChatMessages = () => {
         >
           {isCustomer && (
             <>
-              <MessageActions
+              {/* <MessageActions
                 groupId={groupId}
                 messageId={message.id}
                 reactionMsgStats={message.reactionMsgStats || []}
-              />
+              /> */}
               <ReceiverMessage
                 avatar={{
                   src: message.avatar,

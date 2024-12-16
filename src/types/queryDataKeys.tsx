@@ -26,4 +26,5 @@ export enum QueryDataKeys {
   TOTAL_MEMBER_GROUP = "total-member-group",
   MEDIA_PREVIEW = "media-preview",
   LEAVE_GROUP_STATE = "leave_group_state",
+  MESSAGE_EMOJI_REACTIONS = "message-emoji-reactions",
 }
