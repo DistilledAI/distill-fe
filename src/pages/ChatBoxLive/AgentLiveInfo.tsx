@@ -1,7 +1,6 @@
 import { solanaCircleIcon } from "@assets/svg"
 import CloseButton from "@components/CloseButton"
 import { InfoCircleOutlineIcon } from "@components/Icons/InfoCircleIcon"
-import { AGENT_INFO_CLANS } from "@constants/index"
 import {
   Button,
   Modal,
@@ -11,8 +10,11 @@ import {
   ModalHeader,
   useDisclosure,
 } from "@nextui-org/react"
-import { UserGroup } from "@pages/ChatPage/ChatBox/LeftBar/useFetchGroups"
-import React, { useMemo } from "react"
+import {
+  GroupConfig,
+  UserGroup,
+} from "@pages/ChatPage/ChatBox/LeftBar/useFetchGroups"
+import React from "react"
 import AgentDescription from "./AgentDescription"
 import AgentSocials from "./AgentSocials"
 import ContractDisplay from "./ContractDisplay"
@@ -21,19 +23,9 @@ const AgentLiveInfo: React.FC<{
   groupDetail: UserGroup | null
 }> = ({ groupDetail }) => {
   const { isOpen, onClose, onOpen } = useDisclosure()
-
-  const isMaxi =
-    groupDetail?.group.label === "@maxisbuyin" ||
-    groupDetail?.group.label === "@maxisbuyin_"
-  const isKaori = groupDetail?.group.label === "@kaori"
-
-  const agentInfo = useMemo(
-    () =>
-      AGENT_INFO_CLANS.find(
-        (agent) => agent.username === groupDetail?.group.label,
-      ),
-    [groupDetail?.group.label],
-  )
+  const groupConfig: GroupConfig | null = groupDetail?.group?.config
+    ? JSON.parse(groupDetail.group.config)
+    : null
 
   return (
     <>
@@ -65,19 +57,23 @@ const AgentLiveInfo: React.FC<{
             />
           </ModalHeader>
           <ModalBody className="gap-3 px-3 py-4">
-            {!isKaori && <AgentSocials agentInfo={agentInfo} />}
-            {!isKaori && (
-              <>
-                <ContractDisplay
-                  classNames={{
-                    wrapper: "mt-3",
-                  }}
-                  icon={agentInfo?.contract ? solanaCircleIcon : ""}
-                  value={agentInfo?.contract}
-                />
-                <AgentDescription groupDetail={groupDetail} isMaxi={isMaxi} />
-              </>
-            )}
+            <AgentSocials
+              agentInfo={{
+                username: groupDetail?.group?.name as string,
+                xLink: groupConfig?.x as string,
+                teleLink: groupConfig?.telegram as string,
+                shareLink: `https://mesh.distilled.ai/clan/${groupDetail?.group?.label}`,
+                contract: groupConfig?.contractAddress as string,
+              }}
+            />
+            <ContractDisplay
+              classNames={{
+                wrapper: "mt-3",
+              }}
+              icon={groupConfig?.contractAddress ? solanaCircleIcon : ""}
+              value={groupConfig?.contractAddress}
+            />
+            <AgentDescription description={groupConfig?.description} />
           </ModalBody>
           <ModalFooter className="px-3">
             <Button

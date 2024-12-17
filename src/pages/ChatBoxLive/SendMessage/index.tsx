@@ -9,7 +9,7 @@ import TradeTokenButton from "../TradeTokenButton"
 
 const SendMessage: React.FC<{
   sidebarCollapsed: boolean
-  isMaxi: boolean
+  tradeLink: string
   resetReply: () => void
   chatId: string
   replyId: number
@@ -20,7 +20,7 @@ const SendMessage: React.FC<{
   setHasFocus: React.Dispatch<React.SetStateAction<boolean>>
 }> = ({
   sidebarCollapsed,
-  isMaxi,
+  tradeLink,
   resetReply,
   chatId,
   replyId,
@@ -65,9 +65,9 @@ const SendMessage: React.FC<{
         )}
       >
         <div className="absolute inset-x-0 bottom-[calc(100%-5px)] hidden h-6 w-full bg-fading-white md:block" />
-        <div className={twMerge("flex items-center", isMaxi && "gap-1")}>
+        <div className={twMerge("flex items-center", !!tradeLink && "gap-1")}>
           <div className="md:hidden">
-            <TradeTokenButton isMaxi={isMaxi} />
+            <TradeTokenButton tradeLink={tradeLink} />
           </div>
           <ChatInput
             onSubmit={onChatSubmit}
@@ -77,7 +77,10 @@ const SendMessage: React.FC<{
             hasFocus={hasFocus}
             setHasFocus={setHasFocus}
             resetRely={resetReply}
-            wrapperClassName="w-full max-w-full max-md:pl-3 md:bottom-[calc(100%-72px)] max-md:max-w-[calc(100%-77px)]"
+            wrapperClassName={twMerge(
+              "w-full max-w-full max-md:pl-3 md:bottom-[calc(100%-72px)] max-md:max-w-[calc(100%-77px)]",
+              !tradeLink && "max-md:max-w-full",
+            )}
           />
         </div>
       </div>

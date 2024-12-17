@@ -5,14 +5,12 @@ import React from "react"
 import { Link } from "react-router-dom"
 
 const TradeTokenButton: React.FC<{
-  isMaxi?: boolean
-}> = ({ isMaxi }) => {
-  return isMaxi ? (
+  tradeLink?: string
+}> = ({ tradeLink }) => {
+  return tradeLink ? (
     <Button
       as={Link}
-      to={
-        "https://dexscreener.com/solana/4Qgn7AixnZJBwfFL5XmRDBVyzzq9tC6JdDToaKVhPJvz"
-      }
+      to={tradeLink}
       target="blank"
       className="h-11 w-fit rounded-full bg-orange-500 text-white max-md:min-w-[60px] md:w-full"
     >

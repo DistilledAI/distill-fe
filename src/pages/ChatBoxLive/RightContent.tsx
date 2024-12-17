@@ -2,7 +2,10 @@ import { useAppSelector } from "@hooks/useAppRedux"
 import useWindowSize from "@hooks/useWindowSize"
 import ClanShortInfo from "@pages/AgentClan/ClanShortInfo"
 import { IMessageBox } from "@pages/ChatPage/ChatBox/ChatMessages/helpers"
-import { UserGroup } from "@pages/ChatPage/ChatBox/LeftBar/useFetchGroups"
+import {
+  GroupConfig,
+  UserGroup,
+} from "@pages/ChatPage/ChatBox/LeftBar/useFetchGroups"
 import useGetChatId from "@pages/ChatPage/Mobile/ChatDetail/useGetChatId"
 import { useQuery } from "@tanstack/react-query"
 import React, { useState } from "react"
@@ -24,9 +27,9 @@ const RightContent: React.FC<{
   const [replyId, setReplyId] = useState<number>(NaN)
   const [replyTxt, setReplyTxt] = useState<string>("")
   const [hasFocus, setHasFocus] = useState(false)
-  const isMaxi =
-    groupDetail?.group.label === "@maxisbuyin" ||
-    groupDetail?.group.label === "@maxisbuyin_"
+  const groupConfig: GroupConfig | null = groupDetail?.group?.config
+    ? JSON.parse(groupDetail.group.config)
+    : null
 
   const resetReply = () => {
     setReplyId(NaN)
@@ -66,7 +69,7 @@ const RightContent: React.FC<{
 
       <SendMessage
         sidebarCollapsed={sidebarCollapsed}
-        isMaxi={isMaxi}
+        tradeLink={groupConfig?.tradeLink as string}
         resetReply={resetReply}
         chatId={chatId}
         replyId={replyId}

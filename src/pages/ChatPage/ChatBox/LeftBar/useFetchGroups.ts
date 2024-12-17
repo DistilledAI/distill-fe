@@ -26,6 +26,19 @@ export interface IGroup {
   live?: number
   label?: string
   description?: string
+  config?: string
+}
+
+export interface GroupConfig {
+  x: string
+  telegram: string
+  contractAddress: string
+  tradeLink: string
+  description: string
+  imageLive: string
+  videoLive: string
+  audioLive: string
+  isPrediction: boolean
 }
 
 export interface UserGroup {
