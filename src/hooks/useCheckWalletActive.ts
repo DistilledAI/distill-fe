@@ -29,6 +29,7 @@ const useCheckWalletActive = () => {
       const web3 = new Web3(Web3.givenProvider)
       const countEvm = await web3.eth.getTransactionCount(accountAddress)
       if (countEvm > 0) dispatch(updateWalletActive(true))
+      else dispatch(updateWalletActive(false))
     } catch (error) {
       console.error(error)
     }
@@ -45,6 +46,7 @@ const useCheckWalletActive = () => {
         { limit: 1 },
       )
       if (signatures.length > 0) dispatch(updateWalletActive(true))
+      else dispatch(updateWalletActive(false))
     } catch (error) {
       console.log(error)
     }
@@ -58,8 +60,6 @@ const useCheckWalletActive = () => {
         const accountAddress = new PublicKey(user.publicAddress)
         getTransactionCountSol(accountAddress)
       }
-    } else {
-      dispatch(updateWalletActive(false))
     }
   }, [user.publicAddress, isLogin, isAnonymous])
 }
