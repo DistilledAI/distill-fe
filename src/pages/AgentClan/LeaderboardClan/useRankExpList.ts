@@ -12,7 +12,13 @@ interface LeaderboardEntry {
   xDSTL: number
 }
 
-const useRankExpList = ({ groupId }: { groupId: string }) => {
+const useRankExpList = ({
+  groupId,
+  isToggleLeaderboard = false,
+}: {
+  groupId: string
+  isToggleLeaderboard?: boolean
+}) => {
   const { isLogin } = useAuthState()
 
   const fetchRankList = async ({ pageParam = 0 }) => {
@@ -23,7 +29,14 @@ const useRankExpList = ({ groupId }: { groupId: string }) => {
       offset: pageParam,
     })
     return {
-      rankList: res?.items || [],
+      rankList:
+        res?.items.map((item: any) => ({
+          userId: item?.user?.id,
+          publicAddress: item?.user?.publicAddress,
+          username: item?.user?.username,
+          avatar: item?.user?.avatar,
+          totalPointExp: item.totalPoint,
+        })) || [],
       nextOffset:
         res?.items.length > 0 ? pageParam + res?.items.length : undefined,
     }
@@ -41,7 +54,7 @@ const useRankExpList = ({ groupId }: { groupId: string }) => {
   } = useInfiniteQuery({
     queryKey: [QueryDataKeys.EXP_RANK_LIST_BY_GROUP, groupId],
     queryFn: fetchRankList,
-    enabled: isLogin && !!groupId,
+    enabled: isLogin && !!groupId && isToggleLeaderboard,
     getNextPageParam: (lastPage) => lastPage?.nextOffset,
     getPreviousPageParam: (firstPage) => firstPage?.nextOffset,
     initialPageParam: 0,
