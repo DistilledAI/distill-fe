@@ -31,8 +31,44 @@ const useSubmitChat = ({
 }) => {
   const { user } = useAuthState()
   const queryClient = useQueryClient()
-
   const ref = useRef<any>()
+
+  const updateChatMessagesCache = (
+    cachedData: ICachedMessageData,
+    newMessage: IMessageBox,
+    updatedMessageId?: string,
+  ) => {
+    if (!cachedData) {
+      return {
+        pageParams: [],
+        pages: [
+          {
+            messages: [newMessage],
+            nextOffset: 0,
+          },
+        ],
+      }
+    }
+
+    const lastPage = cachedData.pages[cachedData.pages.length - 1]
+
+    return {
+      ...cachedData,
+      pages: [
+        ...cachedData.pages.slice(0, -1),
+        {
+          ...lastPage,
+          messages: !updatedMessageId
+            ? [...lastPage.messages, newMessage]
+            : lastPage.messages.map((message) =>
+                message.id === newMessage.id && updatedMessageId
+                  ? { ...message, id: updatedMessageId }
+                  : message,
+              ),
+        },
+      ],
+    }
+  }
 
   const mutation = useMutation({
     mutationKey: [QueryDataKeys.SEND_MESSAGE],
@@ -89,36 +125,22 @@ const useSubmitChat = ({
 
       queryClient.setQueryData(
         chatMessagesKey(groupId),
-        (cachedData: ICachedMessageData) => {
-          if (!cachedData)
-            return {
-              pageParams: [],
-              pages: [
-                {
-                  messages: [newMessage],
-                  nextOffset: 0,
-                },
-              ],
-            }
-
-          const lastPage = cachedData.pages[cachedData.pages.length - 1]
-
-          return {
-            ...cachedData,
-            pages: [
-              ...cachedData.pages.slice(0, -1),
-              {
-                ...lastPage,
-                messages: [...lastPage.messages, newMessage],
-              },
-            ],
-          }
-        },
+        (cachedData: ICachedMessageData) =>
+          updateChatMessagesCache(cachedData, newMessage),
       )
 
       return { newMessage }
     },
-    onSuccess: () => {
+    onSuccess: (data, _, context) => {
+      queryClient.setQueryData(
+        chatMessagesKey(groupId),
+        (cachedData: ICachedMessageData) =>
+          updateChatMessagesCache(
+            cachedData,
+            context.newMessage,
+            data?.data?.id,
+          ),
+      )
       if (callbackDone) callbackDone()
     },
     onError: (error) => {
