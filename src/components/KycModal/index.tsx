@@ -42,9 +42,9 @@ const KycModal: React.FC<{
             ]}
             links={[]}
           />
-          <p className="mt-2 text-center text-[#F78500]">
+          {/* <p className="mt-2 text-center text-[#F78500]">
             No KYC results yet. Please be patient or try reconnecting.
-          </p>
+          </p> */}
           {/* <p className="mt-2 text-center text-[#20993F]">
             Your account is verified
           </p> */}

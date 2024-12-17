@@ -42,8 +42,11 @@ const MyPoints = () => {
       if (res.data) fetchData()
     } catch (error: any) {
       console.error(error)
-      if (error.response.data.error_description)
+      if (error.response.data.error_description) {
         toast.error(error.response.data.error_description)
+      } else if (error.response.data.message) {
+        toast.error(error.response.data.message)
+      } else toast.error("Something went wrong, please try again!")
     } finally {
       setLoading(false)
     }
