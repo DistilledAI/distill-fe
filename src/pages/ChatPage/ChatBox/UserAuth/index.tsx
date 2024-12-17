@@ -19,6 +19,7 @@ interface UserAuthProps {
   loading?: boolean
 }
 const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
+  const isWalletActive = useAppSelector((state) => state.user.isWalletActive)
   const { user } = useAuthState()
   const navigate = useNavigate()
   const { groupDetail, chatId } = useFetchDetail()
@@ -80,14 +81,14 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
               src={user.avatar}
               className="h-8 w-8"
             />
-            {user.kycTwitter || user.kycEmail ? (
+            {isWalletActive ? (
               <span className="line-clamp-1 block max-w-[150px] text-base max-md:hidden">
                 {user.username}
               </span>
             ) : (
               <div className="hidden items-center gap-1 md:flex">
                 <div className="flex items-center gap-1 text-[#F78500]">
-                  <WarningIcon color="#F78500" /> Unverified
+                  <WarningIcon color="#F78500" /> Inactive
                 </div>
               </div>
             )}

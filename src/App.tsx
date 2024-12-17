@@ -1,6 +1,7 @@
 import EarnedPointToast from "@components/EearnedPointToast"
 import MediaPreview from "@components/MediaPreview"
 import useAuthAction from "@hooks/useAuthAction"
+import useCheckWalletActive from "@hooks/useCheckWalletActive"
 import useFetchMyAgent from "@hooks/useFetchMyAgent"
 import { getAccessToken } from "@utils/storage"
 import mixpanel from "mixpanel-browser"
@@ -13,6 +14,7 @@ const envMode = import.meta.env.VITE_APP_ENV_MODE
 function App() {
   const { logout } = useAuthAction()
   useFetchMyAgent()
+  useCheckWalletActive()
 
   const initMixpanel = () => {
     mixpanel.init(mixpanelToken, {

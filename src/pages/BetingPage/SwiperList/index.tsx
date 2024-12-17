@@ -63,7 +63,10 @@ const SwiperList = () => {
   const currentRoundStored = toBN(currentRoundData?.id || 1).toNumber()
 
   useEffect(() => {
-    callGetPredictHistory()
+    const interval = setInterval(() => {
+      callGetPredictHistory()
+    }, 10000)
+    return () => clearInterval(interval)
   }, [currentRoundStored])
 
   useEffect(() => {

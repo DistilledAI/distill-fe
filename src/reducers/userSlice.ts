@@ -39,6 +39,7 @@ interface UpdateUserPayload {
 export interface IUserState {
   user: IUser
   isLogin: boolean
+  isWalletActive: boolean
 }
 
 const userInitState: IUser = {
@@ -59,6 +60,7 @@ const userInitState: IUser = {
 const initStateValues = {
   user: userInitState,
   isLogin: !!getAccessToken(),
+  isWalletActive: false,
 }
 
 const initialState: IUserState = initStateValues
@@ -112,9 +114,17 @@ const userSlice = createSlice({
     updateUser: (state, action: { payload: UpdateUserPayload }) => {
       state.user = action.payload.user
     },
+    updateWalletActive: (state, action: { payload: boolean }) => {
+      state.isWalletActive = action.payload
+    },
   },
 })
 
-export const { loginSuccess, logout, updateUser, loginSuccessByAnonymous } =
-  userSlice.actions
+export const {
+  loginSuccess,
+  logout,
+  updateUser,
+  loginSuccessByAnonymous,
+  updateWalletActive,
+} = userSlice.actions
 export default userSlice.reducer
