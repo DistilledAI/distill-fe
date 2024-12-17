@@ -24,7 +24,7 @@ interface UploadCustomProps {
   isComingSoon?: boolean
 }
 
-const maxSizeUpload = 5
+const maxSizeUpload = 20
 
 const FILE_UPLOAD_STATUS = {
   UPLOADING: "uploading",
