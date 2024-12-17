@@ -62,7 +62,6 @@ const AgentInitialization = () => {
       if (res && botId) {
         toast.success("Created agent successfully")
         navigate(`${PATH_NAMES.ADD_MY_DATA}/${botId}`)
-        dispatch(refreshFetchMyAgent())
       }
       if (isUpdateAvatar) {
         const formData = new FormData()
@@ -70,6 +69,7 @@ const AgentInitialization = () => {
         formData.append("userId", botId.toString() ?? "")
         await updateAvatarUser(formData)
       }
+      dispatch(refreshFetchMyAgent())
     } catch (error: any) {
       console.error({ error })
       toast.error(error?.response?.data?.message)

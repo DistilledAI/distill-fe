@@ -170,6 +170,15 @@ const useMessageSocket = () => {
                     ...item,
                     content: newContent,
                     isTyping: false,
+                    reply: e.replyToData
+                      ? {
+                          message: e.replyToData.messages,
+                          messageId: e.replyToData.id,
+                          username: e.replyToData.user.username
+                            ? `@${e.replyToData.user.username}`
+                            : "@Unnamed",
+                        }
+                      : undefined,
                   }
                 }
                 return item
