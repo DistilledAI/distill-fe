@@ -42,7 +42,7 @@ const LeftBar = () => {
             </Link>
             <SidebarCollapsed />
           </div>
-          <div className={twMerge("h-[calc(100%-44px)] flex-1")}>
+          <div className={twMerge("h-[calc(100%-152px)] flex-1")}>
             <MyEcho />
             <ChatClans />
             <PrivateAI />

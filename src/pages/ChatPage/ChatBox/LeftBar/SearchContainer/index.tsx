@@ -61,7 +61,7 @@ const SearchContainer: React.FC<ContentDisplayMode> = ({
         />
       </div>
 
-      <div className="max-h-[calc(100%-160px)] overflow-y-auto">
+      <div className="max-h-[calc(100%-270px)] overflow-y-auto">
         <SearchResult data={data} selectedCallback={onBackToBoxMessage} />
       </div>
     </>
