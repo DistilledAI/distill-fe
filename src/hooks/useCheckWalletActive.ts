@@ -26,7 +26,7 @@ const useCheckWalletActive = () => {
 
   const getTransactionCountEvm = async (accountAddress: string) => {
     try {
-      const web3 = new Web3(Web3.givenProvider)
+      const web3 = new Web3(window.ethereum)
       const countEvm = await web3.eth.getTransactionCount(accountAddress)
       if (countEvm > 0) dispatch(updateWalletActive(true))
       else dispatch(updateWalletActive(false))
