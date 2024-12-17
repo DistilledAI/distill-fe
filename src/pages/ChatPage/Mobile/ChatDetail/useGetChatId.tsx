@@ -24,9 +24,8 @@ const useGetChatId = () => {
   }
 
   const { data: chatId } = useQuery({
-    queryKey: [QueryDataKeys.CHAT_ID_BY_USERNAME, chatIdParam],
+    queryKey: [`${QueryDataKeys.CHAT_ID_BY_USERNAME}-${chatIdParam}`],
     queryFn: getChatId,
-    staleTime: 60 * 60 * 1000,
     enabled: !!chatIdParam,
   })
 
