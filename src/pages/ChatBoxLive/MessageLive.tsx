@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React from "react"
 import AvatarCustom from "@components/AvatarCustom"
 import EmojiReactions from "@components/EmojiReactions"
 import { ImageIcon } from "@components/Icons"
@@ -7,14 +7,17 @@ import MarkdownMessage from "@components/Markdown"
 import { RoleUser } from "@constants/index"
 import useAuthState from "@hooks/useAuthState"
 import { IMessageBox } from "@pages/ChatPage/ChatBox/ChatMessages/helpers"
-import { IReactionMsgStats } from "@pages/ChatPage/ChatBox/ChatMessages/useFetchMessages"
+import {
+  chatMessagesKey,
+  ICachedMessageData,
+  IReactionMsgStats,
+} from "@pages/ChatPage/ChatBox/ChatMessages/useFetchMessages"
 import { isMarkdownImage } from "@utils/index"
 import { postReactionMsg } from "services/messages"
 import { twMerge } from "tailwind-merge"
 import { emojiReactionsMap } from "./helpers"
 import { EmojiReaction, ReactionTypes } from "types/reactions"
-import { useQuery, useQueryClient } from "@tanstack/react-query"
-import { QueryDataKeys } from "types/queryDataKeys"
+import { useQueryClient } from "@tanstack/react-query"
 
 interface MessageLiveProps {
   message: IMessageBox
@@ -29,111 +32,142 @@ const MessageLive: React.FC<MessageLiveProps> = ({
 }) => {
   const { user } = useAuthState()
   const queryClient = useQueryClient()
-  const { data: emojiReactions = [] } = useQuery<IReactionMsgStats[]>({
-    queryKey: [QueryDataKeys.MESSAGE_EMOJI_REACTIONS, message.id],
-    initialData: [],
-    enabled: !!message.id,
-  })
+  const emojiReactions = message.reactionMsgStats || []
 
   const isBot = message?.roleOwner === RoleUser.BOT
   const isOwner = user.id === message?.userId
 
-  useEffect(() => {
-    if (message.reactionMsgStats?.length) {
-      queryClient.setQueryData(
-        [QueryDataKeys.MESSAGE_EMOJI_REACTIONS, message.id],
-        (oldData: IReactionMsgStats[] | undefined) => {
-          const newReactions: IReactionMsgStats[] =
-            message.reactionMsgStats || []
+  const findExistingReaction = (
+    reactionType: ReactionTypes,
+    reactions: IReactionMsgStats[],
+  ) => {
+    return reactions.find((val) => val.reactionType === reactionType)
+  }
 
-          const mergedReactions = newReactions.map((newReaction) => {
-            const existingReaction = oldData?.find(
-              (old) => old.reactionType === newReaction.reactionType,
-            )
-            return {
-              ...newReaction,
-              total: existingReaction?.total || newReaction.total,
-              isReacted: existingReaction?.isReacted || newReaction.isReacted,
-            }
-          })
+  const isLikeOrDislike = (item: EmojiReaction | IReactionMsgStats) => {
+    return (
+      item.reactionType === ReactionTypes.LIKE ||
+      item.reactionType === ReactionTypes.DISLIKE
+    )
+  }
 
-          return mergedReactions
-        },
-      )
+  const handleOppositeReaction = (
+    item: EmojiReaction | IReactionMsgStats,
+    reactions: IReactionMsgStats[],
+  ) => {
+    const oppositeReactionType =
+      item.reactionType === ReactionTypes.LIKE
+        ? ReactionTypes.DISLIKE
+        : ReactionTypes.LIKE
+
+    const oppositeReaction = reactions.find(
+      (reaction) => reaction.reactionType === oppositeReactionType,
+    )
+
+    if (oppositeReaction && oppositeReaction.isReacted) {
+      return updateReaction(oppositeReactionType, false, -1, reactions)
     }
-  }, [message.reactionMsgStats, message.id, queryClient])
+
+    return reactions
+  }
+
+  const toggleReaction = (
+    item: EmojiReaction | IReactionMsgStats,
+    existingReaction: IReactionMsgStats,
+    reactions: IReactionMsgStats[],
+  ) => {
+    if (existingReaction.isReacted) {
+      return updateReaction(item.reactionType, false, -1, reactions)
+    } else {
+      return updateReaction(item.reactionType, true, 1, reactions)
+    }
+  }
+
+  const addNewReaction = (
+    item: EmojiReaction | IReactionMsgStats,
+    reactions: IReactionMsgStats[],
+  ) => {
+    return updateReaction(item.reactionType, true, 1, reactions)
+  }
+
+  const updateReaction = (
+    type: ReactionTypes,
+    isReacted: boolean,
+    delta: number,
+    reactions: IReactionMsgStats[],
+  ) => {
+    const existingIndex = reactions.findIndex(
+      (val) => val.reactionType === type,
+    )
+    if (existingIndex > -1) {
+      reactions[existingIndex] = {
+        ...reactions[existingIndex],
+        total: reactions[existingIndex].total + delta,
+        isReacted,
+      }
+    } else if (delta > 0) {
+      reactions.push({
+        msgId: message.id,
+        reactionType: type,
+        total: delta,
+        isReacted,
+        emoji: emojiReactionsMap[type],
+      })
+    }
+    return reactions
+  }
+
+  const updateQueryData = (updatedReactions: IReactionMsgStats[]) => {
+    queryClient.setQueryData(
+      chatMessagesKey(groupId),
+      (oldData: ICachedMessageData | undefined) => {
+        if (!oldData) return oldData
+
+        return {
+          ...oldData,
+          pages: oldData.pages.map((page) => ({
+            ...page,
+            messages: page.messages.map((msg) => {
+              if (msg.id === message.id) {
+                return {
+                  ...msg,
+                  reactionMsgStats: updatedReactions,
+                }
+              }
+              return msg
+            }),
+          })),
+        }
+      },
+    )
+  }
 
   const handleEmojiReaction = async (
     item: EmojiReaction | IReactionMsgStats,
   ) => {
-    const existingReaction = emojiReactions.find(
-      (val) => val.reactionType === item.reactionType,
+    let updatedReactions = [...emojiReactions]
+    const existingReaction = findExistingReaction(
+      item.reactionType,
+      updatedReactions,
     )
 
-    let updatedReactions = [...emojiReactions]
-    const emoji = emojiReactionsMap[item.reactionType]
-
-    const updateReaction = (
-      type: ReactionTypes,
-      isReacted: boolean,
-      delta: number,
-    ) => {
-      const existingIndex = updatedReactions.findIndex(
-        (val) => val.reactionType === type,
-      )
-      if (existingIndex > -1) {
-        updatedReactions[existingIndex] = {
-          ...updatedReactions[existingIndex],
-          total: updatedReactions[existingIndex].total + delta,
-          isReacted,
-        }
-      } else if (delta > 0) {
-        updatedReactions.push({
-          msgId: message.id,
-          reactionType: type,
-          total: delta,
-          isReacted,
-          emoji,
-        })
-      }
-      updatedReactions = updatedReactions.filter((val) => val.total > 0)
+    if (isLikeOrDislike(item)) {
+      updatedReactions = handleOppositeReaction(item, updatedReactions)
     }
 
     if (existingReaction) {
-      // Toggle reaction
-      if (existingReaction.isReacted) {
-        updateReaction(item.reactionType, false, -1)
-      } else {
-        if (item.reactionType === ReactionTypes.LIKE) {
-          const isDisliked = updatedReactions.some(
-            (val) =>
-              val.reactionType === ReactionTypes.DISLIKE && val.isReacted,
-          )
-          if (isDisliked) {
-            updateReaction(ReactionTypes.DISLIKE, false, -1)
-          }
-          updateReaction(ReactionTypes.LIKE, true, 1)
-        } else if (item.reactionType === ReactionTypes.DISLIKE) {
-          const isLiked = updatedReactions.some(
-            (val) => val.reactionType === ReactionTypes.LIKE && val.isReacted,
-          )
-          if (isLiked) {
-            updateReaction(ReactionTypes.LIKE, false, -1)
-          }
-          updateReaction(ReactionTypes.DISLIKE, true, 1)
-        } else {
-          updateReaction(item.reactionType, true, 1)
-        }
-      }
+      updatedReactions = toggleReaction(
+        item,
+        existingReaction,
+        updatedReactions,
+      )
     } else {
-      // Add new reaction
-      updateReaction(item.reactionType, true, 1)
+      updatedReactions = addNewReaction(item, updatedReactions)
     }
 
-    queryClient.setQueryData(
-      [QueryDataKeys.MESSAGE_EMOJI_REACTIONS, message.id],
-      () => updatedReactions,
-    )
+    updatedReactions = updatedReactions.filter((val) => val.total > 0)
+
+    updateQueryData(updatedReactions)
 
     await postReactionMsg({
       msgId: message.id,
