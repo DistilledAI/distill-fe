@@ -5,7 +5,7 @@ import {
   VolumeIcon,
   VolumeOffIcon,
 } from "@components/Icons/Voice"
-import { useRef, useState, useEffect } from "react"
+import React, { useRef, useState, useEffect } from "react"
 import { twMerge } from "tailwind-merge"
 
 interface Props {
@@ -25,6 +25,8 @@ interface Props {
   volumeIcon?: React.ReactNode
   playIcon?: React.ReactNode
   fullScreenIcon?: React.ReactNode
+  imgPreview?: string
+  skeletonPreview?: React.ReactNode
 }
 
 const VideoCustom = ({
@@ -38,8 +40,11 @@ const VideoCustom = ({
   volumeIcon,
   playIcon,
   fullScreenIcon,
+  imgPreview,
+  skeletonPreview,
 }: Props) => {
   const videoRef = useRef<any>(null)
+  const [isLoaded, setIsLoaded] = useState(false)
   const [isPlaying, setIsPlaying] = useState<boolean>(!videoRef.current?.paused)
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false)
 
@@ -120,11 +125,21 @@ const VideoCustom = ({
         playsInline
         loop
         controls={false}
-        className={twMerge(classNames?.video, isFullscreen && "fullscreen")}
+        onLoadedData={() => setIsLoaded(true)}
+        className={twMerge(
+          classNames?.video,
+          isFullscreen && "fullscreen",
+          !isLoaded && "hidden",
+        )}
       >
         <source src={videoSrc} type="video/mp4" />
         <track kind="captions" />
       </video>
+      {!!imgPreview && !isLoaded && (
+        <img className={classNames?.video} src={imgPreview} alt="preview" />
+      )}
+      {!imgPreview && !isLoaded && skeletonPreview}
+      <div></div>
       {/* Volume Button */}
       {isVolumeIcon && !isFullscreen && (
         <button

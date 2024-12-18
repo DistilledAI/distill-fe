@@ -18,6 +18,7 @@ import AgentSocials from "./AgentSocials"
 import ContractDisplay from "./ContractDisplay"
 import SkeletonInfo, { SkeletonDesc } from "./SkeletonInfo"
 import TradeTokenButton from "./TradeTokenButton"
+import { PATH_NAMES } from "@constants/index"
 
 const LeftContent: React.FC<{
   groupDetail: UserGroup | null
@@ -26,7 +27,6 @@ const LeftContent: React.FC<{
   const queryClient = useQueryClient()
   const [searchParams] = useSearchParams()
   const prediction = searchParams.get("prediction")
-  const [isLoaded, setIsLoaded] = useState(false)
   const { isOpen, onOpenChange, onOpen } = useDisclosure()
 
   const groupConfig: GroupConfig | null = groupDetail?.group?.config
@@ -56,10 +56,6 @@ const LeftContent: React.FC<{
   const isCloseChatLive = !!closeLiveChat.data
   const isExpandLiveChat = !!expandLiveChat.data
 
-  useEffect(() => {
-    setTimeout(() => setIsLoaded(true), 200)
-  }, [])
-
   return (
     <div
       className={twMerge(
@@ -69,7 +65,7 @@ const LeftContent: React.FC<{
       )}
     >
       <div className="flex h-full flex-col md:h-fit">
-        {!isLoaded || !isFetched || groupDetail === null ? (
+        {!isFetched || groupDetail === null ? (
           <Skeleton className="h-[300px] rounded-[32px] md:h-[400px]"></Skeleton>
         ) : groupConfig?.videoLive ? (
           <div className="relative">
@@ -80,6 +76,10 @@ const LeftContent: React.FC<{
                   "h-full min-h-[350px] w-full rounded-[32px] object-cover max-h-[350px] md:max-h-[400px] md:h-auto",
                 ),
               }}
+              skeletonPreview={
+                <Skeleton className="h-[300px] rounded-[32px] md:h-[400px]"></Skeleton>
+              }
+              imgPreview={groupConfig.imageLive}
               isVolumeIcon
               onMuteToggle={(muted) =>
                 queryClient.setQueryData<boolean>(
@@ -127,18 +127,7 @@ const LeftContent: React.FC<{
             )}
           </div>
         ) : (
-          <div className="relative h-[300px] min-h-[300px] w-full overflow-hidden rounded-[32px] bg-mercury-70 md:h-[400px]">
-            <Image
-              classNames={{ wrapper: "w-full h-full !max-w-full" }}
-              className="h-full w-full object-cover"
-              src={groupConfig?.imageLive}
-              alt="clan"
-              disableAnimation
-            />
-            {groupConfig?.audioLive && (
-              <AudioClanCustom audioSrc={groupConfig.audioLive} />
-            )}
-          </div>
+          <ImageLive groupConfig={groupConfig} />
         )}
 
         {isFetched && groupDetail !== null ? (
@@ -148,7 +137,7 @@ const LeftContent: React.FC<{
                 username: groupDetail.group.name,
                 xLink: groupConfig?.x as string,
                 teleLink: groupConfig?.telegram as string,
-                shareLink: `https://mesh.distilled.ai/clan/${groupDetail.group.label}`,
+                shareLink: `${window.location.origin}${PATH_NAMES.CLAN}/${groupDetail?.group?.label}`,
                 contract: groupConfig?.contractAddress as string,
               }}
               classNames={{
@@ -184,3 +173,28 @@ const LeftContent: React.FC<{
   )
 }
 export default LeftContent
+
+const ImageLive = ({ groupConfig }: { groupConfig: GroupConfig | null }) => {
+  const [isLoaded, setIsLoaded] = useState(false)
+
+  return (
+    <div className="relative h-[300px] min-h-[300px] w-full overflow-hidden rounded-[32px] bg-mercury-70 md:h-[400px]">
+      <Image
+        classNames={{
+          wrapper: twMerge("w-full h-full !max-w-full", !isLoaded && "hidden"),
+        }}
+        className="h-full w-full object-cover"
+        src={groupConfig?.imageLive}
+        alt="clan"
+        disableAnimation
+        onLoad={() => setIsLoaded(true)}
+      />
+      {!isLoaded && (
+        <Skeleton className="h-[300px] rounded-[32px] md:h-[400px]" />
+      )}
+      {groupConfig?.audioLive && (
+        <AudioClanCustom audioSrc={groupConfig.audioLive} />
+      )}
+    </div>
+  )
+}

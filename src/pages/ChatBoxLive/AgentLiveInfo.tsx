@@ -18,6 +18,7 @@ import React from "react"
 import AgentDescription from "./AgentDescription"
 import AgentSocials from "./AgentSocials"
 import ContractDisplay from "./ContractDisplay"
+import { PATH_NAMES } from "@constants/index"
 
 const AgentLiveInfo: React.FC<{
   groupDetail: UserGroup | null
@@ -62,7 +63,7 @@ const AgentLiveInfo: React.FC<{
                 username: groupDetail?.group?.name as string,
                 xLink: groupConfig?.x as string,
                 teleLink: groupConfig?.telegram as string,
-                shareLink: `https://mesh.distilled.ai/clan/${groupDetail?.group?.label}`,
+                shareLink: `${window.location.origin}${PATH_NAMES.CLAN}/${groupDetail?.group?.label}`,
                 contract: groupConfig?.contractAddress as string,
               }}
             />
