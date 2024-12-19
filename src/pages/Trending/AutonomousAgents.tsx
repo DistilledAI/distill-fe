@@ -9,7 +9,9 @@ const AutonomousAgents: React.FC = () => {
     <div className="flex w-full items-center gap-10">
       <div className="w-[55%]">
         <div className="flex items-center gap-4">
-          <h1 className="text-[68px] font-bold">8</h1>
+          <h1 className="bg-lgd-code-hot-ramp bg-clip-text text-[68px] font-bold text-transparent">
+            8
+          </h1>
           <span className="text-[22px] font-bold text-mercury-950">
             Autonomous agents <br /> managing their own wallets
           </span>

@@ -15,7 +15,7 @@ const TopActiveClans: React.FC = () => {
         </span>
       </div>
 
-      <div className="flex flex-wrap gap-1">
+      <div className="grid w-full grid-cols-6 gap-1">
         <ActiveClanContainer clanName="Max.Clan" totalMessage="214.3K" />
         <ActiveClanContainer clanName="Max.Clan" totalMessage="214.3K" />
         <ActiveClanContainer clanName="Max.Clan" totalMessage="214.3K" />
@@ -36,12 +36,23 @@ const ActiveClanContainer: React.FC<ActiveClanContainerProps> = ({
   totalMessage,
 }) => {
   return (
-    <div className="relative min-h-[130px] min-w-[156px] rounded-[4px] bg-mercury-500">
+    <div className="relative h-[130px] w-full cursor-pointer overflow-hidden rounded-[8px] bg-mercury-500">
+      <div
+        style={{
+          background:
+            "linear-gradient(180deg, rgba(0, 0, 0, 0.00) 28.5%, #000 100%)",
+        }}
+        className="absolute bottom-0 left-0 h-[80%] w-full"
+      ></div>
       <div className="absolute right-2 top-2 flex w-fit items-center gap-1 rounded-full bg-[#20993F] px-1">
         <CretUpFilledIcon />
         <span className="text-[12px] font-medium text-white">53.4%</span>
       </div>
-
+      <img
+        src="https://storage.distilled.ai/avatar/maxi.png"
+        alt="trending"
+        className="h-full w-full object-cover"
+      />
       <div className="absolute bottom-2 flex w-full justify-between px-2">
         <span className="text-[12px] font-bold text-white">{clanName}</span>
         <div className="flex items-center gap-[2px]">
