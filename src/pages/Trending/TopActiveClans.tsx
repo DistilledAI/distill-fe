@@ -6,16 +6,18 @@ import {
 
 const TopActiveClans: React.FC = () => {
   return (
-    <div className="mt-[50px]">
+    <div className="mt-[50px] max-md:mt-4">
       <div className="mb-4 flex items-center gap-2">
         <FlagFilledIcon />
-        <span className="text-[22px] font-bold">Top Active Clans</span>
-        <span className="text-[22px] font-normal uppercase text-mercury-700">
+        <span className="text-[22px] font-bold max-md:text-18">
+          Top Active Clans
+        </span>
+        <span className="text-[22px] font-normal uppercase text-mercury-700 max-md:text-18">
           24h
         </span>
       </div>
 
-      <div className="grid w-full grid-cols-6 gap-1">
+      <div className="grid w-full grid-cols-6 gap-1 max-md:grid-cols-3">
         <ActiveClanContainer clanName="Max.Clan" totalMessage="214.3K" />
         <ActiveClanContainer clanName="Max.Clan" totalMessage="214.3K" />
         <ActiveClanContainer clanName="Max.Clan" totalMessage="214.3K" />
