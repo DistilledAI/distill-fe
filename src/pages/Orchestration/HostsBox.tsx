@@ -18,7 +18,6 @@ const HostsBox = () => {
             badgeClassName="bg-transparent"
             src={maxIcon}
             badgeIcon={<img src={solanaCircleIcon} />}
-            scalePoint={50}
           />
           <div>
             <h4 className="text-16 font-bold text-mercury-950">Max</h4>
@@ -48,12 +47,11 @@ const HostsBox = () => {
           <AvatarCustom
             className="h-11 w-11 rounded-lg"
             badgeClassName="bg-transparent"
-            src={maxIcon}
+            publicAddress="orai...Vo5h"
             badgeIcon={<img src={solanaCircleIcon} />}
-            scalePoint={50}
           />
           <div>
-            <h4 className="text-16 font-bold text-mercury-950">Max</h4>
+            <h4 className="text-16 font-bold text-mercury-950">Min</h4>
             <div className="flex items-center gap-1">
               <span className="text-13 font-medium text-mercury-600">
                 orai...Vo5h

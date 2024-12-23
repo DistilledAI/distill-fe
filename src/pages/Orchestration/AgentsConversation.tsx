@@ -45,8 +45,8 @@ const AgentsConversation = () => {
       onLoadPrevMessages={onLoadPrevMessages}
       chatId={groupId}
       isChatActions={false}
-      msgBoxClassName="p-0"
-      className="md:max-h-full"
+      msgBoxClassName="p-0 "
+      className="pt-4 md:max-h-full"
       scrollBottomClassName="md:!bottom-10 h-40"
     />
   )
