@@ -18,6 +18,7 @@ export const PATH_NAMES = {
   MY_AGENTS: "/my-agents",
   REWARDS: "/rewards",
   TRENDING: "/trending",
+  ORCHESTRATION: "/orchestration",
 }
 
 export const MIX_PANEL_TRACK_EVENT = {

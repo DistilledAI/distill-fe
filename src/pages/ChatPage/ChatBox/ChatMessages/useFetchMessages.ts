@@ -172,6 +172,7 @@ const useFetchMessages = () => {
     isLoading,
     isFetched,
     isFetchingPreviousPage,
+    groupId,
   }
 }
 
