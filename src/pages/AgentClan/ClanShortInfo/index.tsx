@@ -1,13 +1,13 @@
 import { xDSTL, xpIcon } from "@assets/images"
 import { BoltIcon, TrophyIcon } from "@components/Icons"
+import useTimerProgress from "@hooks/useTimerProgress"
 import { CircularProgress, Image } from "@nextui-org/react"
 import { useQueries, useQuery, useQueryClient } from "@tanstack/react-query"
+import { formatNumberWithComma } from "@utils/index"
+import { useCallback, useRef } from "react"
+import { useParams } from "react-router-dom"
 import { QueryDataKeys } from "types/queryDataKeys"
 import LeaderboardClan from "../LeaderboardClan"
-import { useParams } from "react-router-dom"
-import { formatNumberWithComma } from "@utils/index"
-import useTimerProgress from "@hooks/useTimerProgress"
-import { useCallback, useRef } from "react"
 
 const ClanShortInfo = () => {
   const queryClient = useQueryClient()

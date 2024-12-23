@@ -15,6 +15,7 @@ import { Button } from "@nextui-org/react"
 import { centerTextEllipsis, copyClipboard } from "@utils/index"
 import { useNavigate } from "react-router-dom"
 import ShareAgent from "./ShareAgent"
+import { useAppSelector } from "@hooks/useAppRedux"
 
 const PrivateAgent: React.FC<{
   onClose: () => void

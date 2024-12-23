@@ -19,6 +19,7 @@ import MyAgentPage from "@pages/MyAgents"
 import MyData from "@pages/MyData"
 import PageNotFound from "@pages/NotFound"
 import RewardsPage from "@pages/Rewards"
+import TrendingPage from "@pages/Trending"
 import { Route, Routes } from "react-router-dom"
 
 const AppRouter = () => {
@@ -63,6 +64,7 @@ const AppRouter = () => {
             />
           </>
         )}
+        <Route path={PATH_NAMES.TRENDING} element={<TrendingPage />} />
 
         {/* Route Protected By Auth */}
         <Route path={PATH_NAMES.HOME} element={<ProtectedByAuth />}>

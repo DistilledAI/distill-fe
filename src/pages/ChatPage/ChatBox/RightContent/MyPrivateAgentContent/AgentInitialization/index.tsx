@@ -1,25 +1,25 @@
-import GeneralInfo from "@pages/AgentDetail/GeneralInfo"
-import { FormProvider, useForm } from "react-hook-form"
-import Header from "./Header"
 import { InfoCircleOutlineIcon } from "@components/Icons/InfoCircleIcon"
-import { Divider } from "@pages/AgentDetail/CategoryLabel"
-import AgentBehaviors, {
-  SelectedBehaviors,
-} from "@pages/AgentDetail/AgentBehaviors"
-import { useState } from "react"
-import { createBot } from "services/chat"
-import { toast } from "react-toastify"
-import { useNavigate } from "react-router-dom"
 import {
   COMMUNICATION_STYLE_LIST,
   PATH_NAMES,
   PERSONALITY_LIST,
 } from "@constants/index"
-import { updateAvatarUser } from "services/user"
-import { isPassRuleAgentInfo } from "@pages/AgentDetail/helpers"
-import { useDispatch } from "react-redux"
-import { refreshFetchMyAgent } from "@reducers/agentSlice"
 import { useAppSelector } from "@hooks/useAppRedux"
+import AgentBehaviors, {
+  SelectedBehaviors,
+} from "@pages/AgentDetail/AgentBehaviors"
+import { Divider } from "@pages/AgentDetail/CategoryLabel"
+import GeneralInfo from "@pages/AgentDetail/GeneralInfo"
+import { isPassRuleAgentInfo } from "@pages/AgentDetail/helpers"
+import { refreshFetchMyAgent } from "@reducers/agentSlice"
+import { useState } from "react"
+import { FormProvider, useForm } from "react-hook-form"
+import { useDispatch } from "react-redux"
+import { useNavigate } from "react-router-dom"
+import { toast } from "react-toastify"
+import { createBot } from "services/chat"
+import { updateAvatarUser } from "services/user"
+import Header from "./Header"
 
 const AgentInitialization = () => {
   const [isLoading, setIsLoading] = useState(false)

@@ -1,23 +1,23 @@
 import { creditBg } from "@assets/images"
+import { ArrowLeftFilledIcon } from "@components/Icons/Arrow"
 import { CopyIcon } from "@components/Icons/Copy"
+import { InfoCircleIcon } from "@components/Icons/InfoCircleIcon"
 import { QRCodeIcon } from "@components/Icons/QRCode"
 import {
   SpeakerPhoneIcon,
   UsersGroupIcon,
 } from "@components/Icons/RewardsIcons"
 import ShareModal from "@components/ShareQRModal"
+import { PATH_NAMES } from "@constants/index"
 import useAuthState from "@hooks/useAuthState"
+import useFetchMe from "@hooks/useFetchMe"
 import { Button, Divider, Tooltip, useDisclosure } from "@nextui-org/react"
 import { copyClipboard } from "@utils/index"
 import { useEffect, useState } from "react"
+import { Link } from "react-router-dom"
 import { getTaskSuccess, getUserClaimTaskSuccess } from "services/agent"
 import { getReferralCode } from "services/user"
 import Objectives from "./Objectives"
-import useFetchMe from "@hooks/useFetchMe"
-import { InfoCircleIcon } from "@components/Icons/InfoCircleIcon"
-import { Link } from "react-router-dom"
-import { ArrowLeftFilledIcon } from "@components/Icons/Arrow"
-import { PATH_NAMES } from "@constants/index"
 
 export const XDSTL_TASK_KEY = {
   LOGIN: "LOGIN",
