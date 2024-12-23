@@ -18,6 +18,7 @@ import Marketplace from "@pages/Marketplace"
 import MyAgentPage from "@pages/MyAgents"
 import MyData from "@pages/MyData"
 import PageNotFound from "@pages/NotFound"
+import Orchestration from "@pages/Orchestration"
 import RewardsPage from "@pages/Rewards"
 import TrendingPage from "@pages/Trending"
 import { Route, Routes } from "react-router-dom"
@@ -55,6 +56,10 @@ const AppRouter = () => {
         <Route
           path={`${PATH_NAMES.AUTHOR_PROFILE}/:authorId`}
           element={<AuthorProfile />}
+        />
+        <Route
+          path={`${PATH_NAMES.ORCHESTRATION}/:chatId`}
+          element={<Orchestration />}
         />
         {isMobile && (
           <>

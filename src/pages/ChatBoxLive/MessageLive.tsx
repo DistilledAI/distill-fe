@@ -15,7 +15,7 @@ import ReactedEmojisList from "./ReactedEmojisList"
 
 interface MessageLiveProps {
   message: IMessageBox
-  onReply: () => void
+  onReply?: () => void
   groupId: string
 }
 
@@ -40,7 +40,7 @@ const MessageLive: React.FC<MessageLiveProps> = ({
       <div className="absolute -bottom-2 -left-4 -top-2 right-0 hidden rounded-[8px] bg-mercury-70 transition-all duration-100 ease-linear group-hover/item:block">
         <div className="absolute -top-4 right-3 flex items-center gap-2">
           <EmojiReactions onEmojiReaction={handleEmojiReaction} />
-          {!isOwner && (
+          {!isOwner && onReply && (
             <button
               type="button"
               onClick={onReply}
