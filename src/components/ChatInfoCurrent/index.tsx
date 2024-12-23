@@ -16,6 +16,9 @@ import React from "react"
 import { twMerge } from "tailwind-merge"
 import MoreAction from "./MoreAction"
 import TotalMemberBadge from "@components/TotalMemberBadge"
+import { useLocation } from "react-router-dom"
+import { PATH_NAMES } from "@constants/index"
+import OrchestrationHeader from "./OrchestrationHeader"
 
 const ChatInfoCurrent: React.FC<{
   groupDetail: UserGroup | null
@@ -25,8 +28,13 @@ const ChatInfoCurrent: React.FC<{
   const isGroup = groupDetail?.group?.typeGroup === TypeGroup.PRIVATE_GROUP
   const isGroupPublic = groupDetail?.group?.typeGroup === TypeGroup.PUBLIC_GROUP
   const isLive = isGroupPublic && groupDetail?.group?.live === 1
+  const location = useLocation()
 
   if (!groupDetail) return null
+
+  if (location.pathname.includes(PATH_NAMES.ORCHESTRATION)) {
+    return <OrchestrationHeader />
+  }
 
   if (isGroupPublic)
     return (
