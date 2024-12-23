@@ -21,7 +21,7 @@ const AutonomousAgents: React.FC = () => {
         <div className="flex w-full items-center justify-between gap-4">
           <div className="w-full rounded-[22px] bg-mercury-30 px-[18px] py-6">
             <div className="mb-3 flex items-center gap-1.5">
-              <IconTrendingUp />
+              <IconTrendingUp color="#888888" />
               <span className="text-14 font-medium text-mercury-600">
                 Total Market Cap
               </span>

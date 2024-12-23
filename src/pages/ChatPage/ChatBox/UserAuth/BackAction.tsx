@@ -6,7 +6,9 @@ const BackAction: React.FC = () => {
   const { pathname } = useLocation()
   const { agentId } = useParams()
   const navigate = useNavigate()
-  const isAgentDetailPage = pathname === `${PATH_NAMES.AGENT_DETAIL}/${agentId}`
+  const isAgentDetailPage =
+    pathname === `${PATH_NAMES.AGENT_DETAIL}/${agentId}` ||
+    pathname === PATH_NAMES.TRENDING
 
   const goBack = () => {
     navigate(-1)

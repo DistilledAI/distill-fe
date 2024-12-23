@@ -4,6 +4,7 @@ import { xMasBg } from "@assets/images"
 import { DistilledAIIcon } from "@components/Icons/DistilledAIIcon"
 import { useAppSelector } from "@hooks/useAppRedux"
 import ButtonMarketplace from "@pages/Marketplace/ButtonMarketplace"
+import TrendingButton from "@pages/Trending/TrendingButton"
 import { Link } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
 import AnalyticsInfoWrap from "./AnalyticsInfoWrap"
@@ -58,6 +59,7 @@ const LeftBar = () => {
             )}
           >
             {/* <Playground /> */}
+            <TrendingButton />
             <ButtonMarketplace />
           </div>
           <AnalyticsInfoWrap />

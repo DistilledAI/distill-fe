@@ -1,9 +1,9 @@
 import { useAppSelector } from "@hooks/useAppRedux"
 import useConnectWallet from "@hooks/useConnectWallet"
 import useReconnectWallet from "@hooks/useReconnectWallet"
-import BackActionAgentDetailPage from "@pages/AgentDetail/BackAction"
 import { twMerge } from "tailwind-merge"
 import UserAuth from "."
+import BackAction from "./BackAction"
 
 const UserAuthWrapper = () => {
   const { connectMultipleWallet } = useConnectWallet()
@@ -17,7 +17,7 @@ const UserAuthWrapper = () => {
         sidebarCollapsed && "pl-[104px]",
       )}
     >
-      <BackActionAgentDetailPage />
+      <BackAction />
       <div className="w-full px-4 pb-2 pt-4">
         <UserAuth connectWallet={connectMultipleWallet} />
       </div>
