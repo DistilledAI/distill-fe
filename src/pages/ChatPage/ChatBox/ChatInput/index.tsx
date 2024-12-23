@@ -6,7 +6,12 @@ import useGetChatId from "@pages/ChatPage/Mobile/ChatDetail/useGetChatId"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { useStyleSpacing } from "providers/StyleSpacingProvider"
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react"
-import { Mention, MentionsInput } from "react-mentions"
+import {
+  Mention,
+  MentionProps,
+  MentionsInput,
+  MentionsInputProps,
+} from "react-mentions"
 import { useLocation, useParams } from "react-router-dom"
 import SpeechRecognition, {
   useSpeechRecognition,
@@ -16,6 +21,10 @@ import { QueryDataKeys } from "types/queryDataKeys"
 import { BOT_STATUS } from "../ChatMessages/ChatActions/DelegatePrivateAgent"
 import VoiceChat from "./Voice"
 import CloudImages from "./CloudImages"
+
+const MentionsInputAny =
+  MentionsInput as React.ComponentType<MentionsInputProps>
+const MentionAny = Mention as React.ComponentType<MentionProps>
 
 interface ChatInputProps {
   isDisabledInput: boolean
@@ -169,10 +178,8 @@ const ChatInput = ({
           color={isDarkTheme ? "rgba(84, 84, 84, 1)" : "#545454"}
         />
       </button>
-
       <CloudImages />
-
-      <MentionsInput
+      <MentionsInputAny
         inputRef={inputRef}
         value={message}
         onChange={handleOnChange}
@@ -213,10 +220,10 @@ const ChatInput = ({
         rows={4}
         disabled={isDisabledInput}
       >
-        <Mention
+        <MentionAny
           trigger="@"
           markup="@[__display__]"
-          displayTransform={(username) => `@${username}`}
+          displayTransform={(username: string) => `@${username}`}
           data={null}
           appendSpaceOnAdd={true}
           style={{
@@ -227,7 +234,7 @@ const ChatInput = ({
             top: "0px",
           }}
         />
-      </MentionsInput>
+      </MentionsInputAny>
       <VoiceChat
         resetTranscript={resetTranscript}
         isListening={listening}

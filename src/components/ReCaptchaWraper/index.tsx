@@ -39,6 +39,7 @@ const ReCaptchaWraper: React.FC<{
   }
 
   return (
+    // @ts-expect-error
     <ReCAPTCHA
       style={{
         visibility: "hidden",
