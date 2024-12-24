@@ -1,5 +1,4 @@
 import MyEcho from "./MyEcho"
-// import Playground from "./Playground"
 import { xMasBg } from "@assets/images"
 import { DistilledAIIcon } from "@components/Icons/DistilledAIIcon"
 import { useAppSelector } from "@hooks/useAppRedux"
@@ -10,6 +9,7 @@ import AnalyticsInfoWrap from "./AnalyticsInfoWrap"
 import ChatClans from "./Clans"
 import PrivateAI from "./PrivateAI"
 import SidebarCollapsed from "./SidebarCollapsed"
+// import OrchestrationSlider from "./OrchestrationSlider"
 
 const LeftBar = () => {
   const sidebarCollapsed = useAppSelector((state) => state.sidebarCollapsed)
@@ -50,14 +50,13 @@ const LeftBar = () => {
             <ChatClans />
             <PrivateAI />
           </div>
-
+          {/* <OrchestrationSlider /> */}
           <div
             className={twMerge(
               "flex justify-between gap-2",
               sidebarCollapsed && "flex-shrink-0 flex-col justify-center",
             )}
           >
-            {/* <Playground /> */}
             <ButtonMarketplace />
           </div>
           <AnalyticsInfoWrap />
