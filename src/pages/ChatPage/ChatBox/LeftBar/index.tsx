@@ -1,5 +1,3 @@
-import MyEcho from "./MyEcho"
-// import Playground from "./Playground"
 import { xMasBg } from "@assets/images"
 import { DistilledAIIcon } from "@components/Icons/DistilledAIIcon"
 import { useAppSelector } from "@hooks/useAppRedux"
@@ -9,8 +7,10 @@ import { Link } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
 import AnalyticsInfoWrap from "./AnalyticsInfoWrap"
 import ChatClans from "./Clans"
+import MyEcho from "./MyEcho"
 import PrivateAI from "./PrivateAI"
 import SidebarCollapsed from "./SidebarCollapsed"
+// import OrchestrationSlider from "./OrchestrationSlider"
 
 const LeftBar = () => {
   const sidebarCollapsed = useAppSelector((state) => state.sidebarCollapsed)
@@ -51,7 +51,7 @@ const LeftBar = () => {
             <ChatClans />
             <PrivateAI />
           </div>
-
+          {/* <OrchestrationSlider /> */}
           <div
             className={twMerge(
               "flex justify-between gap-2",
