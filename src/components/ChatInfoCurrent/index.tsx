@@ -19,6 +19,7 @@ import TotalMemberBadge from "@components/TotalMemberBadge"
 import { useLocation } from "react-router-dom"
 import { PATH_NAMES } from "@constants/index"
 import OrchestrationHeader from "./OrchestrationHeader"
+import { maxIcon } from "@assets/images"
 
 const ChatInfoCurrent: React.FC<{
   groupDetail: UserGroup | null
@@ -33,7 +34,20 @@ const ChatInfoCurrent: React.FC<{
   if (!groupDetail) return null
 
   if (location.pathname.includes(PATH_NAMES.ORCHESTRATION)) {
-    return <OrchestrationHeader />
+    return (
+      <OrchestrationHeader
+        agent1={{
+          avatarSrc: maxIcon,
+          publicAddress: "orai...Vo5h",
+        }}
+        agent2={{
+          avatarSrc: "",
+          publicAddress: "orai...Vo5h",
+        }}
+        name="Max & Min"
+        tag="Orchestration"
+      />
+    )
   }
 
   if (isGroupPublic)
