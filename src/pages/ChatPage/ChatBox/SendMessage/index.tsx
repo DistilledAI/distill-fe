@@ -36,7 +36,6 @@ const SendMessage: React.FC<{
     <>
       <ChatInput
         onSubmit={onChatSubmit}
-        isPending={mutation.isPending}
         isDisabledInput={isChatting || !isEnableTextInput}
         wrapperClassName="left-1/2 -translate-x-1/2 w-[calc(100%-32px)]"
       />
