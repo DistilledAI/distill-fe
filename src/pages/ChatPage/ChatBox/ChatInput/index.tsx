@@ -1,4 +1,3 @@
-import { ArrowUpFilledIcon } from "@components/Icons/Arrow"
 import { PaperClipFilledIcon } from "@components/Icons/PaperClip"
 import { PATH_NAMES } from "@constants/index"
 import useWindowSize from "@hooks/useWindowSize"
@@ -29,7 +28,6 @@ const MentionAny = Mention as React.ComponentType<MentionProps>
 interface ChatInputProps {
   isDisabledInput: boolean
   onSubmit: (value: string) => void
-  isPending: boolean
   wrapperClassName?: string
   isDarkTheme?: boolean
   replyUsername?: string
@@ -43,7 +41,6 @@ const ChatInput = ({
   onSubmit,
   wrapperClassName,
   isDarkTheme,
-  isPending,
   replyUsername,
   hasFocus,
   setHasFocus,
@@ -157,7 +154,7 @@ const ChatInput = ({
     <div
       ref={boxRef}
       className={twMerge(
-        "absolute bottom-4 z-[11] flex max-w-[768px] items-center gap-4 rounded-[35px] border-1 bg-mercury-200 p-2 py-1 transition-all duration-300 ease-linear max-md:static max-md:gap-2 max-md:pl-3 md:bottom-8 md:min-h-[60px] md:p-3 md:py-[7.89px]",
+        "absolute bottom-4 z-[11] flex max-w-[768px] items-center gap-3 rounded-[35px] border-1 bg-mercury-200 p-2 py-1 transition-all duration-300 ease-linear max-md:static max-md:gap-2 max-md:pl-3 md:bottom-8 md:min-h-[60px] md:p-3 md:py-[7.89px]",
         isFocus ? "border-mercury-300" : "border-mercury-200",
         spacing && "items-end",
         isDarkTheme && "bg-mercury-950",
@@ -190,11 +187,7 @@ const ChatInput = ({
         style={{
           width: "100%",
           height: "100%",
-          maxWidth: isMobile
-            ? "calc(100% - 88px)"
-            : listening
-              ? "calc(100% - 184px)"
-              : "calc(100% - 172px)",
+          maxWidth: "100%",
           fontFamily: "Barlow",
           maxHeight: isMobile ? "40px" : "200px",
           color: isDarkTheme ? "#FAFAFA" : "#11181c",
@@ -244,7 +237,7 @@ const ChatInput = ({
         isDisabled={isDisabledInput}
         isDarkTheme={isDarkTheme}
       />
-      <button
+      {/* <button
         type="button"
         onClick={handleSubmit}
         disabled={isDisabledInput || !message || isPending}
@@ -254,7 +247,7 @@ const ChatInput = ({
         )}
       >
         <ArrowUpFilledIcon bgColor={isDarkTheme ? "#363636" : "#FAFAFA"} />
-      </button>
+      </button> */}
     </div>
   )
 }

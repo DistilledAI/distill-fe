@@ -51,7 +51,6 @@ const ChatDetail = () => {
           <div className="fixed bottom-0 left-0 z-[11] w-full bg-mercury-30 px-3 py-2">
             <ChatInput
               onSubmit={onChatSubmit}
-              isPending={mutation.isPending}
               isDisabledInput={isChatting || !isEnableTextInput}
             />
           </div>

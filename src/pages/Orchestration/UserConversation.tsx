@@ -81,7 +81,6 @@ const UserConversation = () => {
       />
       <ChatInput
         onSubmit={onChatSubmit}
-        isPending={mutation.isPending}
         isDisabledInput={!isEnableTextInput}
         // replyUsername={replyUsername}
         // hasFocus={hasFocus}
