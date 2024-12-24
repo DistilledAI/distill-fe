@@ -20,6 +20,7 @@ import { QueryDataKeys } from "types/queryDataKeys"
 import { BOT_STATUS } from "../ChatMessages/ChatActions/DelegatePrivateAgent"
 import VoiceChat from "./Voice"
 import CloudImages from "./CloudImages"
+import { ArrowUpFilledIcon } from "@components/Icons/Arrow"
 
 const MentionsInputAny =
   MentionsInput as React.ComponentType<MentionsInputProps>
@@ -237,17 +238,17 @@ const ChatInput = ({
         isDisabled={isDisabledInput}
         isDarkTheme={isDarkTheme}
       />
-      {/* <button
+      <button
         type="button"
         onClick={handleSubmit}
-        disabled={isDisabledInput || !message || isPending}
+        disabled={isDisabledInput || !message}
         className={twMerge(
           "h-9 w-[52px] min-w-[52px] rounded-full border border-mercury-900 bg-mercury-950 px-4 py-2 disabled:border-transparent disabled:bg-mercury-950/60",
           isDarkTheme && "bg-white disabled:bg-white/60",
         )}
       >
         <ArrowUpFilledIcon bgColor={isDarkTheme ? "#363636" : "#FAFAFA"} />
-      </button> */}
+      </button>
     </div>
   )
 }
