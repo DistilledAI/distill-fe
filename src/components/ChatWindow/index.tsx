@@ -1,20 +1,13 @@
-import { IMessageBox } from "@pages/ChatPage/ChatBox/ChatMessages/helpers"
-import React, {
-  CSSProperties,
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from "react"
+import React, { useCallback, useEffect, useRef, useState, useMemo } from "react"
 import { Virtuoso, VirtuosoHandle } from "react-virtuoso"
 import { twMerge } from "tailwind-merge"
 import MessagesSkeleton from "./MessagesSkeleton"
 import DotLoading from "@components/DotLoading"
 import ScrollBottomChat from "./ScrollBottomChat"
+import { IMessageBox } from "@pages/ChatPage/ChatBox/ChatMessages/helpers"
 
 interface ChatWindowProps {
-  messages: Array<IMessageBox>
+  messages: IMessageBox[]
   itemContent: (index: number, message: IMessageBox) => JSX.Element
   className?: string
   isLoading?: boolean
@@ -25,7 +18,7 @@ interface ChatWindowProps {
   hasPreviousMore?: boolean
   isFetchingPreviousPage?: boolean
   isChatActions?: boolean
-  style?: CSSProperties
+  style?: React.CSSProperties
   Header?: React.ReactNode
   scrollBottomClassName?: string
   increaseViewportBy?: number
@@ -34,7 +27,7 @@ interface ChatWindowProps {
 const LIMIT = 20
 const AT_BOTTOM_THRESHOLD = 200
 
-const ChatWindow = ({
+const ChatWindow: React.FC<ChatWindowProps> = ({
   messages,
   itemContent,
   className,
@@ -50,16 +43,9 @@ const ChatWindow = ({
   Header,
   scrollBottomClassName,
   increaseViewportBy = 0,
-}: ChatWindowProps) => {
+}) => {
   const virtuosoRef = useRef<VirtuosoHandle>(null)
   const [isScrollBottom, setIsScrollBottom] = useState<boolean>(false)
-  const isFetchingRef = useRef(false)
-
-  useLayoutEffect(() => {
-    if (chatId) {
-      setIsScrollBottom(false)
-    }
-  }, [chatId])
 
   const scrollToBottom = useCallback(() => {
     virtuosoRef.current?.scrollToIndex({
@@ -67,61 +53,63 @@ const ChatWindow = ({
       behavior: "auto",
       align: style?.paddingBottom === "0px" ? "end" : "center",
     })
-  }, [messages, style?.paddingBottom])
+  }, [messages.length, style?.paddingBottom])
+
+  useEffect(() => {
+    if (chatId) {
+      setIsScrollBottom(false)
+    }
+  }, [chatId])
 
   useEffect(() => {
     if (!isScrollBottom && messages.length > 0) {
       scrollToBottom()
     }
-  }, [scrollToBottom, isScrollBottom, chatId, messages])
+  }, [scrollToBottom, isScrollBottom, messages.length])
 
-  const onScroll = async (e: React.UIEvent<HTMLDivElement>) => {
-    const { scrollTop, scrollHeight, clientHeight } = e.currentTarget
-
-    if (scrollTop === 0 && hasPreviousMore && !isFetchingRef.current) {
-      isFetchingRef.current = true
-      const messagesIndex = await onLoadPrevMessages()
-      isFetchingRef.current = false
-
-      if (messagesIndex) {
-        virtuosoRef.current?.scrollToIndex({
-          index: messagesIndex || 0,
-          behavior: "auto",
-          align: "end",
-        })
+  const onScroll = useCallback(
+    async (e: React.UIEvent<HTMLDivElement>) => {
+      const { scrollTop, scrollHeight, clientHeight } = e.currentTarget
+      if (scrollTop === 0 && hasPreviousMore) {
+        const messagesIndex = await onLoadPrevMessages()
+        if (messagesIndex) {
+          virtuosoRef.current?.scrollToIndex({
+            index: messagesIndex,
+            behavior: "auto",
+            align: "end",
+          })
+        }
       }
-    }
 
-    const scrollPosition = scrollHeight - clientHeight - scrollTop
-    setIsScrollBottom(scrollPosition > AT_BOTTOM_THRESHOLD)
-  }
+      const scrollPosition = scrollHeight - clientHeight - scrollTop
+      setIsScrollBottom(scrollPosition > AT_BOTTOM_THRESHOLD)
+    },
+    [hasPreviousMore, onLoadPrevMessages],
+  )
 
-  const renderHeader = useCallback(() => {
+  const renderHeader = useMemo(() => {
     if (isFetchingPreviousPage && messages.length >= LIMIT) {
-      return (
+      return () => (
         <div className="flex h-full items-center justify-center pt-1">
           <DotLoading />
         </div>
       )
     }
-
     if (Header) {
-      return <div className="pb-4">{Header}</div>
+      return () => <div className="pb-4">{Header}</div>
     }
-
-    return null
+    return undefined
   }, [isFetchingPreviousPage, messages.length, Header])
 
-  const renderEmptyPlaceholder = useCallback(() => {
+  const renderEmptyPlaceholder = useMemo(() => {
     if (isFetched && !messages.length) {
-      return (
+      return () => (
         <div className="flex h-full items-center justify-center">
           NO MESSAGE
         </div>
       )
     }
-
-    return null
+    return undefined
   }, [isFetched, messages.length])
 
   const renderRow = useCallback(
@@ -148,26 +136,20 @@ const ChatWindow = ({
       {isLoading && <MessagesSkeleton />}
       {!isLoading && messages.length ? (
         <Virtuoso
-          id="chat-window"
-          style={{
-            height: "100%",
-          }}
           ref={virtuosoRef}
           data={messages}
-          initialTopMostItemIndex={{
-            index: messages.length - 1,
-            align: "end",
-          }}
           totalCount={messages.length}
+          initialTopMostItemIndex={messages.length - 1}
           increaseViewportBy={increaseViewportBy}
           onScroll={messages.length >= LIMIT ? onScroll : undefined}
           components={{
             Header: renderHeader,
-            EmptyPlaceholder: () => renderEmptyPlaceholder(),
+            EmptyPlaceholder: renderEmptyPlaceholder,
           }}
           followOutput={!isScrollBottom ? "auto" : false}
           atBottomThreshold={AT_BOTTOM_THRESHOLD}
           itemContent={renderRow}
+          style={{ height: "100%" }}
         />
       ) : null}
       <ScrollBottomChat
@@ -179,4 +161,4 @@ const ChatWindow = ({
   )
 }
 
-export default ChatWindow
+export default React.memo(ChatWindow)

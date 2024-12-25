@@ -162,6 +162,7 @@ const useMessageSocket = () => {
                   const newContent = isPlusMsg
                     ? item.content + e.messages
                     : e.messages
+
                   if (newContent === item.content && !item.isTyping) {
                     return item
                   }

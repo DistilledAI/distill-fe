@@ -23,14 +23,17 @@ const ClanShortInfo = () => {
       {
         queryKey: [QueryDataKeys.TOTAL_EXP_POINT_USER, groupId],
         enabled: !!groupId,
+        staleTime: 0,
       },
       {
         queryKey: [QueryDataKeys.GROUP_DETAIL, groupId],
         enabled: !!groupId,
+        staleTime: 0,
       },
       {
         queryKey: [QueryDataKeys.EARN_EXP_REMAINING_DAYS],
         enabled: true,
+        staleTime: 0,
       },
     ],
   })
