@@ -5,7 +5,7 @@ import BackActionAgentDetailPage from "@pages/AgentDetail/BackAction"
 import { twMerge } from "tailwind-merge"
 import UserAuth from "."
 
-const UserAuthWrapper = () => {
+const UserAuthWrapper = ({ hasLeftBar = true }: { hasLeftBar?: boolean }) => {
   const { connectMultipleWallet } = useConnectWallet()
   useReconnectWallet()
   const sidebarCollapsed = useAppSelector((state) => state.sidebarCollapsed)
@@ -15,6 +15,7 @@ const UserAuthWrapper = () => {
       className={twMerge(
         "fixed right-0 top-0 z-20 flex w-full items-center justify-between bg-white pl-[329px] text-end duration-300",
         sidebarCollapsed && "pl-[104px]",
+        !hasLeftBar && "bg-transparent pl-0",
       )}
     >
       <BackActionAgentDetailPage />

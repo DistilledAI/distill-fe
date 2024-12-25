@@ -110,3 +110,26 @@ export const ExternalLinkIcon = ({
     </svg>
   )
 }
+
+export const ExternalLinkIcon2 = ({
+  size = 20,
+  color = "#676767",
+}: IconProps) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 21 20"
+      fill="none"
+    >
+      <path
+        d="M10.4987 5.00016H5.4987C5.05667 5.00016 4.63275 5.17576 4.32019 5.48832C4.00763 5.80088 3.83203 6.2248 3.83203 6.66683V15.0002C3.83203 15.4422 4.00763 15.8661 4.32019 16.1787C4.63275 16.4912 5.05667 16.6668 5.4987 16.6668H13.832C14.2741 16.6668 14.698 16.4912 15.0105 16.1787C15.3231 15.8661 15.4987 15.4422 15.4987 15.0002V10.0002M9.66536 10.8335L17.1654 3.3335M17.1654 3.3335H12.9987M17.1654 3.3335V7.50016"
+        stroke={color}
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}

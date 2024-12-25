@@ -18,6 +18,7 @@ export const PATH_NAMES = {
   MY_AGENTS: "/my-agents",
   REWARDS: "/rewards",
   TRENDING: "/trending",
+  PRIVATE_ROOM: "/private-room",
   ORCHESTRATION: "/orchestration",
 }
 

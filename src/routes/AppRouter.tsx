@@ -17,6 +17,7 @@ import MyPrivateAgentContentMobile from "@pages/ChatPage/Mobile/MyPrivateAgentCo
 import Marketplace from "@pages/Marketplace"
 import MyAgentPage from "@pages/MyAgents"
 import MyData from "@pages/MyData"
+import MyPrivateRoom from "@pages/MyPrivateRoom"
 import PageNotFound from "@pages/NotFound"
 import Orchestration from "@pages/Orchestration"
 import RewardsPage from "@pages/Rewards"
@@ -74,6 +75,7 @@ const AppRouter = () => {
         {/* Route Protected By Auth */}
         <Route path={PATH_NAMES.HOME} element={<ProtectedByAuth />}>
           <Route path={PATH_NAMES.MY_DATA} element={<MyData />} />
+          <Route path={PATH_NAMES.PRIVATE_ROOM} element={<MyPrivateRoom />} />
           <Route path={PATH_NAMES.ACCOUNT} element={<Account />} />
           <Route
             path={`${PATH_NAMES.AGENT_DETAIL}/:agentId`}
