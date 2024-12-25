@@ -82,7 +82,7 @@ const ClearContext = () => {
     <Button
       type="button"
       className="btn-primary !bg-mercury-70 px-3 max-md:!gap-1 max-md:!border-mercury-100 max-md:!text-[14px]"
-      onClick={handleClearChat}
+      onPress={handleClearChat}
       isDisabled={mutation.isPending}
     >
       <div>
