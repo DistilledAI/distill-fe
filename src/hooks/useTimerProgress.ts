@@ -9,7 +9,6 @@ const useTimerProgress = (time = 0, repeat = true, reset: () => void) => {
     if (!repeat && timerProgress >= 100) return
 
     const interval = setInterval(() => {
-      // setTimerProgress((v) => (v >= 100 ? (repeat ? 0 : 100) : v + 1))
       setTimerProgress((v) => {
         if (v >= 100) {
           reset()
