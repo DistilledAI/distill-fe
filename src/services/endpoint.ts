@@ -94,7 +94,8 @@ const endpoint = {
   GET_EVENT_INFO_AGENT_LAND_URL: `${PREDICTION_API_URL}/events`,
 
   //trending
-  GET_TRENDING_LIST: withBaseURL("/trending/list"),
+  GET_TRENDING_AGENT: withBaseURL("/trending"),
+  GET_TRENDING_AGENT_LIST: withBaseURL("/trending/list"),
 }
 
 export default endpoint

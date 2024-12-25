@@ -110,19 +110,3 @@ export const checkRePostDistilledX = async (data: {
     data,
   })
 }
-
-interface TrendingPayload {
-  size: number
-  offset: number
-  sort?: string
-  keyword?: string
-  filter?: string
-}
-
-export const getTrendingList = async (params: TrendingPayload) => {
-  return fetchApiAuth({
-    method: "GET",
-    url: endpoint.GET_TRENDING_LIST,
-    params,
-  })
-}

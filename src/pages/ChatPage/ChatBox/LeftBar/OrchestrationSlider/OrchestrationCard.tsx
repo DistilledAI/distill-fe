@@ -1,4 +1,4 @@
-import { maxIcon } from "@assets/images"
+import { maxAvatar } from "@assets/images"
 import OrchestrationHeader from "@components/ChatInfoCurrent/OrchestrationHeader"
 import { BroadcastIcon } from "@components/Icons/Broadcast"
 
@@ -23,7 +23,7 @@ const OrchestrationCard = ({ item }: Props) => {
       <div className="flex justify-between">
         <OrchestrationHeader
           agent1={{
-            avatarSrc: maxIcon,
+            avatarSrc: maxAvatar,
             publicAddress: "orai...Vo5h",
           }}
           agent2={{

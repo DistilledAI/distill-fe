@@ -1,11 +1,122 @@
-import { maxBTCAvatar, spotlightBg } from "@assets/images"
+import { spotlightBg } from "@assets/images"
 import { IconTrendingUp } from "@components/Icons/DefiLens"
 import { MessagePlusIcon } from "@components/Icons/Message"
-import { TelegramOutlineIcon } from "@components/Icons/SocialLinkIcon"
-import { Dexscreener } from "@components/Icons/TrendingPage"
-import { TwitterIcon } from "@components/Icons/Twitter"
+import {
+  DexScreenerIcon,
+  TelegramOutlineIcon,
+  XIcon,
+} from "@components/Icons/SocialLinkIcon"
+import { formatNumberWithComma } from "@utils/index"
+import { useEffect, useState } from "react"
+import { Link } from "react-router-dom"
+import { getTrendingAgent } from "services/trending"
 
-const AutonomousAgents: React.FC = () => {
+interface Image {
+  title: string
+  des: string
+  image: string
+}
+
+interface Socials {
+  telegram: string
+  web: string
+  x: string
+  dexscreener: string
+}
+
+interface Agent {
+  images: Image[]
+  socials: Socials
+}
+
+interface TrendingAgentState {
+  totalMarketCap: number
+  totalMsg: number
+  agent: Agent
+}
+
+const SOCIAL_LINKS: { key: keyof Socials; icon: React.ElementType }[] = [
+  { key: "dexscreener", icon: DexScreenerIcon },
+  { key: "x", icon: XIcon },
+  { key: "telegram", icon: TelegramOutlineIcon },
+]
+
+const AutonomousAgents = () => {
+  const [trendingAgent, setTrendingAgent] = useState<TrendingAgentState>({
+    totalMarketCap: 0,
+    totalMsg: 0,
+    agent: {
+      images: [
+        {
+          title: "",
+          des: "",
+          image: "",
+        },
+      ],
+      socials: {
+        dexscreener: "",
+        telegram: "",
+        web: "",
+        x: "",
+      },
+    },
+  })
+
+  const { totalMarketCap, totalMsg, agent } = trendingAgent
+
+  useEffect(() => {
+    const fetchTrendingAgent = async () => {
+      try {
+        const res = await getTrendingAgent()
+        const stats = res?.data?.stats || []
+        const agent = res?.data?.banner?.[0] || {}
+
+        const findValueByKey = (key: string, defaultValue = 0) => {
+          return Number(
+            stats.find((item: any) => item.key === key)?.value || defaultValue,
+          )
+        }
+
+        setTrendingAgent({
+          totalMarketCap: Math.round(findValueByKey("totalMarketCap")),
+          totalMsg: findValueByKey("totalMsg"),
+          agent: {
+            images:
+              agent.image?.map(({ tile = "", des = "", image = "" }: any) => ({
+                title: tile,
+                des,
+                image,
+              })) || [],
+            socials: {
+              telegram: agent.telegram,
+              web: agent.web,
+              x: agent.x,
+              dexscreener: "",
+            },
+          },
+        })
+      } catch (error) {
+        console.error("Error fetching trending agent:", error)
+      }
+    }
+
+    fetchTrendingAgent()
+  }, [])
+
+  const renderSocials = () => {
+    return (
+      <div className="mt-2 flex items-center gap-3">
+        {SOCIAL_LINKS.map(({ key, icon: Icon }) =>
+          agent.socials[key] ? (
+            <Link key={key} to={agent.socials[key]} target="_blank">
+              <Icon size={20} color="#FFFF" />
+            </Link>
+          ) : null,
+        )}
+      </div>
+    )
+  }
+
   return (
     <div className="flex w-full items-center gap-10 max-md:flex-col-reverse max-md:gap-0">
       <div className="w-[55%] max-md:w-full">
@@ -27,7 +138,7 @@ const AutonomousAgents: React.FC = () => {
               </span>
             </div>
             <span className="text-24 font-semibold max-md:text-18">
-              $35,183,869
+              ${formatNumberWithComma(totalMarketCap)}
             </span>
           </div>
 
@@ -39,7 +150,7 @@ const AutonomousAgents: React.FC = () => {
               </span>
             </div>
             <span className="text-24 font-semibold max-md:text-18">
-              $35,183,869
+              {formatNumberWithComma(totalMsg)}
             </span>
           </div>
         </div>
@@ -55,29 +166,25 @@ const AutonomousAgents: React.FC = () => {
           <div className="flex h-full flex-col justify-between">
             <div>
               <h3 className="text-[32px] font-[800] uppercase text-white">
-                max
+                {agent.images[0]?.title.toUpperCase()}
               </h3>
               <div className="w-fit rounded-[4px] border border-[rgba(255,255,255,0.40)] px-2">
                 <span className="text-[13px] font-medium uppercase text-white">
-                  spotlight
+                  {agent.images[0]?.des.toLocaleUpperCase()}
                 </span>
               </div>
             </div>
 
             <div>
               <span className="text-[13px] font-medium uppercase text-white">
-                $35.1 MKT Cap
+                $- MKT Cap
               </span>
-              <div className="mt-2 flex items-center gap-3">
-                <Dexscreener />
-                <TwitterIcon color="#FFFF" />
-                <TelegramOutlineIcon color="#FFFF" />
-              </div>
+              {renderSocials()}
             </div>
           </div>
 
           <img
-            src={maxBTCAvatar}
+            src={agent.images[0]?.image}
             className="absolute -top-[28px] right-[50px] h-[239px] w-[180px]"
           />
         </div>
@@ -85,4 +192,5 @@ const AutonomousAgents: React.FC = () => {
     </div>
   )
 }
+
 export default AutonomousAgents

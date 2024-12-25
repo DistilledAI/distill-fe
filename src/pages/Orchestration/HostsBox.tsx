@@ -1,4 +1,4 @@
-import { maxIcon } from "@assets/images"
+import { maxAvatar } from "@assets/images"
 import { solanaCircleIcon } from "@assets/svg"
 import AvatarCustom from "@components/AvatarCustom"
 import { ExternalLinkIcon } from "@components/Icons/Share"
@@ -16,7 +16,7 @@ const HostsBox = () => {
           <AvatarCustom
             className="h-11 w-11 rounded-lg"
             badgeClassName="bg-transparent"
-            src={maxIcon}
+            src={maxAvatar}
             badgeIcon={<img src={solanaCircleIcon} />}
           />
           <div>

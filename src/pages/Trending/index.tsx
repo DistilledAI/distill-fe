@@ -1,28 +1,28 @@
 import { useEffect, useState } from "react"
-import { getTrendingList } from "services/agent"
 import AutonomousAgents from "./AutonomousAgents"
 import ListTrending from "./ListTrending"
 import TopActiveClans from "./TopActiveClans"
+import { getTrendingAgentList } from "services/trending"
 
 const Trending: React.FC = () => {
   const [trendingList, setTrendingList] = useState<any[]>([])
   console.log("🚀 ~ trendingList:", trendingList)
 
   useEffect(() => {
-    const callGetTrendingList = async () => {
+    ;(async () => {
       try {
         const payload = {
           size: 10,
           offset: 0,
         }
-        const res = await getTrendingList(payload)
+        const res = await getTrendingAgentList(payload)
         if (res) {
           setTrendingList(res.data?.items)
         }
-      } catch (error) {}
-    }
-
-    callGetTrendingList()
+      } catch (error) {
+        console.log({ error })
+      }
+    })()
   }, [])
 
   return (
