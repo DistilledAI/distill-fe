@@ -7,14 +7,14 @@ interface Image {
   image: string
 }
 
-interface Socials {
-  telegram: string
-  web: string
-  x: string
-  dexscreener: string
+export interface Socials {
+  telegram?: string
+  web?: string
+  x?: string
+  dexscreener?: string
 }
 
-interface Agent {
+export interface AgentSpotlight {
   images: Image[]
   socials: Socials
 }
@@ -22,14 +22,14 @@ interface Agent {
 interface TrendingAgentState {
   totalMarketCap: number
   totalMsg: number
-  agent: Agent
+  agentSpotlight: AgentSpotlight
 }
 
 const useTrendingAgent = () => {
   const [trendingAgent, setTrendingAgent] = useState<TrendingAgentState>({
     totalMarketCap: 0,
     totalMsg: 0,
-    agent: {
+    agentSpotlight: {
       images: [
         {
           title: "",
@@ -46,7 +46,7 @@ const useTrendingAgent = () => {
     },
   })
 
-  const { totalMarketCap, totalMsg, agent } = trendingAgent
+  const { totalMarketCap, totalMsg, agentSpotlight } = trendingAgent
 
   useEffect(() => {
     const fetchTrendingAgent = async () => {
@@ -64,7 +64,7 @@ const useTrendingAgent = () => {
         setTrendingAgent({
           totalMarketCap: Math.round(findValueByKey("totalMarketCap")),
           totalMsg: findValueByKey("totalMsg"),
-          agent: {
+          agentSpotlight: {
             images:
               agent.image?.map(({ tile = "", des = "", image = "" }: any) => ({
                 title: tile,
@@ -87,7 +87,7 @@ const useTrendingAgent = () => {
     fetchTrendingAgent()
   }, [])
 
-  return { totalMarketCap, totalMsg, agent }
+  return { totalMarketCap, totalMsg, agentSpotlight }
 }
 
 export default useTrendingAgent
