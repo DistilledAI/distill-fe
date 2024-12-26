@@ -242,7 +242,7 @@ export const formatNumberWithComma = (num: number) => {
   if (num) {
     return num.toLocaleString("en-US")
   }
-  return 0
+  return "0"
 }
 
 export const isMarkdownImage = (str: string) => {
