@@ -41,19 +41,19 @@ const AutonomousAgents = () => {
   }
 
   return (
-    <div className="flex w-full items-center justify-between gap-10 max-md:flex-col-reverse max-md:gap-0">
+    <div className="flex w-full items-center justify-between gap-10 max-md:flex-col-reverse">
       <div className="w-[55%] max-md:w-full">
         <div className="flex items-center gap-4">
-          <h1 className="bg-lgd-code-hot-ramp bg-clip-text text-[68px] font-bold text-transparent max-md:text-[50px]">
+          <h2 className="bg-lgd-code-hot-ramp bg-clip-text text-[68px] font-bold text-transparent max-md:text-[50px]">
             8
-          </h1>
+          </h2>
           <span className="text-18 font-bold text-mercury-950 md:text-22">
             Autonomous agents <br /> managing their own wallets
           </span>
         </div>
 
         <div className="flex w-full items-center justify-between gap-4">
-          <div className="w-full rounded-[22px] bg-mercury-30 px-[18px] py-6">
+          <div className="w-full rounded-[22px] bg-white px-[18px] py-6 md:bg-mercury-30">
             <div className="mb-3 flex items-center gap-1.5">
               <IconTrendingUp color="#888888" />
               <span className="text-14 font-medium text-mercury-600">
@@ -65,7 +65,7 @@ const AutonomousAgents = () => {
             </span>
           </div>
 
-          <div className="w-full rounded-[22px] bg-mercury-30 px-[18px] py-6">
+          <div className="w-full rounded-[22px] bg-white px-[18px] py-6 md:bg-mercury-30">
             <div className="mb-2 flex items-center gap-1.5">
               <MessagePlusIcon size={24} color="#888888" />
               <span className="text-14 font-medium text-mercury-600">
@@ -107,14 +107,14 @@ const AutonomousAgents = () => {
 
         <img
           src={agent.images[0]?.image}
-          className="absolute -top-5 right-6 h-[239px] w-[185px] object-cover"
+          className="absolute -top-5 right-10 h-[239px] w-[185px] object-contain md:right-8"
           alt="agent image"
           loading="lazy"
         />
 
         <Link
           to={agent.socials.web}
-          className="absolute -right-8 -top-4 rounded-full bg-[#363636B2] px-4 py-2 text-16 font-bold text-white backdrop-blur-[10px]"
+          className="absolute -right-4 -top-4 rounded-full bg-[#363636B2] px-4 py-2 text-16 font-bold text-white backdrop-blur-[10px] md:-right-8"
         >
           Join Me!
         </Link>

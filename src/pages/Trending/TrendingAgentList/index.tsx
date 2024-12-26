@@ -32,7 +32,7 @@ const TrendingAgentList = () => {
   // const [interval, setInterval] = useState(Interval["24H"])
 
   return (
-    <div className="mt-9">
+    <div className="mt-7 md:mt-9">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-1">
           <TrendingIcon />
@@ -63,9 +63,7 @@ const TrendingAgentList = () => {
           </Tabs>
         </div>
       </div>
-      <div className="mt-6">
-        <TrendingAgentTable trendingAgentList={trendingAgentList} />
-      </div>
+      <TrendingAgentTable trendingAgentList={trendingAgentList} />
     </div>
   )
 }

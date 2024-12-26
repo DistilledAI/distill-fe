@@ -6,7 +6,7 @@ import {
 
 const TopActiveClans = () => {
   return (
-    <div className="mt-4 md:mt-14">
+    <div className="mt-7 md:mt-14">
       <div className="mb-4 flex items-center gap-2">
         <FlagFilledIcon />
         <h3 className="text-18 font-bold text-mercury-950 md:text-22">
