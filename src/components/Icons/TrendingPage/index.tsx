@@ -60,7 +60,10 @@ export const TrendingIcon = () => {
   )
 }
 
-export const CretUpFilledIcon = ({ size = 13, color = "white" }: IconProps) => {
+export const CaretUpFilledIcon = ({
+  size = 13,
+  color = "white",
+}: IconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

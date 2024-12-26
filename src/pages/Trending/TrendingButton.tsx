@@ -15,7 +15,7 @@ const TrendingButton = () => {
         "btn-primary z-10 min-h-[60px] w-full",
         sidebarCollapsed && "min-h-14 min-w-14",
       )}
-      onClick={() => navigate(PATH_NAMES.TRENDING)}
+      onPress={() => navigate(PATH_NAMES.TRENDING)}
     >
       <TrendingIcon />
       <span
