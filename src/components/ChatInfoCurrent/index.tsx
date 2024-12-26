@@ -19,7 +19,7 @@ import TotalMemberBadge from "@components/TotalMemberBadge"
 import { useLocation } from "react-router-dom"
 import { PATH_NAMES } from "@constants/index"
 import OrchestrationHeader from "./OrchestrationHeader"
-import { maxIcon } from "@assets/images"
+import { maxAvatar } from "@assets/images"
 
 const ChatInfoCurrent: React.FC<{
   groupDetail: UserGroup | null
@@ -37,7 +37,7 @@ const ChatInfoCurrent: React.FC<{
     return (
       <OrchestrationHeader
         agent1={{
-          avatarSrc: maxIcon,
+          avatarSrc: maxAvatar,
           publicAddress: "orai...Vo5h",
         }}
         agent2={{

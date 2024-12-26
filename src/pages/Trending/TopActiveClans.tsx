@@ -1,20 +1,18 @@
 import { MessageFilledIcon } from "@components/Icons/Message"
 import {
-  CretUpFilledIcon,
+  CaretUpFilledIcon,
   FlagFilledIcon,
 } from "@components/Icons/TrendingPage"
 
-const TopActiveClans: React.FC = () => {
+const TopActiveClans = () => {
   return (
-    <div className="mt-[50px] max-md:mt-4">
+    <div className="mt-4 md:mt-14">
       <div className="mb-4 flex items-center gap-2">
         <FlagFilledIcon />
-        <span className="text-[22px] font-bold max-md:text-18">
+        <h3 className="text-18 font-bold text-mercury-950 md:text-22">
           Top Active Clans
-        </span>
-        <span className="text-[22px] font-normal uppercase text-mercury-700 max-md:text-18">
-          24h
-        </span>
+        </h3>
+        <h3 className="text-18 uppercase text-mercury-700 md:text-22">24h</h3>
       </div>
 
       <div className="grid w-full grid-cols-6 gap-1 max-md:grid-cols-3">
@@ -33,6 +31,7 @@ interface ActiveClanContainerProps {
   clanName: string
   totalMessage: number | string
 }
+
 const ActiveClanContainer: React.FC<ActiveClanContainerProps> = ({
   clanName,
   totalMessage,
@@ -45,9 +44,9 @@ const ActiveClanContainer: React.FC<ActiveClanContainerProps> = ({
             "linear-gradient(180deg, rgba(0, 0, 0, 0.00) 28.5%, #000 100%)",
         }}
         className="absolute bottom-0 left-0 h-[80%] w-full"
-      ></div>
+      />
       <div className="absolute right-2 top-2 flex w-fit items-center gap-1 rounded-full bg-[#20993F] px-1">
-        <CretUpFilledIcon />
+        <CaretUpFilledIcon />
         <span className="text-[12px] font-medium text-white">53.4%</span>
       </div>
       <img

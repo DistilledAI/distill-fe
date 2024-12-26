@@ -1,4 +1,4 @@
-import { maxIcon } from "@assets/images"
+import { maxAvatar } from "@assets/images"
 import { solanaCircleIcon } from "@assets/svg"
 import { CopyIcon } from "@components/Icons/Copy"
 import { PhantomIcon } from "@components/Icons/MetamaskIcon"
@@ -74,7 +74,7 @@ const HeaderWallet = () => {
         <p className="text-[#cfcfcf] max-md:text-[14px]">
           {numberWithCommas(tokenBal)}
         </p>
-        <Image className="h-5 w-5 rounded-full" src={maxIcon} />
+        <Image className="h-5 w-5 rounded-full" src={maxAvatar} />
       </div>
       <div className="mt-1">
         <Histories />

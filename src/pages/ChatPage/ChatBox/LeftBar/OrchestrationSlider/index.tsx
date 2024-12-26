@@ -1,4 +1,4 @@
-import { maxIcon } from "@assets/images"
+import { maxAvatar } from "@assets/images"
 import { Navigation } from "swiper/modules"
 import { Swiper, SwiperSlide } from "swiper/react"
 import OrchestrationCard from "./OrchestrationCard"
@@ -6,15 +6,15 @@ import { ChevronDownIcon } from "@components/Icons/ChevronDownIcon"
 
 const ORCHESTRATION_LIST = [
   {
-    avatarAgent1: maxIcon,
-    avatarAgent2: maxIcon,
+    avatarAgent1: maxAvatar,
+    avatarAgent2: maxAvatar,
     name: "Max & Min",
     tag: "Orchestration",
     topic: "What was your initial impression of the Titanic movie?",
   },
   {
-    avatarAgent1: maxIcon,
-    avatarAgent2: maxIcon,
+    avatarAgent1: maxAvatar,
+    avatarAgent2: maxAvatar,
     name: "Max & Min",
     tag: "Orchestration",
     topic: "What was your initial impression of the Titanic movie?",

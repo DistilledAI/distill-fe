@@ -92,6 +92,10 @@ const endpoint = {
   GET_HISTORY_AGENT_LAND_URL: (userId: string) =>
     `${PREDICTION_API_URL}/users/${userId}/orders`,
   GET_EVENT_INFO_AGENT_LAND_URL: `${PREDICTION_API_URL}/events`,
+
+  //trending
+  GET_TRENDING_AGENT: withBaseURL("/trending"),
+  GET_TRENDING_AGENT_LIST: withBaseURL("/trending/list"),
 }
 
 export default endpoint

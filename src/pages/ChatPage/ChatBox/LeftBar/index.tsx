@@ -1,12 +1,13 @@
-import MyEcho from "./MyEcho"
 import { xMasBg } from "@assets/images"
 import { DistilledAIIcon } from "@components/Icons/DistilledAIIcon"
 import { useAppSelector } from "@hooks/useAppRedux"
 import ButtonMarketplace from "@pages/Marketplace/ButtonMarketplace"
+import TrendingButton from "@pages/Trending/TrendingButton"
 import { Link } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
 import AnalyticsInfoWrap from "./AnalyticsInfoWrap"
 import ChatClans from "./Clans"
+import MyEcho from "./MyEcho"
 import PrivateAI from "./PrivateAI"
 import SidebarCollapsed from "./SidebarCollapsed"
 // import OrchestrationSlider from "./OrchestrationSlider"
@@ -57,6 +58,8 @@ const LeftBar = () => {
               sidebarCollapsed && "flex-shrink-0 flex-col justify-center",
             )}
           >
+            {/* <Playground /> */}
+            <TrendingButton />
             <ButtonMarketplace />
           </div>
           <AnalyticsInfoWrap />

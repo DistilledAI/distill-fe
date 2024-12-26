@@ -32,7 +32,7 @@ export { default as objectiveCategoryClanActive } from "./objective-category-cla
 export { default as objectiveCategoryClan } from "./objective-category-clan.png"
 export { default as objectiveCategory } from "./objective-category.png"
 export { default as oraichainLogo } from "./oraichain-logo.png"
-export { default as maxIcon } from "./max-avatar.png"
+export { default as maxAvatar } from "./max-avatar.png"
 export { default as roundProgressXmas } from "./round-progress-xmas.png"
 export { default as scaler } from "./scaler.png"
 export { default as solanaLogo } from "./solana-logo.png"
