@@ -7,16 +7,19 @@ import LeftBar from "@pages/ChatPage/ChatBox/LeftBar"
 import useMessageSocket from "@pages/ChatPage/ChatBox/useMessageSocket"
 import UserAuthWrapper from "@pages/ChatPage/ChatBox/UserAuth/UserAuthWrapper"
 import { StyleSpacingProvider } from "providers/StyleSpacingProvider"
-import { Outlet, useLocation } from "react-router-dom"
+import { Outlet, useLocation, useParams } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
 
 const MainLayoutDesktop = () => {
   const { pathname } = useLocation()
+  const { agentId } = useParams()
   const sidebarCollapsed = useAppSelector((state) => state.sidebarCollapsed)
   useInviteAgent()
   useFetchMe()
   useMessageSocket()
-  const isHideLeftBar = pathname === PATH_NAMES.TRENDING
+  const isHideLeftBar =
+    pathname === PATH_NAMES.TRENDING ||
+    pathname === `${PATH_NAMES.AGENT_DETAIL}/${agentId}`
 
   const renderContent = () => {
     if (isHideLeftBar) {

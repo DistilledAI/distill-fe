@@ -1,11 +1,17 @@
+import { BoltOutlineIcon, TargetIcon } from "@components/Icons"
+import { ClipboardTextIcon } from "@components/Icons/ClipboardTextIcon"
+import { DatabaseSettingIcon } from "@components/Icons/DatabaseImportIcon"
+import { StarUserIconOutline } from "@components/Icons/UserIcon"
 import SmoothScrollTo from "@components/SmoothScrollTo"
 import {
   COMMUNICATION_STYLE_LIST,
   PERSONALITY_LIST,
   STATUS_AGENT,
 } from "@constants/index"
+import { refreshFetchMyAgent } from "@reducers/agentSlice"
 import { useEffect, useState } from "react"
 import { FormProvider, useForm } from "react-hook-form"
+import { useDispatch } from "react-redux"
 import { useParams } from "react-router-dom"
 import { toast } from "react-toastify"
 import { updateAgent, updateAgentConfig } from "services/agent"
@@ -29,8 +35,6 @@ import {
 } from "./helpers"
 import useFetchAgentConfig from "./useFetchAgentConfig"
 import useFetchDetail from "./useFetchDetail"
-import { useDispatch } from "react-redux"
-import { refreshFetchMyAgent } from "@reducers/agentSlice"
 
 const AgentDetail: React.FC = () => {
   const { agentId } = useParams()
@@ -159,18 +163,9 @@ const AgentDetail: React.FC = () => {
 
   const componentScrollTo = [
     {
-      title: "Display Info",
+      title: "Appearance",
       content: <GeneralInfo agentData={agentData} />,
-    },
-    {
-      title: "Functions",
-      content: (
-        <Functions
-          agentData={agentData}
-          agentConfigs={agentConfigs}
-          refetch={refetch}
-        />
-      ),
+      icon: <ClipboardTextIcon />,
     },
     {
       title: "Behaviors",
@@ -184,38 +179,52 @@ const AgentDetail: React.FC = () => {
           valueCustomDefault={valueCustomDefault}
         />
       ),
+      icon: <StarUserIconOutline color="#A2845E" />,
+    },
+    {
+      title: "Autonomous AI Agent",
+      content: (
+        <Functions
+          agentData={agentData}
+          agentConfigs={agentConfigs}
+          refetch={refetch}
+        />
+      ),
+      isNew: true,
+      icon: <BoltOutlineIcon color="#A2845E" />,
     },
     {
       title: "Knowledge",
       content: <KnowledgeAgent />,
+      icon: <DatabaseSettingIcon />,
     },
     {
       title: "Target Audience",
       content: <TargetAudience />,
+      icon: <TargetIcon />,
     },
     {
       title: "Monetization",
       content: <Monetization />,
+      icon: <ClipboardTextIcon />,
     },
   ]
 
   return (
-    <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(onSubmit)}>
-        <Header submitLoading={loading} agentData={agentData} />
-        <div className="sticky left-0 top-[192px] h-[1px] w-full bg-mercury-100"></div>
-        <div className="relative mx-auto max-w-[800px] px-4 pb-5 max-md:min-h-dvh max-md:bg-mercury-70 max-md:pt-[70px] max-sm:pb-20 max-sm:pt-6">
+    <>
+      <FormProvider {...methods}>
+        <form onSubmit={methods.handleSubmit(onSubmit)}>
+          <Header submitLoading={loading} agentData={agentData} />
           <SmoothScrollTo
             components={componentScrollTo}
             offsetAdjustment={220}
             classNames={{
-              headerWrapper: "sticky -mt-[1px] top-[152px] bg-white z-[11]",
               contentWrapper: "pt-5",
             }}
           />
-        </div>
-      </form>
-    </FormProvider>
+        </form>
+      </FormProvider>
+    </>
   )
 }
 export default AgentDetail
