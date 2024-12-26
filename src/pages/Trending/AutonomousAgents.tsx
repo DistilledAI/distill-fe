@@ -47,7 +47,7 @@ const AutonomousAgents = () => {
           <h1 className="bg-lgd-code-hot-ramp bg-clip-text text-[68px] font-bold text-transparent max-md:text-[50px]">
             8
           </h1>
-          <span className="text-[22px] font-bold text-mercury-950 max-md:text-18">
+          <span className="text-18 font-bold text-mercury-950 md:text-22">
             Autonomous agents <br /> managing their own wallets
           </span>
         </div>
@@ -66,8 +66,8 @@ const AutonomousAgents = () => {
           </div>
 
           <div className="w-full rounded-[22px] bg-mercury-30 px-[18px] py-6">
-            <div className="mb-3 flex items-center gap-1.5">
-              <MessagePlusIcon />
+            <div className="mb-2 flex items-center gap-1.5">
+              <MessagePlusIcon size={24} color="#888888" />
               <span className="text-14 font-medium text-mercury-600">
                 Total Messages
               </span>

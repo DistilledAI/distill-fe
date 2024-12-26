@@ -2,9 +2,9 @@ import AutonomousAgents from "./AutonomousAgents"
 import TopActiveClans from "./TopActiveClans"
 import TrendingAgentList from "./TrendingAgentList"
 
-const Trending: React.FC = () => {
+const Trending = () => {
   return (
-    <div className="mx-auto max-w-[1103px] p-20 pt-4">
+    <div className="mx-auto max-w-[1103px] px-4 pb-20 pt-6 md:p-20">
       <AutonomousAgents />
       <TopActiveClans />
       <TrendingAgentList />

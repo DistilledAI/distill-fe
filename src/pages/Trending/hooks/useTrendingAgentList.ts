@@ -3,7 +3,6 @@ import { getTrendingAgentList } from "services/trending"
 
 const useTrendingAgentList = () => {
   const [trendingAgentList, setTrendingAgentList] = useState<any[]>([])
-  console.log("🚀 ~ trendingList:", trendingAgentList)
 
   useEffect(() => {
     ;(async () => {

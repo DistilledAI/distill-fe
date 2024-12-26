@@ -14,16 +14,17 @@ const BackAction: React.FC = () => {
     navigate(-1)
   }
 
-  if (!isAgentDetailPage) return <div />
+  if (!isAgentDetailPage) return null
 
   return (
-    <div
+    <button
+      type="button"
       className="ml-8 flex cursor-pointer items-center gap-3"
       onClick={goBack}
     >
       <ArrowLeftFilledIcon color="#545454" />
       <span className="text-base-b">Back</span>
-    </div>
+    </button>
   )
 }
 export default BackAction

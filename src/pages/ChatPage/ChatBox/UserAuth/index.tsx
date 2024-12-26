@@ -105,7 +105,7 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
           <Button
             className="h-[44px] rounded-full bg-mercury-950 text-white max-md:h-[36px]"
             isLoading={loading}
-            onClick={connectWallet}
+            onPress={connectWallet}
           >
             <div className="flex items-center gap-1 max-md:hidden">
               {!loading && <WalletIcon />} Connect Wallet
