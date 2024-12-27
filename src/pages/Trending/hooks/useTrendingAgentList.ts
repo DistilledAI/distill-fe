@@ -8,7 +8,7 @@ const useTrendingAgentList = () => {
     ;(async () => {
       try {
         const payload = {
-          size: 10,
+          limit: 10,
           offset: 0,
         }
         const res = await getTrendingAgentList(payload)

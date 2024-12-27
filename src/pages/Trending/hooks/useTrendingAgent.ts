@@ -30,13 +30,7 @@ const useTrendingAgent = () => {
     totalMarketCap: 0,
     totalMsg: 0,
     agentSpotlight: {
-      images: [
-        {
-          title: "",
-          des: "",
-          image: "",
-        },
-      ],
+      images: [],
       socials: {
         dexscreener: "",
         telegram: "",
