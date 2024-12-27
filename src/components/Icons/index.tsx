@@ -510,7 +510,7 @@ export const BoltOutlineIcon = ({
       <path
         d="M13 3V10H19L11 21V14H5L13 3Z"
         stroke={color}
-        stroke-width="2"
+        strokeWidth="2"
         stroke-linecap="round"
         stroke-linejoin="round"
       />
