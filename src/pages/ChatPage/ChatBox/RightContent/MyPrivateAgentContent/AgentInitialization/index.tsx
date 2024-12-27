@@ -36,6 +36,9 @@ const AgentInitialization = () => {
       avatar: "",
       personality_traits: [PERSONALITY_LIST[0].value],
       communication_style: [COMMUNICATION_STYLE_LIST[0].value],
+      website_link: "",
+      x_link: "",
+      telegram_link: "",
     },
   })
 

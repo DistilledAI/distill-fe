@@ -132,6 +132,9 @@ interface CreateBot {
   linkedin?: string
   email?: string
   webhook?: string
+  website_link?: string
+  x_link?: string
+  telegram_link?: string
 }
 export const createBot = async (data: CreateBot) => {
   return fetchApiAuth({
