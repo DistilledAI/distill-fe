@@ -34,13 +34,13 @@ const TWITTER_FEATURE = [
 ]
 
 const POST_INTERVAL = [
-  { vlaue: "30m", label: "30 minutes" },
-  { vlaue: "1h", label: "1 hour" },
-  { vlaue: "2h", label: "2 hours" },
-  { vlaue: "3h", label: "3 hours" },
-  { vlaue: "4h", label: "4 hours" },
-  { vlaue: "6h", label: "6 hours" },
-  { vlaue: "1d", label: "1 day" },
+  { value: "30m", label: "30 minutes" },
+  { value: "1h", label: "1 hour" },
+  { value: "2h", label: "2 hours" },
+  { value: "3h", label: "3 hours" },
+  { value: "4h", label: "4 hours" },
+  { value: "6h", label: "6 hours" },
+  { value: "1d", label: "1 day" },
 ]
 
 const DATA_SOURCES_BY_CATEGORY = {
@@ -140,7 +140,7 @@ const Functions: React.FC<{
                     selectedKeys={value ? [value] : ""}
                   >
                     {POST_INTERVAL.map((record) => (
-                      <SelectItem key={record.vlaue}>{record.label}</SelectItem>
+                      <SelectItem key={record.value}>{record.label}</SelectItem>
                     ))}
                   </Select>
                 </div>
