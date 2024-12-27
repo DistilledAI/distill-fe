@@ -34,8 +34,8 @@ const AgentInitialization = () => {
       username: "",
       description: "",
       avatar: "",
-      agentPersonal: [PERSONALITY_LIST[0].value],
-      agentCommunication: [COMMUNICATION_STYLE_LIST[0].value],
+      personality_traits: [PERSONALITY_LIST[0].value],
+      communication_style: [COMMUNICATION_STYLE_LIST[0].value],
     },
   })
 
@@ -74,8 +74,8 @@ const AgentInitialization = () => {
   }
 
   const handleSelectBehaviors = (selected: SelectedBehaviors) => {
-    methods.setValue("agentPersonal", selected.agentPersonal)
-    methods.setValue("agentCommunication", selected.agentCommunication)
+    methods.setValue("personality_traits", selected.personality_traits)
+    methods.setValue("communication_style", selected.communication_style)
   }
 
   return (
@@ -87,8 +87,8 @@ const AgentInitialization = () => {
           <Divider />
           <AgentBehaviors
             selectedBehaviors={{
-              agentPersonal: methods.watch("agentPersonal"),
-              agentCommunication: methods.watch("agentCommunication"),
+              personality_traits: methods.watch("personality_traits"),
+              communication_style: methods.watch("communication_style"),
             }}
             onSelectBehaviors={handleSelectBehaviors}
             isCreate

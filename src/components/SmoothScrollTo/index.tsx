@@ -133,7 +133,7 @@ const SmoothScrollTo: React.FC<{
               <div
                 key={index}
                 ref={(el) => (contentRefs.current[index] = el)}
-                className={twMerge("", !isActive(index) && "opacity-50")}
+                // className={twMerge("", !isActive(index) && "opacity-50")}
               >
                 {comp.content}
               </div>

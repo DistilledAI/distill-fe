@@ -3,13 +3,13 @@ import { StarUserIconOutline } from "@components/Icons/UserIcon"
 import { COMMUNICATION_STYLE_LIST, PERSONALITY_LIST } from "@constants/index"
 import { Input, Textarea } from "@nextui-org/react"
 import React, { useEffect, useState } from "react"
+import { Controller, useFormContext } from "react-hook-form"
 import { twMerge } from "tailwind-merge"
 import CategoryLabel, { FieldLabel } from "../CategoryLabel"
-import { Controller, useFormContext } from "react-hook-form"
 import InteractFrequency from "./InteractFrequency"
-import ToneAdaptation from "./ToneAdaptation"
 import ResponseLength from "./ResponseLength"
 import SuggestReplies from "./SuggestReplies"
+import ToneAdaptation from "./ToneAdaptation"
 
 interface BehaviorItem {
   value: string
@@ -18,8 +18,8 @@ interface BehaviorItem {
 }
 
 export interface SelectedBehaviors {
-  agentPersonal: string[]
-  agentCommunication: string[]
+  personality_traits: string[]
+  communication_style: string[]
 }
 
 interface AgentBehaviorsProps {
@@ -180,7 +180,7 @@ const AgentBehaviors: React.FC<AgentBehaviorsProps> = ({
         />
         <div className="flex flex-wrap gap-2">
           {PERSONALITY_LIST.map((item: BehaviorItem) =>
-            renderBehaviorItem(item, "agentPersonal"),
+            renderBehaviorItem(item, "personality_traits"),
           )}
         </div>
       </div>
@@ -193,7 +193,7 @@ const AgentBehaviors: React.FC<AgentBehaviorsProps> = ({
         />
         <div className="flex flex-wrap gap-2">
           {COMMUNICATION_STYLE_LIST.map((item: BehaviorItem) =>
-            renderBehaviorItem(item, "agentCommunication"),
+            renderBehaviorItem(item, "communication_style"),
           )}
         </div>
       </div>

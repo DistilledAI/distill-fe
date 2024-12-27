@@ -59,7 +59,7 @@ const AgentDetail: React.FC = () => {
   const handleSetValueCustomDefaultDisplay = (
     data: any,
     list: any,
-    name: "agentPersonal" | "agentCommunication",
+    name: "personality_traits" | "communication_style",
   ) => {
     const isDataCustom = !list.map((item: any) => item.value).includes(data)
     const value = isDataCustom
@@ -78,13 +78,13 @@ const AgentDetail: React.FC = () => {
       handleSetValueCustomDefaultDisplay(
         agentPersonalData[0],
         PERSONALITY_LIST,
-        "agentPersonal",
+        "personality_traits",
       )
     if (agentCommunicationData.length)
       handleSetValueCustomDefaultDisplay(
         agentCommunicationData[0],
         COMMUNICATION_STYLE_LIST,
-        "agentCommunication",
+        "communication_style",
       )
   }, [agentPersonalData.length, agentCommunicationData.length])
 
@@ -94,8 +94,8 @@ const AgentDetail: React.FC = () => {
       description: "",
       firstMsg: "",
       avatar: "",
-      agentPersonal: [],
-      agentCommunication: [],
+      personality_traits: [],
+      communication_style: [],
       interaction_frequency: INTERACTION_FREQUENCY_KEY.Occasionally,
       tone_adaptation: false,
       response_length: RESPONSE_LENGTH_KEY.Moderate,
@@ -110,9 +110,9 @@ const AgentDetail: React.FC = () => {
   })
 
   const handleSelectBehaviors = (selected: SelectedBehaviors) => {
-    const { agentPersonal, agentCommunication } = selected
-    methods.setValue("agentPersonal", agentPersonal)
-    methods.setValue("agentCommunication", agentCommunication)
+    const { personality_traits, communication_style } = selected
+    methods.setValue("personality_traits", personality_traits)
+    methods.setValue("communication_style", communication_style)
   }
 
   useEffect(() => {
@@ -121,8 +121,8 @@ const AgentDetail: React.FC = () => {
       description: descriptionData,
       firstMsg: firstMsgData,
       avatar: avatarData,
-      agentPersonal: agentPersonalData,
-      agentCommunication: agentCommunicationData,
+      personality_traits: agentPersonalData,
+      communication_style: agentCommunicationData,
       ...getConfigAgentValueByKeys(agentConfigs, LIST_AGENT_CONFIG_KEYS),
     }
     methods.reset(defaults)
@@ -140,6 +140,8 @@ const AgentDetail: React.FC = () => {
       const res = await updateAgent({
         ...newData,
         botId: agentIdNumber,
+        agentBehaviors: newData?.personality_traits,
+        agentCommunication: newData?.communication_style,
       })
       if (data.avatarFile) {
         const formData = new FormData()
@@ -178,8 +180,8 @@ const AgentDetail: React.FC = () => {
         <AgentBehaviors
           onSelectBehaviors={handleSelectBehaviors}
           selectedBehaviors={{
-            agentPersonal: methods.watch("agentPersonal"),
-            agentCommunication: methods.watch("agentCommunication"),
+            personality_traits: methods.watch("personality_traits"),
+            communication_style: methods.watch("communication_style"),
           }}
           valueCustomDefault={valueCustomDefault}
         />
@@ -222,7 +224,7 @@ const AgentDetail: React.FC = () => {
           <Header submitLoading={loading} agentData={agentData} />
           <SmoothScrollTo
             components={componentScrollTo}
-            offsetAdjustment={300}
+            offsetAdjustment={230}
             classNames={{
               contentWrapper: "pt-5",
             }}
