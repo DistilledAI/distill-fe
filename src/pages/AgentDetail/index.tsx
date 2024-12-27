@@ -148,7 +148,10 @@ const AgentDetail: React.FC = () => {
         await updateAvatarUser(formData)
       }
       if (configData.length > 0) {
-        await updateAgentConfig({ botId: agentIdNumber, data: configData })
+        await updateAgentConfig({
+          botId: agentIdNumber,
+          data: configData,
+        })
       }
       if (res.data) {
         refetch()

@@ -28,6 +28,8 @@ export const LIST_AGENT_CONFIG_KEYS = [
   "tone_adaptation",
   "post_interval",
   "category",
+  "agentPersonal",
+  "agentCommunication",
 ]
 
 export const getConfigAgentByDataForm = (data: any) => {

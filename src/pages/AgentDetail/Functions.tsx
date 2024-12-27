@@ -128,6 +128,7 @@ const Functions: React.FC<{
             name="post_interval"
             control={control}
             render={({ field: { value, onChange } }: any) => {
+              console.log("🚀 ~ value:", value)
               return (
                 <div className="flex items-center gap-3">
                   <Select
