@@ -1,5 +1,8 @@
 import { xDSTL } from "@assets/images"
 import { ChartPieIcon } from "@components/Icons"
+import { CommandActionKey } from "../types"
+import { useCommandActionChat } from "@pages/MyPrivateRoom/CommandActionProvider"
+import { useCommandMsgChat } from "../Providers/CommandMessageProvider"
 
 const LIST_TOOLS = [
   {
@@ -16,18 +19,21 @@ const LIST_TOOLS = [
     commands: [
       {
         id: 1,
+        key: CommandActionKey.swap,
         command: "/swap",
         description: "Instruct the agent to perform a swap transaction.",
         earnPoint: 10,
       },
       {
         id: 2,
+        key: CommandActionKey.send,
         command: "/send",
         description: "Instruct agent to send assets.",
         earnPoint: 10,
       },
       {
         id: 3,
+        key: CommandActionKey.lock,
         command: "/lock",
         description: "Instruct agent to lock onto Strongbox Vaults.",
         earnPoint: 10,
@@ -37,6 +43,9 @@ const LIST_TOOLS = [
 ]
 
 const ChatTools = () => {
+  const { setCurrentAction } = useCommandActionChat()
+  const { setIsOpenTool } = useCommandMsgChat()
+
   return (
     <div className="flex flex-col gap-5">
       {LIST_TOOLS.map((tool) => (
@@ -54,6 +63,10 @@ const ChatTools = () => {
             {tool.commands.map((command) => (
               <div
                 key={command.id}
+                onClick={() => {
+                  setCurrentAction(command.key)
+                  setIsOpenTool(false)
+                }}
                 className="flex cursor-pointer items-center justify-between rounded-[8px] border-1 border-mercury-100 bg-mercury-30 p-3 duration-300 hover:border-mercury-500"
               >
                 <div>
