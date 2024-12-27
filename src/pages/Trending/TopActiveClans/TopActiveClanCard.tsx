@@ -16,12 +16,11 @@ const TopActiveClanCard = ({
   percentage,
 }: Props) => {
   return (
-    <div
-      className="relative h-[130px] w-full cursor-pointer overflow-hidden rounded-lg bg-mercury-500 bg-cover bg-center bg-no-repeat"
-      style={{
-        backgroundImage: `url(${clanImage})`,
-      }}
-    >
+    <div className="group/item relative h-[130px] w-full cursor-pointer overflow-hidden rounded-lg bg-mercury-500">
+      <img
+        src={clanImage}
+        className="h-full w-full object-cover transition-all duration-300 ease-soft-spring group-hover/item:scale-105"
+      />
       <div
         className="absolute inset-0 rounded-lg bg-cover bg-bottom bg-no-repeat"
         style={{
