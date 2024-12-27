@@ -134,6 +134,7 @@ const AgentDetail: React.FC = () => {
     const { avatar, avatarFile, ...newData } = data
     const agentIdNumber = Number(agentId)
     const configData = getConfigAgentByDataForm(data)
+    console.log("🚀 ~ onSubmit ~ configData:", configData)
 
     try {
       setLoading(true)
