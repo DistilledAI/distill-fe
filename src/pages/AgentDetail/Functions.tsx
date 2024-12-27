@@ -128,18 +128,16 @@ const Functions: React.FC<{
             name="post_interval"
             control={control}
             render={({ field: { value, onChange } }: any) => {
-              console.log("🚀 ~ value:", value)
               return (
                 <div className="flex items-center gap-3">
                   <Select
                     className="max-w-[50%]"
-                    defaultSelectedKeys={[value || "30m"]}
                     radius="full"
                     classNames={{
                       trigger: "!bg-mercury-100",
                     }}
-                    value={value}
                     onChange={(e) => onChange(e.target.value)}
+                    selectedKeys={value ? [value] : ""}
                   >
                     {POST_INTERVAL.map((record) => (
                       <SelectItem key={record.vlaue}>{record.label}</SelectItem>
@@ -191,7 +189,6 @@ const Functions: React.FC<{
             render={({ field: { value, onChange } }: any) => {
               return (
                 <Select
-                  defaultSelectedKeys={[value || "crypto"]}
                   className="max-w-[20%]"
                   radius="full"
                   classNames={{
@@ -201,6 +198,7 @@ const Functions: React.FC<{
                     onChange(e.target.value)
                     onSelectCategory(e.target.value)
                   }}
+                  selectedKeys={value ? [value] : ""}
                 >
                   {CATEGORIES.map((value) => (
                     <SelectItem key={`${value}`}>{value}</SelectItem>

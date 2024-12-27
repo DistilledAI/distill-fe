@@ -104,8 +104,8 @@ const AgentDetail: React.FC = () => {
       audience_profile: "",
       sample_prompts: "",
       customization_instruction: "",
-      post_interval: "",
-      category: "",
+      post_interval: "30m",
+      category: "crypto",
     },
   })
 
