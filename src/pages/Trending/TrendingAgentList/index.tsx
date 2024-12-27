@@ -2,6 +2,7 @@ import { TrendingIcon } from "@components/Icons/TrendingPage"
 import useTrendingAgentList from "../hooks/useTrendingAgentList"
 import TrendingAgentTable from "./TrendingAgentTable"
 import { Tab, Tabs } from "@nextui-org/react"
+import { useState } from "react"
 
 enum Interval {
   "24H" = "24H",
@@ -27,9 +28,23 @@ const INTERVALS = [
   },
 ]
 
+const LIMIT = 10
+
 const TrendingAgentList = () => {
-  const { trendingAgentList } = useTrendingAgentList()
+  const { trendingAgentList, fetchTrendingAgentList, totalItems } =
+    useTrendingAgentList()
   // const [interval, setInterval] = useState(Interval["24H"])
+  const [page, setPage] = useState(1)
+
+  const onPageChange = async (page: number) => {
+    const offset = page * LIMIT
+    setPage(page)
+
+    await fetchTrendingAgentList({
+      limit: LIMIT,
+      offset,
+    })
+  }
 
   return (
     <div className="mt-7 md:mt-9">
@@ -63,7 +78,12 @@ const TrendingAgentList = () => {
           </Tabs>
         </div>
       </div>
-      <TrendingAgentTable trendingAgentList={trendingAgentList} />
+      <TrendingAgentTable
+        trendingAgentList={trendingAgentList}
+        onPageChange={onPageChange}
+        page={page}
+        totalPages={Math.ceil(totalItems / LIMIT)}
+      />
     </div>
   )
 }

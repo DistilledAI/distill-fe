@@ -3,7 +3,11 @@ import AvatarCustom from "@components/AvatarCustom"
 import { centerTextEllipsis } from "@utils/index"
 import NumberWithChange from "./NumbeWithChange"
 import {
+  cn,
   Link,
+  Pagination,
+  PaginationItemRenderProps,
+  PaginationItemType,
   SortDescriptor,
   Table,
   TableBody,
@@ -16,6 +20,7 @@ import {
 import { useState } from "react"
 import { InfoCircleOutlineIcon } from "@components/Icons/InfoCircleIcon"
 import { twMerge } from "tailwind-merge"
+import { ChevronDownIcon } from "@components/Icons/ChevronDownIcon"
 
 enum ColumnKey {
   Name = "name",
@@ -68,9 +73,17 @@ const columns = [
 
 interface Props {
   trendingAgentList: any[]
+  onPageChange: (page: number) => void
+  page: number
+  totalPages: number
 }
 
-const TrendingAgentTable = ({ trendingAgentList }: Props) => {
+const TrendingAgentTable = ({
+  trendingAgentList,
+  onPageChange,
+  page,
+  totalPages,
+}: Props) => {
   const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({
     column: ColumnKey.TotalMessage,
     direction: "descending",
@@ -179,6 +192,78 @@ const TrendingAgentTable = ({ trendingAgentList }: Props) => {
     }
   }
 
+  const renderItem = ({
+    ref,
+    key,
+    value,
+    onNext,
+    onPrevious,
+    setPage,
+    className,
+  }: PaginationItemRenderProps) => {
+    if (value === PaginationItemType.NEXT) {
+      return (
+        <button
+          key={key}
+          className={cn(className, "h-8 w-8 min-w-8 -rotate-90 bg-mercury-70")}
+          onClick={onNext}
+        >
+          <ChevronDownIcon />
+        </button>
+      )
+    }
+
+    if (value === PaginationItemType.PREV) {
+      return (
+        <button
+          key={key}
+          className={cn(className, "h-8 w-8 min-w-8 rotate-90 bg-mercury-70")}
+          onClick={onPrevious}
+        >
+          <ChevronDownIcon />
+        </button>
+      )
+    }
+
+    if (value === PaginationItemType.DOTS) {
+      return (
+        <button key={key} className={className}>
+          ...
+        </button>
+      )
+    }
+
+    return (
+      <button
+        key={key}
+        ref={ref}
+        className={className}
+        onClick={() => setPage(value)}
+      >
+        {value}
+      </button>
+    )
+  }
+
+  const renderPagination = () => {
+    return trendingAgentList ? (
+      <Pagination
+        showControls
+        initialPage={1}
+        radius="full"
+        renderItem={renderItem}
+        total={totalPages}
+        variant="light"
+        classNames={{
+          base: "flex justify-center",
+          cursor: "bg-lgd-code-hot-ramp font-bold",
+        }}
+        onChange={onPageChange}
+        page={page}
+      />
+    ) : null
+  }
+
   return (
     <Table
       isHeaderSticky
@@ -196,10 +281,12 @@ const TrendingAgentTable = ({ trendingAgentList }: Props) => {
         tbody: "[&>tr:first-child>td]:pt-4",
         emptyWrapper: "h-10",
         sortIcon: "ml-1 text-[#363636]",
-        table: "min-h-[300px]",
+        table: "min-h-[500px]",
       }}
       sortDescriptor={sortDescriptor}
       onSortChange={setSortDescriptor}
+      bottomContent={renderPagination()}
+      bottomContentPlacement="outside"
     >
       <TableHeader columns={columns}>
         {(column) => (
