@@ -125,7 +125,7 @@ const Functions: React.FC<{
           </div>
 
           <Controller
-            name="postInterval"
+            name="post_interval"
             control={control}
             render={({ field: { value, onChange } }: any) => {
               return (
@@ -185,7 +185,7 @@ const Functions: React.FC<{
 
         <div className="mt-4 flex items-center justify-between gap-2">
           <Controller
-            name="categories"
+            name="category"
             control={control}
             render={({ field: { value, onChange } }: any) => {
               return (

@@ -104,6 +104,8 @@ const AgentDetail: React.FC = () => {
       audience_profile: "",
       sample_prompts: "",
       customization_instruction: "",
+      post_interval: "",
+      category: "",
     },
   })
 
@@ -217,7 +219,7 @@ const AgentDetail: React.FC = () => {
           <Header submitLoading={loading} agentData={agentData} />
           <SmoothScrollTo
             components={componentScrollTo}
-            offsetAdjustment={220}
+            offsetAdjustment={300}
             classNames={{
               contentWrapper: "pt-5",
             }}

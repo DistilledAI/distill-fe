@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react"
-import _ReCAPTCHA from "react-google-recaptcha"
-
-const ReCAPTCHA = _ReCAPTCHA as React.ElementType
+import ReCAPTCHA from "react-google-recaptcha"
 
 const ReCaptchaWraper: React.FC<{
   reCaptchaRef: any

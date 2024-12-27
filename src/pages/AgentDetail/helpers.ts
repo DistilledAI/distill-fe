@@ -26,6 +26,8 @@ export const LIST_AGENT_CONFIG_KEYS = [
   "response_length",
   "sample_prompts",
   "tone_adaptation",
+  "post_interval",
+  "category",
 ]
 
 export const getConfigAgentByDataForm = (data: any) => {
