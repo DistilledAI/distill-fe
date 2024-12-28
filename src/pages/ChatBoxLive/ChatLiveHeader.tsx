@@ -4,12 +4,12 @@ import { ChevronDownIcon } from "@components/Icons/ChevronDownIcon"
 import TotalMemberBadge from "@components/TotalMemberBadge"
 import { PATH_NAMES } from "@constants/index"
 import { Button } from "@nextui-org/react"
+import ClanShortInfo from "@pages/AgentClan/ClanShortInfo"
 import { UserGroup } from "@pages/ChatPage/ChatBox/LeftBar/useFetchGroups"
 import React from "react"
 import { useNavigate } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
 import AgentLiveInfo from "./AgentLiveInfo"
-import ClanShortInfo from "@pages/AgentClan/ClanShortInfo"
 
 const ChatLiveHeader: React.FC<{
   groupDetail: UserGroup | null
