@@ -2,7 +2,10 @@ import AvatarContainer from "@components/AvatarContainer"
 import AvatarCustom from "@components/AvatarCustom"
 import AvatarGroup from "@components/AvatarGroup"
 import { LiveIcon } from "@components/Icons"
+import TotalMemberBadge from "@components/TotalMemberBadge"
+import { PATH_NAMES } from "@constants/index"
 import useAuthState from "@hooks/useAuthState"
+import AgentShareButton from "@pages/ChatBoxLive/AgentShareButton"
 import {
   getAvatarGroupChat,
   getNameGroup,
@@ -15,7 +18,6 @@ import {
 import React from "react"
 import { twMerge } from "tailwind-merge"
 import MoreAction from "./MoreAction"
-import TotalMemberBadge from "@components/TotalMemberBadge"
 
 const ChatInfoCurrent: React.FC<{
   groupDetail: UserGroup | null
@@ -49,6 +51,12 @@ const ChatInfoCurrent: React.FC<{
         <MoreAction
           groupId={groupDetail.groupId}
           groupType={groupDetail.group.typeGroup}
+        />
+        <AgentShareButton
+          agentInfo={{
+            shareLink: `${window.location.origin}${PATH_NAMES.CLAN}/${groupDetail?.group?.label}`,
+          }}
+          buttonClassName="w-fit !p-0 !bg-white !min-w-[40px]"
         />
       </div>
     )
