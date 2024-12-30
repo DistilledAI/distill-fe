@@ -70,13 +70,13 @@ const DeleteData: React.FC<{
           <div className="mt-2 flex items-center justify-end gap-2">
             <Button
               isLoading={loading}
-              onClick={() => onDelete({ botId, ids })}
+              onPress={() => onDelete({ botId, ids })}
               className="h-7 min-w-0 rounded-lg bg-mercury-950 font-medium text-white"
             >
               Yes
             </Button>
             <Button
-              onClick={() => setIsOpen(false)}
+              onPress={() => setIsOpen(false)}
               className="h-7 min-w-0 rounded-lg bg-mercury-100 font-medium"
             >
               No

@@ -33,11 +33,11 @@ const ConnectWalletBtn = () => {
             {(() => {
               if (!connected) {
                 return (
-                  <Button onClick={openConnectModal}>Connect Wallet</Button>
+                  <Button onPress={openConnectModal}>Connect Wallet</Button>
                 )
               }
               if (chain.unsupported) {
-                return <Button onClick={openChainModal}>Wrong network</Button>
+                return <Button onPress={openChainModal}>Wrong network</Button>
               }
               return (
                 <div className="flex gap-2 rounded-full border-1 border-mercury-600 bg-mercury-30 px-3 py-2">

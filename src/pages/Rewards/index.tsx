@@ -184,7 +184,7 @@ const Rewards: React.FC = () => {
             </div>
             <Button
               className="col-span-2 w-full rounded-full !border !border-mercury-900 bg-[rgba(195,195,195,0.20)] text-[14px] font-medium text-white max-md:min-h-12 md:text-[16px]"
-              onClick={onOpenQR}
+              onPress={onOpenQR}
             >
               <QRCodeIcon color="#FFFF" />
               <span className="text-base-md text-white">Share</span>

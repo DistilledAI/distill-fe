@@ -71,7 +71,7 @@ const PrivateAgent: React.FC<{
               : "-"}
           </span>
           <Button
-            onClick={(e) => copyClipboard(e, myAgent?.publicAddress ?? "")}
+            onPress={(e) => copyClipboard(e, myAgent?.publicAddress ?? "")}
             className="h-auto w-auto min-w-0 bg-transparent p-0"
           >
             <CopyIcon />

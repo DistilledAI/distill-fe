@@ -74,7 +74,7 @@ const CreatePrivateAgent: React.FC<{
             </h4>
             <Button
               className="mt-4 h-[56px] w-full rounded-full bg-mercury-950 text-[18px] text-mercury-30 md:mt-6"
-              onClick={handleCreateAgent}
+              onPress={handleCreateAgent}
             >
               {isLogin && !isAnonymous ? "Create Agent" : "Connect Wallet"}
             </Button>
@@ -96,7 +96,7 @@ const CreatePrivateAgent: React.FC<{
           </h4>
           <Button
             className="mt-4 h-[56px] w-full rounded-full bg-mercury-100 text-[18px] text-mercury-950 md:mt-6"
-            onClick={() => navigate(PATH_NAMES.MARKETPLACE)}
+            onPress={() => navigate(PATH_NAMES.MARKETPLACE)}
           >
             Go to Marketplace
           </Button>

@@ -41,7 +41,7 @@ const ScrollBottomChat = ({
       }}
     >
       <Button
-        onClick={onScrollToBottom}
+        onPress={onScrollToBottom}
         className="w-10 min-w-10 rounded-full border border-mercury-900 bg-mercury-950 px-4 py-2"
       >
         <div className="rotate-180">

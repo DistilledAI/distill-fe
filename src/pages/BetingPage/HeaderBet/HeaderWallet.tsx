@@ -82,7 +82,7 @@ const HeaderWallet = () => {
     </div>
   ) : (
     <Button
-      onClick={connectPhantom}
+      onPress={connectPhantom}
       className="rounded bg-white font-medium max-md:w-full"
     >
       <div className="-ml-[5px] scale-75">

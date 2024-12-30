@@ -27,7 +27,7 @@ const ShareProfile = ({
       <Button
         isDisabled={isDisabled}
         className="flex w-full rounded-full bg-mercury-100 max-md:min-h-12"
-        onClick={onOpen}
+        onPress={onOpen}
       >
         <ShareWithQrIcon />
         <span className="text-base-md text-mercury-950">{textButton}</span>

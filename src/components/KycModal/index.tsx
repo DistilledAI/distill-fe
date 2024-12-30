@@ -56,7 +56,7 @@ const KycModal: React.FC<{
           </Button>
           <p className="my-1 text-center text-20 font-medium">or</p> */}
           <Button
-            onClick={() => window.open(twitterAuthorizeLink)}
+            onPress={() => window.open(twitterAuthorizeLink)}
             className="mt-10 h-[50px] w-full rounded-full bg-mercury-950"
           >
             <TwitterIcon color="white" />

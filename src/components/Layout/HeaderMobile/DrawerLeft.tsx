@@ -87,7 +87,7 @@ const DrawerLeft: React.FC<Props> = ({ isOpen, onClose }) => {
                   <Button
                     key={index}
                     className="btn-primary min-h-[60px] w-full justify-start"
-                    onClick={() => {
+                    onPress={() => {
                       navigate(item.url)
                       onClose()
                     }}

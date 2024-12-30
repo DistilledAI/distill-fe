@@ -50,7 +50,7 @@ const Header: React.FC<{ agentData: IAgentData; submitLoading: boolean }> = ({
         <div className="flex gap-3 max-sm:mt-2 max-sm:flex-wrap max-sm:gap-1">
           <Button
             isDisabled={!isActive}
-            onClick={onOpen}
+            onPress={onOpen}
             className="h-[44px] rounded-full border border-mercury-50 bg-mercury-100 max-sm:h-[38px]"
           >
             <QRCodeIcon />
@@ -59,7 +59,7 @@ const Header: React.FC<{ agentData: IAgentData; submitLoading: boolean }> = ({
             </span>
           </Button>
           <Button
-            onClick={() => {
+            onPress={() => {
               if (isActive) onPublishOnMarket(agentData?.id)
             }}
             isDisabled={!isActive || loading}

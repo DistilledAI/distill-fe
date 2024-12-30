@@ -96,7 +96,7 @@ const PublicAgents = () => {
               </div>
               <Button
                 className="h-9 min-w-[52px] rounded-full border border-mercury-50 bg-mercury-100 px-4 py-2"
-                onClick={() => handleChatWithAgent(agent)}
+                onPress={() => handleChatWithAgent(agent)}
               >
                 <MessageDots />
               </Button>

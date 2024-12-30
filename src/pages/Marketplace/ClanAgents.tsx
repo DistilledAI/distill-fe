@@ -50,7 +50,7 @@ const ClanAgents = () => {
       </div>
       <Button
         className="min-w-[52px] rounded-full border border-mercury-50 bg-mercury-100 px-4 py-2"
-        onClick={() => handleChatWithClan(clan)}
+        onPress={() => handleChatWithClan(clan)}
       >
         <MessageDots />
       </Button>

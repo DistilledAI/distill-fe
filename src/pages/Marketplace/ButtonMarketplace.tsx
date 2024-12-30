@@ -15,7 +15,7 @@ const ButtonMarketplace = () => {
         "btn-primary z-10 min-h-[60px] w-full",
         sidebarCollapsed && "min-h-14 min-w-14",
       )}
-      onClick={() => navigate(PATH_NAMES.MARKETPLACE)}
+      onPress={() => navigate(PATH_NAMES.MARKETPLACE)}
     >
       <img src={xmasCircle3D} width={20} height={20} />
       <span
