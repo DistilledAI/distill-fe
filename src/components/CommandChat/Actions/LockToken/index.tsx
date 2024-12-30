@@ -17,14 +17,13 @@ const LIST_TOKEN = [
   },
 ]
 
-const CmdSwapToken = () => {
+const CmdTokenToken = () => {
   const [fromToken, setFromToken] = useState(1)
   const [amount, setAmount] = useState("")
-  const [toToken, setToToken] = useState(2)
 
   return (
     <div className="flex items-center gap-2">
-      <ButtonCommand title="/swap" />
+      <ButtonCommand title="/lock" />
       <SelectTokenCmd
         value={fromToken}
         onChangeValue={(token) => setFromToken(token.id)}
@@ -37,14 +36,8 @@ const CmdSwapToken = () => {
         placeholder="Enter amount"
         className="w-[120px]"
       />
-      <span>to</span>
-      <SelectTokenCmd
-        value={toToken}
-        onChangeValue={(token) => setToToken(token.id)}
-        list={LIST_TOKEN}
-      />
     </div>
   )
 }
 
-export default CmdSwapToken
+export default CmdTokenToken

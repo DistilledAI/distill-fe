@@ -1,10 +1,13 @@
 import { xDSTL } from "@assets/images"
 import { ChartPieIcon } from "@components/Icons"
 import { CommandActionKey } from "../types"
-import { useCommandActionChat } from "@pages/MyPrivateRoom/CommandActionProvider"
 import { useCommandMsgChat } from "../Providers/CommandMessageProvider"
+import { useCommandActionChat } from "../Providers/CommandActionProvider"
+import { twMerge } from "tailwind-merge"
+import useNavigateTool from "./useNavigateTool"
+import useListTool from "./useListTool"
 
-const LIST_TOOLS = [
+export const LIST_TOOLS = [
   {
     id: 1,
     category: {
@@ -45,10 +48,13 @@ const LIST_TOOLS = [
 const ChatTools = () => {
   const { setCurrentAction } = useCommandActionChat()
   const { setIsOpenTool } = useCommandMsgChat()
+  const { tools, toolsHaveCmd, isEmpty } = useListTool()
+  const { isActiveTool } = useNavigateTool(tools)
 
   return (
     <div className="flex flex-col gap-5">
-      {LIST_TOOLS.map((tool) => (
+      {isEmpty && <div className="py-1 text-mercury-700">No items found</div>}
+      {toolsHaveCmd.map((tool) => (
         <div key={tool.id}>
           <div className="mb-3 flex items-center justify-between">
             <p className="text-14 text-mercury-700">{tool.category.name}</p>
@@ -60,14 +66,17 @@ const ChatTools = () => {
             </div>
           </div>
           <div className="grid grid-cols-2 gap-4">
-            {tool.commands.map((command) => (
+            {tool.commands.map((command, index) => (
               <div
                 key={command.id}
                 onClick={() => {
                   setCurrentAction(command.key)
                   setIsOpenTool(false)
                 }}
-                className="flex cursor-pointer items-center justify-between rounded-[8px] border-1 border-mercury-100 bg-mercury-30 p-3 duration-300 hover:border-mercury-500"
+                className={twMerge(
+                  "flex cursor-pointer items-center justify-between rounded-[8px] border-1 border-mercury-100 bg-mercury-30 p-3 duration-300 hover:border-mercury-500",
+                  isActiveTool(index) && "border-brown-500 bg-brown-50",
+                )}
               >
                 <div>
                   <div className="inline-block cursor-pointer rounded-full border-2 border-[#A2845E] bg-[#E9E3D8] px-3 py-1 text-14 font-semibold text-[#83664B]">

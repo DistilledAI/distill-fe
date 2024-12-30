@@ -1,6 +1,6 @@
-import { useCommandActionChat } from "@pages/MyPrivateRoom/CommandActionProvider"
-import CommandChatInput from "./CommnadChatInput"
+import CommandChatInput from "./CommandChatInput"
 import CommandChatAction from "../Actions"
+import { useCommandActionChat } from "../Providers/CommandActionProvider"
 
 const ChatWrapper = () => {
   const { currentAction } = useCommandActionChat()

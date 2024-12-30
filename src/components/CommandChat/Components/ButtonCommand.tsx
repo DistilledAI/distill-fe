@@ -1,7 +1,7 @@
 import React from "react"
-import { useCommandActionChat } from "@pages/MyPrivateRoom/CommandActionProvider"
 import { CloseIconCircle } from "@components/Icons"
 import { useCommandMsgChat } from "../Providers/CommandMessageProvider"
+import { useCommandActionChat } from "../Providers/CommandActionProvider"
 
 const ButtonCommand: React.FC<{
   title: string
