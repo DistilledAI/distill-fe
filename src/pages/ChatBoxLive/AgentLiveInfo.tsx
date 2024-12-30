@@ -65,6 +65,7 @@ const AgentLiveInfo: React.FC<{
                 teleLink: groupConfig?.telegram as string,
                 shareLink: `${window.location.origin}${PATH_NAMES.CLAN}/${groupDetail?.group?.label}`,
                 contract: groupConfig?.contractAddress as string,
+                website: groupConfig?.website as string,
               }}
             />
             <ContractDisplay
