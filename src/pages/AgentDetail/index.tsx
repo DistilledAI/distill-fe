@@ -1,11 +1,17 @@
+import { BoltOutlineIcon, TargetIcon } from "@components/Icons"
+import { ClipboardTextIcon } from "@components/Icons/ClipboardTextIcon"
+import { DatabaseSettingIcon } from "@components/Icons/DatabaseImportIcon"
+import { StarUserIconOutline } from "@components/Icons/UserIcon"
 import SmoothScrollTo from "@components/SmoothScrollTo"
 import {
   COMMUNICATION_STYLE_LIST,
   PERSONALITY_LIST,
   STATUS_AGENT,
 } from "@constants/index"
+import { refreshFetchMyAgent } from "@reducers/agentSlice"
 import { useEffect, useState } from "react"
 import { FormProvider, useForm } from "react-hook-form"
+import { useDispatch } from "react-redux"
 import { useParams } from "react-router-dom"
 import { toast } from "react-toastify"
 import { updateAgent, updateAgentConfig } from "services/agent"
@@ -29,8 +35,6 @@ import {
 } from "./helpers"
 import useFetchAgentConfig from "./useFetchAgentConfig"
 import useFetchDetail from "./useFetchDetail"
-import { useDispatch } from "react-redux"
-import { refreshFetchMyAgent } from "@reducers/agentSlice"
 
 const AgentDetail: React.FC = () => {
   const { agentId } = useParams()
@@ -55,7 +59,7 @@ const AgentDetail: React.FC = () => {
   const handleSetValueCustomDefaultDisplay = (
     data: any,
     list: any,
-    name: "agentPersonal" | "agentCommunication",
+    name: "personality_traits" | "communication_style",
   ) => {
     const isDataCustom = !list.map((item: any) => item.value).includes(data)
     const value = isDataCustom
@@ -74,13 +78,13 @@ const AgentDetail: React.FC = () => {
       handleSetValueCustomDefaultDisplay(
         agentPersonalData[0],
         PERSONALITY_LIST,
-        "agentPersonal",
+        "personality_traits",
       )
     if (agentCommunicationData.length)
       handleSetValueCustomDefaultDisplay(
         agentCommunicationData[0],
         COMMUNICATION_STYLE_LIST,
-        "agentCommunication",
+        "communication_style",
       )
   }, [agentPersonalData.length, agentCommunicationData.length])
 
@@ -90,8 +94,8 @@ const AgentDetail: React.FC = () => {
       description: "",
       firstMsg: "",
       avatar: "",
-      agentPersonal: [],
-      agentCommunication: [],
+      personality_traits: [],
+      communication_style: [],
       interaction_frequency: INTERACTION_FREQUENCY_KEY.Occasionally,
       tone_adaptation: false,
       response_length: RESPONSE_LENGTH_KEY.Moderate,
@@ -100,13 +104,15 @@ const AgentDetail: React.FC = () => {
       audience_profile: "",
       sample_prompts: "",
       customization_instruction: "",
+      post_interval: "30m",
+      category: "crypto",
     },
   })
 
   const handleSelectBehaviors = (selected: SelectedBehaviors) => {
-    const { agentPersonal, agentCommunication } = selected
-    methods.setValue("agentPersonal", agentPersonal)
-    methods.setValue("agentCommunication", agentCommunication)
+    const { personality_traits, communication_style } = selected
+    methods.setValue("personality_traits", personality_traits)
+    methods.setValue("communication_style", communication_style)
   }
 
   useEffect(() => {
@@ -115,8 +121,8 @@ const AgentDetail: React.FC = () => {
       description: descriptionData,
       firstMsg: firstMsgData,
       avatar: avatarData,
-      agentPersonal: agentPersonalData,
-      agentCommunication: agentCommunicationData,
+      personality_traits: agentPersonalData,
+      communication_style: agentCommunicationData,
       ...getConfigAgentValueByKeys(agentConfigs, LIST_AGENT_CONFIG_KEYS),
     }
     methods.reset(defaults)
@@ -128,12 +134,15 @@ const AgentDetail: React.FC = () => {
     const { avatar, avatarFile, ...newData } = data
     const agentIdNumber = Number(agentId)
     const configData = getConfigAgentByDataForm(data)
+    console.log("🚀 ~ onSubmit ~ configData:", configData)
 
     try {
       setLoading(true)
       const res = await updateAgent({
         ...newData,
         botId: agentIdNumber,
+        agentBehaviors: newData?.personality_traits,
+        agentCommunication: newData?.communication_style,
       })
       if (data.avatarFile) {
         const formData = new FormData()
@@ -142,7 +151,10 @@ const AgentDetail: React.FC = () => {
         await updateAvatarUser(formData)
       }
       if (configData.length > 0) {
-        await updateAgentConfig({ botId: agentIdNumber, data: configData })
+        await updateAgentConfig({
+          botId: agentIdNumber,
+          data: configData,
+        })
       }
       if (res.data) {
         refetch()
@@ -159,18 +171,9 @@ const AgentDetail: React.FC = () => {
 
   const componentScrollTo = [
     {
-      title: "Display Info",
+      title: "Appearance",
       content: <GeneralInfo agentData={agentData} />,
-    },
-    {
-      title: "Functions",
-      content: (
-        <Functions
-          agentData={agentData}
-          agentConfigs={agentConfigs}
-          refetch={refetch}
-        />
-      ),
+      icon: <ClipboardTextIcon />,
     },
     {
       title: "Behaviors",
@@ -178,44 +181,58 @@ const AgentDetail: React.FC = () => {
         <AgentBehaviors
           onSelectBehaviors={handleSelectBehaviors}
           selectedBehaviors={{
-            agentPersonal: methods.watch("agentPersonal"),
-            agentCommunication: methods.watch("agentCommunication"),
+            personality_traits: methods.watch("personality_traits"),
+            communication_style: methods.watch("communication_style"),
           }}
           valueCustomDefault={valueCustomDefault}
         />
       ),
+      icon: <StarUserIconOutline color="#A2845E" />,
+    },
+    {
+      title: "Autonomous AI Agent",
+      content: (
+        <Functions
+          agentData={agentData}
+          agentConfigs={agentConfigs}
+          refetch={refetch}
+        />
+      ),
+      isNew: true,
+      icon: <BoltOutlineIcon color="#A2845E" />,
     },
     {
       title: "Knowledge",
       content: <KnowledgeAgent />,
+      icon: <DatabaseSettingIcon />,
     },
     {
       title: "Target Audience",
       content: <TargetAudience />,
+      icon: <TargetIcon />,
     },
     {
       title: "Monetization",
       content: <Monetization />,
+      icon: <ClipboardTextIcon />,
     },
   ]
 
   return (
-    <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(onSubmit)}>
-        <Header submitLoading={loading} agentData={agentData} />
-        <div className="sticky left-0 top-[192px] h-[1px] w-full bg-mercury-100"></div>
-        <div className="relative mx-auto max-w-[800px] px-4 pb-5 max-md:min-h-dvh max-md:bg-mercury-70 max-md:pt-[70px] max-sm:pb-20 max-sm:pt-6">
+    <>
+      <FormProvider {...methods}>
+        <form onSubmit={methods.handleSubmit(onSubmit)}>
+          <Header submitLoading={loading} agentData={agentData} />
           <SmoothScrollTo
             components={componentScrollTo}
-            offsetAdjustment={220}
+            offsetAdjustment={230}
             classNames={{
-              headerWrapper: "sticky -mt-[1px] top-[152px] bg-white z-[11]",
               contentWrapper: "pt-5",
             }}
           />
-        </div>
-      </form>
-    </FormProvider>
+        </form>
+      </FormProvider>
+    </>
   )
 }
 export default AgentDetail

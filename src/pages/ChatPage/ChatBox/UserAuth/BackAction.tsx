@@ -6,22 +6,25 @@ const BackAction: React.FC = () => {
   const { pathname } = useLocation()
   const { agentId } = useParams()
   const navigate = useNavigate()
-  const isAgentDetailPage = pathname === `${PATH_NAMES.AGENT_DETAIL}/${agentId}`
+  const isAgentDetailPage =
+    pathname === `${PATH_NAMES.AGENT_DETAIL}/${agentId}` ||
+    pathname === PATH_NAMES.TRENDING
 
   const goBack = () => {
     navigate(-1)
   }
 
-  if (!isAgentDetailPage) return <div />
+  if (!isAgentDetailPage) return null
 
   return (
-    <div
+    <button
+      type="button"
       className="ml-8 flex cursor-pointer items-center gap-3"
       onClick={goBack}
     >
       <ArrowLeftFilledIcon color="#545454" />
       <span className="text-base-b">Back</span>
-    </div>
+    </button>
   )
 }
 export default BackAction

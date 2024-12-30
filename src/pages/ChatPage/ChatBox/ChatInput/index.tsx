@@ -19,7 +19,6 @@ import { twMerge } from "tailwind-merge"
 import { QueryDataKeys } from "types/queryDataKeys"
 import { BOT_STATUS } from "../ChatMessages/ChatActions/DelegatePrivateAgent"
 import VoiceChat from "./Voice"
-import CloudImages from "./CloudImages"
 import { ArrowUpFilledIcon } from "@components/Icons/Arrow"
 
 const MentionsInputAny =
@@ -176,7 +175,6 @@ const ChatInput = ({
           color={isDarkTheme ? "rgba(84, 84, 84, 1)" : "#545454"}
         />
       </button>
-      <CloudImages />
       <MentionsInputAny
         inputRef={inputRef}
         value={message}

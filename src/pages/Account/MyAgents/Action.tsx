@@ -55,7 +55,7 @@ const MyAgentAction: React.FC<{
     <div className="flex gap-2">
       <Button
         isLoading={loading}
-        onClick={() => onPublishMarketplace(data.id)}
+        onPress={() => onPublishMarketplace(data.id)}
         isDisabled={!isActive}
         className="h-9 rounded-full bg-mercury-950 text-white max-sm:h-8 max-sm:min-w-0"
       >

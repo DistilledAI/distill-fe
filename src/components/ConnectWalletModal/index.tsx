@@ -140,7 +140,7 @@ const ConnectWalletModal = () => {
                 </div>
                 <Button
                   className="group flex h-[40px] cursor-pointer items-center justify-center gap-4 rounded-full bg-mercury-950 p-2 px-6"
-                  onClick={connector.connect}
+                  onPress={connector.connect}
                   isLoading={connector.loading}
                 >
                   <span className="text-18 text-white max-md:text-14">

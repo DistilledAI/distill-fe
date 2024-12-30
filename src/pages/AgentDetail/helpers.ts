@@ -26,10 +26,15 @@ export const LIST_AGENT_CONFIG_KEYS = [
   "response_length",
   "sample_prompts",
   "tone_adaptation",
+  "post_interval",
+  "category",
+  "personality_traits",
+  "communication_style",
 ]
 
 export const getConfigAgentByDataForm = (data: any) => {
   return Object.entries(data)
+    .filter(([_, val]) => val !== null && val !== "" && val !== undefined)
     .map(([key, val]) => ({ key, value: val ? val.toString() : "" }))
     .filter((item) => LIST_AGENT_CONFIG_KEYS.includes(item.key))
 }

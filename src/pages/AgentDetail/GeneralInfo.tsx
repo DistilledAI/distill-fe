@@ -1,5 +1,8 @@
 import AvatarCustom from "@components/AvatarCustom"
+import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
+import { ChevronDownIcon } from "@components/Icons/ChevronDownIcon"
 import { ClipboardTextIcon } from "@components/Icons/ClipboardTextIcon"
+import { QuestionUserIconOutline } from "@components/Icons/UserIcon"
 import {
   Button,
   Dropdown,
@@ -9,16 +12,13 @@ import {
   Input,
   Textarea,
 } from "@nextui-org/react"
+import { fileToBase64, isPassFileSize } from "@utils/index"
 import { Controller, useFormContext } from "react-hook-form"
+import { toast } from "react-toastify"
+import { twMerge } from "tailwind-merge"
 import { IAgentData } from "types/user"
 import CategoryLabel, { FieldLabel } from "./CategoryLabel"
 import ChangeAvatarContainer from "./ChangeAvatarContainer"
-import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
-import { fileToBase64, isPassFileSize } from "@utils/index"
-import { toast } from "react-toastify"
-import { twMerge } from "tailwind-merge"
-import { QuestionUserIconOutline } from "@components/Icons/UserIcon"
-import { ChevronDownIcon } from "@components/Icons/ChevronDownIcon"
 
 export const DESC_MAX_LENGTH = 200
 
@@ -136,6 +136,81 @@ const GeneralInfo: React.FC<{
             )
           }}
         />
+
+        <div className="mt-4 flex gap-4">
+          <Controller
+            name="website_link"
+            control={control}
+            render={({ field: { value, onChange } }: any) => {
+              return (
+                <div className="w-full">
+                  <FieldLabel text="Website Link" />
+                  <div className="flex items-center max-sm:h-auto">
+                    <Input
+                      value={value}
+                      type="text"
+                      placeholder="https://example.com/"
+                      className="w-full"
+                      classNames={{
+                        mainWrapper: "border border-mercury-400 rounded-xl",
+                        inputWrapper: " bg-mercury-70",
+                      }}
+                      onChange={(e) => onChange(e.target.value)}
+                    />
+                  </div>
+                </div>
+              )
+            }}
+          />
+          <Controller
+            name="x_link"
+            control={control}
+            render={({ field: { value, onChange } }: any) => {
+              return (
+                <div className="w-full">
+                  <FieldLabel text="X (Twitter) Link" />
+                  <div className="flex items-center max-sm:h-auto">
+                    <Input
+                      value={value}
+                      type="text"
+                      placeholder="https://x.com/username"
+                      className="w-full"
+                      classNames={{
+                        mainWrapper: "border border-mercury-400 rounded-xl",
+                        inputWrapper: " bg-mercury-70",
+                      }}
+                      onChange={(e) => onChange(e.target.value)}
+                    />
+                  </div>
+                </div>
+              )
+            }}
+          />
+          <Controller
+            name="telegram_link"
+            control={control}
+            render={({ field: { value, onChange } }: any) => {
+              return (
+                <div className="w-full">
+                  <FieldLabel text="Telegram Link" />
+                  <div className="flex items-center max-sm:h-auto">
+                    <Input
+                      value={value}
+                      type="text"
+                      placeholder="https://t.me/username"
+                      className="w-full"
+                      classNames={{
+                        mainWrapper: "border border-mercury-400 rounded-xl",
+                        inputWrapper: " bg-mercury-70",
+                      }}
+                      onChange={(e) => onChange(e.target.value)}
+                    />
+                  </div>
+                </div>
+              )
+            }}
+          />
+        </div>
       </div>
       <div className="flex w-full justify-between pt-3 max-md:flex-col">
         <div className="max-md:mb-5">

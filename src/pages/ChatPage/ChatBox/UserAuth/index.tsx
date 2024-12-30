@@ -39,7 +39,7 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
       {isShowInfo ? (
         <div className="inline-flex items-center gap-2">
           <Button
-            onClick={() => navigate(PATH_NAMES.MY_DATA)}
+            onPress={() => navigate(PATH_NAMES.MY_DATA)}
             className={twMerge(
               "btn-primary hidden h-11 md:block",
               isHiddenMyData && "!hidden",
@@ -51,7 +51,7 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
             </div>
           </Button>
           <Button
-            onClick={() => navigate(PATH_NAMES.MY_AGENTS)}
+            onPress={() => navigate(PATH_NAMES.MY_AGENTS)}
             className={twMerge("btn-primary hidden h-11 md:block")}
           >
             <div className="flex items-center gap-1">
@@ -72,7 +72,7 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
           </div>
 
           <Button
-            onClick={() => navigate(PATH_NAMES.ACCOUNT)}
+            onPress={() => navigate(PATH_NAMES.ACCOUNT)}
             className="btn-primary h-11 w-fit max-md:!h-auto max-md:!w-auto max-md:min-w-0 max-md:gap-0 max-md:p-0"
           >
             <AvatarCustom
@@ -105,7 +105,7 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
           <Button
             className="h-[44px] rounded-full bg-mercury-950 text-white max-md:h-[36px]"
             isLoading={loading}
-            onClick={connectWallet}
+            onPress={connectWallet}
           >
             <div className="flex items-center gap-1 max-md:hidden">
               {!loading && <WalletIcon />} Connect Wallet

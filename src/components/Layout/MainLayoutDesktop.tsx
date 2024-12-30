@@ -7,38 +7,52 @@ import LeftBar from "@pages/ChatPage/ChatBox/LeftBar"
 import useMessageSocket from "@pages/ChatPage/ChatBox/useMessageSocket"
 import UserAuthWrapper from "@pages/ChatPage/ChatBox/UserAuth/UserAuthWrapper"
 import { StyleSpacingProvider } from "providers/StyleSpacingProvider"
-import { Outlet, useLocation } from "react-router-dom"
+import { Outlet, useLocation, useParams } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
 
 const MainLayoutDesktop = () => {
+  const { pathname } = useLocation()
+  const { agentId } = useParams()
   const sidebarCollapsed = useAppSelector((state) => state.sidebarCollapsed)
   useInviteAgent()
   useFetchMe()
   useMessageSocket()
-  const { pathname } = useLocation()
-  const ignoreSidebarLeft = [`${PATH_NAMES.PRIVATE_ROOM}`]
-  const isIgnoreSidebarLeft = ignoreSidebarLeft.some((path) =>
-    pathname.startsWith(path),
-  )
-  const hasLeftBar = !isIgnoreSidebarLeft
+  const isHideLeftBar =
+    pathname === PATH_NAMES.TRENDING ||
+    pathname === `${PATH_NAMES.AGENT_DETAIL}/${agentId}` ||
+    pathname === `${PATH_NAMES.PRIVATE_ROOM}`
 
-  return (
-    <>
-      <StyleSpacingProvider>
+  const renderContent = () => {
+    if (isHideLeftBar) {
+      return (
         <div className="flex bg-white font-barlow">
-          {hasLeftBar && <LeftBar />}
-          <div
-            className={twMerge(
-              "relative w-[calc(100%-329px)] pt-[68px] transition-all duration-300 ease-in-out",
-              sidebarCollapsed && "w-[calc(100%-104px)]",
-              !hasLeftBar && "w-full",
-            )}
-          >
-            <UserAuthWrapper hasLeftBar={hasLeftBar} />
+          <div className="relative w-full pt-[68px]">
+            <UserAuthWrapper />
             <Outlet />
           </div>
         </div>
-      </StyleSpacingProvider>
+      )
+    }
+
+    return (
+      <div className="flex bg-white font-barlow">
+        <LeftBar />
+        <div
+          className={twMerge(
+            "relative w-[calc(100%-329px)] pt-[68px] transition-all duration-300 ease-in-out",
+            sidebarCollapsed && "w-[calc(100%-104px)]",
+          )}
+        >
+          <UserAuthWrapper />
+          <Outlet />
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <>
+      <StyleSpacingProvider>{renderContent()}</StyleSpacingProvider>
       <ConnectWalletModal />
     </>
   )

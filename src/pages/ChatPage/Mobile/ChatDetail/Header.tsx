@@ -15,7 +15,7 @@ const ChatDetailHeader = () => {
     <div className="fixed left-0 top-0 z-[1] flex h-[55px] w-full items-center justify-between bg-white px-3">
       <div className="flex items-center gap-2">
         <Button
-          onClick={() => navigate("/")}
+          onPress={() => navigate("/")}
           className="h-9 w-9 min-w-0 rounded-full bg-mercury-70 p-0"
         >
           <ArrowLeftFilledIcon />

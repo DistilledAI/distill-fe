@@ -3,7 +3,7 @@ import { LinkAccountIcon, XboxXFilled } from "@components/Icons"
 import { ArrowLeftFilledIcon } from "@components/Icons/Arrow"
 import { CheckFilledIcon } from "@components/Icons/DefiLens"
 import { ExternalLink } from "@components/Icons/ExternalLink"
-import { PlayVideoFilled } from "@components/Icons/SocialLinkIcon"
+import { BookIcon } from "@components/Icons/SocialLinkIcon"
 import { TwitterIcon } from "@components/Icons/Twitter"
 import {
   Button,
@@ -126,9 +126,9 @@ const BindYourAccount: React.FC<{
           </ModalHeader>
           <ModalBody className="gap-4 px-6 py-4 pb-10">
             <div className="ml-2 flex cursor-pointer items-center gap-2 hover:underline">
-              <PlayVideoFilled />
+              <BookIcon />
               <span className="text-base-md text-brown-500">
-                Watch the tutorial to bind your autonomous Twitter account.
+                Read the tutorial to bind your autonomous Twitter account.
               </span>
             </div>
 

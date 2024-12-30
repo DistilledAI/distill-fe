@@ -87,7 +87,7 @@ const AgentInfoCard = ({ messages, groupId }: AgentInfoCardProps) => {
                 <Button
                   isIconOnly
                   isDisabled={!agentInfo}
-                  onClick={onOpen}
+                  onPress={onOpen}
                   className="rounded-full border border-mercury-50 bg-mercury-100 md:h-9 md:min-w-[52px]"
                 >
                   <ShareWithQrIcon />

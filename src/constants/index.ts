@@ -158,7 +158,7 @@ export const PERSONALITY_LIST = [
   {
     label: "⭐️ Custom",
     selected: false,
-    value: "agentPersonal",
+    value: "personality_traits",
     type: "custom",
   },
 ]
@@ -198,7 +198,7 @@ export const COMMUNICATION_STYLE_LIST = [
   {
     label: "⭐️ Custom",
     selected: false,
-    value: "agentCommunication",
+    value: "communication_style",
     type: "custom",
   },
 ]
