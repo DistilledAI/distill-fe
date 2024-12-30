@@ -136,7 +136,7 @@ const UploadCustom: React.FC<UploadCustomProps> = ({
   return (
     <div
       className={twMerge(
-        "broder h-fit !w-full rounded-[32px] border-[1px] border-mercury-200 bg-mercury-50 p-1",
+        "h-fit !w-full rounded-[32px] border-[1px] border-mercury-200 bg-mercury-50 p-1",
         isComingSoon && "opacity-65",
       )}
     >

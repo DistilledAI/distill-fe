@@ -13,6 +13,7 @@ import UploadCustom from "../UploadCustom"
 import UploadSocialLink from "../UploadSocialLink"
 import useActiveAgent from "../useActiveAgent"
 import AgentSetupStatus from "./AgentSetupStatus"
+import UploadFAQ from "../UploadFAQ"
 
 const ConnectData = () => {
   const navigate = useNavigate()
@@ -124,6 +125,7 @@ const ConnectData = () => {
               multiple
               moreCustomRequest={onMoreCustomRequest}
             />
+            <UploadFAQ onMoreCustomRequest={onMoreCustomRequest} />
           </div>
         </div>
       </div>
