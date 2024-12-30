@@ -6,7 +6,7 @@ import {
   ModalBody,
   ModalContent,
 } from "@nextui-org/react"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { uploadMyData } from "services/user"
 import { TYPE_DATA_KEY } from "../CreatePrivateAgent"
 import { toast } from "react-toastify"
@@ -21,15 +21,29 @@ interface Props {
   isOpen: boolean
   onClose: () => void
   updateFaqSamples: (faqSample: FaqSample) => void
+  faqSampleSelected?: FaqSample
 }
 
-const AddFAQModal = ({ isOpen, onClose, updateFaqSamples }: Props) => {
-  const [faqSample, setFaqSample] = useState<FaqSample>({
-    id: NaN,
-    question: "",
-    answer: "",
-  })
+export const faqSampleDefault = {
+  id: NaN,
+  question: "",
+  answer: "",
+}
+
+const AddFAQModal = ({
+  isOpen,
+  onClose,
+  updateFaqSamples,
+  faqSampleSelected,
+}: Props) => {
+  const [faqSample, setFaqSample] = useState<FaqSample>(faqSampleDefault)
   const [isLoading, setIsLoading] = useState<boolean>(false)
+
+  useEffect(() => {
+    if (faqSampleSelected?.id) {
+      setFaqSample(faqSampleSelected)
+    }
+  }, [faqSampleSelected])
 
   const onFaqSampleChange = (key: string, value: string) => {
     setFaqSample((prev) => ({
@@ -48,15 +62,11 @@ const AddFAQModal = ({ isOpen, onClose, updateFaqSamples }: Props) => {
       }
       const res = await uploadMyData(payload)
       if (res) {
-        updateFaqSamples({
+        await updateFaqSamples({
           ...faqSample,
           id: res?.data?.id,
         })
-        setFaqSample({
-          id: NaN,
-          question: "",
-          answer: "",
-        })
+        setFaqSample(faqSampleDefault)
       }
     } catch (error: any) {
       toast.error(error?.response?.data?.message)
@@ -81,7 +91,13 @@ const AddFAQModal = ({ isOpen, onClose, updateFaqSamples }: Props) => {
             <h3 className="text-24 font-semibold text-mercury-950">
               Add FAQ Samples
             </h3>
-            <CloseButton onClose={onClose} className="h-9 w-9 min-w-9" />
+            <CloseButton
+              onClose={() => {
+                onClose()
+                setFaqSample(faqSampleDefault)
+              }}
+              className="h-9 w-9 min-w-9"
+            />
           </div>
           <div className="space-y-4 rounded-[22px] border border-mercury-100 bg-mercury-70 p-4">
             <Input
