@@ -5,8 +5,10 @@ import {
   TelegramOutlineIcon,
   XIcon,
 } from "@components/Icons/SocialLinkIcon"
+import { WorldGlobalIcon } from "@components/Icons/World"
 
 const SOCIAL_LINKS = [
+  { key: "web", icon: WorldGlobalIcon },
   { key: "dexscreener", icon: DexScreenerIcon },
   { key: "x", icon: XIcon },
   { key: "telegram", icon: TelegramOutlineIcon },

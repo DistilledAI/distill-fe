@@ -2,7 +2,7 @@ import endpoint from "./endpoint"
 import { fetchApiAuth } from "./fetchApi"
 
 interface TrendingAgentPayload {
-  limit: number
+  size: number
   offset: number
   sort?: string
   keyword?: string

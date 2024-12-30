@@ -6,14 +6,14 @@ const useTrendingAgentList = () => {
   const [totalItems, setTotalItems] = useState(0)
 
   const fetchTrendingAgentList = async ({
-    limit,
+    size,
     offset,
   }: {
-    limit: number
+    size: number
     offset: number
   }) => {
     try {
-      const res = await getTrendingAgentList({ limit, offset })
+      const res = await getTrendingAgentList({ size, offset })
       if (res) {
         setTrendingAgentList(res.data?.items)
         setTotalItems(res?.data?.total)
@@ -24,7 +24,7 @@ const useTrendingAgentList = () => {
   }
 
   useEffect(() => {
-    fetchTrendingAgentList({ limit: 10, offset: 0 })
+    fetchTrendingAgentList({ size: 10, offset: 0 })
   }, [])
 
   return {

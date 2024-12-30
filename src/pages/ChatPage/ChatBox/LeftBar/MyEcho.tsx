@@ -82,11 +82,10 @@ const MyEcho: React.FC = () => {
           </p>
           <p
             className={twMerge(
-              "line-clamp-1 max-w-[200px] leading-4 text-mercury-700 duration-300",
+              "line-clamp-1 max-w-[200px] text-[13px] leading-4 text-mercury-700 duration-300",
               isActive && "text-[rgba(255,255,255,0.7)]",
               sidebarCollapsed && "hidden",
             )}
-            style={{ fontSize: 13 }}
           >
             {!myAgent ? "Start your own private agent" : myAgent?.description}
           </p>

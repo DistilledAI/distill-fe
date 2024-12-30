@@ -41,7 +41,7 @@ const TrendingAgentList = () => {
     setPage(page)
 
     await fetchTrendingAgentList({
-      limit: LIMIT,
+      size: LIMIT,
       offset,
     })
   }
