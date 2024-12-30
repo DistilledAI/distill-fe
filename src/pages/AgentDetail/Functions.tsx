@@ -83,7 +83,7 @@ const Functions: React.FC<{
                 Autonomous Bot on Telegram Group
               </span>
               <Button className="text-base-14 h-auto rounded-full bg-brown-500 py-[2px] font-bold uppercase text-mercury-30 max-sm:text-12">
-                ai gent generate
+                ai agent generate
               </Button>
             </div>
             <div>
@@ -102,7 +102,7 @@ const Functions: React.FC<{
                 Automated on X (Twitter)
               </span>
               <Button className="text-base-14 h-auto rounded-full bg-brown-500 py-[2px] font-bold uppercase text-mercury-30 max-sm:text-12">
-                ai gent generate
+                ai agent generate
               </Button>
             </div>
             <div>

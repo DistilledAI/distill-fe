@@ -39,6 +39,7 @@ export interface GroupConfig {
   videoLive: string
   audioLive: string
   isPrediction: boolean
+  website?: string
 }
 
 export interface UserGroup {
