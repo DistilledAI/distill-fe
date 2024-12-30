@@ -34,7 +34,7 @@ const AuthorAvatar = () => {
     <div className="relative flex items-center gap-1">
       <AvatarCustom src={user?.avatar} publicAddress={user?.publicAddress} />
       <Button
-        onClick={() => inputRef.current?.click()}
+        onPress={() => inputRef.current?.click()}
         className="absolute -bottom-1 -right-1 flex h-5 w-5 min-w-0 items-center justify-center rounded-full bg-white p-0"
       >
         <EditPenOutlineIcon />

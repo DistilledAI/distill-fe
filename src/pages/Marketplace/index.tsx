@@ -125,7 +125,7 @@ const Marketplace = () => {
           </h3>
           {isAgentActive ? (
             <Button
-              onClick={() => navigate("/my-agents")}
+              onPress={() => navigate("/my-agents")}
               className="btn-primary !bg-mercury-950 !text-mercury-30 max-md:ml-auto"
             >
               <CloudUpload color="#FFFFFF" />

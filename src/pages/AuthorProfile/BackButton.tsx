@@ -8,7 +8,7 @@ const BackButton = () => {
   return (
     <Button
       className="group absolute left-8 top-[22px] z-20 hidden items-center gap-x-3 bg-transparent md:flex"
-      onClick={() => navigate(-1)}
+      onPress={() => navigate(-1)}
     >
       <div className="rounded-full bg-transparent p-[2px] group-hover:bg-mercury-50">
         <ArrowLeftFilledIcon size={24} />

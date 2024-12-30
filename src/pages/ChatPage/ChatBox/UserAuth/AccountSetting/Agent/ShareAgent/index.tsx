@@ -15,7 +15,7 @@ const ShareAgent = ({ isDisabled, agentData }: ShareAgentProps) => {
     <>
       <Button
         className="flex w-full rounded-full bg-mercury-100 max-md:min-h-14"
-        onClick={onOpen}
+        onPress={onOpen}
         isDisabled={isDisabled}
       >
         <ShareWithQrIcon />

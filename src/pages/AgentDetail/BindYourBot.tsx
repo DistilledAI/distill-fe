@@ -179,7 +179,7 @@ const BinYourBot: React.FC<{ botWebhooks: any; refetch: any }> = ({
                   <Button
                     className="mt-4 w-full rounded-full bg-mercury-950"
                     size="lg"
-                    onClick={onBindAgentToTelegramBot}
+                    onPress={onBindAgentToTelegramBot}
                     isDisabled={!tokenKeyValue || isBindSuccess}
                     isLoading={loading}
                   >

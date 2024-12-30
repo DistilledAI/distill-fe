@@ -64,7 +64,7 @@ const AuthorDescription = () => {
           rows={2}
         />
         <Button
-          onClick={handleFocus}
+          onPress={handleFocus}
           className="h-auto w-auto min-w-0 bg-transparent p-0"
         >
           <EditPenFilledIcon />

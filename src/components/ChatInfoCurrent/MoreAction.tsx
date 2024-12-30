@@ -96,13 +96,13 @@ const MoreAction: React.FC<{
               <div className="mt-3 flex justify-end gap-2">
                 <Button
                   className="mt-4 min-w-[90px] rounded-full bg-mercury-200 text-[15px] font-medium text-primary"
-                  onClick={onClose}
+                  onPress={onClose}
                 >
                   Cancel
                 </Button>
                 <Button
                   className="mt-4 min-w-[90px] rounded-full bg-mercury-950 text-[15px] font-medium text-white"
-                  onClick={() => handleLeaveGroup()}
+                  onPress={() => handleLeaveGroup()}
                   isLoading={loading}
                 >
                   Leave

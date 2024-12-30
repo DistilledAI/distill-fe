@@ -82,7 +82,7 @@ export const StartNewChat = () => {
         with a public agent, interact with an AI Companion, or create your own.
       </p>
       <Button
-        onClick={() => navigate(PATH_NAMES.MARKETPLACE)}
+        onPress={() => navigate(PATH_NAMES.MARKETPLACE)}
         className="mt-6 h-[46px] min-w-[200px] rounded-full bg-neutral-950 text-[16px] text-white"
       >
         Go to Marketplace

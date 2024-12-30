@@ -36,7 +36,7 @@ const BetDisclaimer: React.FC<{
           </p>
         </div>
         <Button
-          onClick={onAccept}
+          onPress={onAccept}
           isDisabled={!isChecked}
           className="mb-5 mt-7 bg-[#E8E9EE]"
         >
