@@ -8,19 +8,20 @@ import { PATH_NAMES } from "@constants/index"
 import { useLocation } from "react-router-dom"
 import Title from "./Title"
 
-const UserAuthWrapper = ({ hasLeftBar = true }: { hasLeftBar?: boolean }) => {
+const UserAuthWrapper = () => {
   const { connectMultipleWallet } = useConnectWallet()
   useReconnectWallet()
   const sidebarCollapsed = useAppSelector((state) => state.sidebarCollapsed)
   const location = useLocation()
   const isFullWidth = [PATH_NAMES.TRENDING].includes(location.pathname)
+  const isBgTransparent = [PATH_NAMES.PRIVATE_ROOM].includes(location.pathname)
 
   return (
     <div
       className={twMerge(
         "fixed right-0 top-0 z-20 flex w-full items-center justify-between bg-white pl-[329px] text-end duration-300",
         sidebarCollapsed && "pl-[104px]",
-        !hasLeftBar && "bg-transparent pl-0",
+        isBgTransparent && "bg-transparent pl-0",
         isFullWidth && "pl-0",
       )}
     >
