@@ -16,6 +16,11 @@ const UploadFAQ = ({ onMoreCustomRequest }: Props) => {
   const { onDelete } = useDeleteData()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [faqSamples, setFaqSamples] = useState<Array<FaqSample>>([])
+  const [faqSampleSelected, setFaqSampleSelected] = useState<FaqSample>({
+    id: NaN,
+    question: "",
+    answer: "",
+  })
 
   const updateFaqSamples = async (faqSample: FaqSample) => {
     if (faqSample?.id) {
@@ -54,32 +59,39 @@ const UploadFAQ = ({ onMoreCustomRequest }: Props) => {
           <TablerPlusIcon />
         </div>
         {faqSamples.length ? (
-          <div className="flex max-h-[100px] flex-col gap-1 overflow-auto p-3">
+          <ul className="flex max-h-[125px] flex-col gap-1 overflow-auto p-3">
             {faqSamples.map((item, index) => (
-              <div
+              <li
                 className="flex w-full items-center justify-between gap-4"
                 key={index}
               >
-                <div>
+                <div
+                  className="w-full cursor-pointer hover:underline"
+                  onClick={() => {
+                    setFaqSampleSelected(item)
+                    onOpen()
+                  }}
+                >
                   <p className="max-w-[300px] truncate text-14 font-semibold text-mercury-950">
                     {item.question}
                   </p>
-                  <p className="max-w-[300px] truncate text-12 text-mercury-700">
+                  <p className="max-w-[300px] truncate text-14 text-mercury-700">
                     {item.answer}
                   </p>
                 </div>
                 <button type="button" onClick={() => deleteFaqSample(item.id)}>
                   <TrashXIcon />
                 </button>
-              </div>
+              </li>
             ))}
-          </div>
+          </ul>
         ) : null}
       </div>
       <AddFAQModal
         isOpen={isOpen}
         onClose={onClose}
         updateFaqSamples={updateFaqSamples}
+        faqSampleSelected={faqSampleSelected}
       />
     </>
   )
