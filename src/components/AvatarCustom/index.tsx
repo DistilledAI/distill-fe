@@ -1,4 +1,3 @@
-import { NoelHat } from "@assets/images"
 import { Badge } from "@nextui-org/react"
 import { renderIcon } from "@utils/index"
 import React, { ReactNode, useEffect, useRef } from "react"
@@ -86,12 +85,12 @@ const AvatarCustom: React.FC<AvatarCustomProps> = ({
             />
           )}
 
-          <img
-            src={NoelHat}
+          {/* <img
+          src=""
             width={28}
             height={25}
             className="absolute -top-[10px] left-1/2 -translate-x-1/2"
-          />
+          /> */}
         </div>
       </Badge>
     )

@@ -1,4 +1,3 @@
-import { xMasBg } from "@assets/images"
 import { DistilledAIIcon } from "@components/Icons/DistilledAIIcon"
 import { useAppSelector } from "@hooks/useAppRedux"
 import ButtonMarketplace from "@pages/Marketplace/ButtonMarketplace"
@@ -63,10 +62,7 @@ const LeftBar = () => {
             <ButtonMarketplace />
           </div>
           <AnalyticsInfoWrap />
-          <img
-            className="absolute -bottom-[2px] left-0 h-[352px] w-full"
-            src={xMasBg}
-          />
+          {/* <img src="" className="absolute -bottom-[2px] left-0 h-[352px] w-full" /> */}
         </div>
       </div>
     </div>

@@ -12,7 +12,6 @@ import useGetChatId from "./ChatDetail/useGetChatId"
 import ChatList from "./ChatList"
 import ChatSearch from "./ChatSearch"
 import VideoCustom from "@components/VideoCustom"
-import { xMasBg } from "@assets/images"
 
 const ChatPageMobile = () => {
   const { privateChatId } = useParams()
@@ -55,13 +54,7 @@ const ChatPageMobile = () => {
           </div>
         )}
       </div>
-      <div
-        className="h-[calc(100vh-110px)] w-full bg-[rgba(255,255,255,0.85)] bg-contain bg-no-repeat pt-[56px]"
-        style={{
-          backgroundImage: `url(${xMasBg})`,
-          backgroundPosition: "center bottom -30px",
-        }}
-      >
+      <div className="h-[calc(100vh-110px)] w-full bg-[rgba(255,255,255,0.85)] pt-[56px]">
         <ChatList />
       </div>
     </div>

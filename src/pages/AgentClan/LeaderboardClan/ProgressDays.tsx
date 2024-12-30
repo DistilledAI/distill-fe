@@ -1,4 +1,4 @@
-import { roundProgressXmas } from "@assets/images"
+import { BoltIcon } from "@components/Icons"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { getRemainingDays, getRemainingDaysPercentage } from "@utils/index"
 import { useEffect, useRef, useState } from "react"
@@ -55,8 +55,7 @@ const ProgressDays = () => {
       }}
     >
       <div className="absolute -top-8 left-1/2 flex w-full -translate-x-1/2 items-center justify-center gap-1">
-        {/* <BoltIcon /> */}
-        <img src={roundProgressXmas} className="h-5 w-5" />
+        <BoltIcon />
         <span className="text-14 text-mercury-950">
           {/* {totalDays - remainingDays}/{totalDays} days */}
           Round Progress: {percentage}%
@@ -97,7 +96,7 @@ const ProgressDays = () => {
           <path
             ref={pathRef}
             d="M0 30.8243C50.865 12.9446 117.85 2 190 2C262.15 2 329.135 12.9446 380 30.8243"
-            stroke="#D15656"
+            stroke="#6B50B5"
             strokeWidth="4"
             strokeDasharray={totalLength}
             strokeDashoffset={dashOffset}
@@ -121,7 +120,7 @@ const ProgressDays = () => {
               dx="0"
               dy="0"
               stdDeviation="2"
-              floodColor="#D15656"
+              floodColor="#6B50B5"
               floodOpacity="0.5"
             />
           </filter>

@@ -1,4 +1,3 @@
-import { NoelHat } from "@assets/images"
 import AvatarCustom from "@components/AvatarCustom"
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { PATH_NAMES } from "@constants/index"
@@ -62,18 +61,10 @@ const MyEcho: React.FC = () => {
               <span className="absolute left-1/2 top-1/2 h-[2px] w-[16px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-mercury-900"></span>
             </div>
           ) : (
-            <div className="relative">
-              <AvatarCustom
-                src={myAgent?.avatar || undefined}
-                publicAddress={myAgent?.publicAddress || myAgent?.username}
-              />
-              <img
-                src={NoelHat}
-                width={28}
-                height={25}
-                className="absolute -top-[10px] left-1/2 -translate-x-1/2"
-              />
-            </div>
+            <AvatarCustom
+              src={myAgent?.avatar || undefined}
+              publicAddress={myAgent?.publicAddress || myAgent?.username}
+            />
           )}
           <div className="absolute bottom-[-3px] right-[-3px] flex h-5 w-5 items-center justify-center rounded-full bg-mercury-950">
             <FilledBrainAIIcon size={15} color="white" />
