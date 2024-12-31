@@ -29,12 +29,8 @@ export const TOKEN_RESERVES = 1_000_000_000_000_000
 export const LAMPORT_RESERVES = 1_000_000_000
 export const INIT_BONDING_CURVE = 95
 
-const SOLANA_RPC =
-  envConfig.solanaRpc ||
-  "https://mainnet.helius-rpc.com/?api-key=3b28a0fc-0ef6-48ef-b55c-c55ae74cb6a6"
-const SOLANA_WS =
-  envConfig.solanaWs ||
-  "wss://mainnet.helius-rpc.com/?api-key=3b28a0fc-0ef6-48ef-b55c-c55ae74cb6a6"
+const SOLANA_RPC = envConfig.solanaRpc || "https://solana-woker.distilled.ai"
+const SOLANA_WS = envConfig.solanaWs || "wss://solana-woker.distilled.ai"
 
 export const endpoint = SOLANA_RPC
 export const pythProgramId = new PublicKey(idl.address)
