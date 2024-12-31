@@ -42,7 +42,7 @@ const CmdSendToken = () => {
         value={toAddress}
         onChange={(e) => setToAddress(e.target.value)}
         placeholder="Enter recipient address"
-        className="w-[120px]"
+        className="w-[180px]"
       />
     </div>
   )
