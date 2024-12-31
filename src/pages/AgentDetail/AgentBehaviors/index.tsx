@@ -1,7 +1,19 @@
+import { ChevronDownIcon } from "@components/Icons/ChevronDownIcon"
 import { CheckFilledIcon } from "@components/Icons/DefiLens"
-import { StarUserIconOutline } from "@components/Icons/UserIcon"
+import {
+  QuestionUserIconOutline,
+  StarUserIconOutline,
+} from "@components/Icons/UserIcon"
 import { COMMUNICATION_STYLE_LIST, PERSONALITY_LIST } from "@constants/index"
-import { Input, Textarea } from "@nextui-org/react"
+import {
+  Button,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
+  Input,
+  Textarea,
+} from "@nextui-org/react"
 import React, { useEffect, useState } from "react"
 import { Controller, useFormContext } from "react-hook-form"
 import { twMerge } from "tailwind-merge"
@@ -168,37 +180,65 @@ const AgentBehaviors: React.FC<AgentBehaviorsProps> = ({
   return (
     <div className="space-y-6">
       <CategoryLabel
-        text="Agent Behaviors"
+        text="Behaviors"
         icon={<StarUserIconOutline color="#A2845E" />}
       />
-      {/* Personalities */}
-      <div>
-        <FieldLabel
-          text="Your Agent’s Personality"
-          desc="Choose one trait that best describes your agent's personality."
-          containerClassName="mb-4"
-        />
-        <div className="flex flex-wrap gap-2">
-          {PERSONALITY_LIST.map((item: BehaviorItem) =>
-            renderBehaviorItem(item, "personality_traits"),
-          )}
-        </div>
+
+      <div className="flex w-full items-center justify-between max-md:flex-col">
+        <p className="font-semibold text-mercury-950">
+          What is the main role of the Agent?
+        </p>
+        <Dropdown classNames={{ base: "mt-1" }}>
+          <DropdownTrigger>
+            <Button className="z-[1] flex h-12 max-w-[230px] items-center bg-mercury-30">
+              <QuestionUserIconOutline />
+              <span className="text-16 font-medium text-mercury-900">
+                Customer Support
+              </span>
+              <ChevronDownIcon />
+            </Button>
+          </DropdownTrigger>
+          <DropdownMenu aria-label="Dynamic Actions">
+            <DropdownItem color="default" key="support">
+              <span className="font-medium">Customer Support</span>
+            </DropdownItem>
+          </DropdownMenu>
+        </Dropdown>
       </div>
-      {/* Communication Styles */}
-      <div>
-        <FieldLabel
-          text="Communication Style"
-          desc="Select one tone and style your agent should use when communicating."
-          containerClassName="mb-4"
-        />
-        <div className="flex flex-wrap gap-2">
-          {COMMUNICATION_STYLE_LIST.map((item: BehaviorItem) =>
-            renderBehaviorItem(item, "communication_style"),
-          )}
-        </div>
-      </div>
+
       {!isCreate && (
         <>
+          <div>
+            <FieldLabel
+              text="Describe your Agent’s purpose"
+              containerClassName="mb-4"
+              required
+            />
+            <Controller
+              name="agent_describe"
+              control={control}
+              render={({ field: { value, onChange } }: any) => {
+                return (
+                  <div className="w-full">
+                    <Textarea
+                      placeholder={`e.g., "A helpful customer service agent"`}
+                      minRows={3}
+                      maxRows={3}
+                      className="w-full rounded-xl border border-mercury-400"
+                      classNames={{
+                        inputWrapper: "bg-mercury-70",
+                      }}
+                      value={value || ""}
+                      onChange={(e) => {
+                        onChange(e.target.value)
+                      }}
+                    />
+                  </div>
+                )
+              }}
+            />
+          </div>
+
           <div>
             <FieldLabel
               text="Customization Instructions"
@@ -228,13 +268,42 @@ const AgentBehaviors: React.FC<AgentBehaviorsProps> = ({
               }}
             />
           </div>
-          <div className="grid grid-cols-2 gap-10 max-md:grid-cols-1">
-            <InteractFrequency />
-            <ToneAdaptation />
-            <ResponseLength />
-            <SuggestReplies />
-          </div>
         </>
+      )}
+
+      <div>
+        <FieldLabel
+          text="Your Agent’s Personality"
+          desc="Choose one trait that best describes your agent's personality."
+          containerClassName="mb-4"
+        />
+        <div className="flex flex-wrap gap-2">
+          {PERSONALITY_LIST.map((item: BehaviorItem) =>
+            renderBehaviorItem(item, "personality_traits"),
+          )}
+        </div>
+      </div>
+
+      <div>
+        <FieldLabel
+          text="Communication Style"
+          desc="Select one tone and style your agent should use when communicating."
+          containerClassName="mb-4"
+        />
+        <div className="flex flex-wrap gap-2">
+          {COMMUNICATION_STYLE_LIST.map((item: BehaviorItem) =>
+            renderBehaviorItem(item, "communication_style"),
+          )}
+        </div>
+      </div>
+
+      {!isCreate && (
+        <div className="grid grid-cols-2 gap-10 max-md:grid-cols-1">
+          <InteractFrequency />
+          <ToneAdaptation />
+          <ResponseLength />
+          <SuggestReplies />
+        </div>
       )}
     </div>
   )

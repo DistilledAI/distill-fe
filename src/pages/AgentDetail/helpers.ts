@@ -30,6 +30,10 @@ export const LIST_AGENT_CONFIG_KEYS = [
   "category",
   "personality_traits",
   "communication_style",
+  "website_link",
+  "x_link",
+  "telegram_link",
+  "agent_describe",
 ]
 
 export const getConfigAgentByDataForm = (data: any) => {

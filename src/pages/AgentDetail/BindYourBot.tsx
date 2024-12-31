@@ -6,10 +6,7 @@ import {
   XboxXFilled,
 } from "@components/Icons"
 import { CheckFilledIcon } from "@components/Icons/DefiLens"
-import {
-  PlayVideoFilled,
-  TelegramOnlineIcon,
-} from "@components/Icons/SocialLinkIcon"
+import { BookIcon, TelegramOnlineIcon } from "@components/Icons/SocialLinkIcon"
 import {
   Button,
   Input,
@@ -32,6 +29,7 @@ const BinYourBot: React.FC<{ botWebhooks: any; refetch: any }> = ({
   const telegramBotData = botWebhooks?.find(
     (bot: any) => bot.platform === "telegram",
   )
+  console.log("🚀 ~ telegramBotData:", telegramBotData)
   const telegramBotUsername = telegramBotData?.usernamePlatform
   const { agentId } = useParams()
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
@@ -113,12 +111,16 @@ const BinYourBot: React.FC<{ botWebhooks: any; refetch: any }> = ({
             />
           </ModalHeader>
           <ModalBody className="gap-4 px-6 py-4 pb-10">
-            <div className="ml-2 flex cursor-pointer items-center gap-2 hover:underline">
-              <PlayVideoFilled />
+            <a
+              className="ml-2 flex cursor-pointer items-center gap-2 hover:underline"
+              href="https://distilled.foundation/developer-resources/how-to-bind-your-twitter-and-telegram-account"
+              target="_blank"
+            >
+              <BookIcon />
               <span className="text-base-md text-brown-500">
-                Watch the tutorial to bind your Telegram bot.
+                Read the tutorial to bind your autonomous Telegram bot.
               </span>
-            </div>
+            </a>
 
             <div className="flex">
               <div className="w-[50px] py-4">

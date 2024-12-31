@@ -4,7 +4,7 @@ import { ArrowLeftFilledIcon } from "@components/Icons/Arrow"
 import { CheckFilledIcon } from "@components/Icons/DefiLens"
 import { ExternalLink } from "@components/Icons/ExternalLink"
 import { BookIcon } from "@components/Icons/SocialLinkIcon"
-import { TwitterIcon } from "@components/Icons/Twitter"
+import { TwitterOnlineIcon } from "@components/Icons/Twitter"
 import {
   Button,
   Input,
@@ -28,9 +28,11 @@ const BindYourAccount: React.FC<{
   agentConfigs: AgentConfig[]
   refetch: any
 }> = ({ agentConfigs, refetch }) => {
-  const telegramBotData = agentConfigs?.find(
+  const xBotData = agentConfigs?.find(
     (agent: any) => agent.key === "bindTwitterKey",
   )
+  const bindTwitterValue = xBotData?.value ? JSON.parse(xBotData.value) : null
+  const twitterUsername = bindTwitterValue?.info?.data?.username
   const { agentId } = useParams()
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const [isBindSuccess, setIsBindSuccess] = useState<boolean>(false)
@@ -82,10 +84,10 @@ const BindYourAccount: React.FC<{
 
   return (
     <>
-      {telegramBotData ? (
+      {xBotData ? (
         <div className="flex items-center gap-2">
-          <TwitterIcon />
-          {/* <span className="text-base-b">{telegramBotData}</span> */}
+          <TwitterOnlineIcon />
+          <span className="text-base-b">{twitterUsername}</span>
           <span
             className="text-base-md cursor-pointer text-brown-10 hover:underline"
             onClick={onOpen}
@@ -125,12 +127,16 @@ const BindYourAccount: React.FC<{
             />
           </ModalHeader>
           <ModalBody className="gap-4 px-6 py-4 pb-10">
-            <div className="ml-2 flex cursor-pointer items-center gap-2 hover:underline">
+            <a
+              className="ml-2 flex cursor-pointer items-center gap-2 hover:underline"
+              href="https://distilled.foundation/developer-resources/how-to-bind-your-twitter-and-telegram-account"
+              target="_blank"
+            >
               <BookIcon />
               <span className="text-base-md text-brown-500">
                 Read the tutorial to bind your autonomous Twitter account.
               </span>
-            </div>
+            </a>
 
             <div className="flex">
               <div className="w-[50px] py-4">

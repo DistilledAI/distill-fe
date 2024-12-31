@@ -134,7 +134,6 @@ const AgentDetail: React.FC = () => {
     const { avatar, avatarFile, ...newData } = data
     const agentIdNumber = Number(agentId)
     const configData = getConfigAgentByDataForm(data)
-    console.log("🚀 ~ onSubmit ~ configData:", configData)
 
     try {
       setLoading(true)
@@ -171,7 +170,7 @@ const AgentDetail: React.FC = () => {
 
   const componentScrollTo = [
     {
-      title: "Appearance",
+      title: "Public Appearance",
       content: <GeneralInfo agentData={agentData} />,
       icon: <ClipboardTextIcon />,
     },
@@ -225,7 +224,7 @@ const AgentDetail: React.FC = () => {
           <Header submitLoading={loading} agentData={agentData} />
           <SmoothScrollTo
             components={componentScrollTo}
-            offsetAdjustment={230}
+            offsetAdjustment={200}
             classNames={{
               contentWrapper: "pt-5",
             }}
