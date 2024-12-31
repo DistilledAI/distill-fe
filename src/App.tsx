@@ -1,12 +1,13 @@
-import EarnedPointToast from "@components/EearnedPointToast"
-import MediaPreview from "@components/MediaPreview"
 import useAuthAction from "@hooks/useAuthAction"
 import useFetchMyAgent from "@hooks/useFetchMyAgent"
 import { getAccessToken } from "@utils/storage"
 import Owallet from "lib/owallet"
 import mixpanel from "mixpanel-browser"
-import { useEffect } from "react"
+import { lazy, Suspense, useEffect } from "react"
 import AppRouter from "./routes/AppRouter"
+
+const EarnedPointToast = lazy(() => import("@components/EarnedPointToast"))
+const MediaPreview = lazy(() => import("@components/MediaPreview"))
 
 const mixpanelToken = import.meta.env.VITE_APP_MIXPANEL_TOKEN
 const envMode = import.meta.env.VITE_APP_ENV_MODE
@@ -16,17 +17,17 @@ function App() {
   useFetchMyAgent()
 
   const initMixpanel = () => {
-    mixpanel.init(mixpanelToken, {
-      debug: true,
-      track_pageview: false,
-      persistence: "localStorage",
-    })
+    if (envMode === "production" && mixpanelToken) {
+      mixpanel.init(mixpanelToken, {
+        debug: false,
+        track_pageview: false,
+        persistence: "localStorage",
+      })
+    }
   }
 
   useEffect(() => {
-    if (envMode === "production") {
-      initMixpanel()
-    }
+    initMixpanel()
   }, [])
 
   useEffect(() => {
@@ -40,14 +41,21 @@ function App() {
 
   useEffect(() => {
     //@ts-ignore
-    window.Owallet = new Owallet("owallet")
+    if (!window.Owallet) {
+      //@ts-ignore
+      window.Owallet = new Owallet("owallet")
+    }
   }, [])
 
   return (
     <>
       <AppRouter />
-      <EarnedPointToast />
-      <MediaPreview />
+      <Suspense fallback={null}>
+        <EarnedPointToast />
+      </Suspense>
+      <Suspense fallback={null}>
+        <MediaPreview />
+      </Suspense>
     </>
   )
 }

@@ -8,6 +8,7 @@ const MediaPreview = () => {
   const { data: mediaUrl } = useQuery({
     initialData: "",
     queryKey: [QueryDataKeys.MEDIA_PREVIEW],
+    staleTime: 0,
   })
 
   if (!mediaUrl) return null
