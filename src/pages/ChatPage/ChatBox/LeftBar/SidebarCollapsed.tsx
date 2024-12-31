@@ -16,7 +16,7 @@ const SidebarCollapsed = () => {
     <Button
       isIconOnly
       className="h-fit min-h-fit w-fit min-w-fit bg-transparent"
-      onClick={handleSidebarCollapsed}
+      onPress={handleSidebarCollapsed}
     >
       <div className={twMerge(sidebarCollapsed && "rotate-180")}>
         <CollapseLeftIcon />

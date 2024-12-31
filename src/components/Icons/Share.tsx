@@ -88,3 +88,25 @@ export const ShareArrowIcon = ({ size = 20, color = "#545454" }: IconProps) => {
     </svg>
   )
 }
+
+export const ExternalLinkIcon = ({
+  size = 16,
+  color = "#545454",
+}: IconProps) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 16 16"
+      fill="none"
+    >
+      <path
+        d="M8.0013 4.00001H4.0013C3.64768 4.00001 3.30854 4.14048 3.05849 4.39053C2.80844 4.64058 2.66797 4.97972 2.66797 5.33334V12C2.66797 12.3536 2.80844 12.6928 3.05849 12.9428C3.30854 13.1929 3.64768 13.3333 4.0013 13.3333H10.668C11.0216 13.3333 11.3607 13.1929 11.6108 12.9428C11.8608 12.6928 12.0013 12.3536 12.0013 12V8M7.33464 8.66667L13.3346 2.66667M13.3346 2.66667H10.0013M13.3346 2.66667V6"
+        stroke={color}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}

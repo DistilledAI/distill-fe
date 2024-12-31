@@ -1,24 +1,15 @@
 import AvatarCustom from "@components/AvatarCustom"
+import { WorldIcon } from "@components/Icons/AgentDetailIcon"
+import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { ClipboardTextIcon } from "@components/Icons/ClipboardTextIcon"
-import {
-  Button,
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownTrigger,
-  Input,
-  Textarea,
-} from "@nextui-org/react"
+import { Input, Textarea } from "@nextui-org/react"
+import { fileToBase64, isPassFileSize } from "@utils/index"
 import { Controller, useFormContext } from "react-hook-form"
+import { toast } from "react-toastify"
+import { twMerge } from "tailwind-merge"
 import { IAgentData } from "types/user"
 import CategoryLabel, { FieldLabel } from "./CategoryLabel"
 import ChangeAvatarContainer from "./ChangeAvatarContainer"
-import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
-import { fileToBase64, isPassFileSize } from "@utils/index"
-import { toast } from "react-toastify"
-import { twMerge } from "tailwind-merge"
-import { QuestionUserIconOutline } from "@components/Icons/UserIcon"
-import { ChevronDownIcon } from "@components/Icons/ChevronDownIcon"
 
 export const DESC_MAX_LENGTH = 200
 
@@ -44,7 +35,13 @@ const GeneralInfo: React.FC<{
 
   return (
     <div className="space-y-4">
-      <CategoryLabel text="General info" icon={<ClipboardTextIcon />} />
+      <div className="flex items-center justify-between">
+        <CategoryLabel text="Public Appearance" icon={<ClipboardTextIcon />} />
+        <div className="flex items-center gap-1 rounded-full bg-[rgba(0,122,255,0.15)] px-2">
+          <WorldIcon size={20} color="#007AFF" />
+          <span className="font-medium uppercase text-[#007AFF]">public</span>
+        </div>
+      </div>
       <div className="flex w-full items-center justify-between gap-[56px] max-sm:flex-col max-sm:items-start max-sm:gap-5">
         <Controller
           name="username"
@@ -102,7 +99,7 @@ const GeneralInfo: React.FC<{
 
       <div className="w-full">
         <div className="flex items-center justify-between">
-          <FieldLabel text="Description" />
+          <FieldLabel text="Bio" />
           <span
             className={twMerge(
               "text-base-md text-mercury-900 max-sm:text-14",
@@ -120,7 +117,7 @@ const GeneralInfo: React.FC<{
             return (
               <div className="w-full">
                 <Textarea
-                  placeholder="Briefly outline your agent story or mission."
+                  placeholder={`e.g., "A helpful customer service agent"`}
                   minRows={5}
                   maxRows={5}
                   className="w-full rounded-xl border border-mercury-400"
@@ -136,32 +133,81 @@ const GeneralInfo: React.FC<{
             )
           }}
         />
-      </div>
-      <div className="flex w-full justify-between pt-3 max-md:flex-col">
-        <div className="max-md:mb-5">
-          <p className="font-semibold text-mercury-950">
-            Your Agent's Primary purpose
-          </p>
-          <span className="text-mercury-700">
-            What is the main role of the Agent?
-          </span>
+
+        <div className="mt-4 flex gap-4">
+          <Controller
+            name="website_link"
+            control={control}
+            render={({ field: { value, onChange } }: any) => {
+              return (
+                <div className="w-full">
+                  <FieldLabel text="Website Link" />
+                  <div className="flex items-center max-sm:h-auto">
+                    <Input
+                      value={value}
+                      type="text"
+                      placeholder="https://example.com/"
+                      className="w-full"
+                      classNames={{
+                        mainWrapper: "border border-mercury-400 rounded-xl",
+                        inputWrapper: " bg-mercury-70",
+                      }}
+                      onChange={(e) => onChange(e.target.value)}
+                    />
+                  </div>
+                </div>
+              )
+            }}
+          />
+          <Controller
+            name="x_link"
+            control={control}
+            render={({ field: { value, onChange } }: any) => {
+              return (
+                <div className="w-full">
+                  <FieldLabel text="X (Twitter) Link" />
+                  <div className="flex items-center max-sm:h-auto">
+                    <Input
+                      value={value}
+                      type="text"
+                      placeholder="https://x.com/username"
+                      className="w-full"
+                      classNames={{
+                        mainWrapper: "border border-mercury-400 rounded-xl",
+                        inputWrapper: " bg-mercury-70",
+                      }}
+                      onChange={(e) => onChange(e.target.value)}
+                    />
+                  </div>
+                </div>
+              )
+            }}
+          />
+          <Controller
+            name="telegram_link"
+            control={control}
+            render={({ field: { value, onChange } }: any) => {
+              return (
+                <div className="w-full">
+                  <FieldLabel text="Telegram Link" />
+                  <div className="flex items-center max-sm:h-auto">
+                    <Input
+                      value={value}
+                      type="text"
+                      placeholder="https://t.me/username"
+                      className="w-full"
+                      classNames={{
+                        mainWrapper: "border border-mercury-400 rounded-xl",
+                        inputWrapper: " bg-mercury-70",
+                      }}
+                      onChange={(e) => onChange(e.target.value)}
+                    />
+                  </div>
+                </div>
+              )
+            }}
+          />
         </div>
-        <Dropdown classNames={{ base: "mt-1" }}>
-          <DropdownTrigger>
-            <Button className="z-[1] flex h-12 max-w-[230px] items-center bg-mercury-30">
-              <QuestionUserIconOutline />
-              <span className="text-16 font-medium text-mercury-900">
-                Customer Support
-              </span>
-              <ChevronDownIcon />
-            </Button>
-          </DropdownTrigger>
-          <DropdownMenu aria-label="Dynamic Actions">
-            <DropdownItem color="default" key="support">
-              <span className="font-medium">Customer Support</span>
-            </DropdownItem>
-          </DropdownMenu>
-        </Dropdown>
       </div>
     </div>
   )

@@ -71,7 +71,6 @@ const SendMessage: React.FC<{
           </div>
           <ChatInput
             onSubmit={onChatSubmit}
-            isPending={mutation.isPending}
             isDisabledInput={!isEnableTextInput}
             replyUsername={replyUsername}
             hasFocus={hasFocus}

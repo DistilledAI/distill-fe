@@ -1,10 +1,11 @@
+import React, { useMemo } from "react"
 import { useQueryClient } from "@tanstack/react-query"
 import { getActiveColorRandomById, isImageUrl } from "@utils/index"
 import Markdown from "react-markdown"
 import { useParams } from "react-router-dom"
 import { QueryDataKeys } from "types/queryDataKeys"
 
-const MarkdownMessage = ({ msg }: { msg: string }) => {
+const MarkdownMessage = React.memo(({ msg }: { msg: string }) => {
   const { chatId } = useParams()
   const { textColor } = getActiveColorRandomById(chatId)
   const queryClient = useQueryClient()
@@ -54,51 +55,52 @@ const MarkdownMessage = ({ msg }: { msg: string }) => {
     })
   }
 
-  const renderers = {
-    ol: ({ children }: any) => (
-      <ol style={{ listStyleType: "decimal", paddingLeft: "16px" }}>
-        {children}
-      </ol>
-    ),
-    li: ({ children }: any) => <li>{children}</li>,
-    img: ({ src, alt }: any) => {
-      const imageSrc = replaceSrcImage(src)
+  const renderers = useMemo(
+    () => ({
+      ol: ({ children }: any) => (
+        <ol style={{ listStyleType: "decimal", paddingLeft: "16px" }}>
+          {children}
+        </ol>
+      ),
+      li: ({ children }: any) => <li>{children}</li>,
+      img: ({ src, alt }: any) => {
+        const imageSrc = replaceSrcImage(src)
 
-      return (
-        <img
-          src={imageSrc}
-          alt={alt}
-          className="max-h-[300px] min-h-[200px] cursor-pointer rounded-3xl border border-mercury-100 object-cover shadow-1"
-          onClick={() =>
-            queryClient.setQueryData<string>(
-              [QueryDataKeys.MEDIA_PREVIEW],
-              () => imageSrc || "",
-            )
-          }
-        />
-      )
-    },
-    a: ({ href, children }: any) => (
-      <a
-        href={href}
-        target="_blank"
-        rel="noopener noreferrer"
-        className={textColor}
-      >
-        {children}
-      </a>
-    ),
-    p: ({ children }: any) => {
-      const wordBreakStyle = checkTextBreak(children)
-      return <p className={wordBreakStyle}>{children}</p>
-    },
-  }
-
-  return (
-    <Markdown components={renderers}>
-      {breakLine(enhancedMessage(msg))}
-    </Markdown>
+        return (
+          <img
+            src={imageSrc}
+            alt={alt}
+            className="max-h-[300px] min-h-[200px] cursor-pointer rounded-3xl border border-mercury-100 object-cover shadow-1"
+            onClick={() =>
+              queryClient.setQueryData<string>(
+                [QueryDataKeys.MEDIA_PREVIEW],
+                () => imageSrc || "",
+              )
+            }
+          />
+        )
+      },
+      a: ({ href, children }: any) => (
+        <a
+          href={href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={textColor}
+        >
+          {children}
+        </a>
+      ),
+      p: ({ children }: any) => {
+        const wordBreakStyle = checkTextBreak(children)
+        return <p className={wordBreakStyle}>{children}</p>
+      },
+    }),
+    [queryClient, textColor],
   )
-}
+
+  const processedMessage = useMemo(() => breakLine(enhancedMessage(msg)), [msg])
+
+  return <Markdown components={renderers}>{processedMessage}</Markdown>
+})
 
 export default MarkdownMessage

@@ -24,7 +24,7 @@ const MyAgents: React.FC<{
         </div>
         {agents.length === 0 && (
           <Button
-            onClick={() => navigate(PATH_NAMES.CREATE_AGENT)}
+            onPress={() => navigate(PATH_NAMES.CREATE_AGENT)}
             className="min-w-0 rounded-full bg-mercury-950 text-white max-md:h-8"
           >
             <PlusIcon color="white" />

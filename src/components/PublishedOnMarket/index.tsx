@@ -76,7 +76,7 @@ const PublishedOnMarket: React.FC<{
             <div className="mb-6 mt-6 flex items-center justify-center gap-3">
               <Button
                 className="flex rounded-full border-1 border-white bg-mercury-30"
-                onClick={onOpenQR}
+                onPress={onOpenQR}
               >
                 <ShareWithQrIcon />
                 <span className="font-medium text-mercury-950">
@@ -84,7 +84,7 @@ const PublishedOnMarket: React.FC<{
                 </span>
               </Button>
               <Button
-                onClick={onClose}
+                onPress={onClose}
                 as={Link}
                 to={isMobile ? PATH_NAMES.PRIVATE_AGENT : PATH_NAMES.HOME}
                 className="rounded-full bg-mercury-950"

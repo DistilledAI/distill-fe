@@ -1,8 +1,4 @@
-import { IconProps } from "types/icons"
-
-interface Icon2Props extends IconProps {
-  color2?: string
-}
+import { Icon2Props } from "types/icons"
 
 export const CollapseLeftIcon = ({
   size = 20,

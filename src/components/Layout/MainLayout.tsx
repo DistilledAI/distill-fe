@@ -1,14 +1,16 @@
-import ConnectWalletModal from "@components/ConnectWalletModal"
+import { Suspense, lazy, useMemo } from "react"
+import { Outlet, useLocation, useParams } from "react-router-dom"
 import { PATH_NAMES } from "@constants/index"
 import useFetchMe from "@hooks/useFetchMe"
 import useInviteAgent from "@hooks/useInviteAgent"
 import useReconnectWallet from "@hooks/useReconnectWallet"
-import useWindowSize from "@hooks/useWindowSize"
 import useMessageSocket from "@pages/ChatPage/ChatBox/useMessageSocket"
+import useWindowSize from "@hooks/useWindowSize"
 import useGetChatId from "@pages/ChatPage/Mobile/ChatDetail/useGetChatId"
-import { Outlet, useLocation, useParams } from "react-router-dom"
-import FooterMobile from "./FooterMobile"
-import HeaderMobile from "./HeaderMobile"
+
+const ConnectWalletModal = lazy(() => import("@components/ConnectWalletModal"))
+const HeaderMobile = lazy(() => import("./HeaderMobile"))
+const FooterMobile = lazy(() => import("./FooterMobile"))
 
 const MainLayout = () => {
   useInviteAgent()
@@ -20,19 +22,30 @@ const MainLayout = () => {
   const { pathname } = useLocation()
   const { inviteAgentId, privateChatId } = useParams()
   const { chatId } = useGetChatId()
-  const ignoreLayout = [
-    `${PATH_NAMES.CHAT}/${chatId}`,
-    `${PATH_NAMES.INVITE}/${inviteAgentId}`,
-    `${PATH_NAMES.MY_DATA}`,
-    `${PATH_NAMES.PRIVATE_AGENT}/${privateChatId}`,
-    // `${PATH_NAMES.CLAN}`,
-    `${PATH_NAMES.MY_AGENTS}`,
-  ]
 
-  const ignoreFooter = [`${PATH_NAMES.CLAN}`]
+  const ignoreLayout = useMemo(
+    () => [
+      `${PATH_NAMES.CHAT}/${chatId}`,
+      `${PATH_NAMES.INVITE}/${inviteAgentId}`,
+      `${PATH_NAMES.MY_DATA}`,
+      `${PATH_NAMES.PRIVATE_AGENT}/${privateChatId}`,
+      `${PATH_NAMES.MY_AGENTS}`,
+    ],
+    [chatId, inviteAgentId, privateChatId],
+  )
 
-  const isIgnoreLayout = ignoreLayout.some((path) => pathname.startsWith(path))
-  const isIgnoreFooter = ignoreFooter.some((path) => pathname.startsWith(path))
+  const ignoreFooter = useMemo(() => [`${PATH_NAMES.CLAN}`], [])
+
+  const isIgnoreLayout = useMemo(
+    () => ignoreLayout.some((path) => pathname.startsWith(path)),
+    [ignoreLayout, pathname],
+  )
+
+  const isIgnoreFooter = useMemo(
+    () => ignoreFooter.some((path) => pathname.startsWith(path)),
+    [ignoreFooter, pathname],
+  )
+
   const isHeader = !isIgnoreLayout
   const isFooter = !isIgnoreLayout && !isIgnoreFooter
 
@@ -42,7 +55,11 @@ const MainLayout = () => {
   return (
     <>
       <div className="max-md:bg-mercury-30">
-        {hasHeader && <HeaderMobile />}
+        {hasHeader && (
+          <Suspense fallback={<div>Loading Header...</div>}>
+            <HeaderMobile />
+          </Suspense>
+        )}
         <div
           aria-checked={hasHeader}
           aria-current={hasFooter}
@@ -50,9 +67,15 @@ const MainLayout = () => {
         >
           <Outlet />
         </div>
-        {hasFooter && <FooterMobile />}
+        {hasFooter && (
+          <Suspense fallback={null}>
+            <FooterMobile />
+          </Suspense>
+        )}
       </div>
-      <ConnectWalletModal />
+      <Suspense fallback={null}>
+        <ConnectWalletModal />
+      </Suspense>
     </>
   )
 }

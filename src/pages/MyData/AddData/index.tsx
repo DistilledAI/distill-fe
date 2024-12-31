@@ -15,7 +15,7 @@ const AddData: React.FC<{
     <Button
       className="h-[44px] bg-mercury-950 max-md:h-[38px]"
       radius="full"
-      onClick={() =>
+      onPress={() =>
         navigate(
           botId ? `${PATH_NAMES.ADD_MY_DATA}/${botId}` : PATH_NAMES.ADD_MY_DATA,
         )

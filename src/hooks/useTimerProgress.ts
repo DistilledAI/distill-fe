@@ -1,15 +1,15 @@
-import { useState, useLayoutEffect } from "react"
+import { useState, useLayoutEffect, useRef } from "react"
 
 const useTimerProgress = (time = 0, repeat = true, reset: () => void) => {
   const [timerProgress, setTimerProgress] = useState(0)
   const step = time / 100
+  const intervalRef = useRef<NodeJS.Timeout | null>(null)
 
   useLayoutEffect(() => {
-    if (!time) return
+    if (!time || step <= 0) return
     if (!repeat && timerProgress >= 100) return
 
     const interval = setInterval(() => {
-      // setTimerProgress((v) => (v >= 100 ? (repeat ? 0 : 100) : v + 1))
       setTimerProgress((v) => {
         if (v >= 100) {
           reset()
@@ -19,8 +19,12 @@ const useTimerProgress = (time = 0, repeat = true, reset: () => void) => {
       })
     }, step)
 
-    return () => clearInterval(interval)
-  }, [timerProgress, repeat, step])
+    intervalRef.current = interval
+
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current)
+    }
+  }, [time, repeat, step, reset])
 
   return { timerProgress, setTimerProgress }
 }

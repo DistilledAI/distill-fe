@@ -73,7 +73,7 @@ const DelegatePrivateAgent = () => {
       <div className="hidden w-fit items-center justify-end md:flex">
         <Button
           className="flex h-11 w-fit cursor-pointer items-center gap-2 rounded-3xl bg-mercury-70 p-3"
-          onClick={handleSetDelegate}
+          onPress={handleSetDelegate}
         >
           {isBotEnabled ? (
             <FilledBrainAIIcon size={20} />
@@ -89,7 +89,7 @@ const DelegatePrivateAgent = () => {
       </div>
       <div className="block md:hidden">
         <Button
-          onClick={handleSetDelegate}
+          onPress={handleSetDelegate}
           className="flex h-11 items-center rounded-full bg-mercury-950"
         >
           {isBotEnabled ? (

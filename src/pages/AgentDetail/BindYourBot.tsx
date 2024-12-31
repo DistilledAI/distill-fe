@@ -6,10 +6,7 @@ import {
   XboxXFilled,
 } from "@components/Icons"
 import { CheckFilledIcon } from "@components/Icons/DefiLens"
-import {
-  PlayVideoFilled,
-  TelegramOnlineIcon,
-} from "@components/Icons/SocialLinkIcon"
+import { BookIcon, TelegramOnlineIcon } from "@components/Icons/SocialLinkIcon"
 import {
   Button,
   Input,
@@ -19,7 +16,9 @@ import {
   ModalHeader,
   useDisclosure,
 } from "@nextui-org/react"
+import { refreshFetchMyAgent } from "@reducers/agentSlice"
 import { useState } from "react"
+import { useDispatch } from "react-redux"
 import { useParams } from "react-router-dom"
 import { toast } from "react-toastify"
 import { telegramMapAgent } from "services/agent"
@@ -32,6 +31,7 @@ const BinYourBot: React.FC<{ botWebhooks: any; refetch: any }> = ({
   const telegramBotData = botWebhooks?.find(
     (bot: any) => bot.platform === "telegram",
   )
+  console.log("🚀 ~ telegramBotData:", telegramBotData)
   const telegramBotUsername = telegramBotData?.usernamePlatform
   const { agentId } = useParams()
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
@@ -39,6 +39,7 @@ const BinYourBot: React.FC<{ botWebhooks: any; refetch: any }> = ({
   const [isBindSuccess, setIsBindSuccess] = useState<boolean>(false)
   const [isBindError, setIsBindError] = useState<boolean>(false)
   const [loading, setLoading] = useState<boolean>(false)
+  const dispatch = useDispatch()
 
   const onChangeInputValue = (value: string) => {
     setTokenKeyValue(value)
@@ -56,6 +57,7 @@ const BinYourBot: React.FC<{ botWebhooks: any; refetch: any }> = ({
       if (res?.data) {
         setIsBindSuccess(true)
         refetch()
+        dispatch(refreshFetchMyAgent())
       }
     } catch (error: any) {
       setIsBindError(true)
@@ -113,12 +115,16 @@ const BinYourBot: React.FC<{ botWebhooks: any; refetch: any }> = ({
             />
           </ModalHeader>
           <ModalBody className="gap-4 px-6 py-4 pb-10">
-            <div className="ml-2 flex cursor-pointer items-center gap-2 hover:underline">
-              <PlayVideoFilled />
+            <a
+              className="ml-2 flex cursor-pointer items-center gap-2 hover:underline"
+              href="https://distilled.foundation/developer-resources/how-to-bind-your-twitter-and-telegram-account"
+              target="_blank"
+            >
+              <BookIcon />
               <span className="text-base-md text-brown-500">
-                Watch the tutorial to bind your Telegram bot.
+                Read the tutorial to bind your autonomous Telegram bot.
               </span>
-            </div>
+            </a>
 
             <div className="flex">
               <div className="w-[50px] py-4">
@@ -179,7 +185,7 @@ const BinYourBot: React.FC<{ botWebhooks: any; refetch: any }> = ({
                   <Button
                     className="mt-4 w-full rounded-full bg-mercury-950"
                     size="lg"
-                    onClick={onBindAgentToTelegramBot}
+                    onPress={onBindAgentToTelegramBot}
                     isDisabled={!tokenKeyValue || isBindSuccess}
                     isLoading={loading}
                   >

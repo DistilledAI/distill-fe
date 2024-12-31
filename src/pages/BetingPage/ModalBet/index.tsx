@@ -1,4 +1,4 @@
-import { maxIcon } from "@assets/images"
+import { maxAvatar } from "@assets/images"
 import { loadingButtonIcon } from "@assets/svg"
 import { CloseFilledIcon } from "@components/Icons/DefiLens"
 import { useWallet } from "@solana/wallet-adapter-react"
@@ -193,8 +193,8 @@ const ModalBet: React.FC<ModalProps> = ({ isOpen, closeModal }) => {
               <div className="flex h-8 w-fit items-center justify-center rounded-[32px] bg-[#080A14] px-4 py-1 text-[14px] text-[#E8E9EE]">
                 MAX
                 <img
-                  src={maxIcon}
-                  alt="maxIcon"
+                  src={maxAvatar}
+                  alt="maxAvatar"
                   width={20}
                   height={20}
                   className="ml-1 h-5 w-5 rounded-full border border-[#30344A] object-cover"

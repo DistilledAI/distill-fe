@@ -61,6 +61,10 @@ export const EMOJI_REACTIONS: EmojiReaction[] = [
     emoji: "👎",
   },
   {
+    reactionType: ReactionTypes.LOVE,
+    emoji: "❤️",
+  },
+  {
     reactionType: ReactionTypes.JOY,
     emoji: "😂",
   },
@@ -69,15 +73,11 @@ export const EMOJI_REACTIONS: EmojiReaction[] = [
     emoji: "😢",
   },
   {
-    reactionType: ReactionTypes.LOVE,
-    emoji: "🎅🏻",
-  },
-  {
     reactionType: ReactionTypes.EXPLODING_HEAD,
-    emoji: "☃️",
+    emoji: "🤯",
   },
   {
     reactionType: ReactionTypes.FACE_WITH_SYMBOLS_OVER_MOUTH,
-    emoji: "🎄",
+    emoji: "🤬",
   },
 ]

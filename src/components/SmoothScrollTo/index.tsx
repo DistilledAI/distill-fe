@@ -1,3 +1,4 @@
+import useWindowSize from "@hooks/useWindowSize"
 import { Divider } from "@nextui-org/react"
 import React, { useEffect, useRef, useState } from "react"
 import { twMerge } from "tailwind-merge"
@@ -5,6 +6,8 @@ import { twMerge } from "tailwind-merge"
 interface InfoComponent {
   title: React.ReactNode
   content: React.ReactNode
+  isNew?: boolean
+  icon: React.ReactNode
 }
 
 const SmoothScrollTo: React.FC<{
@@ -19,19 +22,20 @@ const SmoothScrollTo: React.FC<{
   const contentRefs = useRef<any>([])
   const [activeIndex, setActiveIndex] = useState<number>(0)
   const [isClick, setIsClick] = useState(false)
-
+  const scrollComponentRef = useRef<HTMLDivElement | null>(null)
   const isActive = (index: number) => index === activeIndex
+  const { isMobile } = useWindowSize()
 
   const handleScrollToContent = (index: number) => {
     setIsClick(true)
     setTimeout(() => setIsClick(false), 1000)
     const targetElement = contentRefs.current[index]
-    if (targetElement) {
-      const offsetTop =
-        targetElement.getBoundingClientRect().top + window.scrollY
-      const offsetAdj = offsetAdjustment ?? 0
-      window.scrollTo({
-        top: offsetTop - offsetAdj,
+    if (targetElement && scrollComponentRef.current) {
+      const scrollContainer = scrollComponentRef.current
+      const offsetTop = targetElement.offsetTop - (offsetAdjustment ?? 0)
+
+      scrollContainer.scrollTo({
+        top: offsetTop,
         behavior: "smooth",
       })
       setActiveIndex(index)
@@ -40,79 +44,114 @@ const SmoothScrollTo: React.FC<{
 
   useEffect(() => {
     const handleScroll = () => {
-      if (isClick) return
-      const scrollTop = window.scrollY
-      const scrollBottom = window.innerHeight + scrollTop
-      const documentHeight = document.documentElement.scrollHeight
+      if (isClick || !scrollComponentRef.current) return
+
+      const scrollContainer = scrollComponentRef.current
+      const scrollTop = scrollContainer.scrollTop
+      const scrollHeight = scrollContainer.scrollHeight
+      const containerHeight = scrollContainer.clientHeight
 
       if (scrollTop === 0) {
         setActiveIndex(0)
         return
       }
-      if (scrollBottom >= documentHeight - 1) {
+
+      if (scrollTop + containerHeight >= scrollHeight - 1) {
         setActiveIndex(components.length - 1)
         return
       }
 
       contentRefs.current.forEach((element: HTMLElement, index: number) => {
-        const rect = element.getBoundingClientRect()
         const offsetAdj = offsetAdjustment ?? 0
+        const elementTop = element.offsetTop - scrollTop
 
-        if (rect.top >= offsetAdj && rect.top < window.innerHeight / 2) {
+        if (elementTop >= offsetAdj && elementTop < containerHeight / 2) {
           setActiveIndex(index)
         }
       })
     }
-    window.addEventListener("scroll", handleScroll)
+
+    const scrollContainer = scrollComponentRef.current
+    if (scrollContainer) {
+      scrollContainer.addEventListener("scroll", handleScroll)
+    }
 
     return () => {
-      window.removeEventListener("scroll", handleScroll)
+      if (scrollContainer) {
+        scrollContainer.removeEventListener("scroll", handleScroll)
+      }
     }
-  }, [isClick])
+  }, [isClick, offsetAdjustment, components.length])
 
   return (
-    <div className={classNames?.wrapper}>
-      <div
-        className={twMerge(
-          "relative hidden items-center gap-2 md:flex",
-          classNames?.headerWrapper,
-        )}
-      >
-        <div className="absolute left-0 top-[40px] h-[1px] w-full bg-mercury-100"></div>
-        {components.map((comp, index) => (
-          <div
-            key={index}
-            className="relative cursor-pointer px-2 py-2 duration-300"
-            onClick={() => handleScrollToContent(index)}
-          >
-            <span
+    <>
+      {!isMobile && (
+        <div className="absolute left-[24px] top-[45px] z-[22] min-h-[calc(100dvh-68px)] w-[329px] items-center gap-2 rounded-[32px] border border-mercury-100 !bg-mercury-70 px-4 py-[10px]">
+          {components.map((comp, index) => (
+            <div
+              key={index}
               className={twMerge(
-                "block font-medium text-mercury-700 duration-300",
-                isActive(index) && "text-mercury-950",
+                "relative flex cursor-pointer items-center justify-between p-4 duration-300",
+                isActive(index) && "rounded-[22px] bg-mercury-100",
               )}
+              onClick={() => handleScrollToContent(index)}
             >
-              {comp.title}
-            </span>
-            <span
-              className={twMerge(
-                "absolute bottom-0 left-1/2 block h-[2px] w-0 -translate-x-1/2 bg-mercury-950 duration-300",
-                isActive(index) && "w-full",
+              <div className="flex gap-2">
+                {comp.icon}
+                <span
+                  className={twMerge(
+                    "block font-medium text-mercury-900 duration-300",
+                    isActive(index) && "font-bold text-mercury-950",
+                  )}
+                >
+                  {comp.title}
+                </span>
+              </div>
+              {comp?.isNew && (
+                <div className="rounded-full bg-lgd-code-hot-ramp px-2">
+                  <span className="text-base-14-b uppercase text-white">
+                    new
+                  </span>
+                </div>
               )}
-            ></span>
-          </div>
-        ))}
-      </div>
-      <div className={classNames?.contentWrapper}>
-        {components.map((comp, index) => (
-          <>
-            <div key={index} ref={(el) => (contentRefs.current[index] = el)}>
-              {comp.content}
+
+              <div
+                className={twMerge(
+                  "absolute -left-[18px] top-1/2 w-[5px] -translate-y-1/2 bg-mercury-950 opacity-0 transition-all duration-300 ease-linear",
+                  !isActive(index) &&
+                    "h-3 rounded-br-lg rounded-tr-lg group-hover/item:opacity-100",
+                  isActive(index) &&
+                    "block h-10 rounded-br-full rounded-tr-full opacity-100",
+                )}
+              />
             </div>
-            {index !== components.length - 1 && <Divider className="my-9" />}
-          </>
-        ))}
+          ))}
+        </div>
+      )}
+
+      <div className="ml-auto w-[calc(100%-352px)] max-sm:w-full">
+        <div
+          className="relative mx-auto max-h-[calc(100dvh-152px)] max-w-[800px] overflow-auto px-4 pb-5 max-md:min-h-dvh max-md:bg-mercury-70 max-md:pt-[70px] max-sm:pb-20 max-sm:pt-6"
+          ref={scrollComponentRef}
+        >
+          <div className={classNames?.contentWrapper}>
+            {components.map((comp, index) => (
+              <>
+                <div
+                  key={index}
+                  ref={(el) => (contentRefs.current[index] = el)}
+                >
+                  {comp.content}
+                </div>
+                {index !== components.length - 1 && (
+                  <Divider className="my-9" />
+                )}
+              </>
+            ))}
+          </div>
+        </div>
       </div>
-    </div>
+    </>
   )
 }
 

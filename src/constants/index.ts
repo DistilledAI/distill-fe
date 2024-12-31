@@ -17,6 +17,8 @@ export const PATH_NAMES = {
   CREATE_AGENT: "/create-agent",
   MY_AGENTS: "/my-agents",
   REWARDS: "/rewards",
+  TRENDING: "/trending",
+  ORCHESTRATION: "/orchestration",
 }
 
 export const MIX_PANEL_TRACK_EVENT = {
@@ -155,7 +157,7 @@ export const PERSONALITY_LIST = [
   {
     label: "⭐️ Custom",
     selected: false,
-    value: "agentPersonal",
+    value: "personality_traits",
     type: "custom",
   },
 ]
@@ -195,7 +197,7 @@ export const COMMUNICATION_STYLE_LIST = [
   {
     label: "⭐️ Custom",
     selected: false,
-    value: "agentCommunication",
+    value: "communication_style",
     type: "custom",
   },
 ]

@@ -32,7 +32,7 @@ const AgentLiveInfo: React.FC<{
     <>
       <Button
         className="h-7 w-7 min-w-7 rounded-full bg-mercury-70 p-0"
-        onClick={onOpen}
+        onPress={onOpen}
       >
         <InfoCircleOutlineIcon size={20} />
       </Button>
@@ -65,6 +65,7 @@ const AgentLiveInfo: React.FC<{
                 teleLink: groupConfig?.telegram as string,
                 shareLink: `${window.location.origin}${PATH_NAMES.CLAN}/${groupDetail?.group?.label}`,
                 contract: groupConfig?.contractAddress as string,
+                website: groupConfig?.website as string,
               }}
             />
             <ContractDisplay
@@ -79,7 +80,7 @@ const AgentLiveInfo: React.FC<{
           <ModalFooter className="px-3">
             <Button
               className="h-14 w-full rounded-full bg-mercury-950 text-[16px] text-mercury-30"
-              onClick={onClose}
+              onPress={onClose}
             >
               Close
             </Button>

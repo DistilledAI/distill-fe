@@ -1,4 +1,3 @@
-import { ArrowUpFilledIcon } from "@components/Icons/Arrow"
 import { PaperClipFilledIcon } from "@components/Icons/PaperClip"
 import { PATH_NAMES } from "@constants/index"
 import useWindowSize from "@hooks/useWindowSize"
@@ -6,7 +5,12 @@ import useGetChatId from "@pages/ChatPage/Mobile/ChatDetail/useGetChatId"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { useStyleSpacing } from "providers/StyleSpacingProvider"
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react"
-import { Mention, MentionsInput } from "react-mentions"
+import {
+  Mention,
+  MentionProps,
+  MentionsInput,
+  MentionsInputProps,
+} from "react-mentions"
 import { useLocation, useParams } from "react-router-dom"
 import SpeechRecognition, {
   useSpeechRecognition,
@@ -15,12 +19,15 @@ import { twMerge } from "tailwind-merge"
 import { QueryDataKeys } from "types/queryDataKeys"
 import { BOT_STATUS } from "../ChatMessages/ChatActions/DelegatePrivateAgent"
 import VoiceChat from "./Voice"
-import CloudImages from "./CloudImages"
+import { ArrowUpFilledIcon } from "@components/Icons/Arrow"
+
+const MentionsInputAny =
+  MentionsInput as React.ComponentType<MentionsInputProps>
+const MentionAny = Mention as React.ComponentType<MentionProps>
 
 interface ChatInputProps {
   isDisabledInput: boolean
   onSubmit: (value: string) => void
-  isPending: boolean
   wrapperClassName?: string
   isDarkTheme?: boolean
   replyUsername?: string
@@ -34,7 +41,6 @@ const ChatInput = ({
   onSubmit,
   wrapperClassName,
   isDarkTheme,
-  isPending,
   replyUsername,
   hasFocus,
   setHasFocus,
@@ -148,7 +154,7 @@ const ChatInput = ({
     <div
       ref={boxRef}
       className={twMerge(
-        "absolute bottom-4 z-[11] flex max-w-[768px] items-center gap-4 rounded-[35px] border-1 bg-mercury-200 p-2 py-1 transition-all duration-300 ease-linear max-md:static max-md:gap-2 max-md:pl-3 md:bottom-8 md:min-h-[60px] md:p-3 md:py-[7.89px]",
+        "absolute bottom-4 z-[11] flex max-w-[768px] items-center gap-3 rounded-[35px] border-1 bg-mercury-200 p-2 py-1 transition-all duration-300 ease-linear max-md:static max-md:gap-2 max-md:pl-3 md:bottom-8 md:min-h-[60px] md:p-3 md:py-[7.89px]",
         isFocus ? "border-mercury-300" : "border-mercury-200",
         spacing && "items-end",
         isDarkTheme && "bg-mercury-950",
@@ -169,10 +175,7 @@ const ChatInput = ({
           color={isDarkTheme ? "rgba(84, 84, 84, 1)" : "#545454"}
         />
       </button>
-
-      <CloudImages />
-
-      <MentionsInput
+      <MentionsInputAny
         inputRef={inputRef}
         value={message}
         onChange={handleOnChange}
@@ -183,11 +186,7 @@ const ChatInput = ({
         style={{
           width: "100%",
           height: "100%",
-          maxWidth: isMobile
-            ? "calc(100% - 88px)"
-            : listening
-              ? "calc(100% - 184px)"
-              : "calc(100% - 172px)",
+          maxWidth: "100%",
           fontFamily: "Barlow",
           maxHeight: isMobile ? "40px" : "200px",
           color: isDarkTheme ? "#FAFAFA" : "#11181c",
@@ -213,10 +212,10 @@ const ChatInput = ({
         rows={4}
         disabled={isDisabledInput}
       >
-        <Mention
+        <MentionAny
           trigger="@"
           markup="@[__display__]"
-          displayTransform={(username) => `@${username}`}
+          displayTransform={(username: string) => `@${username}`}
           data={null}
           appendSpaceOnAdd={true}
           style={{
@@ -227,7 +226,7 @@ const ChatInput = ({
             top: "0px",
           }}
         />
-      </MentionsInput>
+      </MentionsInputAny>
       <VoiceChat
         resetTranscript={resetTranscript}
         isListening={listening}
@@ -240,7 +239,7 @@ const ChatInput = ({
       <button
         type="button"
         onClick={handleSubmit}
-        disabled={isDisabledInput || !message || isPending}
+        disabled={isDisabledInput || !message}
         className={twMerge(
           "h-9 w-[52px] min-w-[52px] rounded-full border border-mercury-900 bg-mercury-950 px-4 py-2 disabled:border-transparent disabled:bg-mercury-950/60",
           isDarkTheme && "bg-white disabled:bg-white/60",

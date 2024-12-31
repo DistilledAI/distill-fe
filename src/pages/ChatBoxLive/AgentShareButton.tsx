@@ -22,7 +22,7 @@ const AgentShareButton = ({
           "h-14 w-full rounded-full bg-mercury-70 text-white md:h-10",
           buttonClassName,
         )}
-        onClick={onOpen}
+        onPress={onOpen}
         isDisabled={!agentInfo?.shareLink}
       >
         <ShareArrowIcon />

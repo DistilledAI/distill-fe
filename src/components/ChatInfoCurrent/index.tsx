@@ -1,3 +1,4 @@
+import { maxAvatar } from "@assets/images"
 import AvatarContainer from "@components/AvatarContainer"
 import AvatarCustom from "@components/AvatarCustom"
 import AvatarGroup from "@components/AvatarGroup"
@@ -16,8 +17,10 @@ import {
   UserGroup,
 } from "@pages/ChatPage/ChatBox/LeftBar/useFetchGroups"
 import React from "react"
+import { useLocation } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
 import MoreAction from "./MoreAction"
+import OrchestrationHeader from "./OrchestrationHeader"
 
 const ChatInfoCurrent: React.FC<{
   groupDetail: UserGroup | null
@@ -27,8 +30,26 @@ const ChatInfoCurrent: React.FC<{
   const isGroup = groupDetail?.group?.typeGroup === TypeGroup.PRIVATE_GROUP
   const isGroupPublic = groupDetail?.group?.typeGroup === TypeGroup.PUBLIC_GROUP
   const isLive = isGroupPublic && groupDetail?.group?.live === 1
+  const location = useLocation()
 
   if (!groupDetail) return null
+
+  if (location.pathname.includes(PATH_NAMES.ORCHESTRATION)) {
+    return (
+      <OrchestrationHeader
+        agent1={{
+          avatarSrc: maxAvatar,
+          publicAddress: "orai...Vo5h",
+        }}
+        agent2={{
+          avatarSrc: "",
+          publicAddress: "orai...Vo5h",
+        }}
+        name="Max & Min"
+        tag="Orchestration"
+      />
+    )
+  }
 
   if (isGroupPublic)
     return (

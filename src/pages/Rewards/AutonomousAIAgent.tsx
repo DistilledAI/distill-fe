@@ -93,7 +93,7 @@ const AutonomousAIAgent: React.FC<{ listActionTaskSuccess: any }> = ({
         <Button
           className="h-[34px] bg-mercury-950 px-6"
           radius="full"
-          onClick={() => handleAction(actionKey)}
+          onPress={() => handleAction(actionKey)}
         >
           <span className="text-base-14 text-mercury-30">Try</span>
         </Button>
@@ -104,7 +104,7 @@ const AutonomousAIAgent: React.FC<{ listActionTaskSuccess: any }> = ({
       <Button
         className="h-[34px] bg-mercury-950 px-6"
         radius="full"
-        onClick={() => handleAction(actionKey)}
+        onPress={() => handleAction(actionKey)}
       >
         <span className="text-base-14 text-mercury-30">Go to Earn</span>
       </Button>

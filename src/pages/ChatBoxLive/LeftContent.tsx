@@ -46,9 +46,11 @@ const LeftContent: React.FC<{
       },
       {
         queryKey: [QueryDataKeys.CLOSE_LIVE_CHAT],
+        staleTime: 0,
       },
       {
         queryKey: [QueryDataKeys.EXPAND_LIVE_CHAT],
+        staleTime: 0,
       },
     ],
   })

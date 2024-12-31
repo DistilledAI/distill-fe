@@ -65,7 +65,7 @@ const FYIModal: React.FC<{ openPopup: boolean; setOpenPopup: any }> = ({
             <Button
               className="absolute bottom-[2%] left-1/2 z-[200] h-[48px] w-[calc(100%-32px)] -translate-x-1/2 rounded-full bg-mercury-950 text-white"
               size="lg"
-              onClick={onOpenChange}
+              onPress={onOpenChange}
             >
               Close
             </Button>

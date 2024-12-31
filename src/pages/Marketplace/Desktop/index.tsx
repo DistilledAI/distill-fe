@@ -58,7 +58,7 @@ const MarketplaceDesktop = ({ categories, isOpen, onClose }: Props) => {
                 slider === index &&
                   "h-14 !bg-mercury-950 px-6 text-[18px] font-normal text-mercury-30",
               )}
-              onClick={() => setSlider(index)}
+              onPress={() => setSlider(index)}
             >
               {category.name}
             </Button>
@@ -116,7 +116,7 @@ const MarketplaceDesktop = ({ categories, isOpen, onClose }: Props) => {
           ))}
           <Button
             className="fixed left-4 h-[68px] min-w-[68px] rounded-full border border-mercury-100 bg-white shadow-5"
-            onClick={onPrevSlider}
+            onPress={onPrevSlider}
           >
             <div className="rotate-90">
               <ChevronDownIcon />
@@ -124,7 +124,7 @@ const MarketplaceDesktop = ({ categories, isOpen, onClose }: Props) => {
           </Button>
           <Button
             className="fixed right-4 h-[68px] min-w-[68px] rounded-full border border-mercury-100 bg-white shadow-5"
-            onClick={onNextSlider}
+            onPress={onNextSlider}
           >
             <div className="-rotate-90">
               <ChevronDownIcon />

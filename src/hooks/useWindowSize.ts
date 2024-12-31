@@ -1,37 +1,38 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, useCallback, useRef } from "react"
 
 const useWindowSize = () => {
-  const [windowSize, setWindowSize] = useState({
-    screenWidth: window.innerWidth,
-    screenHeight: window.innerHeight,
-  })
-  const { screenWidth, screenHeight } = windowSize
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth)
+  const [screenHeight, setScreenHeight] = useState(window.innerHeight)
+  const resizeTimeoutRef = useRef<any>(null)
+
+  const handleResize = useCallback(() => {
+    clearTimeout(resizeTimeoutRef.current)
+
+    resizeTimeoutRef.current = setTimeout(() => {
+      setScreenWidth(window.innerWidth)
+      setScreenHeight(window.innerHeight)
+    }, 100)
+  }, [])
 
   useEffect(() => {
-    const handleResize = () => {
-      setWindowSize({
-        screenWidth: window.innerWidth,
-        screenHeight: window.innerHeight,
-      })
-    }
-
     window.addEventListener("resize", handleResize)
 
     return () => {
+      clearTimeout(resizeTimeoutRef.current)
       window.removeEventListener("resize", handleResize)
     }
-  }, [])
+  }, [handleResize])
 
-  const isDesktop = screenWidth > 1023
-  const isTablet = screenWidth > 767 && screenWidth < 1024
   const isMobile = screenWidth < 768
+  const isTablet = screenWidth >= 768 && screenWidth < 1024
+  const isDesktop = screenWidth >= 1024
 
   return {
     screenWidth,
     screenHeight,
-    isDesktop,
-    isTablet,
     isMobile,
+    isTablet,
+    isDesktop,
   }
 }
 

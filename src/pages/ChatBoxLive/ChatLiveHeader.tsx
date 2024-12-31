@@ -23,7 +23,7 @@ const ChatLiveHeader: React.FC<{
       <div className="flex w-full items-center gap-3 bg-mercury-30 px-3 py-1 md:hidden">
         <div className="flex flex-1 items-center gap-3">
           <Button
-            onClick={() => navigate(PATH_NAMES.HOME)}
+            onPress={() => navigate(PATH_NAMES.HOME)}
             className="h-8 w-8 min-w-8 rotate-90 rounded-full bg-mercury-70 p-0"
           >
             <ChevronDownIcon />
