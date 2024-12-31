@@ -6,6 +6,7 @@ import ProtectedByAuth from "@components/Layout/ProtectedByAuth"
 import useWindowSize from "@hooks/useWindowSize"
 import { PATH_NAMES } from "@constants/index"
 import PageNotFound from "@pages/NotFound"
+import LoadingFallback from "@components/LoadingFallback"
 
 const ChatDetailLoadingPage = lazy(() => import("@components/LoadingMobile"))
 const Account = lazy(() => import("@pages/Account"))
@@ -36,7 +37,7 @@ const AppRouter = () => {
   const { isMobile } = useWindowSize()
 
   return (
-    <Suspense fallback={null}>
+    <Suspense fallback={<LoadingFallback />}>
       <Routes>
         <Route
           path={PATH_NAMES.HOME}

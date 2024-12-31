@@ -1,11 +1,11 @@
-import React, { useMemo } from "react"
+import { useMemo } from "react"
 import { useQueryClient } from "@tanstack/react-query"
 import { getActiveColorRandomById, isImageUrl } from "@utils/index"
 import Markdown from "react-markdown"
 import { useParams } from "react-router-dom"
 import { QueryDataKeys } from "types/queryDataKeys"
 
-const MarkdownMessage = React.memo(({ msg }: { msg: string }) => {
+const MarkdownMessage = ({ msg }: { msg: string }) => {
   const { chatId } = useParams()
   const { textColor } = getActiveColorRandomById(chatId)
   const queryClient = useQueryClient()
@@ -101,6 +101,6 @@ const MarkdownMessage = React.memo(({ msg }: { msg: string }) => {
   const processedMessage = useMemo(() => breakLine(enhancedMessage(msg)), [msg])
 
   return <Markdown components={renderers}>{processedMessage}</Markdown>
-})
+}
 
 export default MarkdownMessage

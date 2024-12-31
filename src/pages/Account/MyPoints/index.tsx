@@ -22,7 +22,7 @@ const MyPoints = () => {
         <div className="flex items-center gap-2">
           <img src={xDSTL} width={24} height={24} />
           <span className="text-[32px] font-bold text-white">
-            {totalxDstlPoint}
+            {totalxDstlPoint?.toFixed(2)}
           </span>
         </div>
       </div>
