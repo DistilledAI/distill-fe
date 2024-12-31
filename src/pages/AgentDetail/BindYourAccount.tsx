@@ -14,9 +14,11 @@ import {
   ModalHeader,
   useDisclosure,
 } from "@nextui-org/react"
+import { refreshFetchMyAgent } from "@reducers/agentSlice"
 import { copyClipboard } from "@utils/index"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
+import { useDispatch } from "react-redux"
 import { useParams } from "react-router-dom"
 import { toast } from "react-toastify"
 import { updateAgentConfig } from "services/agent"
@@ -33,6 +35,7 @@ const BindYourAccount: React.FC<{
   )
   const bindTwitterValue = xBotData?.value ? JSON.parse(xBotData.value) : null
   const twitterUsername = bindTwitterValue?.info?.data?.username
+  const dispatch = useDispatch()
   const { agentId } = useParams()
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const [isBindSuccess, setIsBindSuccess] = useState<boolean>(false)
@@ -74,6 +77,7 @@ const BindYourAccount: React.FC<{
       if (res?.data) {
         setIsBindSuccess(true)
         refetch()
+        dispatch(refreshFetchMyAgent())
       }
     } catch (error: any) {
       toast.error(error?.response?.data?.message)

@@ -16,7 +16,9 @@ import {
   ModalHeader,
   useDisclosure,
 } from "@nextui-org/react"
+import { refreshFetchMyAgent } from "@reducers/agentSlice"
 import { useState } from "react"
+import { useDispatch } from "react-redux"
 import { useParams } from "react-router-dom"
 import { toast } from "react-toastify"
 import { telegramMapAgent } from "services/agent"
@@ -37,6 +39,7 @@ const BinYourBot: React.FC<{ botWebhooks: any; refetch: any }> = ({
   const [isBindSuccess, setIsBindSuccess] = useState<boolean>(false)
   const [isBindError, setIsBindError] = useState<boolean>(false)
   const [loading, setLoading] = useState<boolean>(false)
+  const dispatch = useDispatch()
 
   const onChangeInputValue = (value: string) => {
     setTokenKeyValue(value)
@@ -54,6 +57,7 @@ const BinYourBot: React.FC<{ botWebhooks: any; refetch: any }> = ({
       if (res?.data) {
         setIsBindSuccess(true)
         refetch()
+        dispatch(refreshFetchMyAgent())
       }
     } catch (error: any) {
       setIsBindError(true)
