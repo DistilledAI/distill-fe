@@ -30,7 +30,7 @@ const MyAgentPage = lazy(() => import("@pages/MyAgents"))
 const MyData = lazy(() => import("@pages/MyData"))
 const Orchestration = lazy(() => import("@pages/Orchestration"))
 const RewardsPage = lazy(() => import("@pages/Rewards"))
-const TrendingPage = lazy(() => import("@pages/Trending"))
+// const TrendingPage = lazy(() => import("@pages/Trending"))
 
 const AppRouter = () => {
   const { isMobile } = useWindowSize()
@@ -82,7 +82,7 @@ const AppRouter = () => {
               element={<MyPrivateAgentContentMobile />}
             />
           )}
-          <Route path={PATH_NAMES.TRENDING} element={<TrendingPage />} />
+          {/* <Route path={PATH_NAMES.TRENDING} element={<TrendingPage />} /> */}
 
           {/* Route Protected By Auth */}
           <Route path={PATH_NAMES.HOME} element={<ProtectedByAuth />}>
