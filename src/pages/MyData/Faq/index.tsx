@@ -1,18 +1,21 @@
 import HeadSectionData from "../Components/HeadSectionData"
 // import { EditPenFilledIcon } from "@components/Icons/Edit"
+import { InfoCircleIcon } from "@components/Icons/InfoCircleIcon"
+import { MessageQuestionIcon } from "@components/Icons/Message"
 import useWindowSize from "@hooks/useWindowSize"
+import {
+  FaqSample,
+  faqSampleDefault,
+} from "@pages/ChatPage/ChatBox/RightContent/MyPrivateAgentContent/UploadFAQ/AddFAQModal"
 import { BotDataTypeKey } from "@types"
 import moment from "moment"
 import React, { useState } from "react"
 import TableData from "../Components/TableData"
 import TableDataMobile from "../Components/TableDataMobile"
 import DeleteData from "../DeleteData"
+import { hasSyncData, hasSyncDataByStatus } from "../helpers"
+import SyncData, { SyncLabel } from "../SyncData"
 import useFetchByCategory from "../useFetchByCategory"
-import { MessageQuestionIcon } from "@components/Icons/Message"
-import {
-  FaqSample,
-  faqSampleDefault,
-} from "@pages/ChatPage/ChatBox/RightContent/MyPrivateAgentContent/UploadFAQ/AddFAQModal"
 import PreviewFaqModal from "./PreviewFaqModal"
 
 enum ColumnKey {
@@ -54,6 +57,8 @@ const FaqData: React.FC<{
   const [faqSelected, setFaqSelected] = useState<FaqSample>(faqSampleDefault)
 
   const renderCell = (item: Record<string, any>, columnKey: string) => {
+    const dataId = item?.id
+
     switch (columnKey) {
       case ColumnKey.Type:
         return (
@@ -69,7 +74,8 @@ const FaqData: React.FC<{
         )
       case ColumnKey.Action:
         return (
-          <div className="flex justify-end">
+          <div className="flex items-center justify-end gap-4">
+            <SyncData botId={botId} dataId={dataId} status={item.status} />
             <DeleteData
               botId={item.userId}
               ids={[item.id]}
@@ -79,19 +85,22 @@ const FaqData: React.FC<{
         )
       case ColumnKey.Name:
         return (
-          <div
-            className="max-w-[150px] cursor-pointer truncate hover:underline"
-            onClick={() =>
-              setFaqSelected({
-                id: item?.id,
-                question: item?.name,
-                answer: item?.value,
-              })
-            }
-          >
-            <span className="text-base text-mercury-950">
-              {item[columnKey]}
-            </span>
+          <div className="flex flex-row items-center gap-1">
+            {hasSyncDataByStatus(item.status) && <InfoCircleIcon />}
+            <div
+              className="max-w-[150px] cursor-pointer truncate hover:underline"
+              onClick={() =>
+                setFaqSelected({
+                  id: item?.id,
+                  question: item?.name,
+                  answer: item?.value,
+                })
+              }
+            >
+              <span className="text-base text-mercury-950">
+                {item[columnKey]}
+              </span>
+            </div>
           </div>
         )
 
@@ -130,6 +139,7 @@ const FaqData: React.FC<{
             title="FAQs"
             addTitle="Add FAQ samples"
           />
+          {hasSyncData(data) && <SyncLabel />}
         </div>
 
         <div className="mt-4">
