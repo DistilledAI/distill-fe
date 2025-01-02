@@ -1,45 +1,14 @@
 import { MessageQuestionIcon } from "@components/Icons/Message"
 import { TablerPlusIcon } from "@components/Icons/TablerPlusIcon"
-import AddFAQModal, { FaqSample } from "./AddFAQModal"
 import { useDisclosure } from "@nextui-org/react"
-import { useState } from "react"
-import { TrashXIcon } from "@components/Icons/TrashXIcon"
-import useDeleteData from "@pages/MyData/DeleteData/useDelete"
-import { useParams } from "react-router-dom"
+import AddFAQModal from "./AddFAQModal"
 
 interface Props {
   onMoreCustomRequest: (data: number[]) => any
 }
 
 const UploadFAQ = ({ onMoreCustomRequest }: Props) => {
-  const { botId } = useParams()
-  const { onDelete } = useDeleteData()
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const [faqSamples, setFaqSamples] = useState<Array<FaqSample>>([])
-  const [faqSampleSelected, setFaqSampleSelected] = useState<FaqSample>({
-    id: NaN,
-    question: "",
-    answer: "",
-  })
-
-  const updateFaqSamples = async (faqSample: FaqSample) => {
-    if (faqSample?.id) {
-      const res = await onMoreCustomRequest([faqSample?.id])
-      if (res) {
-        setFaqSamples((prev) => [...prev, faqSample])
-        onClose()
-      }
-    }
-  }
-
-  const deleteFaqSample = async (faqSampleId: number) => {
-    await onDelete({
-      botId: Number(botId),
-      ids: [faqSampleId],
-    })
-    const newFaqSamples = faqSamples.filter((item) => item.id !== faqSampleId)
-    setFaqSamples(newFaqSamples)
-  }
 
   return (
     <>
@@ -58,40 +27,11 @@ const UploadFAQ = ({ onMoreCustomRequest }: Props) => {
           </div>
           <TablerPlusIcon />
         </div>
-        {faqSamples.length ? (
-          <ul className="flex max-h-[125px] flex-col gap-1 overflow-auto p-3">
-            {faqSamples.map((item, index) => (
-              <li
-                className="flex w-full items-center justify-between gap-4"
-                key={index}
-              >
-                <div
-                  className="w-full cursor-pointer hover:underline"
-                  onClick={() => {
-                    setFaqSampleSelected(item)
-                    onOpen()
-                  }}
-                >
-                  <p className="max-w-[300px] truncate text-14 font-semibold text-mercury-950">
-                    {item.question}
-                  </p>
-                  <p className="max-w-[300px] truncate text-14 text-mercury-700">
-                    {item.answer}
-                  </p>
-                </div>
-                <button type="button" onClick={() => deleteFaqSample(item.id)}>
-                  <TrashXIcon />
-                </button>
-              </li>
-            ))}
-          </ul>
-        ) : null}
       </div>
       <AddFAQModal
         isOpen={isOpen}
         onClose={onClose}
-        updateFaqSamples={updateFaqSamples}
-        faqSampleSelected={faqSampleSelected}
+        onMoreCustomRequest={onMoreCustomRequest}
       />
     </>
   )

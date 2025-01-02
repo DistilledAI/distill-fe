@@ -1,15 +1,10 @@
 import CloseButton from "@components/CloseButton"
-import {
-  Button,
-  Input,
-  Modal,
-  ModalBody,
-  ModalContent,
-} from "@nextui-org/react"
-import { useEffect, useState } from "react"
-import { uploadMyData } from "services/user"
+import { ArrowBottomSquareOutlineIcon } from "@components/Icons/Arrow"
+import { CSVIcon } from "@components/Icons/TextIcon"
+import { Modal, ModalBody, ModalContent } from "@nextui-org/react"
+import { saveAs } from "file-saver"
 import { TYPE_DATA_KEY } from "../CreatePrivateAgent"
-import { toast } from "react-toastify"
+import UploadCustom from "../UploadCustom"
 
 export interface FaqSample {
   id: number
@@ -20,8 +15,7 @@ export interface FaqSample {
 interface Props {
   isOpen: boolean
   onClose: () => void
-  updateFaqSamples: (faqSample: FaqSample) => void
-  faqSampleSelected?: FaqSample
+  onMoreCustomRequest: any
 }
 
 export const faqSampleDefault = {
@@ -30,51 +24,7 @@ export const faqSampleDefault = {
   answer: "",
 }
 
-const AddFAQModal = ({
-  isOpen,
-  onClose,
-  updateFaqSamples,
-  faqSampleSelected,
-}: Props) => {
-  const [faqSample, setFaqSample] = useState<FaqSample>(faqSampleDefault)
-  const [isLoading, setIsLoading] = useState<boolean>(false)
-
-  useEffect(() => {
-    if (faqSampleSelected?.id) {
-      setFaqSample(faqSampleSelected)
-    }
-  }, [faqSampleSelected])
-
-  const onFaqSampleChange = (key: string, value: string) => {
-    setFaqSample((prev) => ({
-      ...prev,
-      [key]: value,
-    }))
-  }
-
-  const addFaqSample = async () => {
-    console.log({ faqSample })
-    try {
-      setIsLoading(true)
-      const payload = {
-        key: TYPE_DATA_KEY.FAQ,
-        value: JSON.stringify(faqSample),
-      }
-      const res = await uploadMyData(payload)
-      if (res) {
-        await updateFaqSamples({
-          ...faqSample,
-          id: res?.data?.id,
-        })
-        setFaqSample(faqSampleDefault)
-      }
-    } catch (error: any) {
-      toast.error(error?.response?.data?.message)
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
+const AddFAQModal = ({ isOpen, onClose, onMoreCustomRequest }: Props) => {
   return (
     <Modal
       classNames={{
@@ -84,6 +34,7 @@ const AddFAQModal = ({
       isOpen={isOpen}
       onClose={onClose}
       hideCloseButton
+      size="lg"
     >
       <ModalContent>
         <ModalBody>
@@ -94,40 +45,45 @@ const AddFAQModal = ({
             <CloseButton
               onClose={() => {
                 onClose()
-                setFaqSample(faqSampleDefault)
               }}
               className="h-9 w-9 min-w-9"
             />
           </div>
           <div className="space-y-4 rounded-[22px] border border-mercury-100 bg-mercury-70 p-4">
-            <Input
-              classNames={{
-                inputWrapper: "border border-mercury-400 rounded-lg p-2 h-11",
-                input:
-                  "text-[16px] text-mercury-950 placeholder:text-mercury-700",
-              }}
-              placeholder="Enter Question"
-              onValueChange={(value) => onFaqSampleChange("question", value)}
-              value={faqSample.question}
-            />
-            <Input
-              classNames={{
-                inputWrapper: "border border-mercury-400 rounded-lg p-2 h-11",
-                input:
-                  "text-[16px] text-mercury-950 placeholder:text-mercury-700",
-              }}
-              placeholder="Enter Answer"
-              onValueChange={(value) => onFaqSampleChange("answer", value)}
-              value={faqSample.answer}
-            />
+            <div className="m-auto text-center">
+              <span className="text-base-md text-mercury-900">
+                Please fill out this template to add your samples:
+                <br />
+              </span>
+              <div
+                onClick={() =>
+                  saveAs(
+                    "/src/assets/csv/agents_faqs-template.csv",
+                    "agents_faqs-template",
+                  )
+                }
+                className="mt-2 flex cursor-pointer items-center justify-center gap-2 hover:underline"
+              >
+                <span className="text-base-sb text-brown-500">
+                  agents_faqs-template.csv
+                </span>
+                <ArrowBottomSquareOutlineIcon color="#a2845e" size={20} />
+              </div>
+            </div>
           </div>
-          <Button
-            onPress={addFaqSample}
-            isLoading={isLoading}
-            className="mt-1 h-14 rounded-full bg-mercury-950 text-[18px] font-semibold !text-white"
+          <UploadCustom
+            fileKey={TYPE_DATA_KEY.FAQ}
+            accept=".csv"
+            moreCustomRequest={onMoreCustomRequest}
+            containerClassName="rounded-[14px] bg-mercury-200"
           >
-            Save
-          </Button>
+            <div className="flex flex-col items-center gap-3 rounded-[14px] border border-dashed border-mercury-700 bg-mercury-30 py-6">
+              <CSVIcon />
+              <span className="text-base-b text-center">
+                Click to upload *.csv file
+              </span>
+            </div>
+          </UploadCustom>
         </ModalBody>
       </ModalContent>
     </Modal>
