@@ -57,10 +57,7 @@ const AddFAQModal = ({ isOpen, onClose, onMoreCustomRequest }: Props) => {
               </span>
               <div
                 onClick={() =>
-                  saveAs(
-                    "/src/assets/csv/agents_faqs-template.csv",
-                    "agents_faqs-template",
-                  )
+                  saveAs("/agents_faqs-template.csv", "agents_faqs-template")
                 }
                 className="mt-2 flex cursor-pointer items-center justify-center gap-2 hover:underline"
               >
