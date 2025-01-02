@@ -1,21 +1,25 @@
+import { twMerge } from "tailwind-merge"
 import CmdChatWindow from "../CmdChatWindow"
 import CmdActionMessage, { CmdActionKey } from "./ActionMessage"
-import ReceiverMessage from "./ReceiverMessage"
-import SenderMessage from "./SenderMessage"
+import { ICmdMessage, useCmdMessageList } from "../CmdMessageProvider"
+// import ReceiverMessage from "./ReceiverMessage"
+// import SenderMessage from "./SenderMessage"
 
 const CmdMessages = () => {
-  const messages: any = [{}, {}]
+  const { messages } = useCmdMessageList()
 
-  const renderMessage = (index: number) => {
-    const isOwner = index === 1
-    const isCustomer = index !== 1
+  const renderMessage = (index: number, message: ICmdMessage) => {
+    const isFirst = index === 0
+    const isLockAction = !!message.lock
     return (
-      <div>
-        {isCustomer && <ReceiverMessage />}
-        {isOwner && <SenderMessage />}
-        <CmdActionMessage actionKey={CmdActionKey.swap} />
-        <CmdActionMessage actionKey={CmdActionKey.send} />
-        <CmdActionMessage actionKey={CmdActionKey.lock} />
+      <div className={twMerge(isFirst && "mt-4")}>
+        {/* {isCustomer && <ReceiverMessage />}
+        {isOwner && <SenderMessage />} */}
+        {/* <CmdActionMessage actionKey={CmdActionKey.swap} />
+        <CmdActionMessage actionKey={CmdActionKey.send} /> */}
+        {isLockAction && (
+          <CmdActionMessage data={message} actionKey={CmdActionKey.lock} />
+        )}
       </div>
     )
   }
@@ -34,7 +38,7 @@ const CmdMessages = () => {
       isFetchingPreviousPage={false}
       onLoadPrevMessages={onLoadPrevMessages}
       isChatActions={false}
-      msgBoxClassName="p-0 pb-4"
+      msgBoxClassName="p-0 pb-5"
       className="pt-4"
     />
   )

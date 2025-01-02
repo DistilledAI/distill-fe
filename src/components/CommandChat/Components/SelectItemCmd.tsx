@@ -9,28 +9,28 @@ import {
 import { useRef, useState } from "react"
 import { twMerge } from "tailwind-merge"
 
-export interface IToken {
-  id: string | number
-  avatar: string
+export interface IItemSelect {
+  id: number
+  value: any
   title: string
 }
 
-interface ISelectTokenCmd {
-  list: IToken[]
-  value: number | string
-  onChangeValue: (item: IToken) => void
+interface ISelectItemCmd {
+  list: IItemSelect[]
+  value: number
+  onChangeValue: (item: IItemSelect) => void
 }
 
-const SelectTokenCmd: React.FC<ISelectTokenCmd> = ({
+const SelectItemCmd: React.FC<ISelectItemCmd> = ({
   list,
   value,
   onChangeValue,
 }) => {
   const [isOpen, setIsOpen] = useState(false)
-  const itemActive = list.find((item) => item.id === value)
-  const hasActive = (id: string | number) => itemActive?.id === id
   const refTrigger = useRef<any>()
   useOutsideClick(refTrigger, () => setIsOpen(false))
+  const itemActive = list.find((item) => item.value === value)
+  const hasActive = (id: number) => itemActive?.id === id
 
   return (
     <Popover isOpen={isOpen} placement="top">
@@ -40,7 +40,6 @@ const SelectTokenCmd: React.FC<ISelectTokenCmd> = ({
           onClick={() => setIsOpen(true)}
           className="h-9 rounded-lg bg-mercury-300 px-2"
         >
-          <img className="h-5 w-5 rounded-full" src={itemActive?.avatar} />
           <span className="font-semibold">{itemActive?.title}</span>
           <ArrowButtonFilledIcon />
         </Button>
@@ -58,10 +57,6 @@ const SelectTokenCmd: React.FC<ISelectTokenCmd> = ({
                 setIsOpen(false)
               }}
             >
-              <img
-                className="h-6 w-6 rounded-full object-cover"
-                src={item.avatar}
-              />
               <span className="font-medium">{item.title}</span>
             </div>
           ))}
@@ -71,4 +66,4 @@ const SelectTokenCmd: React.FC<ISelectTokenCmd> = ({
   )
 }
 
-export default SelectTokenCmd
+export default SelectItemCmd

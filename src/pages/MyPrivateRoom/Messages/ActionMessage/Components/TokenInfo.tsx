@@ -3,10 +3,9 @@ import React from "react"
 const CmdTokenInfo: React.FC<{
   tokenAva: string
   networkAva: string
-  amount: number
-  usdPrice: number
+  amount: string
   tokenName: string
-}> = ({ tokenAva, networkAva, amount, usdPrice, tokenName }) => {
+}> = ({ tokenAva, networkAva, amount, tokenName }) => {
   return (
     <div className="flex items-center gap-2">
       <div className="flex h-8 items-center gap-2 rounded-lg bg-mercury-300 px-2">
@@ -26,7 +25,7 @@ const CmdTokenInfo: React.FC<{
           {amount} {tokenName}
         </p>
       </div>
-      <p className="text-mercury-700">(${usdPrice})</p>
+      {/* <p className="text-mercury-700">(${usdPrice})</p> */}
     </div>
   )
 }

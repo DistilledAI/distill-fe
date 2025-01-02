@@ -17,6 +17,7 @@
     "@coral-xyz/anchor": "^0.30.1",
     "@cosmjs/proto-signing": "^0.32.4",
     "@fingerprintjs/fingerprintjs": "^4.2.1",
+    "@jup-ag/api": "^6.0.32",
     "@nextui-org/react": "^2.4.8",
     "@nextui-org/use-infinite-scroll": "^2.1.5",
     "@oraichain/oraidex-common": "^1.1.42",

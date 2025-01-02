@@ -1,9 +1,43 @@
-import { lazy, Suspense } from "react"
+import { lazy, Suspense, useEffect } from "react"
 import { useCommandMsgChat } from "../Providers/CommandMessageProvider"
+import { useCommandActionChat } from "../Providers/CommandActionProvider"
+import { CommandActionKey } from "../types"
+import {
+  LOCK_TIME_OPTIONS,
+  TokenKey,
+  TOKENS,
+} from "@pages/MyPrivateRoom/DexActionCore/constants"
 const ChatTools = lazy(() => import("./ChatTools"))
 
 const ToolWrapper = () => {
-  const { isOpenTool } = useCommandMsgChat()
+  const { currentAction } = useCommandActionChat()
+  const { isOpenTool, setInfoAction, setMessage } = useCommandMsgChat()
+
+  const initDataTool = (commandKey: CommandActionKey) => {
+    switch (commandKey) {
+      case CommandActionKey.lock:
+        return setInfoAction({
+          key: commandKey,
+          data: {
+            fromToken: TOKENS[TokenKey.MAX].address,
+            amount: "",
+            duration: LOCK_TIME_OPTIONS[0].value,
+          },
+        })
+
+      default:
+        break
+    }
+  }
+
+  useEffect(() => {
+    if (currentAction) {
+      initDataTool(currentAction)
+      setMessage("")
+    } else {
+      setInfoAction(null)
+    }
+  }, [currentAction])
 
   if (!isOpenTool) return null
 

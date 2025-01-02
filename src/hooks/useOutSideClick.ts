@@ -6,11 +6,10 @@ const useOutsideClick = (
   refArr?: Array<any>,
 ) => {
   const handleClick = (e: any) => {
-    if (
-      ref.current &&
-      !ref.current.contains(e.target) &&
-      refArr?.every((item) => !item.current.contains(e.target))
-    ) {
+    if (ref.current && !ref.current.contains(e.target) && !refArr) {
+      callback()
+    }
+    if (refArr && refArr?.every((item) => !item.current.contains(e.target))) {
       callback()
     }
   }

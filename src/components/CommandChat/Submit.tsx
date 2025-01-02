@@ -1,14 +1,17 @@
 import { ArrowUpFilledIcon } from "@components/Icons/Arrow"
 import { twMerge } from "tailwind-merge"
 import { useCommandMsgChat } from "./Providers/CommandMessageProvider"
+import useSubmit from "./useSubmit"
 
 const SubmitCommandChat = () => {
-  const { message } = useCommandMsgChat()
+  const { message, infoAction } = useCommandMsgChat()
+  const { handleSubmit } = useSubmit()
 
   return (
     <button
       type="button"
-      disabled={!message}
+      disabled={!message && !infoAction}
+      onClick={handleSubmit}
       className={twMerge(
         "h-9 w-[52px] rounded-full border border-mercury-900 bg-mercury-950 px-4 py-2 disabled:border-transparent disabled:bg-mercury-950/60",
       )}
