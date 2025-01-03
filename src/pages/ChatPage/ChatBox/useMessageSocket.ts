@@ -40,6 +40,13 @@ enum StatusMessage {
   GROUP = "chat-group",
 }
 
+const removeLeadingDots = (text: string) => {
+  if (text) {
+    return text.replace(/^\.{3}/, "")
+  }
+  return text
+}
+
 const useMessageSocket = () => {
   const { privateChatId } = useParams()
   const { chatId } = useGetChatId()
@@ -82,17 +89,6 @@ const useMessageSocket = () => {
     queryClient.setQueryData(
       chatMessagesKey(groupId),
       (cachedData: ICachedMessageData) => {
-        if (!cachedData)
-          return {
-            pageParams: [],
-            pages: [
-              {
-                messages: [newMsg],
-                nextOffset: 0,
-              },
-            ],
-          }
-
         const lastPage = cachedData.pages[cachedData.pages.length - 1]
 
         return {
@@ -114,20 +110,9 @@ const useMessageSocket = () => {
     queryClient.setQueryData(
       chatMessagesKey(groupId),
       (cachedData: ICachedMessageData) => {
-        if (!cachedData)
-          return {
-            pageParams: [],
-            pages: [
-              {
-                messages: [],
-                nextOffset: 0,
-              },
-            ],
-          }
-
         const lastPage = cachedData.pages[cachedData.pages.length - 1]
-
         const isBotLive = e.user.configBot === "live"
+
         if (isBotLive) {
           const newMsg: IMessageBox = {
             id: e.msgId,
@@ -159,17 +144,18 @@ const useMessageSocket = () => {
               ...lastPage,
               messages: lastPage.messages.map((item) => {
                 if (item.id === e.msgId) {
-                  const newContent = isPlusMsg
-                    ? item.content + e.messages
+                  const oldMessages = removeLeadingDots(item.content)
+                  const newMessages = isPlusMsg
+                    ? oldMessages + e.messages
                     : e.messages
 
-                  if (newContent === item.content && !item.isTyping) {
+                  if (newMessages === oldMessages && !item.isTyping) {
                     return item
                   }
 
                   return {
                     ...item,
-                    content: newContent,
+                    content: newMessages,
                     isTyping: false,
                     reply: e.replyToData
                       ? {
@@ -197,7 +183,7 @@ const useMessageSocket = () => {
     const newMsg = {
       id: e.msgId,
       role: RoleChat.CUSTOMER,
-      content: "",
+      content: "...",
       avatar: e.user.avatar,
       isTyping: true,
       roleOwner: e.user.role,
