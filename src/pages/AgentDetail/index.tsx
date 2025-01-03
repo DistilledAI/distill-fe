@@ -3,11 +3,7 @@ import { ClipboardTextIcon } from "@components/Icons/ClipboardTextIcon"
 import { DatabaseSettingIcon } from "@components/Icons/DatabaseImportIcon"
 import { StarUserIconOutline } from "@components/Icons/UserIcon"
 import SmoothScrollTo from "@components/SmoothScrollTo"
-import {
-  COMMUNICATION_STYLE_LIST,
-  PERSONALITY_LIST,
-  STATUS_AGENT,
-} from "@constants/index"
+import { BEHAVIORS_AGENT, STATUS_AGENT } from "@constants/index"
 import { refreshFetchMyAgent } from "@reducers/agentSlice"
 import { useEffect, useState } from "react"
 import { FormProvider, useForm } from "react-hook-form"
@@ -50,43 +46,6 @@ const AgentDetail: React.FC = () => {
   const descriptionData = agentData?.description
   const firstMsgData = agentData?.firstMsg
   const avatarData = agentData?.avatar
-  const agentBehaviors = agentData?.agentBehaviors
-    ? JSON.parse(agentData?.agentBehaviors)
-    : {}
-  const agentPersonalData = agentBehaviors?.agentPersonal || []
-  const agentCommunicationData = agentBehaviors?.agentCommunication || []
-
-  const handleSetValueCustomDefaultDisplay = (
-    data: any,
-    list: any,
-    name: "personality_traits" | "communication_style",
-  ) => {
-    const isDataCustom = !list.map((item: any) => item.value).includes(data)
-    const value = isDataCustom
-      ? {
-          [name]: {
-            value: data,
-            isFocused: false,
-          },
-        }
-      : undefined
-    setValueCustomDefault((prev: any) => ({ ...prev, ...value }))
-  }
-
-  useEffect(() => {
-    if (agentPersonalData.length)
-      handleSetValueCustomDefaultDisplay(
-        agentPersonalData[0],
-        PERSONALITY_LIST,
-        "personality_traits",
-      )
-    if (agentCommunicationData.length)
-      handleSetValueCustomDefaultDisplay(
-        agentCommunicationData[0],
-        COMMUNICATION_STYLE_LIST,
-        "communication_style",
-      )
-  }, [agentPersonalData.length, agentCommunicationData.length])
 
   const methods = useForm<any>({
     defaultValues: {
@@ -115,16 +74,43 @@ const AgentDetail: React.FC = () => {
     methods.setValue("communication_style", communication_style)
   }
 
+  const updateCustomFields = (selectedBehaviors: SelectedBehaviors) => {
+    const updatedFields: {
+      [key: string]: { value: string; isFocused: boolean }
+    } = {}
+
+    Object.keys(selectedBehaviors).forEach((key) => {
+      const value = selectedBehaviors[key as keyof SelectedBehaviors]?.[0]
+      const validList = BEHAVIORS_AGENT[key as keyof typeof BEHAVIORS_AGENT]
+
+      if (
+        validList &&
+        value &&
+        !validList.some((item) => item.value === value)
+      ) {
+        updatedFields[key] = {
+          value,
+          isFocused: true,
+        }
+      }
+    })
+
+    setValueCustomDefault(updatedFields)
+  }
+
   useEffect(() => {
-    const defaults = {
+    const defaults: any = {
       username: userNameData,
       description: descriptionData,
       firstMsg: firstMsgData,
       avatar: avatarData,
-      personality_traits: agentPersonalData,
-      communication_style: agentCommunicationData,
       ...getConfigAgentValueByKeys(agentConfigs, LIST_AGENT_CONFIG_KEYS),
     }
+    const selectedBehaviors = {
+      personality_traits: [defaults?.personality_traits],
+      communication_style: [defaults?.communication_style],
+    }
+    updateCustomFields(selectedBehaviors)
     methods.reset(defaults)
   }, [agentData, methods.reset, agentConfigs])
 
@@ -140,8 +126,6 @@ const AgentDetail: React.FC = () => {
       const res = await updateAgent({
         ...newData,
         botId: agentIdNumber,
-        agentBehaviors: newData?.personality_traits,
-        agentCommunication: newData?.communication_style,
       })
       if (data.avatarFile) {
         const formData = new FormData()

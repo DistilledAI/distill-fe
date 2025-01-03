@@ -31,7 +31,6 @@ const BinYourBot: React.FC<{ botWebhooks: any; refetch: any }> = ({
   const telegramBotData = botWebhooks?.find(
     (bot: any) => bot.platform === "telegram",
   )
-  console.log("🚀 ~ telegramBotData:", telegramBotData)
   const telegramBotUsername = telegramBotData?.usernamePlatform
   const { agentId } = useParams()
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()

@@ -46,6 +46,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
 }) => {
   const virtuosoRef = useRef<VirtuosoHandle>(null)
   const [isScrollBottom, setIsScrollBottom] = useState<boolean>(false)
+  const lastMessageLength = messages?.[messages.length - 1]?.content.length
 
   const scrollToBottom = useCallback(() => {
     virtuosoRef.current?.scrollToIndex({
@@ -62,10 +63,10 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
   }, [chatId])
 
   useEffect(() => {
-    if (!isScrollBottom && messages.length > 0) {
+    if (!isScrollBottom && lastMessageLength) {
       scrollToBottom()
     }
-  }, [scrollToBottom, isScrollBottom, messages.length])
+  }, [scrollToBottom, isScrollBottom, lastMessageLength])
 
   const onScroll = useCallback(
     async (e: React.UIEvent<HTMLDivElement>) => {
@@ -116,7 +117,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
     (index: number, message: IMessageBox) => (
       <article
         className={twMerge("px-3 pb-3", msgBoxClassName)}
-        key={message?.id || index}
+        key={message?.id}
       >
         {itemContent(index, message)}
       </article>
