@@ -8,10 +8,12 @@ import {
   postSignAgentByNetwork,
 } from "../helpers"
 import { lockWithSolNetwork } from "./helpers"
+import { useAppSelector } from "@hooks/useAppRedux"
 
 const useLock = () => {
   const [isLoading, setIsLoading] = useState(false)
-  const [txh, setTxh] = useState("")
+  const myAgent = useAppSelector((state) => state.agents.myAgent)
+  const [txh, setTxh] = useState<string | null>("")
 
   const handleLock = async (params: LockParams) => {
     try {
@@ -22,7 +24,6 @@ const useLock = () => {
         msgSign,
         agentWalletAddress,
         amount,
-        endpointAgent,
         signerAddress,
         timestamp,
         duration,
@@ -39,23 +40,25 @@ const useLock = () => {
 
       if (!signature || !transaction) return toast.error("Lock error!")
       const signatureByAgent = await postSignAgentByNetwork(network, {
-        endpointAgent,
         message: getMsgDataTx(transaction),
         signerAddress,
         timestamp,
         signature: signature as string,
+        agentId: myAgent?.id as number,
       })
 
       if (!signatureByAgent) return toast.error("Lock error!")
-      const txid = await confirmTransactionByNetwork(network, {
+      const { error, result } = await confirmTransactionByNetwork(network, {
         transaction,
         agentWalletAddress,
         signatureByAgent,
       })
-      if (!txid) return toast.error("Lock error!")
-      toast.success("Locked successfully!")
-      setTxh(txid)
-      return txid
+      if (error) {
+        toast.error(`Error: ${error}`)
+        return result
+      }
+      setTxh(result)
+      return result
     } catch (error) {
       console.error(error)
     } finally {

@@ -8,10 +8,12 @@ import {
   getSignatureByNetwork,
   postSignAgentByNetwork,
 } from "../helpers"
+import { useAppSelector } from "@hooks/useAppRedux"
 
 const useSwap = () => {
   const [isLoading, setIsLoading] = useState(false)
-  const [txh, setTxh] = useState("")
+  const [txh, setTxh] = useState<string | null>("")
+  const myAgent = useAppSelector((state) => state.agents.myAgent)
 
   const handleSwap = async (params: SwapParams) => {
     try {
@@ -24,7 +26,6 @@ const useSwap = () => {
         assetAddressIn,
         assetAddressOut,
         amount,
-        endpointAgent,
         signerAddress,
         timestamp,
       } = params
@@ -39,23 +40,25 @@ const useSwap = () => {
 
       if (!signature || !transaction) return toast.error("Swap error!")
       const signatureByAgent = await postSignAgentByNetwork(network, {
-        endpointAgent,
         message: getMsgDataTx(transaction),
         signerAddress,
         timestamp,
         signature: signature as string,
+        agentId: myAgent?.id as number,
       })
 
       if (!signatureByAgent) return toast.error("Swap error!")
-      const txid = await confirmTransactionByNetwork(network, {
+      const { error, result } = await confirmTransactionByNetwork(network, {
         transaction,
         agentWalletAddress,
         signatureByAgent,
       })
-      if (!txid) return toast.error("Swap error!")
-      toast.success("Swapped successfully!")
-      setTxh(txid)
-      return txid
+      if (error) {
+        toast.error(`Error: ${error}`)
+        return result
+      }
+      setTxh(result)
+      return result
     } catch (error) {
       console.error(error)
     } finally {

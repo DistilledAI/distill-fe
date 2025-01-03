@@ -49,6 +49,7 @@ const SelectTokenCmd: React.FC<ISelectTokenCmd> = ({
         <div className="min-w-[150px] py-1">
           {list.map((item) => (
             <div
+              key={item.id}
               className={twMerge(
                 "mb-[1px] flex cursor-pointer items-center gap-2 rounded-md px-1 py-1 duration-300 last:mb-0 hover:bg-mercury-50",
                 hasActive(item.id) && "bg-mercury-100",

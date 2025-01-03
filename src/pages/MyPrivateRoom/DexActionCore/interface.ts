@@ -16,7 +16,6 @@ export type SwapParams = {
   assetAddressIn: string
   assetAddressOut: string
   amount: number
-  endpointAgent: string
   signerAddress: string
   timestamp: number
 }
@@ -27,7 +26,6 @@ export type LockParams = {
   agentWalletAddress: string
   tokenAddress: string
   amount: number
-  endpointAgent: string
   signerAddress: string
   timestamp: number
   duration: number
@@ -39,10 +37,10 @@ export type SendParams = {
   agentWalletAddress: string
   tokenAddress: string
   amount: number
-  endpointAgent: string
   signerAddress: string
   timestamp: number
-  duration: number
+  toWalletAddress: string
+  decimals: number
 }
 
 export type TransferParams = {
@@ -55,11 +53,11 @@ export type TransferParams = {
 }
 
 export type PostSignParams = {
-  endpointAgent: string
   message: string
   signerAddress: string
   timestamp: number
   signature: string
+  agentId: number
 }
 
 export type ConfirmTxParams = {

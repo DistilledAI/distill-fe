@@ -1,7 +1,7 @@
 import { InfoAction } from "@components/CommandChat/types"
 
-export const setValueLock = (
-  key: "amount" | "duration" | "fromToken",
+export const setValueSwap = (
+  key: "amount" | "toToken" | "fromToken",
   value: any,
   setInfoAction: React.Dispatch<React.SetStateAction<InfoAction>>,
 ) => {
@@ -11,8 +11,8 @@ export const setValueLock = (
         ...prev,
         data: {
           ...prev.data,
-          lock: {
-            ...prev.data.lock,
+          swap: {
+            ...prev.data.swap,
             [key]: value,
           },
         },

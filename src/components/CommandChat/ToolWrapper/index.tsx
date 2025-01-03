@@ -19,9 +19,22 @@ const ToolWrapper = () => {
         return setInfoAction({
           key: commandKey,
           data: {
-            fromToken: TOKENS[TokenKey.MAX].address,
-            amount: "",
-            duration: LOCK_TIME_OPTIONS[0].value,
+            lock: {
+              fromToken: TOKENS[TokenKey.MAX].address,
+              amount: "",
+              duration: LOCK_TIME_OPTIONS[0].value,
+            },
+          },
+        })
+      case CommandActionKey.swap:
+        return setInfoAction({
+          key: commandKey,
+          data: {
+            swap: {
+              fromToken: TOKENS[TokenKey.MAX].address,
+              toToken: TOKENS[TokenKey.SOLANA].address,
+              amount: "",
+            },
           },
         })
 

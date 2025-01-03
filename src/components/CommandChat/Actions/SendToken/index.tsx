@@ -34,7 +34,7 @@ const CmdSendToken = () => {
       />
       <SelectTokenCmd
         value={fromToken}
-        onChangeValue={(token) => setFromToken(token.id)}
+        onChangeValue={(token) => setFromToken(token.id as number)}
         list={LIST_TOKEN}
       />
       <span>to</span>

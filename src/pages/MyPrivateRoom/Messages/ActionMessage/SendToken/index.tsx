@@ -12,9 +12,8 @@ const SendToken = () => {
           <CmdTokenInfo
             tokenAva={solanaLogo}
             networkAva={solanaLogo}
-            amount={2}
+            amount="2"
             tokenName="SOL"
-            usdPrice={500}
           />
           <p className="font-semibold">to</p>
           <ContractAddress />

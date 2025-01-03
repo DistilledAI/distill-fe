@@ -1,12 +1,19 @@
 import React, { createContext, useContext, useState } from "react"
 
+export interface ICmdLock {
+  tokenAddress: string
+  amount: string
+  duration: number
+}
+export interface ICmdSwap {
+  fromToken: string
+  amount: string
+  toToken: string
+}
 export interface ICmdMessage {
   id: string
-  lock: {
-    tokenAddress: string
-    amount: string
-    duration: number
-  } | null
+  lock: ICmdLock | null
+  swap: ICmdSwap | null
 }
 
 const CmdMessageContext = createContext<{

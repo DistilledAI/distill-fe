@@ -10,10 +10,12 @@ import {
 import { sendWithSolNetwork } from "./helpers"
 import { getAssociatedTokenAddress } from "@solana/spl-token"
 import { PublicKey } from "@solana/web3.js"
+import { useAppSelector } from "@hooks/useAppRedux"
 
 const useSend = () => {
   const [isLoading, setIsLoading] = useState(false)
-  const [txh, setTxh] = useState("")
+  const [txh, setTxh] = useState<string | null>("")
+  const myAgent = useAppSelector((state) => state.agents.myAgent)
 
   const handleSend = async (params: SendParams) => {
     try {
@@ -24,7 +26,6 @@ const useSend = () => {
         msgSign,
         agentWalletAddress,
         amount,
-        endpointAgent,
         signerAddress,
         timestamp,
         decimals,
@@ -56,23 +57,26 @@ const useSend = () => {
 
       if (!signature || !transaction) return toast.error("Send error!")
       const signatureByAgent = await postSignAgentByNetwork(network, {
-        endpointAgent,
         message: getMsgDataTx(transaction),
         signerAddress,
         timestamp,
         signature: signature as string,
+        agentId: myAgent?.id as number,
       })
 
       if (!signatureByAgent) return toast.error("Send error!")
-      const txid = await confirmTransactionByNetwork(network, {
+      const { error, result } = await confirmTransactionByNetwork(network, {
         transaction,
         agentWalletAddress,
         signatureByAgent,
       })
-      if (!txid) return toast.error("Send error!")
+      if (error) {
+        toast.error(`Error: ${error}`)
+        return result
+      }
       toast.success("Sended successfully!")
-      setTxh(txid)
-      return txid
+      setTxh(result)
+      return result
     } catch (error) {
       console.error(error)
     } finally {

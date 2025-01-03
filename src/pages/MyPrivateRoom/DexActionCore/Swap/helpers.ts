@@ -1,7 +1,5 @@
 import { PublicKey, VersionedTransaction } from "@solana/web3.js"
-import { createJupiterApiClient } from "@jup-ag/api"
-
-const jupiterQuoteApi = createJupiterApiClient()
+import axios from "axios"
 
 export const swapWithJup = async ({
   walletAddress,
@@ -16,31 +14,31 @@ export const swapWithJup = async ({
 }) => {
   const agentAddress = new PublicKey(walletAddress)
 
-  const routes = await jupiterQuoteApi.quoteGet({
-    outputMint: assetAddressOut,
-    inputMint: assetAddressIn,
-    amount,
-    autoSlippage: true,
-    slippageBps: 200,
-    autoSlippageCollisionUsdValue: 1_000,
-    maxAutoSlippageBps: 1000,
-    minimizeSlippage: true,
-    onlyDirectRoutes: false,
-    asLegacyTransaction: false,
+  const quoteRes = await axios.request({
+    method: "get",
+    url: `https://quote-api.jup.ag/v6/quote?inputMint=${assetAddressIn}&outputMint=${assetAddressOut}&amount=${amount}&slippageBps=200`,
   })
-
-  const swapTx = await jupiterQuoteApi.swapPost({
-    swapRequest: {
-      quoteResponse: routes,
-      userPublicKey: walletAddress,
-      wrapAndUnwrapSol: true,
-      dynamicComputeUnitLimit: true,
-      prioritizationFeeLamports: "auto",
+  const quoteResponse = quoteRes.data
+  const resSwap = await axios.request({
+    url: "https://quote-api.jup.ag/v6/swap",
+    headers: {
+      "Content-Type": "application/json",
     },
+    method: "POST",
+    data: JSON.stringify({
+      quoteResponse,
+      userPublicKey: agentAddress,
+      wrapAndUnwrapSol: true,
+      // prioritizationFeeLamports: 100000,
+      computeUnitPriceMicroLamports: 100000,
+      dynamicComputeUnitLimit: true,
+      // feeAccount is optional. Use if you want to charge a fee.  feeBps must have been passed in /quote API.
+      // feeAccount: "fee_account_public_key"
+    }),
   })
 
   const transaction: any = VersionedTransaction.deserialize(
-    Buffer.from(swapTx.swapTransaction, "base64"),
+    Buffer.from(resSwap.data.swapTransaction, "base64"),
   )
 
   transaction.feePayer = agentAddress

@@ -9,5 +9,16 @@ export type LockDataInput = {
   amount: string
   duration: number
 }
+export type SwapDataInput = {
+  fromToken: string
+  toToken: string
+  amount: string
+}
 
-export type InfoAction = null | { key: CommandActionKey; data: LockDataInput }
+export type InfoAction = null | {
+  key: CommandActionKey
+  data: {
+    lock?: LockDataInput
+    swap?: SwapDataInput
+  }
+}
