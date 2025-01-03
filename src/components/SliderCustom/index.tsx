@@ -12,6 +12,7 @@ const SliderCustom: React.FC<{
 }> = ({ step, minValue, maxValue, defaultValue, value, onChange }) => {
   return (
     <Slider
+      aria-label="slider-custom"
       size="lg"
       step={step}
       showSteps={true}

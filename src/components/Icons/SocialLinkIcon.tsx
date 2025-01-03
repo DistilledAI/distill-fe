@@ -116,15 +116,15 @@ export const BookIcon = ({ size = 21, color = "#A2845E" }: IconProps) => {
         d="M16.3346 3.33325V16.6666H6.33464C5.89261 16.6666 5.46868 16.491 5.15612 16.1784C4.84356 15.8659 4.66797 15.4419 4.66797 14.9999V4.99992C4.66797 4.55789 4.84356 4.13397 5.15612 3.82141C5.46868 3.50885 5.89261 3.33325 6.33464 3.33325H16.3346Z"
         stroke={color}
         strokeWidth="1.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
       <path
         d="M16.3346 13.3332H6.33464C5.89261 13.3332 5.46868 13.5088 5.15612 13.8213C4.84356 14.1339 4.66797 14.5578 4.66797 14.9998M8.0013 6.6665H13.0013"
         stroke={color}
         strokeWidth="1.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   )
@@ -186,9 +186,9 @@ export const TelegramOnlineIcon = () => {
           width="12"
           height="12"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"
