@@ -117,7 +117,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
     (index: number, message: IMessageBox) => (
       <article
         className={twMerge("px-3 pb-3", msgBoxClassName)}
-        key={message?.id || index}
+        key={message?.id}
       >
         {itemContent(index, message)}
       </article>

@@ -229,6 +229,11 @@ export const COMMUNICATION_STYLE_LIST = [
   },
 ]
 
+export const BEHAVIORS_AGENT = {
+  personality_traits: PERSONALITY_LIST,
+  communication_style: COMMUNICATION_STYLE_LIST,
+}
+
 export const CLEAR_CACHED_MESSAGE = "CLEAR_CACHED"
 
 export const AGENT_INFO_CLANS = [

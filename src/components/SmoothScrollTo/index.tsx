@@ -136,17 +136,14 @@ const SmoothScrollTo: React.FC<{
         >
           <div className={classNames?.contentWrapper}>
             {components.map((comp, index) => (
-              <>
-                <div
-                  key={index}
-                  ref={(el) => (contentRefs.current[index] = el)}
-                >
+              <React.Fragment key={index}>
+                <div ref={(el) => (contentRefs.current[index] = el)}>
                   {comp.content}
                 </div>
                 {index !== components.length - 1 && (
                   <Divider className="my-9" />
                 )}
-              </>
+              </React.Fragment>
             ))}
           </div>
         </div>

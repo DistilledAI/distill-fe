@@ -3,7 +3,7 @@ import { ClipboardTextIcon } from "@components/Icons/ClipboardTextIcon"
 import { DatabaseSettingIcon } from "@components/Icons/DatabaseImportIcon"
 import { StarUserIconOutline } from "@components/Icons/UserIcon"
 import SmoothScrollTo from "@components/SmoothScrollTo"
-import { STATUS_AGENT } from "@constants/index"
+import { BEHAVIORS_AGENT, STATUS_AGENT } from "@constants/index"
 import { refreshFetchMyAgent } from "@reducers/agentSlice"
 import { useEffect, useState } from "react"
 import { FormProvider, useForm } from "react-hook-form"
@@ -36,9 +36,9 @@ const AgentDetail: React.FC = () => {
   const { agentId } = useParams()
   const dispatch = useDispatch()
   const [loading, setLoading] = useState(false)
+  const [valueCustomDefault, setValueCustomDefault] = useState<any>()
 
   const { agentConfigs } = useFetchAgentConfig()
-  console.log("🚀 ~ agentConfigs:", agentConfigs)
   const { agentData, refetch } = useFetchDetail()
   const isActive = agentData?.status === STATUS_AGENT.ACTIVE
 
@@ -74,14 +74,43 @@ const AgentDetail: React.FC = () => {
     methods.setValue("communication_style", communication_style)
   }
 
+  const updateCustomFields = (selectedBehaviors: SelectedBehaviors) => {
+    const updatedFields: {
+      [key: string]: { value: string; isFocused: boolean }
+    } = {}
+
+    Object.keys(selectedBehaviors).forEach((key) => {
+      const value = selectedBehaviors[key as keyof SelectedBehaviors]?.[0]
+      const validList = BEHAVIORS_AGENT[key as keyof typeof BEHAVIORS_AGENT]
+
+      if (
+        validList &&
+        value &&
+        !validList.some((item) => item.value === value)
+      ) {
+        updatedFields[key] = {
+          value,
+          isFocused: true,
+        }
+      }
+    })
+
+    setValueCustomDefault(updatedFields)
+  }
+
   useEffect(() => {
-    const defaults = {
+    const defaults: any = {
       username: userNameData,
       description: descriptionData,
       firstMsg: firstMsgData,
       avatar: avatarData,
       ...getConfigAgentValueByKeys(agentConfigs, LIST_AGENT_CONFIG_KEYS),
     }
+    const selectedBehaviors = {
+      personality_traits: [defaults?.personality_traits],
+      communication_style: [defaults?.communication_style],
+    }
+    updateCustomFields(selectedBehaviors)
     methods.reset(defaults)
   }, [agentData, methods.reset, agentConfigs])
 
@@ -138,6 +167,7 @@ const AgentDetail: React.FC = () => {
             personality_traits: methods.watch("personality_traits"),
             communication_style: methods.watch("communication_style"),
           }}
+          valueCustomDefault={valueCustomDefault}
         />
       ),
       icon: <StarUserIconOutline color="#A2845E" />,
