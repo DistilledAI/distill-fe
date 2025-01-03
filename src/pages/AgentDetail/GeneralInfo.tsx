@@ -99,7 +99,7 @@ const GeneralInfo: React.FC<{
 
       <div className="w-full">
         <div className="flex items-center justify-between">
-          <FieldLabel text="Bio" />
+          <FieldLabel text="Bio" required />
           <span
             className={twMerge(
               "text-base-md text-mercury-900 max-sm:text-14",

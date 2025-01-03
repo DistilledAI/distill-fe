@@ -11,7 +11,7 @@ export const isPassRuleAgentInfo = (data: any) => {
     return false
   }
   if (!isDescLengthPass) {
-    toast.warning(`Agent description max ${DESC_MAX_LENGTH} characters`)
+    toast.warning(`Agent bio max ${DESC_MAX_LENGTH} characters`)
     return false
   }
   return true
