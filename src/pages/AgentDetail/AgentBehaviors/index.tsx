@@ -14,7 +14,7 @@ import {
   Input,
   Textarea,
 } from "@nextui-org/react"
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import { Controller, useFormContext } from "react-hook-form"
 import { twMerge } from "tailwind-merge"
 import CategoryLabel, { FieldLabel } from "../CategoryLabel"
@@ -27,6 +27,8 @@ interface BehaviorItem {
   value: string
   label: string
   type?: string
+  emoji?: string
+  desc?: string
 }
 
 export interface SelectedBehaviors {
@@ -44,19 +46,13 @@ interface AgentBehaviorsProps {
 const AgentBehaviors: React.FC<AgentBehaviorsProps> = ({
   selectedBehaviors,
   onSelectBehaviors,
-  valueCustomDefault,
   isCreate = false,
 }) => {
+  console.log("🚀 ~ selectedBehaviors:", selectedBehaviors)
   const { control } = useFormContext()
   const [customFields, setCustomFields] = useState<{
     [key: string]: { value: string; isFocused: boolean }
   }>({})
-
-  useEffect(() => {
-    if (valueCustomDefault) {
-      setCustomFields(valueCustomDefault)
-    }
-  }, [valueCustomDefault])
 
   const handleSelect = (type: keyof SelectedBehaviors, item: string) => {
     const isAlreadySelected = selectedBehaviors[type].includes(item)
@@ -134,10 +130,10 @@ const AgentBehaviors: React.FC<AgentBehaviorsProps> = ({
             customFieldState.isFocused ? "Enter your text" : "Custom behavior"
           }
           classNames={{
-            base: "w-fit",
-            mainWrapper: "w-fit",
+            base: "w-[85%]",
+            mainWrapper: "w-full",
             inputWrapper: twMerge(
-              "rounded-[14px] p-4 font-medium border-[2px] h-[64px] transition-all duration-300 ease-in-out hover:!bg-brown-50 focus:!bg-brown-50 focus-within:!bg-brown-50 border-transparent bg-mercury-30",
+              "rounded-[14px] p-4 font-medium border-[2px] h-[64px] transition-all duration-300 ease-in-out hover:!bg-brown-50 focus:!bg-brown-50 focus-within:!bg-brown-50 border-transparent bg-mercury-30 ",
               customFieldState.value && "border-brown-500 bg-brown-50",
             ),
             input: "text-[16px] font-medium text-mercury-700 w-[124px]",
@@ -153,25 +149,34 @@ const AgentBehaviors: React.FC<AgentBehaviorsProps> = ({
         key={item.value}
         onClick={() => handleSelect(type, item.value)}
         className={twMerge(
-          "flex cursor-pointer items-center gap-2 rounded-[14px] border-[2px] border-white bg-mercury-30 p-4 text-mercury-900 transition-all duration-300 ease-in-out",
+          "flex w-[85%] cursor-pointer items-center gap-3 rounded-[14px] border-[2px] border-white bg-mercury-30 p-3 text-mercury-900 transition-all duration-300 ease-in-out",
           isSelected && "border-brown-500 bg-brown-50",
         )}
       >
-        <span
-          className={twMerge(
-            "relative left-4 text-[16px] font-medium transition-all duration-300 ease-in-out",
-            isSelected && "left-0",
-          )}
-        >
-          {item.label}
-        </span>
-        <div
-          className={twMerge(
-            "opacity-0 transition-all duration-100 ease-in-out",
-            isSelected && "opacity-100",
-          )}
-        >
-          <CheckFilledIcon color="#A2845E" />
+        <span>{item.emoji}</span>
+        <div className="flex w-full items-center justify-between">
+          <div>
+            <span
+              className={twMerge(
+                "text-base-b relative transition-all duration-300 ease-in-out",
+                isSelected && "left-0",
+              )}
+            >
+              {item.label}
+            </span>
+            <br />
+            <span className="relative text-14 text-mercury-800 transition-all duration-300 ease-in-out">
+              {item.desc}
+            </span>
+          </div>
+          <div
+            className={twMerge(
+              "opacity-0 transition-all duration-100 ease-in-out",
+              isSelected && "opacity-100",
+            )}
+          >
+            <CheckFilledIcon color="#A2845E" />
+          </div>
         </div>
       </div>
     )
@@ -274,10 +279,10 @@ const AgentBehaviors: React.FC<AgentBehaviorsProps> = ({
       <div>
         <FieldLabel
           text="Your Agent’s Personality"
-          desc="Choose one trait that best describes your agent's personality."
+          desc="Select the trait that best describe your agent's personality."
           containerClassName="mb-4"
         />
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-col flex-wrap gap-2">
           {PERSONALITY_LIST.map((item: BehaviorItem) =>
             renderBehaviorItem(item, "personality_traits"),
           )}

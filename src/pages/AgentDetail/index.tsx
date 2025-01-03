@@ -3,11 +3,7 @@ import { ClipboardTextIcon } from "@components/Icons/ClipboardTextIcon"
 import { DatabaseSettingIcon } from "@components/Icons/DatabaseImportIcon"
 import { StarUserIconOutline } from "@components/Icons/UserIcon"
 import SmoothScrollTo from "@components/SmoothScrollTo"
-import {
-  COMMUNICATION_STYLE_LIST,
-  PERSONALITY_LIST,
-  STATUS_AGENT,
-} from "@constants/index"
+import { STATUS_AGENT } from "@constants/index"
 import { refreshFetchMyAgent } from "@reducers/agentSlice"
 import { useEffect, useState } from "react"
 import { FormProvider, useForm } from "react-hook-form"
@@ -40,9 +36,9 @@ const AgentDetail: React.FC = () => {
   const { agentId } = useParams()
   const dispatch = useDispatch()
   const [loading, setLoading] = useState(false)
-  const [valueCustomDefault, setValueCustomDefault] = useState<any>()
 
   const { agentConfigs } = useFetchAgentConfig()
+  console.log("🚀 ~ agentConfigs:", agentConfigs)
   const { agentData, refetch } = useFetchDetail()
   const isActive = agentData?.status === STATUS_AGENT.ACTIVE
 
@@ -50,43 +46,6 @@ const AgentDetail: React.FC = () => {
   const descriptionData = agentData?.description
   const firstMsgData = agentData?.firstMsg
   const avatarData = agentData?.avatar
-  const agentBehaviors = agentData?.agentBehaviors
-    ? JSON.parse(agentData?.agentBehaviors)
-    : {}
-  const agentPersonalData = agentBehaviors?.agentPersonal || []
-  const agentCommunicationData = agentBehaviors?.agentCommunication || []
-
-  const handleSetValueCustomDefaultDisplay = (
-    data: any,
-    list: any,
-    name: "personality_traits" | "communication_style",
-  ) => {
-    const isDataCustom = !list.map((item: any) => item.value).includes(data)
-    const value = isDataCustom
-      ? {
-          [name]: {
-            value: data,
-            isFocused: false,
-          },
-        }
-      : undefined
-    setValueCustomDefault((prev: any) => ({ ...prev, ...value }))
-  }
-
-  useEffect(() => {
-    if (agentPersonalData.length)
-      handleSetValueCustomDefaultDisplay(
-        agentPersonalData[0],
-        PERSONALITY_LIST,
-        "personality_traits",
-      )
-    if (agentCommunicationData.length)
-      handleSetValueCustomDefaultDisplay(
-        agentCommunicationData[0],
-        COMMUNICATION_STYLE_LIST,
-        "communication_style",
-      )
-  }, [agentPersonalData.length, agentCommunicationData.length])
 
   const methods = useForm<any>({
     defaultValues: {
@@ -121,8 +80,6 @@ const AgentDetail: React.FC = () => {
       description: descriptionData,
       firstMsg: firstMsgData,
       avatar: avatarData,
-      personality_traits: agentPersonalData,
-      communication_style: agentCommunicationData,
       ...getConfigAgentValueByKeys(agentConfigs, LIST_AGENT_CONFIG_KEYS),
     }
     methods.reset(defaults)
@@ -140,8 +97,6 @@ const AgentDetail: React.FC = () => {
       const res = await updateAgent({
         ...newData,
         botId: agentIdNumber,
-        agentBehaviors: newData?.personality_traits,
-        agentCommunication: newData?.communication_style,
       })
       if (data.avatarFile) {
         const formData = new FormData()
@@ -183,7 +138,6 @@ const AgentDetail: React.FC = () => {
             personality_traits: methods.watch("personality_traits"),
             communication_style: methods.watch("communication_style"),
           }}
-          valueCustomDefault={valueCustomDefault}
         />
       ),
       icon: <StarUserIconOutline color="#A2845E" />,

@@ -17,6 +17,7 @@ import { FormProvider, useForm } from "react-hook-form"
 import { useDispatch } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
+import { updateAgentConfig } from "services/agent"
 import { createBot } from "services/chat"
 import { updateAvatarUser } from "services/user"
 import Header from "./Header"
@@ -61,12 +62,29 @@ const AgentInitialization = () => {
         toast.success("Created agent successfully")
         navigate(`${PATH_NAMES.ADD_MY_DATA}/${botId}`)
       }
+      if (botId) {
+        const payloadConfig = [
+          {
+            key: "communication_style",
+            value: newData.communication_style?.[0],
+          },
+          {
+            key: "personality_traits",
+            value: newData.personality_traits?.[0],
+          },
+        ]
+        await updateAgentConfig({
+          botId,
+          data: payloadConfig,
+        })
+      }
       if (isUpdateAvatar) {
         const formData = new FormData()
         formData.append("file", data.avatarFile)
         formData.append("userId", botId.toString() ?? "")
         await updateAvatarUser(formData)
       }
+
       dispatch(refreshFetchMyAgent())
     } catch (error: any) {
       console.error({ error })

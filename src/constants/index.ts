@@ -120,85 +120,112 @@ export const MAP_DISPLAY_FROM_STATUS_MY_AGENT = {
 
 export const PERSONALITY_LIST = [
   {
-    label: "😊 Friendly",
-    selected: false,
-    value: "friendly",
-  },
-  {
-    label: "💼 Professional",
-    selected: false,
-    value: "professional",
-  },
-  {
-    label: "🤡 Humorous",
-    selected: false,
-    value: "humorous",
-  },
-  {
-    label: "🛟 Supportive",
-    selected: false,
-    value: "supportive",
-  },
-  {
-    label: "🥰 Empathetic",
-    selected: false,
-    value: "empathetic",
-  },
-  {
-    label: "🤓 Informative",
-    selected: false,
-    value: "informative",
-  },
-  {
-    label: "🤠 Adventurous",
-    selected: false,
-    value: "adventurous",
-  },
-  {
-    label: "⭐️ Custom",
+    emoji: "⭐️",
+    label: "Custom",
     selected: false,
     value: "personality_traits",
     type: "custom",
+  },
+  {
+    emoji: "😊",
+    label: "Friendly",
+    selected: false,
+    value: `Friendly: "Connects with users through warmth, empathy, and approachable communication."`,
+    desc: "Connects with users through warmth, empathy, and approachable communication.",
+  },
+  {
+    emoji: "💼",
+    label: "Professional",
+    selected: false,
+    value: `Professional: "Delivers precise, insightful, and high-quality responses with confidence."`,
+    desc: "Delivers precise, insightful, and high-quality responses with confidence.",
+  },
+  {
+    emoji: "🤡",
+    label: "Humorous",
+    selected: false,
+    value: `Humorous: "Sprinkles humor into conversations while staying helpful and engaging."`,
+    desc: "Sprinkles humor into conversations while staying helpful and engaging.",
+  },
+  {
+    emoji: "🛟",
+    label: "Supportive",
+    selected: false,
+    value: `Supportive: "Guides users with patience, encouragement, and unwavering care."`,
+    desc: "Guides users with patience, encouragement, and unwavering care.",
+  },
+  {
+    emoji: "🥰",
+    label: "Empathetic",
+    selected: false,
+    value: `Empathetic: "Tunes into emotions to provide thoughtful and understanding responses."`,
+    desc: "Tunes into emotions to provide thoughtful and understanding responses.",
+  },
+  {
+    emoji: "🤓",
+    label: "Informative",
+    selected: false,
+    value: `Informative: "Offers accurate, well-explained knowledge in a clear and concise manner."`,
+    desc: "Offers accurate, well-explained knowledge in a clear and concise manner.",
+  },
+  {
+    emoji: "🤠",
+    label: "Adventurous",
+    selected: false,
+    value: `Adventurous: "Sparks excitement and curiosity, inspiring users to explore new ideas."`,
+    desc: "Sparks excitement and curiosity, inspiring users to explore new ideas.",
   },
 ]
 
 export const COMMUNICATION_STYLE_LIST = [
   {
-    label: "👔 Formal",
-    selected: false,
-    value: "formal",
-  },
-  {
-    label: "🧢 Casual",
-    selected: false,
-    value: "casual",
-  },
-  {
-    label: "🔥 Enthusiastic",
-    selected: false,
-    value: "enthusiastic",
-  },
-  {
-    label: "🍃 Calm",
-    selected: false,
-    value: "calm",
-  },
-  {
-    label: "👀 Direct",
-    selected: false,
-    value: "direct",
-  },
-  {
-    label: "📝 Storytelling",
-    icon: "",
-    selected: false,
-    value: "storytelling",
-  },
-  {
-    label: "⭐️ Custom",
+    emoji: "⭐️",
+    label: "Custom",
     selected: false,
     value: "communication_style",
     type: "custom",
+  },
+  {
+    emoji: "👔",
+    label: "Formal",
+    selected: false,
+    value: `Formal: "Communicates with professionalism, clarity, and respect, adhering to proper etiquette."`,
+    desc: "Communicates with professionalism, clarity, and respect, adhering to proper etiquette.",
+  },
+  {
+    emoji: "🧢",
+    label: "Casual",
+    selected: false,
+    value: `Casual: "Engages in a relaxed and conversational tone, keeping interactions light and approachable."`,
+    desc: "Engages in a relaxed and conversational tone, keeping interactions light and approachable.",
+  },
+  {
+    emoji: "🔥",
+    label: "Enthusiastic",
+    selected: false,
+    value: `Enthusiastic: "Delivers responses with energy, excitement, and a motivating attitude."`,
+    desc: "Delivers responses with energy, excitement, and a motivating attitude.",
+  },
+  {
+    emoji: "🍃",
+    label: "Calm",
+    selected: false,
+    value: `Calm: "Maintains a soothing and composed tone, creating a sense of ease and reassurance."`,
+    desc: "Maintains a soothing and composed tone, creating a sense of ease and reassurance.",
+  },
+  {
+    emoji: "👀",
+    label: "Direct",
+    selected: false,
+    value: `Direct: "Provides clear and straightforward answers, cutting through complexity with precision."`,
+    desc: "Provides clear and straightforward answers, cutting through complexity with precision.",
+  },
+  {
+    emoji: "📝",
+    label: "Storytelling",
+    selected: false,
+    value: `Storytelling: "Captivates through engaging narratives, weaving information into compelling stories."`,
+    desc: "Captivates through engaging narratives, weaving information into compelling stories.",
   },
 ]
 
