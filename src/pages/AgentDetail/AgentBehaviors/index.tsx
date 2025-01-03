@@ -1,3 +1,4 @@
+import { LockFilledIcon } from "@components/Icons/AgentDetailIcon"
 import { ChevronDownIcon } from "@components/Icons/ChevronDownIcon"
 import { CheckFilledIcon } from "@components/Icons/DefiLens"
 import {
@@ -191,10 +192,18 @@ const AgentBehaviors: React.FC<AgentBehaviorsProps> = ({
 
   return (
     <div className="space-y-6">
-      <CategoryLabel
-        text="Behaviors"
-        icon={<StarUserIconOutline color="#A2845E" />}
-      />
+      <div className="flex items-center justify-between">
+        <CategoryLabel
+          text="Behaviors"
+          icon={<StarUserIconOutline color="#A2845E" />}
+        />
+        <div className="flex items-center gap-1 rounded-full bg-mercury-70 px-2">
+          <LockFilledIcon />
+          <span className="font-medium uppercase text-mercury-700">
+            private
+          </span>
+        </div>
+      </div>
 
       <div className="flex w-full items-center justify-between max-md:flex-col">
         <p className="font-semibold text-mercury-950">
