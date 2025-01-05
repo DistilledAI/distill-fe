@@ -23,6 +23,7 @@ const ListMessage: React.FC<{
   const renderMessage = useCallback(
     (index: number, message: IMessageBox) => {
       const isLastMessage = index === messages.length - 1
+
       return (
         <div
           className={twMerge(

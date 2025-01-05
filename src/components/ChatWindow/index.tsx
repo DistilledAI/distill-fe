@@ -42,11 +42,11 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
   style,
   Header,
   scrollBottomClassName,
-  increaseViewportBy = 0,
+  increaseViewportBy = 100,
 }) => {
   const virtuosoRef = useRef<VirtuosoHandle>(null)
   const [isScrollBottom, setIsScrollBottom] = useState<boolean>(false)
-  const lastMessageLength = messages?.[messages.length - 1]?.content.length
+  const lastMessageLength = messages?.[messages.length - 1]?.content?.length
 
   const scrollToBottom = useCallback(() => {
     virtuosoRef.current?.scrollToIndex({
@@ -113,18 +113,6 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
     return undefined
   }, [isFetched, messages.length])
 
-  const renderRow = useCallback(
-    (index: number, message: IMessageBox) => (
-      <article
-        className={twMerge("px-3 pb-3", msgBoxClassName)}
-        key={message?.id}
-      >
-        {itemContent(index, message)}
-      </article>
-    ),
-    [msgBoxClassName, itemContent],
-  )
-
   return (
     <div
       className={twMerge(
@@ -149,7 +137,16 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
           }}
           followOutput={!isScrollBottom ? "auto" : false}
           atBottomThreshold={AT_BOTTOM_THRESHOLD}
-          itemContent={renderRow}
+          itemContent={(index: number, message: IMessageBox) => {
+            return (
+              <article
+                className={twMerge("px-3 pb-3", msgBoxClassName)}
+                key={message?.id}
+              >
+                {itemContent(index, message)}
+              </article>
+            )
+          }}
           style={{ height: "100%" }}
         />
       ) : null}
@@ -162,4 +159,4 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
   )
 }
 
-export default React.memo(ChatWindow)
+export default ChatWindow
