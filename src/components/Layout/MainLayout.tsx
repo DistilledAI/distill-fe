@@ -20,7 +20,7 @@ const MainLayout = () => {
 
   const { screenWidth } = useWindowSize()
   const { pathname } = useLocation()
-  const { inviteAgentId, privateChatId } = useParams()
+  const { inviteAgentId, privateChatId, agentId } = useParams()
   const { chatId } = useGetChatId()
 
   const ignoreLayout = useMemo(
@@ -30,6 +30,7 @@ const MainLayout = () => {
       `${PATH_NAMES.MY_DATA}`,
       `${PATH_NAMES.PRIVATE_AGENT}/${privateChatId}`,
       `${PATH_NAMES.MY_AGENTS}`,
+      `${PATH_NAMES.PRIVATE_ROOM}/${agentId}`,
     ],
     [chatId, inviteAgentId, privateChatId],
   )

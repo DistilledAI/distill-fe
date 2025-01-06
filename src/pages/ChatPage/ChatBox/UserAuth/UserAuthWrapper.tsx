@@ -5,7 +5,7 @@ import { twMerge } from "tailwind-merge"
 import UserAuth from "."
 import BackAction from "./BackAction"
 import { PATH_NAMES } from "@constants/index"
-import { useLocation } from "react-router-dom"
+import { useLocation, useParams } from "react-router-dom"
 import Title from "./Title"
 
 const UserAuthWrapper = () => {
@@ -13,8 +13,11 @@ const UserAuthWrapper = () => {
   useReconnectWallet()
   const sidebarCollapsed = useAppSelector((state) => state.sidebarCollapsed)
   const location = useLocation()
+  const { agentId } = useParams()
   const isFullWidth = [PATH_NAMES.TRENDING].includes(location.pathname)
-  const isBgTransparent = [PATH_NAMES.PRIVATE_ROOM].includes(location.pathname)
+  const isBgTransparent = [`${PATH_NAMES.PRIVATE_ROOM}/${agentId}`].includes(
+    location.pathname,
+  )
 
   return (
     <div

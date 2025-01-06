@@ -14,7 +14,7 @@ const CommandChat = () => {
         <div className="relative flex flex-col">
           <ToolWrapper />
           <HeaderCommandChat />
-          <div className="rounded-b-[22px] bg-mercury-200 p-3">
+          <div className="rounded-b-[22px] bg-mercury-200 p-3 max-md:rounded-t-[22px]">
             <ChatWrapper />
             <div className="mt-1 flex items-center justify-end gap-4">
               <VoiceCommand />

@@ -23,7 +23,7 @@ const MainLayoutDesktop = () => {
     return (
       pathname === PATH_NAMES.TRENDING ||
       pathname === `${PATH_NAMES.AGENT_DETAIL}/${agentId}` ||
-      pathname === `${PATH_NAMES.PRIVATE_ROOM}`
+      pathname === `${PATH_NAMES.PRIVATE_ROOM}/${agentId}`
     )
   }, [pathname, agentId])
 

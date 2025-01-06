@@ -24,7 +24,7 @@ const LockToken: React.FC<{
 
   return (
     <DisplayWrapper>
-      <div className="flex items-center justify-between gap-2">
+      <div className="flex flex-wrap items-center justify-between gap-2">
         <div className="flex items-center gap-2 pt-1">
           <p className="font-semibold">Lock</p>
           <CmdTokenInfo

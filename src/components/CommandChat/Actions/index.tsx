@@ -15,7 +15,11 @@ const CommandChatAction = () => {
 
   if (!currentAction) return <div></div>
 
-  return COMMAND_ACTION_RENDER[currentAction]
+  return (
+    <div className="overflow-x-auto">
+      {COMMAND_ACTION_RENDER[currentAction]}
+    </div>
+  )
 }
 
 export default CommandChatAction

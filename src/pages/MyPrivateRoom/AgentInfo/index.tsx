@@ -14,7 +14,7 @@ const AgentInfoRoom = () => {
           src={myAgent?.avatar as string}
           publicAddress={myAgent?.publicAddress as string}
         />
-        <p className="text-[24px] font-semibold text-mercury-950">
+        <p className="text-[24px] font-semibold text-mercury-950 max-md:text-18">
           Welcome to your Private Room
         </p>
       </div>

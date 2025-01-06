@@ -59,7 +59,7 @@ const CommandChatInput = () => {
         },
       }}
       className={twMerge("text-[14px] leading-5 md:text-[16px]")}
-      placeholder="Enter chat or type ‘/’ to use tools"
+      placeholder="Type ‘/’ to use tools"
       rows={4}
     >
       <MentionAny

@@ -1,3 +1,5 @@
+import { toBN } from "@utils/format"
+import { shortenNumber } from "@utils/index"
 import React from "react"
 
 const CmdTokenInfo: React.FC<{
@@ -22,7 +24,7 @@ const CmdTokenInfo: React.FC<{
           </div>
         </div>
         <p className="font-semibold">
-          {amount} {tokenName}
+          {amount ? shortenNumber(toBN(amount).toNumber()) : ""} {tokenName}
         </p>
       </div>
       {/* <p className="text-mercury-700">(${usdPrice})</p> */}

@@ -23,7 +23,7 @@ const HeaderCommandChat = () => {
   }, [])
 
   return (
-    <div className="flex h-[48px] items-center justify-between rounded-t-[22px] bg-mercury-70 px-3">
+    <div className="flex h-[48px] items-center justify-between rounded-t-[22px] bg-mercury-70 px-3 max-md:hidden">
       <div className="relative flex items-center">
         <ComingSoon wrapperClassName="w-auto">
           <div className="flex items-center">
