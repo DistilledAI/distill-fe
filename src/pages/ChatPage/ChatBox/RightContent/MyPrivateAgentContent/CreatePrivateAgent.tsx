@@ -15,6 +15,7 @@ export const TYPE_DATA_KEY = {
   PDF_FILE: "pdf-file",
   PHOTO_VIDEO_FILE: "photo-video-file",
   TXT_FILE: "txt-file",
+  FAQ: "faq",
 }
 
 const CreatePrivateAgent: React.FC<{

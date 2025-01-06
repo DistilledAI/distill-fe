@@ -129,23 +129,23 @@ const SmoothScrollTo: React.FC<{
         </div>
       )}
 
-      <div
-        className="relative mx-auto max-h-[calc(100dvh-152px)] max-w-[800px] overflow-auto px-4 pb-5 max-md:min-h-dvh max-md:bg-mercury-70 max-md:pt-[70px] max-sm:pb-20 max-sm:pt-6"
-        ref={scrollComponentRef}
-      >
-        <div className={classNames?.contentWrapper}>
-          {components.map((comp, index) => (
-            <>
-              <div
-                key={index}
-                ref={(el) => (contentRefs.current[index] = el)}
-                // className={twMerge("", !isActive(index) && "opacity-50")}
-              >
-                {comp.content}
-              </div>
-              {index !== components.length - 1 && <Divider className="my-9" />}
-            </>
-          ))}
+      <div className="ml-auto w-[calc(100%-352px)] max-sm:w-full">
+        <div
+          className="relative mx-auto max-h-[calc(100dvh-152px)] max-w-[800px] overflow-auto px-4 pb-5 max-md:min-h-dvh max-md:bg-mercury-70 max-md:pt-[70px] max-sm:pb-20 max-sm:pt-6"
+          ref={scrollComponentRef}
+        >
+          <div className={classNames?.contentWrapper}>
+            {components.map((comp, index) => (
+              <React.Fragment key={index}>
+                <div ref={(el) => (contentRefs.current[index] = el)}>
+                  {comp.content}
+                </div>
+                {index !== components.length - 1 && (
+                  <Divider className="my-9" />
+                )}
+              </React.Fragment>
+            ))}
+          </div>
         </div>
       </div>
     </>

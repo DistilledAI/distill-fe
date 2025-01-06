@@ -1,3 +1,4 @@
+import { Suspense, useMemo } from "react"
 import ConnectWalletModal from "@components/ConnectWalletModal"
 import { PATH_NAMES } from "@constants/index"
 import { useAppSelector } from "@hooks/useAppRedux"
@@ -17,12 +18,16 @@ const MainLayoutDesktop = () => {
   useInviteAgent()
   useFetchMe()
   useMessageSocket()
-  const isHideLeftBar =
-    pathname === PATH_NAMES.TRENDING ||
-    pathname === `${PATH_NAMES.AGENT_DETAIL}/${agentId}` ||
-    pathname === `${PATH_NAMES.PRIVATE_ROOM}`
 
-  const renderContent = () => {
+  const isHideLeftBar = useMemo(() => {
+    return (
+      pathname === PATH_NAMES.TRENDING ||
+      pathname === `${PATH_NAMES.AGENT_DETAIL}/${agentId}` ||
+      pathname === `${PATH_NAMES.PRIVATE_ROOM}`
+    )
+  }, [pathname, agentId])
+
+  const renderContent = useMemo(() => {
     if (isHideLeftBar) {
       return (
         <div className="flex bg-white font-barlow">
@@ -48,12 +53,14 @@ const MainLayoutDesktop = () => {
         </div>
       </div>
     )
-  }
+  }, [isHideLeftBar, sidebarCollapsed])
 
   return (
     <>
-      <StyleSpacingProvider>{renderContent()}</StyleSpacingProvider>
-      <ConnectWalletModal />
+      <StyleSpacingProvider>{renderContent}</StyleSpacingProvider>
+      <Suspense fallback={null}>
+        <ConnectWalletModal />
+      </Suspense>
     </>
   )
 }

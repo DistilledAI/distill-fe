@@ -10,6 +10,7 @@ import { toast } from "react-toastify"
 import { mapMyDataToBot } from "services/user"
 import { TYPE_DATA_KEY } from "../CreatePrivateAgent"
 import UploadCustom from "../UploadCustom"
+import UploadFAQ from "../UploadFAQ"
 import UploadSocialLink from "../UploadSocialLink"
 import useActiveAgent from "../useActiveAgent"
 import AgentSetupStatus from "./AgentSetupStatus"
@@ -124,6 +125,7 @@ const ConnectData = () => {
               multiple
               moreCustomRequest={onMoreCustomRequest}
             />
+            <UploadFAQ onMoreCustomRequest={onMoreCustomRequest} />
           </div>
         </div>
       </div>

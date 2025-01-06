@@ -49,9 +49,19 @@ const DATA_SOURCES_BY_CATEGORY = {
   economic: ["cnn-news", "twitter", "trading-view"],
   crypto: ["coinmarketcap-news", "trading-view", "twitter"],
   btc: ["coinmarketcap-news", "trading-view", "twitter"],
+  gamefi: ["coinmarketcap-news", "trading-view", "twitter"],
+  political: ["reddit", "twitter", "cnn-news"],
 } as any
 
-const CATEGORIES = ["entertainment", "sports", "economic", "crypto", "btc"]
+const CATEGORIES = [
+  "entertainment",
+  "sports",
+  "economic",
+  "crypto",
+  "btc",
+  "political",
+  "gamefi",
+]
 
 const Functions: React.FC<{
   agentData: IAgentData

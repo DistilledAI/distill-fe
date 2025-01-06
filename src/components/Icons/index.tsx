@@ -511,8 +511,8 @@ export const BoltOutlineIcon = ({
         d="M13 3V10H19L11 21V14H5L13 3Z"
         stroke={color}
         strokeWidth="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   )

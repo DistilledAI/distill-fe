@@ -66,7 +66,8 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
           >
             <img src={xDSTL} width={24} height={24} />
             <span className="text-base text-mercury-900">
-              <span className="font-bold">{totalxDstlPoint}</span> xDSTL
+              <span className="font-bold">{totalxDstlPoint?.toFixed(2)}</span>{" "}
+              xDSTL
             </span>
             <div className="absolute -right-2 -top-2 h-3 w-3 rounded-full bg-[#FF3B30] max-md:hidden" />
           </div>

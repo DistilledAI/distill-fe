@@ -11,6 +11,7 @@ import TxtData from "./Txt"
 import useFetchMyData from "./useFetch"
 import useUpdateStatus from "./useUpdateStatus"
 import HeaderMobileBack from "@components/HeaderMobileBack"
+import FaqData from "./Faq"
 
 const MyData: React.FC = () => {
   const { isMobile } = useWindowSize()
@@ -54,6 +55,7 @@ const MyData: React.FC = () => {
         <CvData botId={botId} category={BotDataTypeKey.CV_FILE} />
         {/* <MediaData botId={botId} category={BotDataTypeKey.PHOTO_VIDEO_FILE} /> */}
         <TxtData botId={botId} category={BotDataTypeKey.TXT_FILE} />
+        <FaqData botId={botId} category={BotDataTypeKey.FAQ} />
       </div>
     </div>
   )

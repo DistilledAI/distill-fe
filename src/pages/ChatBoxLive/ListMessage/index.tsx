@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useCallback } from "react"
 import { twMerge } from "tailwind-merge"
 import ChatWindow from "@components/ChatWindow"
 import { IMessageBox } from "@pages/ChatPage/ChatBox/ChatMessages/helpers"
@@ -20,24 +20,27 @@ const ListMessage: React.FC<{
     isFetchingPreviousPage,
   } = useFetchMessages()
 
-  const renderMessage = (index: number, message: IMessageBox) => {
-    const isLastMessage = index === messages.length - 1
-    return (
-      <div
-        className={twMerge(
-          index === 0 && "pt-4",
-          isLastMessage && "pb-56 md:pb-0",
-        )}
-      >
-        <MessageLive
-          key={index}
-          message={message}
-          onReply={() => onReply(message)}
-          groupId={chatId}
-        />
-      </div>
-    )
-  }
+  const renderMessage = useCallback(
+    (index: number, message: IMessageBox) => {
+      const isLastMessage = index === messages.length - 1
+
+      return (
+        <div
+          className={twMerge(
+            index === 0 && "pt-4",
+            isLastMessage && "pb-56 md:pb-0",
+          )}
+        >
+          <MessageLive
+            message={message}
+            onReply={() => onReply(message)}
+            groupId={chatId}
+          />
+        </div>
+      )
+    },
+    [messages, chatId, onReply],
+  )
 
   if (isCloseLiveChat) return null
 
@@ -62,4 +65,4 @@ const ListMessage: React.FC<{
   )
 }
 
-export default React.memo(ListMessage)
+export default ListMessage

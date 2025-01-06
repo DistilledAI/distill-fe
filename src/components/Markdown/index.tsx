@@ -94,11 +94,9 @@ const MarkdownMessage = ({ msg }: { msg: string }) => {
     },
   }
 
-  return (
-    <Markdown components={renderers}>
-      {breakLine(enhancedMessage(msg))}
-    </Markdown>
-  )
+  const processedMessage = breakLine(enhancedMessage(msg))
+
+  return <Markdown components={renderers}>{processedMessage}</Markdown>
 }
 
 export default MarkdownMessage
