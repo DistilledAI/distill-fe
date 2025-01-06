@@ -3,6 +3,7 @@ import { solanaCircleIcon } from "@assets/svg"
 import AudioClanCustom from "@components/AudioClanCustom"
 import BetModal from "@components/BetModal"
 import VideoCustom from "@components/VideoCustom"
+import { PATH_NAMES } from "@constants/index"
 import { Image, Skeleton, useDisclosure } from "@nextui-org/react"
 import {
   GroupConfig,
@@ -18,7 +19,6 @@ import AgentSocials from "./AgentSocials"
 import ContractDisplay from "./ContractDisplay"
 import SkeletonInfo, { SkeletonDesc } from "./SkeletonInfo"
 import TradeTokenButton from "./TradeTokenButton"
-import { PATH_NAMES } from "@constants/index"
 
 const LeftContent: React.FC<{
   groupDetail: UserGroup | null
@@ -46,9 +46,11 @@ const LeftContent: React.FC<{
       },
       {
         queryKey: [QueryDataKeys.CLOSE_LIVE_CHAT],
+        staleTime: 0,
       },
       {
         queryKey: [QueryDataKeys.EXPAND_LIVE_CHAT],
+        staleTime: 0,
       },
     ],
   })
@@ -139,6 +141,7 @@ const LeftContent: React.FC<{
                 teleLink: groupConfig?.telegram as string,
                 shareLink: `${window.location.origin}${PATH_NAMES.CLAN}/${groupDetail?.group?.label}`,
                 contract: groupConfig?.contractAddress as string,
+                website: groupConfig?.website as string,
               }}
               classNames={{
                 wrapper: "mt-3 hidden md:flex",

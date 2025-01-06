@@ -45,7 +45,7 @@ const MainContainerCreate: React.FC<{
             </div>
 
             <Button
-              onClick={() => navigate(PATH_NAMES.MY_DATA)}
+              onPress={() => navigate(PATH_NAMES.MY_DATA)}
               className="h-14 min-w-[213px] rounded-full bg-mercury-950 px-6 text-[16px] text-mercury-30 max-md:h-[52px] max-md:w-full md:text-[18px]"
             >
               <span className="">View Data Sync Status</span>

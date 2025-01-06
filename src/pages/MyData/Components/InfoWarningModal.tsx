@@ -29,7 +29,7 @@ const InfoWarningModal: React.FC<{
             <p className="text-center">{description}</p>
             <Button
               className="mt-6 h-12 w-full rounded-full bg-mercury-950"
-              onClick={onClose}
+              onPress={onClose}
             >
               <span className="text-18 font-semibold text-white">Got it</span>
             </Button>

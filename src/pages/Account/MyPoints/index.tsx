@@ -22,7 +22,7 @@ const MyPoints = () => {
         <div className="flex items-center gap-2">
           <img src={xDSTL} width={24} height={24} />
           <span className="text-[32px] font-bold text-white">
-            {totalxDstlPoint}
+            {totalxDstlPoint?.toFixed(2)}
           </span>
         </div>
       </div>
@@ -66,7 +66,7 @@ const MyPoints = () => {
       <div className="flex items-center justify-between gap-1">
         <Button
           className="w-full rounded-full border border-mercury-900 bg-mercury-900/20 text-[14px] font-medium text-white max-md:min-h-12 md:text-[16px]"
-          onClick={() => navigate(PATH_NAMES.REWARDS)}
+          onPress={() => navigate(PATH_NAMES.REWARDS)}
         >
           Earn more points
         </Button>

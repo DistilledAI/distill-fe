@@ -46,12 +46,12 @@ const ProfileLinkForm: React.FC<{
     if (!url) return null
 
     if (selectedKey === PROFILE_TYPE.LINKEDIN) {
-      const match = url.match(/linkedin\.com\/in\/([^\/]+)/)
+      const match = url.match(/linkedin\.com\/in\/([^/]+)/)
       return match ? match[1] : null
     }
 
     if (selectedKey === PROFILE_TYPE.TWITTER) {
-      const match = url.match(/x\.com\/([^\/]+)/)
+      const match = url.match(/x\.com\/([^/]+)/)
       if (match && match[1] !== "home") {
         return match[1]
       }

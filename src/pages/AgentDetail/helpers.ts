@@ -11,7 +11,7 @@ export const isPassRuleAgentInfo = (data: any) => {
     return false
   }
   if (!isDescLengthPass) {
-    toast.warning(`Agent description max ${DESC_MAX_LENGTH} characters`)
+    toast.warning(`Agent bio max ${DESC_MAX_LENGTH} characters`)
     return false
   }
   return true
@@ -26,10 +26,19 @@ export const LIST_AGENT_CONFIG_KEYS = [
   "response_length",
   "sample_prompts",
   "tone_adaptation",
+  "post_interval",
+  "category",
+  "personality_traits",
+  "communication_style",
+  "website_link",
+  "x_link",
+  "telegram_link",
+  "agent_describe",
 ]
 
 export const getConfigAgentByDataForm = (data: any) => {
   return Object.entries(data)
+    .filter(([_, val]) => val !== null && val !== "" && val !== undefined)
     .map(([key, val]) => ({ key, value: val ? val.toString() : "" }))
     .filter((item) => LIST_AGENT_CONFIG_KEYS.includes(item.key))
 }

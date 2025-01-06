@@ -12,7 +12,6 @@ import useGetChatId from "./ChatDetail/useGetChatId"
 import ChatList from "./ChatList"
 import ChatSearch from "./ChatSearch"
 import VideoCustom from "@components/VideoCustom"
-import { xMasBg } from "@assets/images"
 
 const ChatPageMobile = () => {
   const { privateChatId } = useParams()
@@ -55,13 +54,7 @@ const ChatPageMobile = () => {
           </div>
         )}
       </div>
-      <div
-        className="h-[calc(100vh-110px)] w-full bg-[rgba(255,255,255,0.85)] bg-contain bg-no-repeat pt-[56px]"
-        style={{
-          backgroundImage: `url(${xMasBg})`,
-          backgroundPosition: "center bottom -30px",
-        }}
-      >
+      <div className="h-[calc(100vh-110px)] w-full bg-[rgba(255,255,255,0.85)] pt-[56px]">
         <ChatList />
       </div>
     </div>
@@ -82,7 +75,7 @@ export const StartNewChat = () => {
         with a public agent, interact with an AI Companion, or create your own.
       </p>
       <Button
-        onClick={() => navigate(PATH_NAMES.MARKETPLACE)}
+        onPress={() => navigate(PATH_NAMES.MARKETPLACE)}
         className="mt-6 h-[46px] min-w-[200px] rounded-full bg-neutral-950 text-[16px] text-white"
       >
         Go to Marketplace

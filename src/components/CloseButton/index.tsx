@@ -11,7 +11,7 @@ const CloseButton = ({ onClose, className }: CloseButtonProps) => {
   return (
     <Button
       isIconOnly
-      onClick={onClose}
+      onPress={onClose}
       className={twMerge(
         "rounded-full bg-transparent hover:bg-mercury-70",
         className,

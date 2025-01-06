@@ -42,12 +42,15 @@ const ResponseLength: React.FC = () => {
                 (item) => item.key === watch("response_length"),
               )?.value
             }
-            onChange={(val) =>
+            onChange={(val) => {
+              const isArray = Array?.isArray(val)
+              const currentValue = isArray ? val?.[0] : val
               setValue(
                 "response_length",
-                RESPONSE_LENGTH.find((item) => item.value === val)?.key,
+                RESPONSE_LENGTH.find((item) => item.value === currentValue)
+                  ?.key,
               )
-            }
+            }}
           />
         </div>
       </div>

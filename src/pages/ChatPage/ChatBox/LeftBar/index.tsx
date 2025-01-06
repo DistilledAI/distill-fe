@@ -1,12 +1,12 @@
-import MyEcho from "./MyEcho"
-import { xMasBg } from "@assets/images"
 import { DistilledAIIcon } from "@components/Icons/DistilledAIIcon"
 import { useAppSelector } from "@hooks/useAppRedux"
 import ButtonMarketplace from "@pages/Marketplace/ButtonMarketplace"
+// import TrendingButton from "@pages/Trending/TrendingButton"
 import { Link } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
 import AnalyticsInfoWrap from "./AnalyticsInfoWrap"
 import ChatClans from "./Clans"
+import MyEcho from "./MyEcho"
 import PrivateAI from "./PrivateAI"
 import SidebarCollapsed from "./SidebarCollapsed"
 // import OrchestrationSlider from "./OrchestrationSlider"
@@ -18,7 +18,7 @@ const LeftBar = () => {
     <div>
       <div
         className={twMerge(
-          "bg-re min-h-dvh w-[329px] transition-all duration-300 ease-in-out",
+          "min-h-dvh w-[329px] transition-all duration-300 ease-in-out",
           sidebarCollapsed && "w-[104px]",
         )}
       />
@@ -57,13 +57,12 @@ const LeftBar = () => {
               sidebarCollapsed && "flex-shrink-0 flex-col justify-center",
             )}
           >
+            {/* <Playground /> */}
+            {/* <TrendingButton /> */}
             <ButtonMarketplace />
           </div>
           <AnalyticsInfoWrap />
-          <img
-            className="absolute -bottom-[2px] left-0 h-[352px] w-full"
-            src={xMasBg}
-          />
+          {/* <img src="" className="absolute -bottom-[2px] left-0 h-[352px] w-full" /> */}
         </div>
       </div>
     </div>

@@ -1,17 +1,18 @@
-import SocialButton from "./SocialButton"
-import { TwitterIcon } from "@components/Icons/Twitter"
 import { TelegramOutlineIcon } from "@components/Icons/SocialLinkIcon"
-import AgentShareButton from "./AgentShareButton"
+import { TwitterIcon } from "@components/Icons/Twitter"
+import { WorldGlobalIcon } from "@components/Icons/World"
 import { twMerge } from "tailwind-merge"
+import SocialButton from "./SocialButton"
 
 export interface AgentSocialsProps {
   agentInfo:
     | {
-        username: string
-        xLink: string
-        teleLink: string
-        shareLink: string
-        contract: string
+        username?: string
+        xLink?: string
+        teleLink?: string
+        shareLink?: string
+        contract?: string
+        website?: string
       }
     | undefined
   classNames?: {
@@ -28,6 +29,11 @@ const AgentSocials = ({ agentInfo, classNames }: AgentSocialsProps) => {
       )}
     >
       <SocialButton
+        icon={<WorldGlobalIcon />}
+        link={agentInfo?.website}
+        isDisabled={!agentInfo?.website}
+      />
+      <SocialButton
         icon={<TwitterIcon size={20} />}
         link={agentInfo?.xLink}
         isDisabled={!agentInfo?.xLink}
@@ -37,7 +43,6 @@ const AgentSocials = ({ agentInfo, classNames }: AgentSocialsProps) => {
         link={agentInfo?.teleLink}
         isDisabled={!agentInfo?.teleLink}
       />
-      <AgentShareButton agentInfo={agentInfo} />
     </div>
   )
 }

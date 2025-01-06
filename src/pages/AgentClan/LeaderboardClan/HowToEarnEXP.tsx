@@ -1,4 +1,4 @@
-import { xMasBgLeaderBoard } from "@assets/images"
+import { distilledAIPurpleBg } from "@assets/images"
 import CloseButton from "@components/CloseButton"
 import { ArrowsTargetIcon } from "@components/Icons/Arrow"
 import { RefreshIcon } from "@components/Icons/RefreshIcon"
@@ -20,11 +20,10 @@ const HowToEarnEXP = () => {
   return (
     <div
       className="h-[356px] border-b border-b-mercury-200 bg-cover bg-center bg-no-repeat"
-      // style={{
-      //   backgroundImage: `url(${xMasBgLeaderBoard})`,
-      // }}
+      style={{
+        backgroundImage: `url(${distilledAIPurpleBg})`,
+      }}
     >
-      <img src={xMasBgLeaderBoard} className="absolute -top-[2px] opacity-60" />
       <div className="relative space-y-4 p-6">
         <div className="flex items-center justify-between gap-4">
           <div className="flex items-center gap-2">

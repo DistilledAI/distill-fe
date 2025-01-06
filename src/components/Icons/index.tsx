@@ -495,6 +495,29 @@ export const BoltIcon = ({ size = 20, color = "#F78500" }: IconProps) => {
   )
 }
 
+export const BoltOutlineIcon = ({
+  size = 24,
+  color = "#545454",
+}: IconProps) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+    >
+      <path
+        d="M13 3V10H19L11 21V14H5L13 3Z"
+        stroke={color}
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}
+
 export const TrophyIcon = ({ size = 20, color = "#545454" }: IconProps) => {
   return (
     <svg

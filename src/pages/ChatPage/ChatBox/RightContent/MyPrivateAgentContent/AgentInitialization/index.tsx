@@ -17,6 +17,7 @@ import { FormProvider, useForm } from "react-hook-form"
 import { useDispatch } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
+import { updateAgentConfig } from "services/agent"
 import { createBot } from "services/chat"
 import { updateAvatarUser } from "services/user"
 import Header from "./Header"
@@ -34,8 +35,11 @@ const AgentInitialization = () => {
       username: "",
       description: "",
       avatar: "",
-      agentPersonal: [PERSONALITY_LIST[0].value],
-      agentCommunication: [COMMUNICATION_STYLE_LIST[0].value],
+      personality_traits: [PERSONALITY_LIST[0].value],
+      communication_style: [COMMUNICATION_STYLE_LIST[0].value],
+      website_link: "",
+      x_link: "",
+      telegram_link: "",
     },
   })
 
@@ -58,12 +62,29 @@ const AgentInitialization = () => {
         toast.success("Created agent successfully")
         navigate(`${PATH_NAMES.ADD_MY_DATA}/${botId}`)
       }
+      if (botId) {
+        const payloadConfig = [
+          {
+            key: "communication_style",
+            value: newData.communication_style?.[0],
+          },
+          {
+            key: "personality_traits",
+            value: newData.personality_traits?.[0],
+          },
+        ]
+        await updateAgentConfig({
+          botId,
+          data: payloadConfig,
+        })
+      }
       if (isUpdateAvatar) {
         const formData = new FormData()
         formData.append("file", data.avatarFile)
         formData.append("userId", botId.toString() ?? "")
         await updateAvatarUser(formData)
       }
+
       dispatch(refreshFetchMyAgent())
     } catch (error: any) {
       console.error({ error })
@@ -74,8 +95,8 @@ const AgentInitialization = () => {
   }
 
   const handleSelectBehaviors = (selected: SelectedBehaviors) => {
-    methods.setValue("agentPersonal", selected.agentPersonal)
-    methods.setValue("agentCommunication", selected.agentCommunication)
+    methods.setValue("personality_traits", selected.personality_traits)
+    methods.setValue("communication_style", selected.communication_style)
   }
 
   return (
@@ -87,8 +108,8 @@ const AgentInitialization = () => {
           <Divider />
           <AgentBehaviors
             selectedBehaviors={{
-              agentPersonal: methods.watch("agentPersonal"),
-              agentCommunication: methods.watch("agentCommunication"),
+              personality_traits: methods.watch("personality_traits"),
+              communication_style: methods.watch("communication_style"),
             }}
             onSelectBehaviors={handleSelectBehaviors}
             isCreate

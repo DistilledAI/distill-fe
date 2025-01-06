@@ -105,7 +105,7 @@ const TranferDataContent: React.FC<{
           <Button
             className="mt-4 w-full rounded-full bg-mercury-950"
             size="lg"
-            onClick={() => onCloseModal()}
+            onPress={() => onCloseModal()}
           >
             <span className="text-18 text-mercury-30">Got it!</span>
           </Button>

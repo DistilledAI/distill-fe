@@ -43,8 +43,8 @@ export const BroadcastIcon = ({
           y2="3.2107"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color={color} />
-          <stop offset="1" stop-color={color2} />
+          <stop stopColor={color} />
+          <stop offset="1" stopColor={color2} />
         </linearGradient>
         <linearGradient
           id="paint1_linear_5050_44164"
@@ -54,8 +54,8 @@ export const BroadcastIcon = ({
           y2="5.85818"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color={color} />
-          <stop offset="1" stop-color={color2} />
+          <stop stopColor={color} />
+          <stop offset="1" stopColor={color2} />
         </linearGradient>
         <linearGradient
           id="paint2_linear_5050_44164"
@@ -65,8 +65,8 @@ export const BroadcastIcon = ({
           y2="8.65254"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color={color} />
-          <stop offset="1" stop-color={color2} />
+          <stop stopColor={color} />
+          <stop offset="1" stopColor={color2} />
         </linearGradient>
       </defs>
     </svg>

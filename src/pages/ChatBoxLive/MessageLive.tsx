@@ -54,6 +54,7 @@ const MessageLive: React.FC<MessageLiveProps> = ({
       </div>
       <div className="relative">
         <AvatarCustom
+          key={message.id}
           src={message?.avatar}
           publicAddress={message?.publicAddress}
         />

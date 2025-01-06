@@ -85,7 +85,6 @@ const ChatMessages = () => {
             isOwner && `${paddingBottomStyle} relative`,
             isCustomer && "group/item pb-6",
           )}
-          key={index}
         >
           {isCustomer && (
             <>

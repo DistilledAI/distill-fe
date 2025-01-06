@@ -126,7 +126,7 @@ const InteractFrequency: React.FC = () => {
         <div className="mt-10 flex items-center gap-2">
           <Button
             isDisabled={isMin}
-            onClick={() => handleClickInteractionFrequency("down")}
+            onPress={() => handleClickInteractionFrequency("down")}
             className="h-[33px] w-[52px] min-w-0 rounded-full bg-mercury-100"
           >
             <span className="h-[2px] w-3 bg-mercury-900"></span>

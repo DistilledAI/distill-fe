@@ -64,7 +64,7 @@ const GrowClan: React.FC = () => {
               <Button
                 className="h-[34px] bg-mercury-950 px-6"
                 radius="full"
-                onClick={onGoToEarn}
+                onPress={onGoToEarn}
               >
                 <span className="text-base-14 text-mercury-30">Go to Earn</span>
               </Button>
