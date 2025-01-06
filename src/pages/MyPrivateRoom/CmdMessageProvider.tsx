@@ -10,10 +10,16 @@ export interface ICmdSwap {
   amount: string
   toToken: string
 }
+export interface ICmdSend {
+  tokenAddress: string
+  amount: string
+  toAccountAddress: string
+}
 export interface ICmdMessage {
   id: string
   lock: ICmdLock | null
   swap: ICmdSwap | null
+  send: ICmdSend | null
 }
 
 const CmdMessageContext = createContext<{

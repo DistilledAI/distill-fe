@@ -33,6 +33,17 @@ const useSubmit = () => {
         }
         return true
       })
+      .with(CommandActionKey.send, () => {
+        if (!data?.send?.amount) {
+          toast.warning("Please enter amount")
+          return false
+        }
+        if (!data?.send?.toAccountAddress) {
+          toast.warning("Please enter recipient address")
+          return false
+        }
+        return true
+      })
       .otherwise(() => true)
   }
 
@@ -50,6 +61,7 @@ const useSubmit = () => {
           duration: data?.lock?.duration as number,
         },
         swap: null,
+        send: null,
       }))
       .with(CommandActionKey.swap, () => ({
         id: makeId(),
@@ -59,8 +71,19 @@ const useSubmit = () => {
           toToken: data?.swap?.toToken as string,
         },
         lock: null,
+        send: null,
       }))
-      .otherwise(() => ({ id: makeId(), lock: null, swap: null }))
+      .with(CommandActionKey.send, () => ({
+        id: makeId(),
+        send: {
+          tokenAddress: data?.send?.tokenAddress as string,
+          amount: data?.send?.amount as string,
+          toAccountAddress: data?.send?.toAccountAddress as string,
+        },
+        lock: null,
+        swap: null,
+      }))
+      .otherwise(() => ({ id: makeId(), lock: null, swap: null, send: null }))
   }
 
   const handleSubmit = () => {

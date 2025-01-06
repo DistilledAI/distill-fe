@@ -12,17 +12,19 @@ const CmdMessages = () => {
     const isFirst = index === 0
     const isLockAction = !!message.lock
     const isSwapAction = !!message.swap
+    const isSendAction = !!message.send
     return (
       <div className={twMerge(isFirst && "mt-4")}>
         {/* {isCustomer && <ReceiverMessage />}
         {isOwner && <SenderMessage />} */}
-        {/* <CmdActionMessage actionKey={CmdActionKey.swap} />
-        <CmdActionMessage actionKey={CmdActionKey.send} /> */}
         {isLockAction && (
           <CmdActionMessage data={message} actionKey={CmdActionKey.lock} />
         )}
         {isSwapAction && (
           <CmdActionMessage data={message} actionKey={CmdActionKey.swap} />
+        )}
+        {isSendAction && (
+          <CmdActionMessage data={message} actionKey={CmdActionKey.send} />
         )}
       </div>
     )

@@ -13,7 +13,7 @@ const CommandChatAction = () => {
     [CommandActionKey.lock]: <CmdLockToken />,
   }
 
-  if (!currentAction) return <div>HELLO</div>
+  if (!currentAction) return <div></div>
 
   return COMMAND_ACTION_RENDER[currentAction]
 }

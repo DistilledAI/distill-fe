@@ -14,11 +14,17 @@ export type SwapDataInput = {
   toToken: string
   amount: string
 }
+export type SendDataInput = {
+  tokenAddress: string
+  toAccountAddress: string
+  amount: string
+}
 
 export type InfoAction = null | {
   key: CommandActionKey
   data: {
     lock?: LockDataInput
     swap?: SwapDataInput
+    send?: SendDataInput
   }
 }

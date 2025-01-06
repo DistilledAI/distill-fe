@@ -2,13 +2,15 @@ import { CopyIcon } from "@components/Icons/Copy"
 import { centerTextEllipsis, copyClipboard } from "@utils/index"
 import React from "react"
 
-const ContractAddress: React.FC = () => {
+const AddressDisplay: React.FC<{
+  address: string
+}> = ({ address }) => {
   return (
     <div className="flex items-center gap-2 rounded-md bg-mercury-300 px-2 py-[2px]">
-      <p>{centerTextEllipsis("123123123123123123123321312")}</p>
+      <p>{centerTextEllipsis(address)}</p>
       <div
         className="cursor-pointer"
-        onClick={(e) => copyClipboard(e, "asdasd")}
+        onClick={(e) => copyClipboard(e, address)}
       >
         <CopyIcon />
       </div>
@@ -16,4 +18,4 @@ const ContractAddress: React.FC = () => {
   )
 }
 
-export default ContractAddress
+export default AddressDisplay

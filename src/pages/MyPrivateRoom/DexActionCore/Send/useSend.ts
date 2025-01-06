@@ -74,7 +74,6 @@ const useSend = () => {
         toast.error(`Error: ${error}`)
         return result
       }
-      toast.success("Sended successfully!")
       setTxh(result)
       return result
     } catch (error) {

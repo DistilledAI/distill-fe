@@ -16,7 +16,7 @@ const CmdActionMessage: React.FC<{
 }> = ({ actionKey, data }) => {
   const COMMAND_ACTION_RENDER = {
     [CmdActionKey.swap]: <SwapToken data={data} />,
-    [CmdActionKey.send]: <SendToken />,
+    [CmdActionKey.send]: <SendToken data={data} />,
     [CmdActionKey.lock]: <LockToken data={data} />,
   }
 

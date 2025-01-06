@@ -38,6 +38,18 @@ const ToolWrapper = () => {
           },
         })
 
+      case CommandActionKey.send:
+        return setInfoAction({
+          key: commandKey,
+          data: {
+            send: {
+              tokenAddress: TOKENS[TokenKey.MAX].address,
+              toAccountAddress: "",
+              amount: "",
+            },
+          },
+        })
+
       default:
         break
     }

@@ -4,7 +4,7 @@ import { CommandMsgProvider } from "./Providers/CommandMessageProvider"
 import { CommandActionProvider } from "./Providers/CommandActionProvider"
 import VoiceCommand from "./Voice"
 import SubmitCommandChat from "./Submit"
-import ClearContextChat from "./ClearContextChat"
+// import ClearContextChat from "./ClearContextChat"
 import HeaderCommandChat from "./HeaderChat"
 
 const CommandChat = () => {
@@ -21,7 +21,7 @@ const CommandChat = () => {
               <SubmitCommandChat />
             </div>
           </div>
-          <ClearContextChat />
+          {/* <ClearContextChat /> */}
         </div>
       </CommandMsgProvider>
     </CommandActionProvider>

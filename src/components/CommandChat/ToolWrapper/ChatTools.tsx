@@ -1,4 +1,4 @@
-import { xDSTL } from "@assets/images"
+// import { xDSTL } from "@assets/images"
 import { ChartPieIcon } from "@components/Icons"
 import { CommandActionKey } from "../types"
 import { useCommandMsgChat } from "../Providers/CommandMessageProvider"
@@ -58,12 +58,12 @@ const ChatTools = () => {
         <div key={tool.id}>
           <div className="mb-3 flex items-center justify-between">
             <p className="text-14 text-mercury-700">{tool.category.name}</p>
-            <div className="flex cursor-pointer items-center gap-1 hover:opacity-80">
+            {/* <div className="flex cursor-pointer items-center gap-1 hover:opacity-80">
               {tool.category.link.icon}
               <p className="text-14 font-medium text-mercury-900">
                 {tool.category.link.text}
               </p>
-            </div>
+            </div> */}
           </div>
           <div className="grid grid-cols-2 gap-4">
             {tool.commands.map((command, index) => (
@@ -86,10 +86,10 @@ const ChatTools = () => {
                     {command.description}
                   </p>
                 </div>
-                <div className="flex items-center gap-1">
+                {/* <div className="flex items-center gap-1">
                   <img className="w-[15px]" src={xDSTL} />
                   <span>{command.earnPoint}</span>
-                </div>
+                </div> */}
               </div>
             ))}
           </div>
