@@ -7,17 +7,20 @@ import SelectTokenCmd, {
 import { TokenKey, TOKENS } from "@pages/MyPrivateRoom/DexActionCore/constants"
 import { setValueSwap } from "./helpers"
 import { useCommandMsgChat } from "@components/CommandChat/Providers/CommandMessageProvider"
+import { CoinGeckoId } from "@hooks/useCoingecko"
 
 export const LIST_TOKEN_SWAP: IToken[] = [
   {
     id: TOKENS[TokenKey.MAX].address,
     title: TOKENS[TokenKey.MAX].label,
     avatar: maxIcon,
+    coinGeckoId: CoinGeckoId["max-2"],
   },
   {
     id: TOKENS[TokenKey.SOLANA].address,
     title: TOKENS[TokenKey.SOLANA].label,
     avatar: solanaLogo,
+    coinGeckoId: CoinGeckoId["solana"],
   },
 ]
 

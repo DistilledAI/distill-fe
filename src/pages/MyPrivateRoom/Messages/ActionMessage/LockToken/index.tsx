@@ -10,17 +10,23 @@ import { twMerge } from "tailwind-merge"
 import { Spinner } from "@nextui-org/react"
 import { CircleCheckFilled } from "@components/Icons"
 import { Link } from "react-router-dom"
+import { useCoinGeckoPrices } from "@hooks/useCoingecko"
 
 const LockToken: React.FC<{
   data: ICmdMessage
 }> = ({ data }) => {
   const { handleSubmit, isLoading, txh } = useLockSubmit()
+  const { data: prices } = useCoinGeckoPrices()
+
   const tokenInfo = LIST_TOKEN_LOCK.find(
     (item) => item.id === data.lock?.tokenAddress,
   )
   const duration = LOCK_TIME_OPTIONS.find(
     (item) => item.value === data.lock?.duration,
   )
+  const tokenPrice = tokenInfo
+    ? Number(prices?.[tokenInfo?.coinGeckoId] || 0)
+    : 0
 
   return (
     <DisplayWrapper>
@@ -32,6 +38,7 @@ const LockToken: React.FC<{
             networkAva={solanaLogo}
             amount={data.lock?.amount as string}
             tokenName={tokenInfo?.title as string}
+            usdPrice={tokenPrice}
           />
           <span>for</span>
           <div className="flex h-8 items-center justify-center rounded-md bg-mercury-300 px-2">

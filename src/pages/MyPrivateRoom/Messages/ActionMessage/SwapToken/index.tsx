@@ -9,17 +9,34 @@ import { CircleCheckFilled } from "@components/Icons"
 import { twMerge } from "tailwind-merge"
 import { Spinner } from "@nextui-org/react"
 import useSwapSubmit from "./useSwapSubmit"
+import { useCoinGeckoPrices } from "@hooks/useCoingecko"
+import { toBN } from "@utils/format"
 
 const SwapToken: React.FC<{
   data: ICmdMessage
 }> = ({ data }) => {
   const { handleSubmit, isLoading, txh } = useSwapSubmit()
+  const { data: prices } = useCoinGeckoPrices()
   const fromTokenInfo = LIST_TOKEN_SWAP.find(
     (item) => item.id === data.swap?.fromToken,
   )
   const toTokenInfo = LIST_TOKEN_SWAP.find(
     (item) => item.id === data.swap?.toToken,
   )
+  const fromTokenPrice = fromTokenInfo
+    ? Number(prices?.[fromTokenInfo?.coinGeckoId] || 0)
+    : 0
+  const toTokenPrice = toTokenInfo
+    ? Number(prices?.[toTokenInfo?.coinGeckoId] || 0)
+    : 0
+  const toAmount =
+    fromTokenPrice && toTokenPrice
+      ? toBN(
+          toBN(data.swap?.amount || 0)
+            .multipliedBy(fromTokenPrice)
+            .div(toTokenPrice),
+        ).toFixed(6)
+      : "0"
 
   return (
     <DisplayWrapper>
@@ -31,13 +48,15 @@ const SwapToken: React.FC<{
             networkAva={solanaLogo}
             tokenName={fromTokenInfo?.title as string}
             amount={data.swap?.amount as string}
+            usdPrice={fromTokenPrice}
           />
           <p className="font-semibold">to</p>
           <CmdTokenInfo
             tokenAva={toTokenInfo?.avatar as string}
             networkAva={solanaLogo}
-            amount=""
+            amount={toAmount}
             tokenName={toTokenInfo?.title as string}
+            usdPrice={toTokenPrice}
           />
         </div>
         {txh ? (

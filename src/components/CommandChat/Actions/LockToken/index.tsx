@@ -12,12 +12,14 @@ import {
   TOKENS,
 } from "@pages/MyPrivateRoom/DexActionCore/constants"
 import { setValueLock } from "./helpers"
+import { CoinGeckoId } from "@hooks/useCoingecko"
 
 export const LIST_TOKEN_LOCK: IToken[] = [
   {
     id: TOKENS[TokenKey.MAX].address,
     title: TOKENS[TokenKey.MAX].label,
     avatar: maxIcon,
+    coinGeckoId: CoinGeckoId["max-2"],
   },
 ]
 

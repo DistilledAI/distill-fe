@@ -10,14 +10,19 @@ import { Link } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
 import { Spinner } from "@nextui-org/react"
 import useSendSubmit from "./useSendSubmit"
+import { useCoinGeckoPrices } from "@hooks/useCoingecko"
 
 const SendToken: React.FC<{
   data: ICmdMessage
 }> = ({ data }) => {
   const { handleSubmit, isLoading, txh } = useSendSubmit()
+  const { data: prices } = useCoinGeckoPrices()
   const tokenInfo = LIST_TOKEN_SEND.find(
     (item) => item.id === data.send?.tokenAddress,
   )
+  const tokenPrice = tokenInfo
+    ? Number(prices?.[tokenInfo?.coinGeckoId] || 0)
+    : 0
 
   return (
     <DisplayWrapper>
@@ -29,6 +34,7 @@ const SendToken: React.FC<{
             networkAva={solanaLogo}
             amount={data.send?.amount as string}
             tokenName={tokenInfo?.title as string}
+            usdPrice={tokenPrice}
           />
           <p className="font-semibold">to</p>
           <AddressDisplay address={data.send?.toAccountAddress as string} />

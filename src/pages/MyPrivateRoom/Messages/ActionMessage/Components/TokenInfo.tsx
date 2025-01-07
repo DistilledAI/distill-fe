@@ -7,7 +7,8 @@ const CmdTokenInfo: React.FC<{
   networkAva: string
   amount: string
   tokenName: string
-}> = ({ tokenAva, networkAva, amount, tokenName }) => {
+  usdPrice: number | string
+}> = ({ tokenAva, networkAva, amount, tokenName, usdPrice }) => {
   return (
     <div className="flex items-center gap-2">
       <div className="flex h-8 items-center gap-2 rounded-lg bg-mercury-300 px-2">
@@ -27,7 +28,13 @@ const CmdTokenInfo: React.FC<{
           {amount ? shortenNumber(toBN(amount).toNumber()) : ""} {tokenName}
         </p>
       </div>
-      {/* <p className="text-mercury-700">(${usdPrice})</p> */}
+      <p className="uppercase text-mercury-700">
+        ($
+        {shortenNumber(
+          toBN(toBN(usdPrice).multipliedBy(toBN(amount)).toFixed(6)).toNumber(),
+        )}
+        )
+      </p>
     </div>
   )
 }

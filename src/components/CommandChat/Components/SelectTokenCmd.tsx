@@ -1,4 +1,5 @@
 import { ArrowButtonFilledIcon } from "@components/Icons/Arrow"
+import { CoinGeckoId } from "@hooks/useCoingecko"
 import useOutsideClick from "@hooks/useOutSideClick"
 import {
   Button,
@@ -13,6 +14,7 @@ export interface IToken {
   id: string | number
   avatar: string
   title: string
+  coinGeckoId: CoinGeckoId
 }
 
 interface ISelectTokenCmd {
