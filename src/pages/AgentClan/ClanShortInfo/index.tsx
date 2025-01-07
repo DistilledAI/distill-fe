@@ -2,38 +2,35 @@ import { xDSTL, xpIcon } from "@assets/images"
 import { BoltIcon, TrophyIcon } from "@components/Icons"
 import useTimerProgress from "@hooks/useTimerProgress"
 import { CircularProgress, Image } from "@nextui-org/react"
-import { useQueries, useQuery, useQueryClient } from "@tanstack/react-query"
+import { useQueries, useQueryClient } from "@tanstack/react-query"
 import { formatNumberWithComma } from "@utils/index"
 import { useCallback, useRef } from "react"
-import { useParams } from "react-router-dom"
 import { QueryDataKeys } from "types/queryDataKeys"
 import LeaderboardClan from "../LeaderboardClan"
+import useGetChatId from "@pages/ChatPage/hooks/useGetChatId"
+import useAuthState from "@hooks/useAuthState"
 
 const ClanShortInfo = () => {
   const queryClient = useQueryClient()
-  const { chatId } = useParams()
   const rewardRef = useRef<any>()
-  const { data: chatIdParam } = useQuery({
-    queryKey: [`${QueryDataKeys.CHAT_ID_BY_USERNAME}-${chatId}`],
-    enabled: !!chatId,
-    staleTime: 0,
-  })
-  const groupId = chatIdParam ? chatIdParam?.toString() : ""
+  const { chatId: groupId } = useGetChatId()
+  const { isLogin } = useAuthState()
+
   const queries = useQueries<[{ data: any }, { data: any }, { data: any }]>({
     queries: [
       {
         queryKey: [QueryDataKeys.TOTAL_EXP_POINT_USER, groupId],
-        enabled: !!groupId,
+        enabled: !!groupId && isLogin,
         staleTime: 0,
       },
       {
-        queryKey: [QueryDataKeys.GROUP_DETAIL, groupId],
-        enabled: !!groupId,
+        queryKey: [`${QueryDataKeys.GROUP_DETAIL}-${groupId}`],
+        enabled: !!groupId && isLogin,
         staleTime: 0,
       },
       {
         queryKey: [QueryDataKeys.EARN_EXP_REMAINING_DAYS],
-        enabled: true,
+        enabled: isLogin,
         staleTime: 0,
       },
     ],

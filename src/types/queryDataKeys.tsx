@@ -28,4 +28,5 @@ export enum QueryDataKeys {
   IS_REFRESH_CLANS = "is_refresh_clans",
   LEAVE_GROUP_STATE = "leave_group_state",
   MESSAGE_EMOJI_REACTIONS = "message-emoji-reactions",
+  HAS_JOINED_GROUP = "has-joined-group",
 }

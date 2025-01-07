@@ -2,7 +2,7 @@ import useAuthState from "@hooks/useAuthState"
 import { UserGroup } from "@pages/ChatPage/ChatBox/LeftBar/useFetchGroups"
 import { useQuery } from "@tanstack/react-query"
 import { getGroupChatDetail } from "services/chat"
-import useGetChatId from "./useGetChatId"
+import useGetChatId from "../../hooks/useGetChatId"
 import { QueryDataKeys } from "types/queryDataKeys"
 import { useEffect } from "react"
 

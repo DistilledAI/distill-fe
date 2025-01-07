@@ -6,7 +6,7 @@ import useInviteAgent from "@hooks/useInviteAgent"
 import useReconnectWallet from "@hooks/useReconnectWallet"
 import useMessageSocket from "@pages/ChatPage/ChatBox/useMessageSocket"
 import useWindowSize from "@hooks/useWindowSize"
-import useGetChatId from "@pages/ChatPage/Mobile/ChatDetail/useGetChatId"
+import useGetChatId from "@pages/ChatPage/hooks/useGetChatId"
 
 const ConnectWalletModal = lazy(() => import("@components/ConnectWalletModal"))
 const HeaderMobile = lazy(() => import("./HeaderMobile"))
