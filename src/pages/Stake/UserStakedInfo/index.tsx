@@ -1,0 +1,91 @@
+import { maxAvatar } from "@assets/images"
+import { Popover, PopoverContent, PopoverTrigger } from "@nextui-org/react"
+
+const UserStakedInfo = () => {
+  return (
+    <div className="flex items-center justify-between rounded-[14px] border-1 border-[#A88E67] bg-brown-50 px-6 py-4">
+      <div>
+        <p className="text-14 font-medium text-mercury-700">Staked Amount</p>
+        <p className="text-24 font-semibold text-brown-600">$1,243,454</p>
+        <p className="text-14 text-brown-600">5,234,533 RACKS</p>
+      </div>
+      <div>
+        <p className="text-14 font-medium text-mercury-700">
+          Claimable Rewards
+        </p>
+        <p className="text-24 font-semibold text-brown-600">$80,454</p>
+        <Popover placement="right">
+          <PopoverTrigger>
+            <div className="inline-flex cursor-pointer items-center gap-1">
+              <div className="item-center flex">
+                <img
+                  className="h-4 w-4 rounded-full object-cover"
+                  src={maxAvatar}
+                />
+                <img
+                  className="-ml-2 h-4 w-4 rounded-full object-cover"
+                  src={maxAvatar}
+                />
+                <img
+                  className="-ml-2 h-4 w-4 rounded-full object-cover"
+                  src={maxAvatar}
+                />
+              </div>
+              <p className="text-14 text-brown-600">21 Assets</p>
+            </div>
+          </PopoverTrigger>
+          <PopoverContent>
+            <div className="w-[280px] rounded-[22px] bg-white p-4">
+              <p className="mb-3 text-14 font-medium text-mercury-700">
+                21 Assets
+              </p>
+              <div className="flex flex-col gap-1">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <img
+                      src={maxAvatar}
+                      className="h-4 w-4 rounded-full object-cover"
+                    />
+                    <p className="text-14 font-semibold text-mercury-950">
+                      1,234,544 MAX
+                    </p>
+                  </div>
+                  <p className="text-14 text-brown-500">$89,242</p>
+                </div>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <img
+                      src={maxAvatar}
+                      className="h-4 w-4 rounded-full object-cover"
+                    />
+                    <p className="text-14 font-semibold text-mercury-950">
+                      1,234,544 MAX
+                    </p>
+                  </div>
+                  <p className="text-14 text-brown-500">$89,242</p>
+                </div>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <img
+                      src={maxAvatar}
+                      className="h-4 w-4 rounded-full object-cover"
+                    />
+                    <p className="text-14 font-semibold text-mercury-950">
+                      1,234,544 MAX
+                    </p>
+                  </div>
+                  <p className="text-14 text-brown-500">$89,242</p>
+                </div>
+              </div>
+            </div>
+          </PopoverContent>
+        </Popover>
+      </div>
+      <div className="cursor-pointer font-semibold text-brown-600">
+        Claim Rewards
+      </div>
+    </div>
+  )
+}
+
+export default UserStakedInfo
