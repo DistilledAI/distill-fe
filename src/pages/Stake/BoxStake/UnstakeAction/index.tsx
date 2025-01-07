@@ -4,31 +4,76 @@ import { getInfoTokenByAddress } from "@pages/Stake/helpers"
 import useConnectPhantom from "@pages/Stake/useConnectPhantom"
 import { useSearchParams } from "react-router-dom"
 import SelectToken from "../SelectToken"
+import { Web3SolanaLockingToken } from "@pages/Stake/web3Locking"
+import { numberWithCommas, toBN } from "@utils/format"
+import { useWallet } from "@solana/wallet-adapter-react"
+import { SPL_DECIMAL } from "@pages/Stake/config"
+import React, { ChangeEvent, useState } from "react"
+import { toast } from "react-toastify"
 
-const UnStakeAction = () => {
+const web3Locking = new Web3SolanaLockingToken()
+
+const UnStakeAction: React.FC<{
+  total: number
+  fetchTotal: () => void
+}> = ({ total, fetchTotal }) => {
   const [searchParams] = useSearchParams()
   const tokenAddress = searchParams.get("token")
+  const [amountVal, setAmountVal] = useState("")
+  const [loadingSubmit, setLoadingSubmit] = useState(false)
   const { connectWallet, isConnectWallet } = useConnectPhantom()
   const tokenInfo = getInfoTokenByAddress(tokenAddress as StakeTokenAddress)
+  const wallet = useWallet()
 
   const AMOUNT_LIST = [
     {
       label: "25%",
-      value: 100 / 4,
+      value: total / 4,
     },
     {
       label: "50%",
-      value: 100 / 2,
+      value: total / 2,
     },
     {
       label: "75%",
-      value: (100 / 4) * 3,
+      value: (total / 4) * 3,
     },
     {
       label: "100%",
-      value: 100,
+      value: total,
     },
   ]
+
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value
+    if (!isNaN(parseFloat(value))) {
+      setAmountVal(value)
+    } else if (value === "") {
+      setAmountVal("")
+    }
+  }
+
+  const handleUnStake = async () => {
+    try {
+      if (loadingSubmit) return
+      setLoadingSubmit(true)
+      const amount = toBN(
+        toBN(amountVal || 0)
+          .multipliedBy(10 ** SPL_DECIMAL)
+          .toFixed(0, 1),
+      ).toNumber()
+      const res = await web3Locking.unStake(300, amount, wallet)
+      if (res) {
+        toast.success("UnStake Successfully!")
+        fetchTotal()
+        setAmountVal("")
+      }
+    } catch (error) {
+      console.error(error)
+    } finally {
+      setLoadingSubmit(false)
+    }
+  }
 
   return (
     <div className="mt-3">
@@ -41,10 +86,14 @@ const UnStakeAction = () => {
               className="w-full bg-transparent text-[24px] font-medium capitalize text-mercury-950 outline-none [appearance:textfield] placeholder:text-[#585A6B] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
               placeholder="0.0"
               required
+              value={amountVal}
+              onChange={handleInputChange}
             />
             <div className="flex items-center gap-1 text-14 font-medium text-mercury-700">
               <p>Available:</p>
-              <p>10,200,123 {tokenInfo?.tokenName}</p>
+              <p>
+                {numberWithCommas(total)} {tokenInfo?.tokenName}
+              </p>
             </div>
           </div>
           <div>
@@ -63,11 +112,15 @@ const UnStakeAction = () => {
         ))}
       </div>
       {isConnectWallet ? (
-        <div className="grid grid-cols-2 gap-3">
-          <Button className="mt-7 h-[48px] w-full rounded-full border-1 border-mercury-600 bg-mercury-100 font-semibold text-mercury-900">
+        <div className="w-full">
+          {/* <Button className="mt-7 h-[48px] w-full rounded-full border-1 border-mercury-600 bg-mercury-100 font-semibold text-mercury-900">
             QUICK UNSTAKE
-          </Button>
-          <Button className="mt-7 h-[48px] w-full rounded-full bg-mercury-950 text-white">
+          </Button> */}
+          <Button
+            isLoading={loadingSubmit}
+            onClick={handleUnStake}
+            className="mt-7 h-[48px] w-full rounded-full bg-mercury-950 text-white"
+          >
             UNSTAKE
           </Button>
         </div>

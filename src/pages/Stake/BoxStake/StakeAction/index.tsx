@@ -3,17 +3,27 @@ import { StakeTokenAddress } from "@pages/Stake"
 import { getInfoTokenByAddress } from "@pages/Stake/helpers"
 import useConnectPhantom from "@pages/Stake/useConnectPhantom"
 import useGetBalance from "@pages/Stake/useGetBalance"
-import { numberWithCommas } from "@utils/format"
-import { ChangeEvent, useState } from "react"
+import { numberWithCommas, toBN } from "@utils/format"
+import React, { ChangeEvent, useState } from "react"
 import { useSearchParams } from "react-router-dom"
 import SelectToken from "../SelectToken"
+import { Web3SolanaLockingToken } from "@pages/Stake/web3Locking"
+import { useWallet } from "@solana/wallet-adapter-react"
+import { SPL_DECIMAL } from "@pages/Stake/config"
+import { toast } from "react-toastify"
 
-const StakeAction = () => {
+const web3Locking = new Web3SolanaLockingToken()
+
+const StakeAction: React.FC<{
+  fetchTotalStaked: () => void
+}> = ({ fetchTotalStaked }) => {
   const [searchParams] = useSearchParams()
   const [amountVal, setAmountVal] = useState<string>("")
+  const [loadingSubmit, setLoadingSubmit] = useState(false)
   const tokenAddress = searchParams.get("token")
+  const wallet = useWallet()
   const { connectWallet, isConnectWallet } = useConnectPhantom()
-  const { balance, loading } = useGetBalance(tokenAddress)
+  const { balance, loading, getBalance } = useGetBalance(tokenAddress)
   const tokenInfo = getInfoTokenByAddress(tokenAddress as StakeTokenAddress)
 
   const AMOUNT_LIST = [
@@ -41,6 +51,29 @@ const StakeAction = () => {
       setAmountVal(value)
     } else if (value === "") {
       setAmountVal("")
+    }
+  }
+
+  const handleStake = async () => {
+    try {
+      if (loadingSubmit) return
+      setLoadingSubmit(true)
+      const amount = toBN(
+        toBN(amountVal || 0)
+          .multipliedBy(10 ** SPL_DECIMAL)
+          .toFixed(0, 1),
+      ).toNumber()
+      const res = await web3Locking.stake(300, amount, wallet)
+      if (res) {
+        toast.success("Staked successfully!")
+        fetchTotalStaked()
+        getBalance()
+        setAmountVal("")
+      }
+    } catch (error) {
+      console.error(error)
+    } finally {
+      setLoadingSubmit(false)
     }
   }
 
@@ -83,7 +116,11 @@ const StakeAction = () => {
         ))}
       </div>
       {isConnectWallet ? (
-        <Button className="mt-7 h-[48px] w-full rounded-full bg-mercury-950 text-white">
+        <Button
+          isLoading={loadingSubmit}
+          onClick={handleStake}
+          className="mt-7 h-[48px] w-full rounded-full bg-mercury-950 text-white"
+        >
           STAKE
         </Button>
       ) : (

@@ -28,7 +28,7 @@ const useGetBalance = (tokenAddress?: string | null) => {
     getBalance()
   }, [publicKey, tokenAddress])
 
-  return { balance, loading }
+  return { balance, loading, getBalance }
 }
 
 export default useGetBalance

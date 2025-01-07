@@ -1,20 +1,22 @@
-import { maxAvatar } from "@assets/images"
-import { Popover, PopoverContent, PopoverTrigger } from "@nextui-org/react"
+// import { maxAvatar } from "@assets/images"
+// import { Popover, PopoverContent, PopoverTrigger } from "@nextui-org/react"
+import { numberWithCommas } from "@utils/format"
 
-const UserStakedInfo = () => {
+const UserStakedInfo = ({ total }: { total: number }) => {
   return (
-    <div className="flex items-center justify-between rounded-[14px] border-1 border-[#A88E67] bg-brown-50 px-6 py-4">
+    <div className="flex flex-wrap items-center justify-between rounded-[14px] border-1 border-[#A88E67] bg-brown-50 px-6 py-4">
       <div>
         <p className="text-14 font-medium text-mercury-700">Staked Amount</p>
         <p className="text-24 font-semibold text-brown-600">$1,243,454</p>
-        <p className="text-14 text-brown-600">5,234,533 RACKS</p>
+        <p className="text-14 text-brown-600">{numberWithCommas(total)} MAX</p>
       </div>
       <div>
         <p className="text-14 font-medium text-mercury-700">
           Claimable Rewards
         </p>
-        <p className="text-24 font-semibold text-brown-600">$80,454</p>
-        <Popover placement="right">
+        <p className="text-24 font-semibold text-brown-600">$0</p>
+        <p className="text-14 text-brown-600">0 Asset</p>
+        {/* <Popover placement="right">
           <PopoverTrigger>
             <div className="inline-flex cursor-pointer items-center gap-1">
               <div className="item-center flex">
@@ -35,7 +37,7 @@ const UserStakedInfo = () => {
             </div>
           </PopoverTrigger>
           <PopoverContent>
-            <div className="w-[280px] rounded-[22px] bg-white p-4">
+            <div className="w-[280px] rounded-[22px] bg-white p-4 max-md:w-[210px] max-md:p-2">
               <p className="mb-3 text-14 font-medium text-mercury-700">
                 21 Assets
               </p>
@@ -79,9 +81,9 @@ const UserStakedInfo = () => {
               </div>
             </div>
           </PopoverContent>
-        </Popover>
+        </Popover> */}
       </div>
-      <div className="cursor-pointer font-semibold text-brown-600">
+      <div className="cursor-default font-semibold text-brown-600 opacity-65 max-md:mt-3 max-md:w-full max-md:text-center">
         Claim Rewards
       </div>
     </div>

@@ -8,9 +8,10 @@ import StakedInfo from "./StakedInfo"
 import { PoolIcon } from "@components/Icons"
 import useConnectPhantom from "./useConnectPhantom"
 import { gnrtAvatar, maxAvatar, racksAvatar } from "@assets/images"
+import useGetStakedAmount from "./useGetStakedAmount"
 
 export enum StakeTokenAddress {
-  Max = "oraim8c9d1nkfuQk9EzGYEUGxqL3MHQYndRw1huVo5h",
+  Max = "3Ff7yUkQsbMzViXu7aAxAYsgpy31wY8R8TteE39FDuw4",
   Degenerator = "oraiJP7H3LAt57DkFXNLDbLdBFNRRPvS8jg2j5AZkd9",
   BlackRack = "D7yP4ycfsRWUGYionGpi64sLF2ddZ2JXxuRAti2M7uck",
 }
@@ -45,9 +46,11 @@ export const LIST_TOKEN_STAKE = [
 const Stake = () => {
   const navigate = useNavigate()
   const { isConnectWallet } = useConnectPhantom()
+  const { total, getStakedAmount, totalStakeAll, getTotalStakeAll } =
+    useGetStakedAmount()
 
   return (
-    <div className="mx-auto max-w-[1232px] px-4">
+    <div className="mx-auto max-w-[1232px] px-4 max-md:py-[40px]">
       <div
         onClick={() => navigate(-1)}
         className="fixed left-0 top-0 z-[21] inline-flex h-[68px] cursor-pointer items-center gap-2 px-4 max-md:h-[40px]"
@@ -56,17 +59,19 @@ const Stake = () => {
         <p className="font-medium">Back</p>
       </div>
       <div>
-        <p className="text-[36px] font-semibold">Agent’s Vault</p>
+        <p className="text-[36px] font-semibold max-md:text-[22px]">
+          Agent’s Vault
+        </p>
         <p className="text-14 text-mercury-700">
           Stake your holdings today to earn revenue shares and additional
           benefits.
         </p>
       </div>
-      <div className="mt-10 flex flex-wrap gap-8">
-        <div className="w-[calc(60%-16px)]">
+      <div className="mt-10 flex flex-wrap gap-8 max-md:mt-6 max-md:flex-col-reverse">
+        <div className="w-[calc(60%-16px)] max-md:w-full">
           {isConnectWallet ? (
             <>
-              <UserStakedInfo />
+              <UserStakedInfo total={total} />
               <WithdrawAll />
               <StakeTable />
             </>
@@ -82,10 +87,18 @@ const Stake = () => {
             </div>
           )}
         </div>
-        <div className="w-[calc(40%-16px)]">
-          <p className="mb-5 text-24 font-semibold">Stake to Earn</p>
-          <BoxStake />
-          <StakedInfo />
+        <div className="w-[calc(40%-16px)] max-md:w-full">
+          <p className="mb-5 text-24 font-semibold max-md:text-20">
+            Stake to Earn
+          </p>
+          <BoxStake
+            total={total}
+            fetchTotal={() => {
+              getStakedAmount()
+              getTotalStakeAll()
+            }}
+          />
+          <StakedInfo total={totalStakeAll} />
         </div>
       </div>
     </div>

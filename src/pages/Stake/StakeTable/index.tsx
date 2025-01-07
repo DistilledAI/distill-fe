@@ -251,11 +251,11 @@ const StakeTable = () => {
   return (
     <Table
       isHeaderSticky
-      aria-label="trending agent table"
+      aria-label="stake table"
       classNames={{
         base: "mt-4 md:mt-6",
         wrapper:
-          "shadow-none border-1 border-white rounded-[22px] gap-0 bg-white md:bg-mercury-30 pb-0",
+          "shadow-none border-1 border-mercury-100 rounded-[22px] gap-0 bg-white md:bg-mercury-30 pb-0",
         thead: [
           "h-9 [&>tr]:first:shadow-none",
           "before:absolute before:bottom-0 before:w-full before:border-b-1 before:border-mercury-100",
