@@ -28,8 +28,6 @@ const useGetChatId = () => {
     queryKey: [`${QueryDataKeys.CHAT_ID_BY_USERNAME}-${chatIdParam}`],
     queryFn: getChatId,
     enabled: !!chatIdParam,
-    staleTime: 0,
-    refetchOnMount: false,
   })
 
   return { chatId, originalChatId: chatIdParam }
