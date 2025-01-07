@@ -23,7 +23,7 @@ const ChatPageMobile = () => {
   useOutsideClick(searchRef, () => setIsSearch(false))
   const { data, setQuery, query, debounceSearch } = useSearch(inputRef, false)
   const navigate = useNavigate()
-  const groupChatId = chatId ?? privateChatId
+  const groupChatId = chatId || privateChatId
 
   useEffect(() => {
     if (groupChatId && !isLogin) navigate("/")
