@@ -26,7 +26,7 @@ import { Virtuoso } from "react-virtuoso"
 import { match } from "ts-pattern"
 import { QueryDataKeys } from "types/queryDataKeys"
 import { StartNewChat } from ".."
-import useGetChatId from "../ChatDetail/useGetChatId"
+import useGetChatId from "../../hooks/useGetChatId"
 
 const ChatList = () => {
   const { user } = useAuthState()

@@ -2,27 +2,22 @@ import DotLoading from "@components/DotLoading"
 import { TrophyFilledIcon } from "@components/Icons"
 import useAuthState from "@hooks/useAuthState"
 import { useQueries, useQuery } from "@tanstack/react-query"
-import { useParams } from "react-router-dom"
 import { Virtuoso } from "react-virtuoso"
 import { getTotalExpPointGroup, getTotalExpPointUser } from "services/point"
 import { twMerge } from "tailwind-merge"
 import { QueryDataKeys } from "types/queryDataKeys"
 import RankExpCard from "./RankExpCard"
 import useRankExpList from "./useRankExpList"
+import useGetChatId from "@pages/ChatPage/hooks/useGetChatId"
 
 const RankExpList = () => {
   const { user, isAnonymous } = useAuthState()
-  const { chatId } = useParams()
   const { data: isToggleLeaderboard } = useQuery<boolean>({
     queryKey: [QueryDataKeys.TOGGLE_LEADERBOARD_CLAN],
     staleTime: 0,
   })
-  const { data: chatIdParam } = useQuery({
-    queryKey: [`${QueryDataKeys.CHAT_ID_BY_USERNAME}-${chatId}`],
-    enabled: !!chatId,
-    staleTime: 0,
-  })
-  const groupId = chatIdParam?.toString() || ""
+  const { isLogin } = useAuthState()
+  const { chatId: groupId } = useGetChatId()
   const { rankList, isLoading } = useRankExpList({
     groupId,
     isToggleLeaderboard,
@@ -32,18 +27,18 @@ const RankExpList = () => {
       {
         queryKey: [QueryDataKeys.TOTAL_EXP_POINT_GROUP, groupId],
         queryFn: async () => await getTotalExpPointGroup(Number(groupId)),
-        enabled: !!groupId,
+        enabled: !!groupId && isLogin,
         staleTime: 0,
       },
       {
         queryKey: [QueryDataKeys.TOTAL_EXP_POINT_USER, groupId],
         queryFn: async () => await getTotalExpPointUser(Number(groupId)),
-        enabled: !!groupId,
+        enabled: !!groupId && isLogin,
         staleTime: 0,
       },
       {
-        queryKey: [QueryDataKeys.GROUP_DETAIL, groupId],
-        enabled: !!groupId,
+        queryKey: [`${QueryDataKeys.GROUP_DETAIL}-${groupId}`],
+        enabled: !!groupId && isLogin,
         staleTime: 0,
       },
     ],

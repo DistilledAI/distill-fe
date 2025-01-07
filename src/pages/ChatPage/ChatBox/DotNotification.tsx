@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query"
 import { twMerge } from "tailwind-merge"
 import { QueryDataKeys } from "types/queryDataKeys"
-import useGetChatId from "../Mobile/ChatDetail/useGetChatId"
+import useGetChatId from "../hooks/useGetChatId"
 import { isHasNotification } from "./LeftBar/helpers"
 
 interface Props {

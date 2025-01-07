@@ -1,11 +1,11 @@
-import useJoinGroupLive from "@hooks/useJoinGroupLive"
+// import useJoinGroupLive from "@hooks/useJoinGroupLive"
 import AgentsConversation from "./AgentsConversation"
 import HostsBox from "./HostsBox"
 import TopicTitle from "./TopicTitle"
 import UserConversation from "./UserConversation"
 
 const Orchestration = () => {
-  useJoinGroupLive()
+  // useJoinGroupLive()
 
   return (
     <div className="grid h-full max-h-[calc(100dvh-68px)] grid-cols-3 gap-12 overflow-hidden p-4 pl-12">

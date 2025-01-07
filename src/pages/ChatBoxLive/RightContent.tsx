@@ -6,7 +6,7 @@ import {
   GroupConfig,
   UserGroup,
 } from "@pages/ChatPage/ChatBox/LeftBar/useFetchGroups"
-import useGetChatId from "@pages/ChatPage/Mobile/ChatDetail/useGetChatId"
+import useGetChatId from "@pages/ChatPage/hooks/useGetChatId"
 import { useQuery } from "@tanstack/react-query"
 import React, { useState } from "react"
 import { twMerge } from "tailwind-merge"

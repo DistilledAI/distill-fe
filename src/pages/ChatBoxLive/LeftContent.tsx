@@ -149,7 +149,7 @@ const LeftContent: React.FC<{
           <>
             <AgentSocials
               agentInfo={{
-                username: groupDetail.group.name,
+                username: groupDetail?.group?.name,
                 xLink: groupConfig?.x as string,
                 teleLink: groupConfig?.telegram as string,
                 shareLink: `${window.location.origin}${PATH_NAMES.CLAN}/${groupDetail?.group?.label}`,
