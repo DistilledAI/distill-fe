@@ -2,7 +2,7 @@ import ContextCleared from "@components/ContextCleared"
 import { ChatResumeIcon } from "@components/Icons/Chat"
 import { ChevronDownIcon } from "@components/Icons/ChevronDownIcon"
 import { Button } from "@nextui-org/react"
-import useGetChatId from "@pages/ChatPage/Mobile/ChatDetail/useGetChatId"
+import useGetChatId from "@pages/ChatPage/hooks/useGetChatId"
 import { getActiveColorRandomById } from "@utils/index"
 
 const MessageCleared = () => {

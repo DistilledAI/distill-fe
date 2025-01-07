@@ -4,7 +4,7 @@ import { FilledUserIcon } from "@components/Icons/UserIcon"
 import ReceiverMessage from "@components/ReceiverMessage"
 import SenderMessage from "@components/SenderMessage"
 import { CLEAR_CACHED_MESSAGE, RoleUser } from "@constants/index"
-import useGetChatId from "@pages/ChatPage/Mobile/ChatDetail/useGetChatId"
+import useGetChatId from "@pages/ChatPage/hooks/useGetChatId"
 import { getActiveColorRandomById } from "@utils/index"
 import { useStyleSpacing } from "providers/StyleSpacingProvider"
 import { twMerge } from "tailwind-merge"
@@ -85,7 +85,6 @@ const ChatMessages = () => {
             isOwner && `${paddingBottomStyle} relative`,
             isCustomer && "group/item pb-6",
           )}
-          key={index}
         >
           {isCustomer && (
             <>

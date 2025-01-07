@@ -1,13 +1,15 @@
-import useJoinGroupLive from "@hooks/useJoinGroupLive"
 import useWindowSize from "@hooks/useWindowSize"
 import { twMerge } from "tailwind-merge"
 import ChatLiveHeader from "./ChatLiveHeader"
 import LeftContent from "./LeftContent"
 import RightContent from "./RightContent"
+import useGroupDetail from "@pages/ChatPage/hooks/useGroupDetail"
+import useJoinGroupLive from "@hooks/useJoinGroupLive"
 
 const ChatBoxLive = () => {
-  const { groupDetail, isFetched } = useJoinGroupLive()
   const { isMobile } = useWindowSize()
+  useJoinGroupLive()
+  const { groupDetail, isFetched } = useGroupDetail()
 
   return (
     <div

@@ -1,5 +1,5 @@
 import { Button } from "@nextui-org/react"
-import useGetChatId from "@pages/ChatPage/Mobile/ChatDetail/useGetChatId"
+import useGetChatId from "@pages/ChatPage/hooks/useGetChatId"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useParams } from "react-router-dom"
 import { ICachedMessageData, chatMessagesKey } from "../useFetchMessages"
@@ -26,7 +26,7 @@ const ClearContext = () => {
 
   const mutation = useMutation({
     mutationFn: async () => {
-      await clearContextByGroupId(groupId)
+      await clearContextByGroupId(Number(groupId))
     },
     onMutate: async () => {
       queryClient.setQueryData(

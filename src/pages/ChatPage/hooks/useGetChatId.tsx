@@ -14,7 +14,7 @@ const useGetChatId = () => {
           newChatIdParam = "@maxisbuyin_"
         }
         const res = await getGroupDetailFromLabel(newChatIdParam)
-        return res?.data?.id
+        return res?.data?.id?.toString()
       }
 
       return chatIdParam
@@ -23,7 +23,8 @@ const useGetChatId = () => {
     }
   }
 
-  const { data: chatId } = useQuery({
+  const { data: chatId } = useQuery<string>({
+    initialData: "",
     queryKey: [`${QueryDataKeys.CHAT_ID_BY_USERNAME}-${chatIdParam}`],
     queryFn: getChatId,
     enabled: !!chatIdParam,

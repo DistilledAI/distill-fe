@@ -8,7 +8,7 @@ import { useNavigate, useParams } from "react-router-dom"
 import SearchResult from "../ChatBox/LeftBar/SearchContainer/Result"
 import useSearch from "../ChatBox/LeftBar/SearchContainer/useSearch"
 import ChatDetail from "./ChatDetail"
-import useGetChatId from "./ChatDetail/useGetChatId"
+import useGetChatId from "../hooks/useGetChatId"
 import ChatList from "./ChatList"
 import ChatSearch from "./ChatSearch"
 import VideoCustom from "@components/VideoCustom"
@@ -23,7 +23,7 @@ const ChatPageMobile = () => {
   useOutsideClick(searchRef, () => setIsSearch(false))
   const { data, setQuery, query, debounceSearch } = useSearch(inputRef, false)
   const navigate = useNavigate()
-  const groupChatId = chatId ?? privateChatId
+  const groupChatId = chatId || privateChatId
 
   useEffect(() => {
     if (groupChatId && !isLogin) navigate("/")

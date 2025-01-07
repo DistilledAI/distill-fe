@@ -8,7 +8,7 @@ import { useEffect, useRef } from "react"
 import { useLocation, useParams } from "react-router-dom"
 import { getVoiceToText } from "services/chat"
 import { QueryDataKeys } from "types/queryDataKeys"
-import useGetChatId from "../Mobile/ChatDetail/useGetChatId"
+import useGetChatId from "../hooks/useGetChatId"
 import { IMessageBox, RoleChat } from "./ChatMessages/helpers"
 import {
   ICachedMessageData,

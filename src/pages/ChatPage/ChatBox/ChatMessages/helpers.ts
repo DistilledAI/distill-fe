@@ -1,5 +1,4 @@
 import { CLEAR_CACHED_MESSAGE, RoleUser } from "@constants/index"
-import { TypeGroup } from "../LeftBar/useFetchGroups"
 import { IMessage, IReactionMsg, IReactionMsgStats } from "./useFetchMessages"
 import { EMOJI_REACTIONS } from "@pages/AgentDetail/AgentBehaviors/constants"
 
@@ -16,7 +15,6 @@ export interface IMessageBox {
   avatar?: string
   isTyping?: boolean
   index?: number
-  typeGroup?: TypeGroup
   createdAt: string
   publicAddress?: string
   isChatCleared?: boolean
@@ -95,7 +93,6 @@ export const convertDataFetchToMessage = (
         : mess.messages,
       avatar: mess.user?.avatar,
       roleOwner: mess.user.role,
-      typeGroup: mess.group.typeGroup,
       createdAt: mess.createdAt,
       publicAddress: mess.user?.publicAddress,
       isChatCleared: false,

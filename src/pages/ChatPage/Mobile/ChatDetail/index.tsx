@@ -11,7 +11,7 @@ import { useParams } from "react-router-dom"
 import SpeechRecognition from "react-speech-recognition"
 import { QueryDataKeys } from "types/queryDataKeys"
 import ChatDetailHeader from "./Header"
-import useGetChatId from "./useGetChatId"
+import useGetChatId from "../../hooks/useGetChatId"
 
 const ChatDetail = () => {
   const reCaptchaRef = useRef<any>()

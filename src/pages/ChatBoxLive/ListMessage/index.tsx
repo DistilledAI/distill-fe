@@ -23,6 +23,7 @@ const ListMessage: React.FC<{
   const renderMessage = useCallback(
     (index: number, message: IMessageBox) => {
       const isLastMessage = index === messages.length - 1
+
       return (
         <div
           className={twMerge(
@@ -60,6 +61,7 @@ const ListMessage: React.FC<{
         isClan && "md:max-h-[calc(100%-130px)]",
       )}
       scrollBottomClassName="max-md:!bottom-[200px] max-md:bg-none"
+      increaseViewportBy={500}
     />
   )
 }
