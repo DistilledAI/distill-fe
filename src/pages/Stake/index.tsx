@@ -2,6 +2,7 @@ import { ArrowLeftFilledIcon } from "@components/Icons/Arrow"
 import { useNavigate } from "react-router-dom"
 import UserStakedInfo from "./UserStakedInfo"
 import WithdrawAll from "./WithdrawAll"
+import StakeTable from "./StakeTable"
 
 const Stake = () => {
   const navigate = useNavigate()
@@ -26,6 +27,7 @@ const Stake = () => {
         <div className="w-[calc(60%-12px)]">
           <UserStakedInfo />
           <WithdrawAll />
+          <StakeTable />
         </div>
         <div className="h-5 w-[calc(40%-12px)] bg-green-500"></div>
       </div>

@@ -190,6 +190,46 @@ export const IconTrendingDown: FunctionComponent<{
   )
 }
 
+export const UnTrendingIcon: FunctionComponent<{
+  size?: number
+  color?: string
+}> = ({ size = 14, color = "#676767" }) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 14 14"
+      fill="none"
+    >
+      <path
+        d="M9.91797 6.41658L12.2513 4.08325"
+        stroke={color}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M1.16797 10.4999L4.08464 7.58301L6.41797 9.91634L8.16797 8.16634"
+        stroke={color}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M8.16797 4.08325H12.2513V8.16659"
+        stroke={color}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M1.75 1.75L12.25 12.25"
+        stroke={color}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}
+
 export const BgOverbought: FunctionComponent<{
   width?: number
   height?: number
@@ -560,7 +600,7 @@ export const IconSearch: FunctionComponent<{
   )
 }
 
-export const IconNoneFeedback: FunctionComponent<{}> = () => {
+export const IconNoneFeedback = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -586,7 +626,7 @@ export const IconNoneFeedback: FunctionComponent<{}> = () => {
   )
 }
 
-export const IconGaveFeedback: FunctionComponent<{}> = () => {
+export const IconGaveFeedback = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -607,7 +647,7 @@ export const IconGaveFeedback: FunctionComponent<{}> = () => {
   )
 }
 
-export const IconUnLiked: FunctionComponent<{}> = () => {
+export const IconUnLiked = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -633,7 +673,7 @@ export const IconUnLiked: FunctionComponent<{}> = () => {
   )
 }
 
-export const IconLiked: FunctionComponent<{}> = () => {
+export const IconLiked = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

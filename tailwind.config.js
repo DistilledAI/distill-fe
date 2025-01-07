@@ -65,6 +65,9 @@ export default {
           10: "#34C759",
           500: "#2CB34E",
         },
+        orange: {
+          600: "#F78500",
+        },
         primary: "#363636",
         code: {
           agent: {
