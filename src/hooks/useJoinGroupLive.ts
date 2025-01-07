@@ -1,42 +1,29 @@
-import useFetchGroups, {
-  UserGroup,
-} from "@pages/ChatPage/ChatBox/LeftBar/useFetchGroups"
+import useFetchGroups from "@pages/ChatPage/ChatBox/LeftBar/useFetchGroups"
 import { IUser, loginSuccessByAnonymous } from "@reducers/userSlice"
-import { useEffect, useState } from "react"
+import { useEffect, useLayoutEffect } from "react"
 import { postCreateAnonymous } from "services/auth"
-import { getGroupChatDetail, inviteUserJoinGroup } from "services/chat"
 import { useAppDispatch } from "./useAppRedux"
 import useAuthState from "./useAuthState"
-import useGetChatId from "@pages/ChatPage/Mobile/ChatDetail/useGetChatId"
+import { inviteUserJoinGroup } from "services/chat"
+import useGetChatId from "@pages/ChatPage/hooks/useGetChatId"
+import { useQuery, useQueryClient } from "@tanstack/react-query"
+import { QueryDataKeys } from "types/queryDataKeys"
 
 const useJoinGroupLive = () => {
-  const { chatId: groupId } = useGetChatId()
-  const { isLogin, user } = useAuthState()
   const dispatch = useAppDispatch()
+  const { chatId: groupId, originalChatId } = useGetChatId()
+  const { isLogin, user } = useAuthState()
   const { fetchGroups } = useFetchGroups()
-  const [groupDetail, setGroupDetail] = useState<UserGroup | null>(null)
-  const [isFetched, setIsFetched] = useState<boolean>(false)
-  const [hasJoined, setHasJoined] = useState<boolean>(false)
+  const queryClient = useQueryClient()
+  const { data: hasJoinedGroup } = useQuery<boolean>({
+    initialData: true,
+    queryKey: [QueryDataKeys.HAS_JOINED_GROUP],
+  })
 
-  useEffect(() => {
-    if (groupId) setHasJoined(false)
-  }, [groupId])
-
-  const getGroupDetail = async () => {
-    try {
-      setIsFetched(false)
-      const params =
-        groupId && groupId?.toString().includes("@")
-          ? { filter: `{"label":"${groupId}"}` }
-          : { filter: `{"groupId":${groupId}}` }
-      const res = await getGroupChatDetail(params)
-      setGroupDetail(res?.data)
-    } catch (e) {
-      console.log({ e })
-    } finally {
-      setIsFetched(true)
-    }
-  }
+  useLayoutEffect(() => {
+    if (originalChatId)
+      queryClient.setQueryData([QueryDataKeys.HAS_JOINED_GROUP], () => false)
+  }, [originalChatId])
 
   const joinGroupLive = async (user: IUser, accessToken: string = "") => {
     const payload = { groupId: Number(groupId), member: [user?.id] }
@@ -46,10 +33,7 @@ const useJoinGroupLive = () => {
 
     const res = await inviteUserJoinGroup(payload, headers)
     if (res?.data) {
-      if (!accessToken) {
-        await getGroupDetail()
-        await fetchGroups()
-      }
+      queryClient.setQueryData([QueryDataKeys.HAS_JOINED_GROUP], () => true)
       return true
     }
     return false
@@ -72,24 +56,27 @@ const useJoinGroupLive = () => {
               expiry,
             }),
           )
+          queryClient.setQueryData([QueryDataKeys.HAS_JOINED_GROUP], () => true)
           await fetchGroups()
-          setHasJoined(true) // Mark as joined after successful login
         }, 10)
       }
     }
   }
 
   useEffect(() => {
-    if (groupId && !hasJoined) {
-      if (!isLogin) {
-        anonymousJoinGroupLive()
-      } else if (isLogin && !hasJoined) {
-        joinGroupLive(user)
-      }
+    if (groupId && !isLogin) {
+      anonymousJoinGroupLive()
     }
-  }, [groupId, isLogin, user, hasJoined])
+  }, [groupId, isLogin])
 
-  return { groupDetail, isFetched }
+  useEffect(() => {
+    if (isLogin && !hasJoinedGroup && groupId) {
+      joinGroupLive(user)
+      fetchGroups()
+    }
+  }, [isLogin, user?.id, hasJoinedGroup, groupId])
+
+  return
 }
 
 export default useJoinGroupLive

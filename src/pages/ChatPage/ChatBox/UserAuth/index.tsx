@@ -9,7 +9,7 @@ import { PATH_NAMES, RoleUser } from "@constants/index"
 import { useAppSelector } from "@hooks/useAppRedux"
 import useAuthState from "@hooks/useAuthState"
 import { Button } from "@nextui-org/react"
-import useFetchDetail from "@pages/ChatPage/Mobile/ChatDetail/useFetch"
+import useGroupDetail from "@pages/ChatPage/hooks/useGroupDetail"
 import { getActiveColorRandomById } from "@utils/index"
 import { useNavigate } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
@@ -21,11 +21,11 @@ interface UserAuthProps {
 const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
   const { user } = useAuthState()
   const navigate = useNavigate()
-  const { groupDetail, chatId } = useFetchDetail()
+  const { groupDetail, groupId } = useGroupDetail()
   const myAgent = useAppSelector((state) => state.agents.myAgent)
   const hasBot = !!myAgent
 
-  const { textColor } = getActiveColorRandomById(chatId)
+  const { textColor } = getActiveColorRandomById(groupId)
   const isHiddenMyData = !hasBot
   const isShowInfo =
     user && user.publicAddress && user.role !== RoleUser.ANONYMOUS

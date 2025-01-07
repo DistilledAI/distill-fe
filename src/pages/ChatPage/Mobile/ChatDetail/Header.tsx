@@ -1,15 +1,15 @@
 import { ArrowLeftFilledIcon } from "@components/Icons/Arrow"
 import { Button } from "@nextui-org/react"
 import { useNavigate } from "react-router-dom"
-import useFetchDetail from "./useFetch"
 import DelegatePrivateAgent from "@pages/ChatPage/ChatBox/ChatMessages/ChatActions/DelegatePrivateAgent"
 import ChatInfoCurrent from "@components/ChatInfoCurrent"
 import { getActiveColorRandomById } from "@utils/index"
+import useGroupDetail from "@pages/ChatPage/hooks/useGroupDetail"
 
 const ChatDetailHeader = () => {
   const navigate = useNavigate()
-  const { groupDetail, chatId } = useFetchDetail()
-  const { textColor } = getActiveColorRandomById(chatId)
+  const { groupDetail, groupId } = useGroupDetail()
+  const { textColor } = getActiveColorRandomById(groupId)
 
   return (
     <div className="fixed left-0 top-0 z-[1] flex h-[55px] w-full items-center justify-between bg-white px-3">
