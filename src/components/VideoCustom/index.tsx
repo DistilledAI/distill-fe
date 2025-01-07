@@ -5,7 +5,7 @@ import {
   VolumeIcon,
   VolumeOffIcon,
 } from "@components/Icons/Voice"
-import React, { useRef, useState, useEffect } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { twMerge } from "tailwind-merge"
 
 interface Props {
