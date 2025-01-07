@@ -1,10 +1,12 @@
 import { introPrivateAgentVideo } from "@assets/video"
 import DotLoading from "@components/DotLoading"
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
-import { MessageFilledIcon } from "@components/Icons/Message"
+import { DistilledAIIcon } from "@components/Icons/DistilledAIIcon"
+import { AgentDotLandIcon } from "@components/Icons/FilledSquareCircleIcon"
 import VideoCustom from "@components/VideoCustom"
 import { PATH_NAMES } from "@constants/index"
 import useAuthState from "@hooks/useAuthState"
+import useWindowSize from "@hooks/useWindowSize"
 import { Button } from "@nextui-org/react"
 import { useNavigate } from "react-router-dom"
 import MainContainerCreate from "./MainContainerCreate"
@@ -25,7 +27,7 @@ const CreatePrivateAgent: React.FC<{
   onCallBack?: any
 }> = ({ connectWalletLoading, connectWallet }) => {
   const { isLogin, isAnonymous } = useAuthState()
-  // const { isMobile } = useWindowSize()
+  const { isMobile } = useWindowSize()
   const navigate = useNavigate()
 
   const handleCreateAgent = () => {
@@ -48,6 +50,23 @@ const CreatePrivateAgent: React.FC<{
             </div>
           </div>
         )}
+
+        {!isMobile && (
+          <div className="left-0 mb-6 w-full">
+            <Button
+              className="btn-primary z-10 min-h-[60px] !border-mercury-70 !bg-mercury-30"
+              onPress={() => window.open("https://distilled.ai/", "_blank")}
+            >
+              <div>
+                <DistilledAIIcon />
+              </div>
+              <span className={"text-[16px] text-mercury-900"}>
+                About Distilled AI
+              </span>
+            </Button>
+          </div>
+        )}
+
         <div className="flex gap-2 max-md:flex-col md:gap-6">
           <VideoCustom
             videoSrc={introPrivateAgentVideo}
@@ -59,13 +78,16 @@ const CreatePrivateAgent: React.FC<{
             isPlayIcon
             isFullScreenIcon
           />
-          <div className="flex w-full flex-1 flex-col items-center rounded-[22px] border border-mercury-70 bg-mercury-30 p-4 md:p-6">
+          <div className="relative flex w-full flex-1 flex-col items-center rounded-[22px] border border-mercury-70 bg-mercury-30 p-4 md:p-6">
+            <div className="absolute left-6 top-3">
+              <span className="text-[40px] font-bold text-mercury-200">1</span>
+            </div>
             <div className="flex items-center gap-2 md:flex-col">
               <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#FC0] md:h-10 md:w-10">
                 <FilledBrainAIIcon color="#363636" size={24} />
               </div>
               <h3 className="my-2 text-20 font-semibold text-mercury-950 md:text-24">
-                Start your own Private agent
+                Create your Agent
               </h3>
             </div>
             <h4 className="text-center text-14 text-mercury-800 md:text-16">
@@ -82,26 +104,44 @@ const CreatePrivateAgent: React.FC<{
           </div>
         </div>
 
-        <div className="mt-2 flex w-full flex-col items-center rounded-[22px] border border-mercury-70 bg-mercury-30 p-6 max-md:mb-4 md:mt-6">
+        <div className="relative mt-2 flex w-full flex-col items-center rounded-[22px] border border-mercury-70 bg-mercury-30 p-6 max-md:mb-4 md:mt-6">
+          <div className="absolute left-6 top-3">
+            <span className="text-[40px] font-bold text-mercury-200">2</span>
+          </div>
           <div className="flex items-center gap-2 md:flex-col">
-            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-mercury-200 md:h-10 md:w-10">
-              <MessageFilledIcon />
+            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#FF7A5A] md:h-10 md:w-10">
+              <AgentDotLandIcon />
             </div>
             <h3 className="my-2 text-20 font-semibold text-mercury-950 md:text-24">
-              Start a new chat
+              Launch your Agent
             </h3>
           </div>
           <h4 className="text-14 text-mercury-800 max-md:text-center md:text-16">
-            Explore the <span className="font-bold">Marketplace</span> to chat
-            with a public agent, interact with an AI Companion and more
+            Take your agent to the promised land
           </h4>
           <Button
-            className="mt-4 h-[56px] w-full rounded-full bg-mercury-100 text-[18px] text-mercury-950 md:mt-6"
-            onPress={() => navigate(PATH_NAMES.MARKETPLACE)}
+            className="mt-4 h-[56px] w-full rounded-full bg-mercury-950 text-[18px] text-white md:mt-6"
+            onPress={() => window.open("https://agents.land/", "_blank")}
           >
-            Go to Marketplace
+            Go to Agents.land
           </Button>
         </div>
+
+        {isMobile && (
+          <div className="left-0 w-full">
+            <Button
+              className="btn-primary z-10 min-h-[60px] w-full !border-mercury-70 !bg-mercury-30"
+              onPress={() => window.open("https://distilled.ai/", "_blank")}
+            >
+              <div>
+                <DistilledAIIcon />
+              </div>
+              <span className={"text-[16px] text-mercury-900"}>
+                About Distilled AI
+              </span>
+            </Button>
+          </div>
+        )}
       </div>
     </MainContainerCreate>
   )

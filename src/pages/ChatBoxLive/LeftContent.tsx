@@ -2,6 +2,7 @@ import { bgBtcPrediction, bitmaxAva, btcIconRote } from "@assets/images"
 import { solanaCircleIcon } from "@assets/svg"
 import AudioClanCustom from "@components/AudioClanCustom"
 import BetModal from "@components/BetModal"
+import { AgentDotLandIcon } from "@components/Icons/FilledSquareCircleIcon"
 import VideoCustom from "@components/VideoCustom"
 import { PATH_NAMES } from "@constants/index"
 import { Image, Skeleton, useDisclosure } from "@nextui-org/react"
@@ -61,12 +62,24 @@ const LeftContent: React.FC<{
   return (
     <div
       className={twMerge(
-        "flex w-full max-w-full flex-col overflow-y-auto transition-all duration-300 ease-linear scrollbar-hide max-md:px-4 lg:max-w-[320px]",
+        "relative flex w-full max-w-full flex-col overflow-y-auto transition-all duration-300 ease-linear scrollbar-hide max-md:px-4 lg:max-w-[320px]",
         isExpandLiveChat && "hidden",
         isCloseChatLive && "h-[calc(100%-230px)]",
       )}
     >
-      <div className="flex h-full flex-col md:h-fit">
+      {groupConfig?.tradeLink && !groupConfig?.isPrediction && (
+        <div
+          className="absolute right-0 top-0 z-50 flex cursor-pointer items-center gap-1 rounded-full border border-[#FC9880] bg-[#FF7A5A] px-3 py-[6px]"
+          onClick={() => window.open("https://agents.land/", "_blank")}
+        >
+          <AgentDotLandIcon color="#363636" />
+          <span className="text-base-14 font-semibold text-mercury-950">
+            Agents.land
+          </span>
+        </div>
+      )}
+
+      <div className="mt-5 flex h-full flex-col md:h-fit">
         {!isFetched || groupDetail === null ? (
           <Skeleton className="h-[300px] rounded-[32px] md:h-[400px]"></Skeleton>
         ) : groupConfig?.videoLive ? (

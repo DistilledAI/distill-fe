@@ -19,10 +19,10 @@ const AnalyticsInfoWrap: React.FC = () => {
         target="_blank"
         className="flex items-center gap-1"
       >
-        <ChartBarIcon />
+        <ChartBarIcon color="#7B7B7B" />
         <span
           className={twMerge(
-            "whitespace-nowrap text-base text-mercury-900 hover:underline",
+            "text-base-14 whitespace-nowrap text-mercury-700 hover:underline",
             sidebarCollapsed && "hidden",
           )}
         >
@@ -35,14 +35,14 @@ const AnalyticsInfoWrap: React.FC = () => {
         className="flex items-center gap-1"
       >
         <TwitterIcon size={20} color="#545454" />
-        <span
+        {/* <span
           className={twMerge(
             "whitespace-nowrap text-base text-mercury-900 hover:underline",
             sidebarCollapsed && "hidden",
           )}
         >
           Twitter
-        </span>
+        </span> */}
       </Link>
     </div>
   )
