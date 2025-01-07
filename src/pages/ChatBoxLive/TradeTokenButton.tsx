@@ -12,7 +12,7 @@ const TradeTokenButton: React.FC<{
       as={Link}
       to={tradeLink}
       target="blank"
-      className="h-11 w-fit rounded-full bg-orange-500 text-white max-md:min-w-[60px] md:w-full"
+      className="h-11 w-fit rounded-full border border-mercury-900 bg-mercury-950 text-white max-md:min-w-[60px] md:w-full"
     >
       <div className="max-md:hidden">
         <ArrowsSort color="#FFFF" />

@@ -1,20 +1,21 @@
 import { ScrollShadow } from "@nextui-org/react"
 import React from "react"
 import Markdown from "react-markdown"
+import { Link } from "react-router-dom"
 
 const AgentDescription: React.FC<{
   description?: string
 }> = ({ description }) => {
   const renderers = {
     a: ({ href, children }: any) => (
-      <a
-        href={href}
+      <Link
+        to={href}
         target="_blank"
         rel="noopener noreferrer"
-        className="font-bold text-[#E7833B] hover:underline"
+        className="bg-lgd-code-hot-ramp bg-clip-text text-14 font-semibold text-transparent hover:underline"
       >
         {children}
-      </a>
+      </Link>
     ),
     p: ({ children }: any) => {
       return <p className="text-14 font-medium text-mercury-600">{children}</p>
