@@ -122,7 +122,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
       )}
       style={style}
     >
-      {isLoading && <MessagesSkeleton />}
+      {!isFetched && <MessagesSkeleton />}
       {!isLoading && messages.length ? (
         <Virtuoso
           ref={virtuosoRef}
