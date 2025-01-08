@@ -19,6 +19,7 @@ export const PATH_NAMES = {
   REWARDS: "/rewards",
   TRENDING: "/trending",
   ORCHESTRATION: "/orchestration",
+  STAKING: "/staking",
 }
 
 export const MIX_PANEL_TRACK_EVENT = {
