@@ -105,6 +105,8 @@ export default {
           "linear-gradient(90deg, rgba(181, 141, 90, 0.10) 0%, rgba(162, 132, 94, 0.00) 100%)",
         "lgd-muted-beige-2":
           "linear-gradient(90deg, rgba(135, 135, 135, 0.10) 0%, rgba(128, 128, 128, 0.00) 100%)",
+        "lgd-golden-glow":
+          "linear-gradient(90deg, #F9EEA7 0%, #B99649 17%, #EADDB0 58.5%, #95743F 100%)",
       },
       boxShadow: {
         1: "0px 0px 20px 0px rgba(0, 0, 0, 0.01)",
