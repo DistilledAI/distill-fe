@@ -7,6 +7,7 @@ import SocialButton from "./SocialButton"
 export interface AgentSocialsProps {
   agentInfo:
     | {
+        avatar?: string
         username?: string
         xLink?: string
         teleLink?: string
