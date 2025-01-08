@@ -112,30 +112,30 @@ export const PoolIcon = () => {
       <path
         d="M8.86328 14.863C12.177 14.863 14.8633 12.1767 14.8633 8.86304C14.8633 5.54933 12.177 2.86304 8.86328 2.86304C5.54957 2.86304 2.86328 5.54933 2.86328 8.86304C2.86328 12.1767 5.54957 14.863 8.86328 14.863Z"
         stroke="#7B7B7B"
-        stroke-width="1.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
       <path
         d="M18.9531 11.2336C19.8984 11.5861 20.7396 12.1712 21.3989 12.9348C22.0581 13.6985 22.5142 14.6161 22.7249 15.6027C22.9355 16.5893 22.894 17.6132 22.6042 18.5795C22.3143 19.5458 21.7855 20.4235 21.0666 21.1313C20.3476 21.839 19.4618 22.3541 18.4911 22.6289C17.5204 22.9036 16.496 22.9291 15.5128 22.7031C14.5296 22.4771 13.6192 22.0067 12.866 21.3356C12.1127 20.6645 11.5408 19.8143 11.2031 18.8636"
         stroke="#7B7B7B"
-        stroke-width="1.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
       <path
         d="M7.86328 6.86304H8.86328V10.863"
         stroke="#7B7B7B"
-        stroke-width="1.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
       <path
         d="M17.5731 14.7432L18.2731 15.4532L15.4531 18.2732"
         stroke="#7B7B7B"
-        stroke-width="1.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   )

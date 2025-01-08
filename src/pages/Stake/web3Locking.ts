@@ -170,10 +170,6 @@ export class Web3SolanaLockingToken {
       })
       anchor.setProvider(provider)
       provider = anchor.getProvider()
-      if (!provider.connection || !wallet.publicKey) {
-        console.log("Warning: Wallet not connected")
-        return
-      }
       const program = new Program(
         vaultInterface,
         provider,
