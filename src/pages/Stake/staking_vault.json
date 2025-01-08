@@ -949,6 +949,10 @@
             "type": "pubkey"
           },
           {
+            "name": "stake_currency_mint",
+            "type": "pubkey"
+          },
+          {
             "name": "claimed",
             "type": "bool"
           }

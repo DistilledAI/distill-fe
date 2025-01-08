@@ -61,6 +61,12 @@ const UnStakeAction: React.FC<{
       if (!amountVal || amountVal === "0") {
         return toast.warning("Please enter amount!")
       }
+      if (Number(amountVal) <= 0) {
+        return toast.warning("Amount must large 0!")
+      }
+      if (Number(amountVal) > total) {
+        return toast.warning(`Max: ${total}!`)
+      }
       if (loadingSubmit) return
       setLoadingSubmit(true)
       const amount = toBN(

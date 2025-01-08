@@ -1424,6 +1424,10 @@ export type FungStakingVault = {
             type: "pubkey"
           },
           {
+            name: "stakeCurrencyMint"
+            type: "pubkey"
+          },
+          {
             name: "claimed"
             type: "bool"
           },

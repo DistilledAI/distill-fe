@@ -410,12 +410,18 @@ export class Web3SolanaLockingToken {
           commitment: "confirmed",
           filters: [
             {
-              dataSize: 65,
+              dataSize: 97,
             },
             {
               memcmp: {
                 offset: 32, // number of bytes
                 bytes: wallet.publicKey.toBase58(), // base58 encoded string
+              },
+            },
+            {
+              memcmp: {
+                offset: 64, // number of bytes
+                bytes: new PublicKey(stakeCurrencyMint).toBase58(), // base58 encoded string
               },
             },
           ],
