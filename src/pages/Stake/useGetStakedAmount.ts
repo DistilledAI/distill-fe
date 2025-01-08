@@ -15,6 +15,10 @@ const useGetStakedAmount = () => {
   const tokenAddress = searchParams.get("token")
 
   const getStakedAmount = async () => {
+    if (!wallet.publicKey) {
+      setTotal(0)
+      return
+    }
     if (!tokenAddress) return
     const info = await web3Locking.getStakerInfo(wallet, tokenAddress)
     setTotal(

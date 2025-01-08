@@ -10,9 +10,18 @@ const useConnectPhantom = () => {
     await wallet.connect()
   }
 
+  const disconnectWallet = async () => {
+    try {
+      await wallet.disconnect()
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   return {
     isConnectWallet,
     connectWallet,
+    disconnectWallet,
     address: wallet.publicKey?.toBase58() || "",
   }
 }
