@@ -11,7 +11,11 @@ const useGetBalance = (tokenAddress?: string | null) => {
   const address = publicKey?.toBase58() || ""
 
   const getBalance = async () => {
-    if (!publicKey || !tokenAddress) return
+    if (!publicKey) {
+      setBalance(0)
+      return
+    }
+    if (!tokenAddress) return
     try {
       setLoading(true)
       const tokenBal = await web3Solana.getTokenBalance(address, tokenAddress)
