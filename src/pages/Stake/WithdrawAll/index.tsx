@@ -9,7 +9,7 @@ const WithdrawAll = () => {
           30-day unstaking period no fee.
         </span>{" "}
         You may withdraw at any time, but your tokens will become available
-        again only after this duration
+        again only after this duration.
       </div>
       {/* <Button className="h-8 rounded-full bg-mercury-950 text-14 font-medium text-white max-md:mt-3">
         WITHDRAW ALL
