@@ -7,7 +7,12 @@ import StakeTable from "./StakeTable"
 import StakedInfo from "./StakedInfo"
 import { PoolIcon } from "@components/Icons"
 import useConnectPhantom from "./useConnectPhantom"
-import { gnrtAvatar, maxAvatar, racksAvatar } from "@assets/images"
+import {
+  blackrackAvartar2,
+  gnrtAvatar,
+  maxAvatar,
+  racksAvatar,
+} from "@assets/images"
 import useGetStakedAmount from "./useGetStakedAmount"
 import { CoinGeckoId } from "@hooks/useCoingecko"
 import { useEffect } from "react"
@@ -49,6 +54,7 @@ export const LIST_TOKEN_STAKE = [
     decimals: 6,
     tokenName: "RACKS",
     avatar: racksAvatar,
+    avatar2: blackrackAvartar2,
     coinGeckoId: CoinGeckoId["blackrack"],
   },
 ]

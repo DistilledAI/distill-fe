@@ -1,10 +1,10 @@
 import { xDSTL, xpIcon } from "@assets/images"
 import { BoltIcon, TrophyIcon } from "@components/Icons"
-import useTimerProgress from "@hooks/useTimerProgress"
-import { CircularProgress, Image } from "@nextui-org/react"
+// import useTimerProgress from "@hooks/useTimerProgress"
+import { Image } from "@nextui-org/react"
 import { useQueries, useQueryClient } from "@tanstack/react-query"
 import { formatNumberWithComma } from "@utils/index"
-import { useCallback, useRef } from "react"
+import { useRef } from "react"
 import { QueryDataKeys } from "types/queryDataKeys"
 import LeaderboardClan from "../LeaderboardClan"
 import useGetChatId from "@pages/ChatPage/hooks/useGetChatId"
@@ -46,23 +46,23 @@ const ClanShortInfo = () => {
     )
   }
 
-  const handleRefetchXpPoint = useCallback(
-    (e?: any) => {
-      e?.preventDefault()
-      e?.stopPropagation()
-      queryClient.invalidateQueries({
-        queryKey: [QueryDataKeys.TOTAL_EXP_POINT_USER, groupId],
-      })
-      setTimerProgress(0)
-    },
-    [groupId],
-  )
+  // const handleRefetchXpPoint = useCallback(
+  //   (e?: any) => {
+  //     e?.preventDefault()
+  //     e?.stopPropagation()
+  //     queryClient.invalidateQueries({
+  //       queryKey: [QueryDataKeys.TOTAL_EXP_POINT_USER, groupId],
+  //     })
+  //     setTimerProgress(0)
+  //   },
+  //   [groupId],
+  // )
 
-  const { timerProgress, setTimerProgress } = useTimerProgress(
-    60000,
-    true,
-    handleRefetchXpPoint,
-  )
+  // const { timerProgress, setTimerProgress } = useTimerProgress(
+  //   60000,
+  //   true,
+  //   handleRefetchXpPoint,
+  // )
 
   return (
     <>
@@ -100,7 +100,7 @@ const ClanShortInfo = () => {
                 Your EXP
               </span>
               <div className="flex items-center gap-2">
-                <button
+                {/* <button
                   type="button"
                   className="max-md:hidden"
                   onClick={handleRefetchXpPoint}
@@ -116,7 +116,7 @@ const ClanShortInfo = () => {
                     }}
                     strokeWidth={4}
                   />
-                </button>
+                </button> */}
                 <div className="flex cursor-pointer items-center gap-3">
                   <div className="flex items-center gap-1 max-md:hidden">
                     <div>
