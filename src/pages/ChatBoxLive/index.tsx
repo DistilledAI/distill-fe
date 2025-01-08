@@ -1,10 +1,12 @@
 import useWindowSize from "@hooks/useWindowSize"
 import { twMerge } from "tailwind-merge"
-import ChatLiveHeader from "./ChatLiveHeader"
 import LeftContent from "./LeftContent"
 import RightContent from "./RightContent"
 import useGroupDetail from "@pages/ChatPage/hooks/useGroupDetail"
 import useJoinGroupLive from "@hooks/useJoinGroupLive"
+import { lazy } from "react"
+
+const ChatLiveHeader = lazy(() => import("./ChatLiveHeader"))
 
 const ChatBoxLive = () => {
   const { isMobile } = useWindowSize()
@@ -17,7 +19,7 @@ const ChatBoxLive = () => {
         "relative mx-auto h-[calc(100dvh-50px)] max-w-[1232px] bg-mercury-30 max-md:overflow-hidden md:z-[22] md:h-[calc(100dvh-68px)] md:bg-white md:px-6",
       )}
     >
-      {isMobile ? <ChatLiveHeader groupDetail={groupDetail} /> : <></>}
+      {isMobile ? <ChatLiveHeader groupDetail={groupDetail} /> : null}
 
       <div className="flex h-full gap-2 pb-4 max-lg:flex-col md:gap-5">
         <LeftContent groupDetail={groupDetail} isFetched={isFetched} />
