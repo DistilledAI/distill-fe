@@ -12,7 +12,7 @@ import {
 } from "@pages/ChatPage/ChatBox/LeftBar/useFetchGroups"
 import { useQueries, useQueryClient } from "@tanstack/react-query"
 import React, { useEffect, useState } from "react"
-import { Link, useSearchParams } from "react-router-dom"
+import { useSearchParams } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
 import { QueryDataKeys } from "types/queryDataKeys"
 import AgentDescription from "./AgentDescription"
@@ -20,8 +20,8 @@ import AgentSocials from "./AgentSocials"
 import ContractDisplay from "./ContractDisplay"
 import SkeletonInfo, { SkeletonDesc } from "./SkeletonInfo"
 import TradeTokenButton from "./TradeTokenButton"
-import { getInfoTokenByAddress } from "@pages/Stake/helpers"
 import { StakeTokenAddress } from "@pages/Stake"
+import VaultButton from "./VaultButton"
 
 const LeftContent: React.FC<{
   groupDetail: UserGroup | null
@@ -60,29 +60,6 @@ const LeftContent: React.FC<{
   const isMuted = !!agentLiveVolume.data
   const isCloseChatLive = !!closeLiveChat.data
   const isExpandLiveChat = !!expandLiveChat.data
-
-  const renderVaultButton = (address: StakeTokenAddress | null) => {
-    const tokenInfo = getInfoTokenByAddress(address)
-    if (!tokenInfo) return null
-
-    return (
-      <Link
-        to={`${PATH_NAMES.STAKING}?token=${tokenInfo?.address}`}
-        className="absolute bottom-2 left-3 right-3 z-10 flex cursor-pointer items-center justify-between rounded-full bg-[rgba(52,54,54,0.7)] p-2 backdrop-blur-[10px]"
-      >
-        <div className="flex h-14 w-full items-center gap-4 rounded-full bg-no-repeat">
-          <img
-            src={tokenInfo?.avatar}
-            alt="avatar agent"
-            className="h-8 w-8 rounded-full"
-          />
-          <span className="text-16 font-bold text-white">
-            {tokenInfo?.label}'s Vault
-          </span>
-        </div>
-      </Link>
-    )
-  }
 
   return (
     <div
@@ -151,12 +128,17 @@ const LeftContent: React.FC<{
                   className="flex h-[50px] items-center gap-2 rounded-full px-3"
                 >
                   <div className="relative">
-                    <Image className="h-8 w-8 rounded-full" src={bitmaxAva} />
+                    <Image
+                      className="h-8 w-8 rounded-full"
+                      src={bitmaxAva}
+                      loading="lazy"
+                    />
                     <Image
                       classNames={{
                         wrapper: "w-4 h-4 absolute bottom-[-2px] right-[-2px]",
                       }}
                       src={btcIconRote}
+                      loading="lazy"
                     />
                   </div>
                   <p className="whitespace-nowrap font-extrabold italic text-white">
@@ -169,9 +151,10 @@ const LeftContent: React.FC<{
         ) : (
           <div className="relative">
             <ImageLive groupConfig={groupConfig} />
-            {renderVaultButton(
-              groupConfig?.contractAddress as StakeTokenAddress,
-            )}
+            <VaultButton
+              key={groupConfig?.contractAddress}
+              address={groupConfig?.contractAddress as StakeTokenAddress}
+            />
           </div>
         )}
 
