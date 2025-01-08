@@ -1,12 +1,15 @@
 import { Suspense, lazy } from "react"
 import { Route, Routes } from "react-router-dom"
-import MainLayout from "@components/Layout/MainLayout"
-import MainLayoutDesktop from "@components/Layout/MainLayoutDesktop"
-import ProtectedByAuth from "@components/Layout/ProtectedByAuth"
 import useWindowSize from "@hooks/useWindowSize"
 import { PATH_NAMES } from "@constants/index"
-import PageNotFound from "@pages/NotFound"
 import LoadingFallback from "@components/LoadingFallback"
+
+const MainLayout = lazy(() => import("@components/Layout/MainLayout"))
+const MainLayoutDesktop = lazy(
+  () => import("@components/Layout/MainLayoutDesktop"),
+)
+const ProtectedByAuth = lazy(() => import("@components/Layout/ProtectedByAuth"))
+const PageNotFound = lazy(() => import("@pages/NotFound"))
 
 const ChatDetailLoadingPage = lazy(() => import("@components/LoadingMobile"))
 const Account = lazy(() => import("@pages/Account"))
