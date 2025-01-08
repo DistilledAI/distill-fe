@@ -13,7 +13,11 @@ const useConnectPhantom = () => {
     })
   }
 
-  return { isConnectWallet, connectWallet }
+  return {
+    isConnectWallet,
+    connectWallet,
+    address: wallet.publicKey?.toBase58() || "",
+  }
 }
 
 export default useConnectPhantom

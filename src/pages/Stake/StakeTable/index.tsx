@@ -38,7 +38,7 @@ const columns = [
   },
   {
     key: ColumnKey.Duration,
-    label: "Unlock date",
+    label: "Date to Withdraw",
     sortable: false,
   },
   {
@@ -61,7 +61,6 @@ const StakeTable: React.FC<{
   //   column: ColumnKey.Amount,
   //   direction: "descending",
   // })
-  console.log({ list })
 
   const renderState = (state: string) => {
     switch (state) {
@@ -77,7 +76,7 @@ const StakeTable: React.FC<{
           <div className="flex items-center gap-1">
             <HourglassHighIcon />
             <span className="text-14 font-medium text-orange-600">
-              Unbonding
+              Unstaking
             </span>
           </div>
         )

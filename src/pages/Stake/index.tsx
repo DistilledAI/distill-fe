@@ -13,11 +13,12 @@ import { CoinGeckoId } from "@hooks/useCoingecko"
 import { useEffect } from "react"
 import { PATH_NAMES } from "@constants/index"
 import useGetUnbondingList from "./StakeTable/useGetUnbondingList"
+import { getInfoTokenByAddress } from "./helpers"
 
 export const SOLANA_ENV = import.meta.env.VITE_APP_SOLANA_ENV || "mainnet-beta"
 
 export enum StakeTokenAddress {
-  Max = "oraim8c9d1nkfuQk9EzGYEUGxqL3MHQYndRw1huVo5h",
+  Max = "3Ff7yUkQsbMzViXu7aAxAYsgpy31wY8R8TteE39FDuw4",
   Degenerator = "oraiJP7H3LAt57DkFXNLDbLdBFNRRPvS8jg2j5AZkd9",
   BlackRack = "D7yP4ycfsRWUGYionGpi64sLF2ddZ2JXxuRAti2M7uck",
 }
@@ -64,6 +65,7 @@ const Stake = () => {
     if (!tokenAddress)
       navigate(`${PATH_NAMES.STAKING}?token=${StakeTokenAddress.Max}`)
   }, [])
+  const tokenInfo = getInfoTokenByAddress(tokenAddress as StakeTokenAddress)
 
   return (
     <div className="mx-auto max-w-[1232px] px-4 max-md:py-[40px]">
@@ -76,7 +78,7 @@ const Stake = () => {
       </div>
       <div>
         <p className="text-[36px] font-semibold max-md:text-[22px]">
-          Agent’s Vault
+          {tokenInfo?.tokenName} Vault
         </p>
         <p className="text-14 text-mercury-700">
           Stake your holdings today to earn revenue shares and additional

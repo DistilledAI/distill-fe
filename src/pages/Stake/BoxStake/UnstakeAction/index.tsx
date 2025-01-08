@@ -117,6 +117,7 @@ const UnStakeAction: React.FC<{
         {AMOUNT_LIST.map((percent) => (
           <div
             key={percent.label}
+            onClick={() => setAmountVal(percent.value.toString())}
             className="cursor-pointer rounded-[4px] border-1 border-mercury-300 bg-mercury-100 px-2 py-1 text-12 font-medium text-mercury-900 hover:opacity-80"
           >
             {percent.label}

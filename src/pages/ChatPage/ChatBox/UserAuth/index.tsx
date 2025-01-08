@@ -11,8 +11,9 @@ import useAuthState from "@hooks/useAuthState"
 import { Button } from "@nextui-org/react"
 import useGroupDetail from "@pages/ChatPage/hooks/useGroupDetail"
 import { getActiveColorRandomById } from "@utils/index"
-import { useNavigate } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
+import LoginPhantom from "./LoginPhantom"
 
 interface UserAuthProps {
   connectWallet: any
@@ -21,6 +22,7 @@ interface UserAuthProps {
 const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
   const { user } = useAuthState()
   const navigate = useNavigate()
+  const { pathname } = useLocation()
   const { groupDetail, groupId } = useGroupDetail()
   const myAgent = useAppSelector((state) => state.agents.myAgent)
   const hasBot = !!myAgent
@@ -30,6 +32,10 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
   const isShowInfo =
     user && user.publicAddress && user.role !== RoleUser.ANONYMOUS
   const totalxDstlPoint = user?.xDstlPoint || 0
+
+  const isStakePage = pathname.startsWith(PATH_NAMES.STAKING)
+
+  if (isStakePage) return <LoginPhantom />
 
   return (
     <div className="flex items-center justify-between">
