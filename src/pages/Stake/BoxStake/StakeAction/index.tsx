@@ -9,7 +9,7 @@ import { useSearchParams } from "react-router-dom"
 import SelectToken from "../SelectToken"
 import { Web3SolanaLockingToken } from "@pages/Stake/web3Locking"
 import { useWallet } from "@solana/wallet-adapter-react"
-import { SPL_DECIMAL } from "@pages/Stake/config"
+import { ALL_CONFIGS, SPL_DECIMAL } from "@pages/Stake/config"
 import { toast } from "react-toastify"
 
 const web3Locking = new Web3SolanaLockingToken()
@@ -56,14 +56,25 @@ const StakeAction: React.FC<{
 
   const handleStake = async () => {
     try {
+      if (!tokenAddress) {
+        return toast.warning("Token address not found!")
+      }
+      if (!amountVal || amountVal === "0") {
+        return toast.warning("Please enter amount!")
+      }
       if (loadingSubmit) return
       setLoadingSubmit(true)
       const amount = toBN(
-        toBN(amountVal || 0)
+        toBN(amountVal)
           .multipliedBy(10 ** SPL_DECIMAL)
           .toFixed(0, 1),
       ).toNumber()
-      const res = await web3Locking.stake(300, amount, wallet)
+      const res = await web3Locking.stake(
+        ALL_CONFIGS.DURATION_STAKE,
+        amount,
+        wallet,
+        tokenAddress,
+      )
       if (res) {
         toast.success("Staked successfully!")
         fetchTotalStaked()
@@ -72,6 +83,7 @@ const StakeAction: React.FC<{
       }
     } catch (error) {
       console.error(error)
+      toast.error(JSON.stringify(error))
     } finally {
       setLoadingSubmit(false)
     }

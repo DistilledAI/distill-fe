@@ -1,8 +1,8 @@
 import {
-  ALL_CONFIGS,
   STAKER_INFO_SEED,
   STAKING_VAULT_SEED,
   STAKING_UNBONDING_INFO_SEED,
+  ALL_CONFIGS,
 } from "./config"
 import * as anchor from "@coral-xyz/anchor"
 import { BN, Program } from "@coral-xyz/anchor"
@@ -21,7 +21,7 @@ import { SOLANA_RPC, SOLANA_WS } from "program/utils/web3Utils.ts"
 export const vaultProgramId = new PublicKey(idl.address)
 export const vaultInterface = JSON.parse(JSON.stringify(idl))
 
-const stakeCurrencyMint = ALL_CONFIGS.STAKE_CURRENCY_MINT
+// const stakeCurrencyMint = ALL_CONFIGS.STAKE_CURRENCY_MINT
 
 export class Web3SolanaLockingToken {
   constructor(
@@ -35,6 +35,7 @@ export class Web3SolanaLockingToken {
     unbondingPeriod: number,
     amount: number,
     wallet: WalletContextState,
+    stakeCurrencyMint: string,
   ) {
     let provider
     try {
@@ -62,7 +63,7 @@ export class Web3SolanaLockingToken {
         .stake(new BN(unbondingPeriod), new BN(amount))
         .accounts({
           signer: wallet.publicKey,
-          stakeCurrencyMint: stakeCurrencyMint,
+          stakeCurrencyMint,
         })
 
         .instruction()
@@ -113,7 +114,7 @@ export class Web3SolanaLockingToken {
     }
   }
 
-  async getStakerInfo(wallet: WalletContextState) {
+  async getStakerInfo(wallet: WalletContextState, stakeCurrencyMint: string) {
     let provider
     try {
       provider = new anchor.AnchorProvider(this.connection, wallet as any, {
@@ -134,7 +135,7 @@ export class Web3SolanaLockingToken {
         [
           Buffer.from(STAKING_VAULT_SEED),
           new PublicKey(stakeCurrencyMint).toBytes(),
-          new BN(300).toBuffer("le", 8), // FIXME
+          new BN(ALL_CONFIGS.DURATION_STAKE).toBuffer("le", 8),
         ],
         program.programId,
       )
@@ -161,14 +162,14 @@ export class Web3SolanaLockingToken {
     }
   }
 
-  async getVaultInfo() {
+  async getVaultInfo(stakeCurrencyMint: string) {
     try {
       const program = new Program(vaultInterface) as Program<FungStakingVault>
       const [vaultPda] = PublicKey.findProgramAddressSync(
         [
           Buffer.from(STAKING_VAULT_SEED),
           new PublicKey(stakeCurrencyMint).toBytes(),
-          new BN(300).toBuffer("le", 8), // FIXME
+          new BN(ALL_CONFIGS.DURATION_STAKE).toBuffer("le", 8),
         ],
         program.programId,
       )
@@ -265,6 +266,7 @@ export class Web3SolanaLockingToken {
     unbondingPeriod: number,
     amount: number,
     wallet: WalletContextState,
+    stakeCurrencyMint: string,
   ) {
     let provider
     try {
@@ -320,8 +322,158 @@ export class Web3SolanaLockingToken {
         .destake(new BN(unbondingPeriod), new BN(amount))
         .accounts({
           signer: wallet.publicKey,
-          stakeCurrencyMint: stakeCurrencyMint,
+          stakeCurrencyMint,
           unbondingInfoPda,
+        })
+        .instruction()
+
+      transaction.add(unStakeIx)
+      transaction.add(cpIx, cuIx)
+      transaction.feePayer = wallet.publicKey
+      transaction.recentBlockhash = (
+        await provider.connection.getLatestBlockhash()
+      ).blockhash
+
+      if (wallet.signTransaction) {
+        const signedTx = await wallet.signTransaction(transaction)
+        const sTx = signedTx.serialize()
+        const signature = await provider.connection.sendRawTransaction(sTx, {
+          preflightCommitment: "confirmed",
+          skipPreflight: false,
+        })
+        const blockhash = await provider.connection.getLatestBlockhash()
+
+        const res = await provider.connection.confirmTransaction(
+          {
+            signature,
+            blockhash: blockhash.blockhash,
+            lastValidBlockHeight: blockhash.lastValidBlockHeight,
+          },
+          "confirmed", // FIXME: trick lord confirmed / finalized;
+        )
+
+        console.log("Successfully unlocking token.\n Signature: ", signature)
+        return res
+      }
+    } catch (error: any) {
+      console.log("Error in locking token transaction", error, error.error)
+
+      if (!provider) {
+        return
+      }
+      const { transaction = "", result } =
+        (await handleTransaction({
+          error,
+          connection: provider.connection,
+        })) || {}
+
+      if (result?.value?.confirmationStatus) {
+        console.log("----confirm----", { transaction, result })
+        return { transaction, result }
+      }
+    }
+  }
+
+  async getUnbondingList(
+    wallet: WalletContextState,
+    stakeCurrencyMint: string,
+  ) {
+    let provider
+    try {
+      provider = new anchor.AnchorProvider(this.connection, wallet as any, {
+        preflightCommitment: "confirmed",
+      })
+      anchor.setProvider(provider)
+      provider = anchor.getProvider()
+      if (!provider.connection || !wallet.publicKey) {
+        console.log("Warning: Wallet not connected")
+        return
+      }
+      const program = new Program(
+        vaultInterface,
+        provider,
+      ) as Program<FungStakingVault>
+
+      const unbondings = await this.connection.getParsedProgramAccounts(
+        program.programId,
+        {
+          commitment: "confirmed",
+          filters: [
+            {
+              dataSize: 65,
+            },
+            {
+              memcmp: {
+                offset: 32, // number of bytes
+                bytes: wallet.publicKey.toBase58(), // base58 encoded string
+              },
+            },
+          ],
+        },
+      )
+
+      const unbondingInfo: {
+        id: number
+        amount: number
+        unstakedAtTime: number
+        stakeCurrencyMint: string
+      }[] = []
+
+      for (const unbonding of unbondings) {
+        const stakeData = program.coder.accounts.decode<
+          anchor.IdlAccounts<FungStakingVault>["unbondingInfo"]
+        >("unbondingInfo", unbonding.account.data as Buffer)
+
+        if (!stakeData.claimed) {
+          unbondingInfo.push({
+            id: stakeData.id.toNumber(),
+            amount: stakeData.amount.toNumber(),
+            unstakedAtTime: stakeData.unstakedAtTime.toNumber(),
+            stakeCurrencyMint,
+          })
+        }
+      }
+
+      return unbondingInfo
+    } catch (error) {
+      console.error(error)
+      return []
+    }
+  }
+
+  async withdraw(
+    id: number,
+    unbondingPeriod: number,
+    wallet: WalletContextState,
+    stakeCurrencyMint: string,
+  ) {
+    let provider
+    try {
+      provider = new anchor.AnchorProvider(this.connection, wallet as any, {
+        preflightCommitment: "confirmed",
+      })
+      anchor.setProvider(provider)
+      provider = anchor.getProvider()
+      if (!provider.connection || !wallet.publicKey) {
+        console.log("Warning: Wallet not connected")
+        return
+      }
+      const program = new Program(
+        vaultInterface,
+        provider,
+      ) as Program<FungStakingVault>
+
+      const transaction = new Transaction()
+      const cpIx = ComputeBudgetProgram.setComputeUnitPrice({
+        microLamports: 1_000_000,
+      })
+      const cuIx = ComputeBudgetProgram.setComputeUnitLimit({ units: 200_000 })
+
+      const unStakeIx = await program.methods
+        .claimDeStake(new BN(id), new BN(unbondingPeriod))
+        .accounts({
+          signer: wallet.publicKey,
+          stakeCurrencyMint,
         })
         .instruction()
 

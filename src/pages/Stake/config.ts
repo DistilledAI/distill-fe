@@ -104,6 +104,7 @@ export const CONFIGS: Record<
     LOCK_FUNGIBLE_STAKE: number
     STAKE_SOFT_CAP: number
     STAKING_PROGRAM_ID: string
+    DURATION_STAKE: number
   }
 > = {
   // localnet keys are in cli/local-scripts/
@@ -125,6 +126,7 @@ export const CONFIGS: Record<
       HOUR: 24,
       DAY_TO_SECONDS: 24 * 60 * 60,
     },
+    DURATION_STAKE: 300,
     SHOW_DECIMALS_PRICE: 9,
     OFFICIAL_TIME: 1735059600000,
     LOCK_FUNGIBLE_STAKE: 300,
@@ -149,6 +151,7 @@ export const CONFIGS: Record<
       HOUR: 24,
       DAY_TO_SECONDS: 24 * 60 * 60,
     },
+    DURATION_STAKE: 300,
     SHOW_DECIMALS_PRICE: 9,
     OFFICIAL_TIME: 1735059600000,
     LOCK_FUNGIBLE_STAKE: 300,
@@ -173,6 +176,7 @@ export const CONFIGS: Record<
       HOUR: 24,
       DAY_TO_SECONDS: 24 * 60 * 60,
     },
+    DURATION_STAKE: 300,
     SHOW_DECIMALS_PRICE: 9,
     OFFICIAL_TIME: 1735059600000,
     LOCK_FUNGIBLE_STAKE: 14 * 86400,
@@ -197,6 +201,7 @@ export const CONFIGS: Record<
       HOUR: 24,
       DAY_TO_SECONDS: 5 * 60,
     },
+    DURATION_STAKE: 300,
     SHOW_DECIMALS_PRICE: 12,
     OFFICIAL_TIME: 1735059600000,
     LOCK_FUNGIBLE_STAKE: 86400 * 14,

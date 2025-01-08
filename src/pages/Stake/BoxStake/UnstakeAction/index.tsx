@@ -7,7 +7,7 @@ import SelectToken from "../SelectToken"
 import { Web3SolanaLockingToken } from "@pages/Stake/web3Locking"
 import { numberWithCommas, toBN } from "@utils/format"
 import { useWallet } from "@solana/wallet-adapter-react"
-import { SPL_DECIMAL } from "@pages/Stake/config"
+import { ALL_CONFIGS, SPL_DECIMAL } from "@pages/Stake/config"
 import React, { ChangeEvent, useState } from "react"
 import { toast } from "react-toastify"
 
@@ -55,14 +55,25 @@ const UnStakeAction: React.FC<{
 
   const handleUnStake = async () => {
     try {
+      if (!tokenAddress) {
+        return toast.warning("Token address not found!")
+      }
+      if (!amountVal || amountVal === "0") {
+        return toast.warning("Please enter amount!")
+      }
       if (loadingSubmit) return
       setLoadingSubmit(true)
       const amount = toBN(
-        toBN(amountVal || 0)
+        toBN(amountVal)
           .multipliedBy(10 ** SPL_DECIMAL)
           .toFixed(0, 1),
       ).toNumber()
-      const res = await web3Locking.unStake(300, amount, wallet)
+      const res = await web3Locking.unStake(
+        ALL_CONFIGS.DURATION_STAKE,
+        amount,
+        wallet,
+        tokenAddress,
+      )
       if (res) {
         toast.success("UnStake Successfully!")
         fetchTotal()
@@ -70,6 +81,7 @@ const UnStakeAction: React.FC<{
       }
     } catch (error) {
       console.error(error)
+      toast.error(JSON.stringify(error))
     } finally {
       setLoadingSubmit(false)
     }

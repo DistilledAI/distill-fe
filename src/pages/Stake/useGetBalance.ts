@@ -15,10 +15,10 @@ const useGetBalance = (tokenAddress?: string | null) => {
     try {
       setLoading(true)
       const tokenBal = await web3Solana.getTokenBalance(address, tokenAddress)
-
       setBalance(tokenBal ? tokenBal : 0)
       setLoading(false)
     } catch (error) {
+      setBalance(0)
       console.log("error", error)
       setLoading(false)
     }

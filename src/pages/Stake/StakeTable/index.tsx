@@ -1,10 +1,7 @@
-import { maxAvatar } from "@assets/images"
-import AvatarCustom from "@components/AvatarCustom"
 import { IconTrendingUp, UnTrendingIcon } from "@components/Icons/DefiLens"
 import { HourglassHighIcon } from "@components/Icons/Hour"
 import {
   Button,
-  SortDescriptor,
   Table,
   TableBody,
   TableCell,
@@ -12,9 +9,14 @@ import {
   TableHeader,
   TableRow,
 } from "@nextui-org/react"
-import { numberWithCommas } from "@utils/format"
-import { useState } from "react"
+import { numberWithCommas, toBN } from "@utils/format"
 import { twMerge } from "tailwind-merge"
+import { getInfoTokenByAddress } from "../helpers"
+import { StakeTokenAddress } from ".."
+import { SPL_DECIMAL } from "../config"
+import moment from "moment"
+import ItemWithdraw from "./ItemWithdraw"
+import React from "react"
 
 enum ColumnKey {
   Amount = "amount",
@@ -36,7 +38,7 @@ const columns = [
   },
   {
     key: ColumnKey.Duration,
-    label: "Duration",
+    label: "Unlock date",
     sortable: false,
   },
   {
@@ -46,35 +48,20 @@ const columns = [
   },
 ]
 
-const items = [
-  {
-    id: 1,
-    avatar: maxAvatar,
-    amount: 11110257,
-    state: "staking",
-    duration: "24 days left",
-  },
-  {
-    id: 2,
-    avatar: maxAvatar,
-    amount: 11110257,
-    state: "unbonding",
-    duration: "24 days left",
-  },
-  {
-    id: 3,
-    avatar: maxAvatar,
-    amount: 11110257,
-    state: "unstaked",
-    duration: "24 days left",
-  },
-]
-
-const StakeTable = () => {
-  const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({
-    column: ColumnKey.Amount,
-    direction: "descending",
-  })
+const StakeTable: React.FC<{
+  list: {
+    id: number
+    amount: number
+    unstakedAtTime: number
+    stakeCurrencyMint: string
+  }[]
+  getListUnbonding: () => void
+}> = ({ list, getListUnbonding }) => {
+  // const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({
+  //   column: ColumnKey.Amount,
+  //   direction: "descending",
+  // })
+  console.log({ list })
 
   const renderState = (state: string) => {
     switch (state) {
@@ -108,7 +95,7 @@ const StakeTable = () => {
     }
   }
 
-  const renderAction = (state: string) => {
+  const renderAction = (state: string, id: number, isWithdraw: boolean) => {
     switch (state) {
       case "staking":
         return (
@@ -124,9 +111,11 @@ const StakeTable = () => {
         )
       case "unstaked":
         return (
-          <Button className="h-6 rounded-full bg-mercury-950 text-[14px] font-medium text-white">
-            WITHDRAW
-          </Button>
+          <ItemWithdraw
+            id={id}
+            isWithdraw={isWithdraw}
+            callback={getListUnbonding}
+          />
         )
       default:
         return null
@@ -134,33 +123,42 @@ const StakeTable = () => {
   }
 
   const renderCell = (item: Record<string, any>, columnKey: string) => {
+    const tokenInfo = getInfoTokenByAddress(
+      item.stakeCurrencyMint as StakeTokenAddress,
+    )
+    const totalAmount = toBN(item.amount)
+      .div(10 ** SPL_DECIMAL)
+      .toNumber()
+
+    const duration = moment(item.unstakedAtTime * 1000).format("lll")
+    const isCanWithdraw = Date.now() >= item.unstakedAtTime * 1000
+
     switch (columnKey) {
       case ColumnKey.Amount:
         return (
           <div className="flex items-center gap-2">
-            <AvatarCustom
-              className="h-5 w-5 rounded-full border-transparent"
-              src={item?.avatar}
-              publicAddress={item?.publicAddress}
+            <img
+              className="h-5 w-5 rounded-full object-cover"
+              src={tokenInfo?.avatar}
             />
             <span className="text-16 font-bold text-mercury-900">
-              {numberWithCommas(item?.amount)}
+              {numberWithCommas(totalAmount)}
             </span>
           </div>
         )
 
       case ColumnKey.State:
-        return renderState(item?.state)
+        return renderState(isCanWithdraw ? "unstaked" : "unbonding")
 
       case ColumnKey.Duration:
         return (
           <span className="text-14 font-medium text-mercury-900">
-            {item?.duration || "-"}
+            {duration || "-"}
           </span>
         )
 
       case ColumnKey.Action:
-        return renderAction(item.state)
+        return renderAction("unstaked", item.id, isCanWithdraw)
 
       default:
         return null
@@ -261,13 +259,13 @@ const StakeTable = () => {
           "before:absolute before:bottom-0 before:w-full before:border-b-1 before:border-mercury-100",
         ].join(" "),
         th: "bg-transparent h-5 p-0 pr-4 text-base font-normal text-mercury-600",
-        td: "pl-0 pr-3 py-6",
+        td: "pl-0 pr-3 py-4",
         tbody: "[&>tr:first-child>td]:pt-4",
         emptyWrapper: "h-10",
         sortIcon: "ml-1 text-[#363636]",
       }}
-      sortDescriptor={sortDescriptor}
-      onSortChange={setSortDescriptor}
+      // sortDescriptor={sortDescriptor}
+      // onSortChange={setSortDescriptor}
       // bottomContent={renderPagination()}
       bottomContentPlacement="outside"
     >
@@ -277,7 +275,7 @@ const StakeTable = () => {
             className={twMerge(
               // thClassName(column.key),
               "data-[hover=true]:text-[#363636]",
-              sortDescriptor.column === column.key && "text-[#363636]",
+              // sortDescriptor.column === column.key && "text-[#363636]",
             )}
             key={column.key}
             allowsSorting={column.sortable}
@@ -287,7 +285,7 @@ const StakeTable = () => {
         )}
       </TableHeader>
       <TableBody
-        items={items}
+        items={list}
         emptyContent={<span className="text-base text-mercury-600">Empty</span>}
       >
         {(item) => (

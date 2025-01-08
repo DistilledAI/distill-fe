@@ -1,14 +1,31 @@
 // import { maxAvatar } from "@assets/images"
 // import { Popover, PopoverContent, PopoverTrigger } from "@nextui-org/react"
-import { numberWithCommas } from "@utils/format"
+import { useCoinGeckoPrices } from "@hooks/useCoingecko"
+import { numberWithCommas, toBN } from "@utils/format"
+import { useSearchParams } from "react-router-dom"
+import { getInfoTokenByAddress } from "../helpers"
+import { StakeTokenAddress } from ".."
 
 const UserStakedInfo = ({ total }: { total: number }) => {
+  const { data: prices } = useCoinGeckoPrices()
+  const [searchParams] = useSearchParams()
+  const tokenAddress = searchParams.get("token")
+  const tokenInfo = getInfoTokenByAddress(tokenAddress as StakeTokenAddress)
+  const tokenPrice = tokenInfo?.coinGeckoId
+    ? Number(prices?.[tokenInfo.coinGeckoId] || 0)
+    : 0
+  const totalPriceUsd = toBN(tokenPrice * toBN(total).toNumber()).toNumber()
+
   return (
     <div className="flex flex-wrap items-center justify-between rounded-[14px] border-1 border-[#A88E67] bg-brown-50 px-6 py-4">
       <div>
         <p className="text-14 font-medium text-mercury-700">Staked Amount</p>
-        <p className="text-24 font-semibold text-brown-600">$1,243,454</p>
-        <p className="text-14 text-brown-600">{numberWithCommas(total)} MAX</p>
+        <p className="text-24 font-semibold text-brown-600">
+          {totalPriceUsd === 0 ? "--" : `$${numberWithCommas(totalPriceUsd)}`}
+        </p>
+        <p className="text-14 text-brown-600">
+          {numberWithCommas(total)} {tokenInfo?.tokenName}
+        </p>
       </div>
       <div>
         <p className="text-14 font-medium text-mercury-700">

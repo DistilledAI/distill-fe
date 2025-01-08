@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux"
 export enum CoinGeckoId {
   solana = "solana",
   "max-2" = "max-2",
+  "blackrack" = "blackrack",
 }
 export const CONFIG_TOKEN_PRICE_CGK = Object.values(CoinGeckoId)
 

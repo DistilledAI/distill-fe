@@ -1,5 +1,5 @@
 import { ArrowLeftFilledIcon } from "@components/Icons/Arrow"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useSearchParams } from "react-router-dom"
 import UserStakedInfo from "./UserStakedInfo"
 import WithdrawAll from "./WithdrawAll"
 import BoxStake from "./BoxStake"
@@ -9,9 +9,15 @@ import { PoolIcon } from "@components/Icons"
 import useConnectPhantom from "./useConnectPhantom"
 import { gnrtAvatar, maxAvatar, racksAvatar } from "@assets/images"
 import useGetStakedAmount from "./useGetStakedAmount"
+import { CoinGeckoId } from "@hooks/useCoingecko"
+import { useEffect } from "react"
+import { PATH_NAMES } from "@constants/index"
+import useGetUnbondingList from "./StakeTable/useGetUnbondingList"
+
+export const SOLANA_ENV = import.meta.env.VITE_APP_SOLANA_ENV || "mainnet-beta"
 
 export enum StakeTokenAddress {
-  Max = "3Ff7yUkQsbMzViXu7aAxAYsgpy31wY8R8TteE39FDuw4",
+  Max = "oraim8c9d1nkfuQk9EzGYEUGxqL3MHQYndRw1huVo5h",
   Degenerator = "oraiJP7H3LAt57DkFXNLDbLdBFNRRPvS8jg2j5AZkd9",
   BlackRack = "D7yP4ycfsRWUGYionGpi64sLF2ddZ2JXxuRAti2M7uck",
 }
@@ -24,6 +30,7 @@ export const LIST_TOKEN_STAKE = [
     decimals: 6,
     tokenName: "MAX",
     avatar: maxAvatar,
+    coinGeckoId: CoinGeckoId["max-2"],
   },
   {
     id: 2,
@@ -32,6 +39,7 @@ export const LIST_TOKEN_STAKE = [
     decimals: 6,
     tokenName: "GNRT",
     avatar: gnrtAvatar,
+    coinGeckoId: null,
   },
   {
     id: 3,
@@ -40,14 +48,22 @@ export const LIST_TOKEN_STAKE = [
     decimals: 6,
     tokenName: "RACKS",
     avatar: racksAvatar,
+    coinGeckoId: CoinGeckoId["blackrack"],
   },
 ]
 
 const Stake = () => {
+  const [searchParams] = useSearchParams()
+  const tokenAddress = searchParams.get("token")
   const navigate = useNavigate()
   const { isConnectWallet } = useConnectPhantom()
   const { total, getStakedAmount, totalStakeAll, getTotalStakeAll } =
     useGetStakedAmount()
+  const { list, getListUnbonding } = useGetUnbondingList()
+  useEffect(() => {
+    if (!tokenAddress)
+      navigate(`${PATH_NAMES.STAKING}?token=${StakeTokenAddress.Max}`)
+  }, [])
 
   return (
     <div className="mx-auto max-w-[1232px] px-4 max-md:py-[40px]">
@@ -73,7 +89,7 @@ const Stake = () => {
             <>
               <UserStakedInfo total={total} />
               <WithdrawAll />
-              <StakeTable />
+              <StakeTable list={list} getListUnbonding={getListUnbonding} />
             </>
           ) : (
             <div className="flex h-[200px] flex-col items-center justify-center rounded-[22px] border-1 border-dashed border-mercury-400 bg-mercury-70">
@@ -96,6 +112,7 @@ const Stake = () => {
             fetchTotal={() => {
               getStakedAmount()
               getTotalStakeAll()
+              getListUnbonding()
             }}
           />
           <StakedInfo total={totalStakeAll} />
