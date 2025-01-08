@@ -18,7 +18,7 @@ import { getInfoTokenByAddress } from "./helpers"
 export const SOLANA_ENV = import.meta.env.VITE_APP_SOLANA_ENV || "mainnet-beta"
 
 export enum StakeTokenAddress {
-  Max = "3Ff7yUkQsbMzViXu7aAxAYsgpy31wY8R8TteE39FDuw4",
+  Max = "oraim8c9d1nkfuQk9EzGYEUGxqL3MHQYndRw1huVo5h",
   Degenerator = "oraiJP7H3LAt57DkFXNLDbLdBFNRRPvS8jg2j5AZkd9",
   BlackRack = "D7yP4ycfsRWUGYionGpi64sLF2ddZ2JXxuRAti2M7uck",
 }
