@@ -68,10 +68,10 @@ const Stake = () => {
   const tokenInfo = getInfoTokenByAddress(tokenAddress as StakeTokenAddress)
 
   return (
-    <div className="mx-auto max-w-[1232px] px-4 max-md:py-[40px]">
+    <div className="mx-auto max-w-[1232px] px-4 max-md:py-[60px]">
       <div
         onClick={() => navigate(-1)}
-        className="fixed left-0 top-0 z-[21] inline-flex h-[68px] cursor-pointer items-center gap-2 px-4 max-md:h-[40px]"
+        className="fixed left-0 top-0 z-[21] inline-flex h-[50px] cursor-pointer items-center gap-2 px-4 max-md:h-[40px] max-md:w-full max-md:bg-white"
       >
         <ArrowLeftFilledIcon color="#545454" />
         <p className="font-medium">Back</p>
