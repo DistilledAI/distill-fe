@@ -162,9 +162,22 @@ export class Web3SolanaLockingToken {
     }
   }
 
-  async getVaultInfo(stakeCurrencyMint: string) {
+  async getVaultInfo(stakeCurrencyMint: string, wallet: WalletContextState) {
     try {
-      const program = new Program(vaultInterface) as Program<FungStakingVault>
+      let provider
+      provider = new anchor.AnchorProvider(this.connection, wallet as any, {
+        preflightCommitment: "confirmed",
+      })
+      anchor.setProvider(provider)
+      provider = anchor.getProvider()
+      if (!provider.connection || !wallet.publicKey) {
+        console.log("Warning: Wallet not connected")
+        return
+      }
+      const program = new Program(
+        vaultInterface,
+        provider,
+      ) as Program<FungStakingVault>
       const [vaultPda] = PublicKey.findProgramAddressSync(
         [
           Buffer.from(STAKING_VAULT_SEED),
@@ -180,9 +193,6 @@ export class Web3SolanaLockingToken {
       }
     } catch (error) {
       console.error(error)
-      return {
-        totalStaked: 0,
-      }
     }
   }
 

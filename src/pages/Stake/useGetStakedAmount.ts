@@ -26,12 +26,13 @@ const useGetStakedAmount = () => {
 
   const getTotalStakeAll = async () => {
     if (!tokenAddress) return
-    const res = await web3Locking.getVaultInfo(tokenAddress)
-    setTotalStakeAll(
-      toBN(res.totalStaked as any)
-        .div(10 ** SPL_DECIMAL)
-        .toNumber(),
-    )
+    const res = await web3Locking.getVaultInfo(tokenAddress, wallet)
+    if (res?.totalStaked)
+      setTotalStakeAll(
+        toBN(res.totalStaked as any)
+          .div(10 ** SPL_DECIMAL)
+          .toNumber(),
+      )
   }
 
   useEffect(() => {
