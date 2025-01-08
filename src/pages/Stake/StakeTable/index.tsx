@@ -286,7 +286,9 @@ const StakeTable: React.FC<{
       </TableHeader>
       <TableBody
         items={list}
-        emptyContent={<span className="text-base text-mercury-600">Empty</span>}
+        emptyContent={
+          <div className="pb-6 pt-4 text-base text-mercury-600">Empty</div>
+        }
       >
         {(item) => (
           <TableRow key={item.id}>
