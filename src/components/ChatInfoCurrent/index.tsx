@@ -76,6 +76,7 @@ const ChatInfoCurrent: React.FC<{
         <AgentShareButton
           agentInfo={{
             shareLink: `${window.location.origin}${PATH_NAMES.CLAN}/${groupDetail?.group?.label}`,
+            avatar: groupDetail.group.image,
           }}
           buttonClassName="w-fit !p-0 !bg-white !min-w-[40px]"
         />

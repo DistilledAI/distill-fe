@@ -1,6 +1,6 @@
 import { useAppSelector } from "@hooks/useAppRedux"
 import useWindowSize from "@hooks/useWindowSize"
-import ClanShortInfo from "@pages/AgentClan/ClanShortInfo"
+// import ClanShortInfo from "@pages/AgentClan/ClanShortInfo"
 import { IMessageBox } from "@pages/ChatPage/ChatBox/ChatMessages/helpers"
 import {
   GroupConfig,
@@ -8,13 +8,15 @@ import {
 } from "@pages/ChatPage/ChatBox/LeftBar/useFetchGroups"
 import useGetChatId from "@pages/ChatPage/hooks/useGetChatId"
 import { useQuery } from "@tanstack/react-query"
-import React, { useState } from "react"
+import React, { lazy, useState } from "react"
 import { twMerge } from "tailwind-merge"
 import { QueryDataKeys } from "types/queryDataKeys"
 import InstructionBanner from "./InstructionBanner"
 import ListMessage from "./ListMessage"
 import SendMessage from "./SendMessage"
-import ToggleActionsMobile from "./ToggleActionsMobile"
+
+const ClanShortInfo = lazy(() => import("@pages/AgentClan/ClanShortInfo"))
+const ToggleActionsMobile = lazy(() => import("./ToggleActionsMobile"))
 
 const RightContent: React.FC<{
   isClan?: boolean
@@ -52,7 +54,7 @@ const RightContent: React.FC<{
         isCloseLiveChat && "h-[113px] flex-none md:flex-1",
       )}
     >
-      {isMobile ? <ToggleActionsMobile /> : <></>}
+      {isMobile ? <ToggleActionsMobile /> : null}
       {!isMobile && isClan && <ClanShortInfo />}
       <ListMessage
         onReply={(message: IMessageBox) => {

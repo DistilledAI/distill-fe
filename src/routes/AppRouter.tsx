@@ -1,12 +1,15 @@
 import { Suspense, lazy } from "react"
 import { Route, Routes } from "react-router-dom"
-import MainLayout from "@components/Layout/MainLayout"
-import MainLayoutDesktop from "@components/Layout/MainLayoutDesktop"
-import ProtectedByAuth from "@components/Layout/ProtectedByAuth"
 import useWindowSize from "@hooks/useWindowSize"
 import { PATH_NAMES } from "@constants/index"
-import PageNotFound from "@pages/NotFound"
 import LoadingFallback from "@components/LoadingFallback"
+
+const MainLayout = lazy(() => import("@components/Layout/MainLayout"))
+const MainLayoutDesktop = lazy(
+  () => import("@components/Layout/MainLayoutDesktop"),
+)
+const ProtectedByAuth = lazy(() => import("@components/Layout/ProtectedByAuth"))
+const PageNotFound = lazy(() => import("@pages/NotFound"))
 
 const ChatDetailLoadingPage = lazy(() => import("@components/LoadingMobile"))
 const Account = lazy(() => import("@pages/Account"))
@@ -31,6 +34,7 @@ const MyAgentPage = lazy(() => import("@pages/MyAgents"))
 const MyData = lazy(() => import("@pages/MyData"))
 const Orchestration = lazy(() => import("@pages/Orchestration"))
 const RewardsPage = lazy(() => import("@pages/Rewards"))
+const StakePage = lazy(() => import("@pages/Stake"))
 // const TrendingPage = lazy(() => import("@pages/Trending"))
 
 const AppRouter = () => {
@@ -55,6 +59,7 @@ const AppRouter = () => {
             path={`${PATH_NAMES.CLAN}/:chatId`}
             element={<ChatBoxLive />}
           />
+          <Route path={`${PATH_NAMES.STAKING}`} element={<StakePage />} />
           <Route
             path={`${PATH_NAMES.LIVE}/:chatId`}
             element={<ChatBoxLive />}

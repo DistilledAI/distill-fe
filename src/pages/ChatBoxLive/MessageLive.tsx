@@ -52,14 +52,14 @@ const MessageLive: React.FC<MessageLiveProps> = ({
           )}
         </div>
       </div>
-      <div className="relative">
-        <AvatarCustom
-          key={message.id}
-          src={message?.avatar}
-          publicAddress={message?.publicAddress}
-        />
-      </div>
-      <div className="relative flex flex-col">
+      <AvatarCustom
+        key={message.id}
+        src={message?.avatar}
+        publicAddress={message?.publicAddress}
+        className="relative"
+        loading="lazy"
+      />
+      <div className="relative flex flex-1 flex-col">
         <div className="flex items-center gap-2">
           <p
             className={twMerge(

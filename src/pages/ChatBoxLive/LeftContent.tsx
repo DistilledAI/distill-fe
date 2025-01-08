@@ -20,6 +20,8 @@ import AgentSocials from "./AgentSocials"
 import ContractDisplay from "./ContractDisplay"
 import SkeletonInfo, { SkeletonDesc } from "./SkeletonInfo"
 import TradeTokenButton from "./TradeTokenButton"
+import { StakeTokenAddress } from "@pages/Stake"
+import VaultButton from "./VaultButton"
 
 const LeftContent: React.FC<{
   groupDetail: UserGroup | null
@@ -126,12 +128,17 @@ const LeftContent: React.FC<{
                   className="flex h-[50px] items-center gap-2 rounded-full px-3"
                 >
                   <div className="relative">
-                    <Image className="h-8 w-8 rounded-full" src={bitmaxAva} />
+                    <Image
+                      className="h-8 w-8 rounded-full"
+                      src={bitmaxAva}
+                      loading="lazy"
+                    />
                     <Image
                       classNames={{
                         wrapper: "w-4 h-4 absolute bottom-[-2px] right-[-2px]",
                       }}
                       src={btcIconRote}
+                      loading="lazy"
                     />
                   </div>
                   <p className="whitespace-nowrap font-extrabold italic text-white">
@@ -142,7 +149,13 @@ const LeftContent: React.FC<{
             )}
           </div>
         ) : (
-          <ImageLive groupConfig={groupConfig} />
+          <div className="relative">
+            <ImageLive groupConfig={groupConfig} />
+            <VaultButton
+              key={groupConfig?.contractAddress}
+              address={groupConfig?.contractAddress as StakeTokenAddress}
+            />
+          </div>
         )}
 
         {isFetched && groupDetail !== null ? (

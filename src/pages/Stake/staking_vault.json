@@ -1,0 +1,997 @@
+{
+  "address": "meshFKbt2UKjzdnmi64v98ZUkGzzh2ykWTmHRBw4X3i",
+  "metadata": {
+    "name": "fung_staking_vault",
+    "version": "0.1.0",
+    "spec": "0.1.0",
+    "description": "Created with Anchor"
+  },
+  "instructions": [
+    {
+      "name": "claim_de_stake",
+      "discriminator": [158, 190, 156, 65, 156, 169, 127, 86],
+      "accounts": [
+        {
+          "name": "signer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "vault",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  115, 116, 97, 107, 105, 110, 103, 95, 118, 97, 117, 108, 116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "stake_currency_mint"
+              },
+              {
+                "kind": "arg",
+                "path": "unbonding_period"
+              }
+            ]
+          }
+        },
+        {
+          "name": "vault_token_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "vault"
+              },
+              {
+                "kind": "const",
+                "value": [
+                  6, 221, 246, 225, 215, 101, 161, 147, 217, 203, 225, 70, 206,
+                  235, 121, 172, 28, 180, 133, 237, 95, 91, 55, 145, 58, 140,
+                  245, 133, 126, 255, 0, 169
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "stake_currency_mint"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140, 151, 37, 143, 78, 36, 137, 241, 187, 61, 16, 41, 20, 142,
+                13, 131, 11, 90, 19, 153, 218, 255, 16, 132, 4, 142, 123, 216,
+                219, 233, 248, 89
+              ]
+            }
+          }
+        },
+        {
+          "name": "staker_info_pda",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [115, 116, 97, 107, 101, 114, 95, 105, 110, 102, 111]
+              },
+              {
+                "kind": "account",
+                "path": "vault"
+              },
+              {
+                "kind": "account",
+                "path": "signer"
+              }
+            ]
+          }
+        },
+        {
+          "name": "unbonding_info_pda",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  117, 110, 98, 111, 110, 100, 105, 110, 103, 95, 105, 110, 102,
+                  111, 95, 115, 101, 101, 100
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "staker_info_pda"
+              },
+              {
+                "kind": "arg",
+                "path": "id"
+              }
+            ]
+          }
+        },
+        {
+          "name": "staker_token_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "signer"
+              },
+              {
+                "kind": "const",
+                "value": [
+                  6, 221, 246, 225, 215, 101, 161, 147, 217, 203, 225, 70, 206,
+                  235, 121, 172, 28, 180, 133, 237, 95, 91, 55, 145, 58, 140,
+                  245, 133, 126, 255, 0, 169
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "stake_currency_mint"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140, 151, 37, 143, 78, 36, 137, 241, 187, 61, 16, 41, 20, 142,
+                13, 131, 11, 90, 19, 153, 218, 255, 16, 132, 4, 142, 123, 216,
+                219, 233, 248, 89
+              ]
+            }
+          }
+        },
+        {
+          "name": "stake_currency_mint"
+        },
+        {
+          "name": "associated_token_program",
+          "address": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "id",
+          "type": "u64"
+        },
+        {
+          "name": "unbonding_period",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "create_vault",
+      "discriminator": [29, 237, 247, 208, 193, 82, 54, 135],
+      "accounts": [
+        {
+          "name": "admin",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "authority",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [97, 117, 116, 104, 111, 114, 105, 116, 121]
+              }
+            ]
+          }
+        },
+        {
+          "name": "stake_currency_mint"
+        },
+        {
+          "name": "vault",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  115, 116, 97, 107, 105, 110, 103, 95, 118, 97, 117, 108, 116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "stake_currency_mint"
+              },
+              {
+                "kind": "arg",
+                "path": "unbonding_period"
+              }
+            ]
+          }
+        },
+        {
+          "name": "vault_token_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "vault"
+              },
+              {
+                "kind": "const",
+                "value": [
+                  6, 221, 246, 225, 215, 101, 161, 147, 217, 203, 225, 70, 206,
+                  235, 121, 172, 28, 180, 133, 237, 95, 91, 55, 145, 58, 140,
+                  245, 133, 126, 255, 0, 169
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "stake_currency_mint"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140, 151, 37, 143, 78, 36, 137, 241, 187, 61, 16, 41, 20, 142,
+                13, 131, 11, 90, 19, 153, 218, 255, 16, 132, 4, 142, 123, 216,
+                219, 233, 248, 89
+              ]
+            }
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        },
+        {
+          "name": "rent",
+          "address": "SysvarRent111111111111111111111111111111111"
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "associated_token_program",
+          "address": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
+        }
+      ],
+      "args": [
+        {
+          "name": "unbonding_period",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "destake",
+      "discriminator": [70, 3, 73, 97, 22, 50, 116, 1],
+      "accounts": [
+        {
+          "name": "signer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "vault",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  115, 116, 97, 107, 105, 110, 103, 95, 118, 97, 117, 108, 116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "stake_currency_mint"
+              },
+              {
+                "kind": "arg",
+                "path": "unbonding_period"
+              }
+            ]
+          }
+        },
+        {
+          "name": "vault_token_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "vault"
+              },
+              {
+                "kind": "const",
+                "value": [
+                  6, 221, 246, 225, 215, 101, 161, 147, 217, 203, 225, 70, 206,
+                  235, 121, 172, 28, 180, 133, 237, 95, 91, 55, 145, 58, 140,
+                  245, 133, 126, 255, 0, 169
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "stake_currency_mint"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140, 151, 37, 143, 78, 36, 137, 241, 187, 61, 16, 41, 20, 142,
+                13, 131, 11, 90, 19, 153, 218, 255, 16, 132, 4, 142, 123, 216,
+                219, 233, 248, 89
+              ]
+            }
+          }
+        },
+        {
+          "name": "staker_info_pda",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [115, 116, 97, 107, 101, 114, 95, 105, 110, 102, 111]
+              },
+              {
+                "kind": "account",
+                "path": "vault"
+              },
+              {
+                "kind": "account",
+                "path": "signer"
+              }
+            ]
+          }
+        },
+        {
+          "name": "unbonding_info_pda",
+          "writable": true
+        },
+        {
+          "name": "staker_token_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "signer"
+              },
+              {
+                "kind": "const",
+                "value": [
+                  6, 221, 246, 225, 215, 101, 161, 147, 217, 203, 225, 70, 206,
+                  235, 121, 172, 28, 180, 133, 237, 95, 91, 55, 145, 58, 140,
+                  245, 133, 126, 255, 0, 169
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "stake_currency_mint"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140, 151, 37, 143, 78, 36, 137, 241, 187, 61, 16, 41, 20, 142,
+                13, 131, 11, 90, 19, 153, 218, 255, 16, 132, 4, 142, 123, 216,
+                219, 233, 248, 89
+              ]
+            }
+          }
+        },
+        {
+          "name": "stake_currency_mint"
+        },
+        {
+          "name": "associated_token_program",
+          "address": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "unbonding_period",
+          "type": "u64"
+        },
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "initialize",
+      "discriminator": [175, 175, 109, 31, 13, 152, 155, 237],
+      "accounts": [
+        {
+          "name": "signer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "authority",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [97, 117, 116, 104, 111, 114, 105, 116, 121]
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "stake",
+      "discriminator": [206, 176, 202, 18, 200, 209, 179, 108],
+      "accounts": [
+        {
+          "name": "signer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "vault",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  115, 116, 97, 107, 105, 110, 103, 95, 118, 97, 117, 108, 116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "stake_currency_mint"
+              },
+              {
+                "kind": "arg",
+                "path": "unbonding_period"
+              }
+            ]
+          }
+        },
+        {
+          "name": "vault_token_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "vault"
+              },
+              {
+                "kind": "const",
+                "value": [
+                  6, 221, 246, 225, 215, 101, 161, 147, 217, 203, 225, 70, 206,
+                  235, 121, 172, 28, 180, 133, 237, 95, 91, 55, 145, 58, 140,
+                  245, 133, 126, 255, 0, 169
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "stake_currency_mint"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140, 151, 37, 143, 78, 36, 137, 241, 187, 61, 16, 41, 20, 142,
+                13, 131, 11, 90, 19, 153, 218, 255, 16, 132, 4, 142, 123, 216,
+                219, 233, 248, 89
+              ]
+            }
+          }
+        },
+        {
+          "name": "staker_info_pda",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [115, 116, 97, 107, 101, 114, 95, 105, 110, 102, 111]
+              },
+              {
+                "kind": "account",
+                "path": "vault"
+              },
+              {
+                "kind": "account",
+                "path": "signer"
+              }
+            ]
+          }
+        },
+        {
+          "name": "staker_token_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "signer"
+              },
+              {
+                "kind": "const",
+                "value": [
+                  6, 221, 246, 225, 215, 101, 161, 147, 217, 203, 225, 70, 206,
+                  235, 121, 172, 28, 180, 133, 237, 95, 91, 55, 145, 58, 140,
+                  245, 133, 126, 255, 0, 169
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "stake_currency_mint"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140, 151, 37, 143, 78, 36, 137, 241, 187, 61, 16, 41, 20, 142,
+                13, 131, 11, 90, 19, 153, 218, 255, 16, 132, 4, 142, 123, 216,
+                219, 233, 248, 89
+              ]
+            }
+          }
+        },
+        {
+          "name": "stake_currency_mint"
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        },
+        {
+          "name": "associated_token_program",
+          "address": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
+        }
+      ],
+      "args": [
+        {
+          "name": "unbonding_period",
+          "type": "u64"
+        },
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    }
+  ],
+  "accounts": [
+    {
+      "name": "Authority",
+      "discriminator": [36, 108, 254, 18, 167, 144, 27, 36]
+    },
+    {
+      "name": "StakerInfo",
+      "discriminator": [241, 238, 149, 141, 241, 59, 35, 107]
+    },
+    {
+      "name": "UnbondingInfo",
+      "discriminator": [152, 114, 79, 94, 41, 193, 83, 220]
+    },
+    {
+      "name": "Vault",
+      "discriminator": [211, 8, 232, 43, 2, 152, 117, 119]
+    }
+  ],
+  "events": [
+    {
+      "name": "EventClaimUnstake",
+      "discriminator": [99, 54, 74, 147, 119, 120, 100, 23]
+    },
+    {
+      "name": "EventNewVault",
+      "discriminator": [62, 85, 178, 155, 210, 80, 16, 125]
+    },
+    {
+      "name": "EventStake",
+      "discriminator": [193, 220, 225, 33, 201, 27, 61, 43]
+    },
+    {
+      "name": "EventUnstake",
+      "discriminator": [7, 14, 248, 129, 43, 55, 41, 104]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "IsStaked",
+      "msg": "Tokens are already staked"
+    },
+    {
+      "code": 6001,
+      "name": "NotStaked",
+      "msg": "Tokens not staked"
+    },
+    {
+      "code": 6002,
+      "name": "NoTokens",
+      "msg": "No Tokens to stake"
+    },
+    {
+      "code": 6003,
+      "name": "InvalidAmount",
+      "msg": "Invalid amount"
+    },
+    {
+      "code": 6004,
+      "name": "VaultEnded",
+      "msg": "Vault has been ended"
+    },
+    {
+      "code": 6005,
+      "name": "VaultNotStarted",
+      "msg": "Vault not started"
+    },
+    {
+      "code": 6006,
+      "name": "UnbondingTimeNotOverYet",
+      "msg": "The unbonding time is not over yet"
+    },
+    {
+      "code": 6007,
+      "name": "TgeNotYetReached",
+      "msg": "Soft cap reached, but need to wait til TGE. Cannot unstake!"
+    },
+    {
+      "code": 6008,
+      "name": "OverflowError",
+      "msg": "Overflow"
+    },
+    {
+      "code": 6009,
+      "name": "AlreadyClaimed",
+      "msg": "Already claimed"
+    },
+    {
+      "code": 6010,
+      "name": "IncorrectAuthority",
+      "msg": "IncorrectAuthority"
+    },
+    {
+      "code": 6011,
+      "name": "IncorrectStakeDetailId",
+      "msg": "Incorrect Stake detail ID. It must be current stake info id"
+    },
+    {
+      "code": 6012,
+      "name": "IncorrectLockPeriod",
+      "msg": "Incorrect Lock Period"
+    }
+  ],
+  "types": [
+    {
+      "name": "Authority",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "admin",
+            "type": "pubkey"
+          },
+          {
+            "name": "pending_admin",
+            "type": "pubkey"
+          }
+        ]
+      }
+    },
+    {
+      "name": "EventClaimUnstake",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "staker_info_pub",
+            "type": "pubkey"
+          },
+          {
+            "name": "staker_info",
+            "type": {
+              "defined": {
+                "name": "StakerInfo"
+              }
+            }
+          },
+          {
+            "name": "unbonding_info_pda",
+            "type": "pubkey"
+          },
+          {
+            "name": "unbonding_info",
+            "type": {
+              "defined": {
+                "name": "UnbondingInfo"
+              }
+            }
+          },
+          {
+            "name": "vault_pub",
+            "type": "pubkey"
+          },
+          {
+            "name": "vault",
+            "type": {
+              "defined": {
+                "name": "Vault"
+              }
+            }
+          },
+          {
+            "name": "stake_currency_mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "vault_staking_token_account",
+            "type": "pubkey"
+          },
+          {
+            "name": "staker_token_account",
+            "type": "pubkey"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          },
+          {
+            "name": "claimed_at",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "EventNewVault",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "vault",
+            "type": "pubkey"
+          },
+          {
+            "name": "stake_currency_mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "unbonding_period",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "EventStake",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "vault_config_pub",
+            "type": "pubkey"
+          },
+          {
+            "name": "vault",
+            "type": {
+              "defined": {
+                "name": "Vault"
+              }
+            }
+          },
+          {
+            "name": "staker_info_pub",
+            "type": "pubkey"
+          },
+          {
+            "name": "staker_info",
+            "type": {
+              "defined": {
+                "name": "StakerInfo"
+              }
+            }
+          },
+          {
+            "name": "stake_currency_mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "vault_staking_token_account",
+            "type": "pubkey"
+          },
+          {
+            "name": "staker_token_account",
+            "type": "pubkey"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "EventUnstake",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "staker_info_pub",
+            "type": "pubkey"
+          },
+          {
+            "name": "staker_info",
+            "type": {
+              "defined": {
+                "name": "StakerInfo"
+              }
+            }
+          },
+          {
+            "name": "unbonding_info_pda",
+            "type": "pubkey"
+          },
+          {
+            "name": "unbonding_info",
+            "type": {
+              "defined": {
+                "name": "UnbondingInfo"
+              }
+            }
+          },
+          {
+            "name": "vault_pub",
+            "type": "pubkey"
+          },
+          {
+            "name": "vault",
+            "type": {
+              "defined": {
+                "name": "Vault"
+              }
+            }
+          },
+          {
+            "name": "stake_currency_mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "vault_staking_token_account",
+            "type": "pubkey"
+          },
+          {
+            "name": "staker_token_account",
+            "type": "pubkey"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "StakerInfo",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "bump",
+            "docs": [
+              "Bump seed used to generate the program address / authority"
+            ],
+            "type": {
+              "array": ["u8", 1]
+            }
+          },
+          {
+            "name": "total_stake",
+            "type": "u64"
+          },
+          {
+            "name": "current_id",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "UnbondingInfo",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "id",
+            "type": "u64"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          },
+          {
+            "name": "unstaked_at_time",
+            "type": "i64"
+          },
+          {
+            "name": "staker",
+            "type": "pubkey"
+          },
+          {
+            "name": "stake_currency_mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "claimed",
+            "type": "bool"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Vault",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "bump",
+            "docs": [
+              "Bump seed used to generate the program address / authority"
+            ],
+            "type": {
+              "array": ["u8", 1]
+            }
+          },
+          {
+            "name": "version",
+            "type": "u8"
+          },
+          {
+            "name": "total_staked",
+            "docs": ["total staked"],
+            "type": "u64"
+          },
+          {
+            "name": "stake_currency_mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "unbonding_period",
+            "type": "u64"
+          }
+        ]
+      }
+    }
+  ]
+}

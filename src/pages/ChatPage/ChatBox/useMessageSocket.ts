@@ -89,6 +89,17 @@ const useMessageSocket = () => {
     queryClient.setQueryData(
       chatMessagesKey(groupId),
       (cachedData: ICachedMessageData) => {
+        if (!cachedData)
+          return {
+            pageParams: [],
+            pages: [
+              {
+                messages: [],
+                nextOffset: 0,
+              },
+            ],
+          }
+
         const lastPage = cachedData.pages[cachedData.pages.length - 1]
 
         return {
@@ -110,6 +121,17 @@ const useMessageSocket = () => {
     queryClient.setQueryData(
       chatMessagesKey(groupId),
       (cachedData: ICachedMessageData) => {
+        if (!cachedData)
+          return {
+            pageParams: [],
+            pages: [
+              {
+                messages: [],
+                nextOffset: 0,
+              },
+            ],
+          }
+
         const lastPage = cachedData.pages[cachedData.pages.length - 1]
         const isBotLive = e.user.configBot === "live"
 
