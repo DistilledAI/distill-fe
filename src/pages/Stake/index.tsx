@@ -7,12 +7,7 @@ import StakeTable from "./StakeTable"
 import StakedInfo from "./StakedInfo"
 import { PoolIcon } from "@components/Icons"
 import useConnectPhantom from "./useConnectPhantom"
-import {
-  blackrackAvartar2,
-  gnrtAvatar,
-  maxAvatar,
-  racksAvatar,
-} from "@assets/images"
+import { blackrackAvartar2, gnrtAvatar, racksAvatar } from "@assets/images"
 import useGetStakedAmount from "./useGetStakedAmount"
 import { CoinGeckoId } from "@hooks/useCoingecko"
 import { useEffect } from "react"
@@ -23,7 +18,6 @@ import { getInfoTokenByAddress } from "./helpers"
 export const SOLANA_ENV = import.meta.env.VITE_APP_SOLANA_ENV || "mainnet-beta"
 
 export enum StakeTokenAddress {
-  Max = "oraim8c9d1nkfuQk9EzGYEUGxqL3MHQYndRw1huVo5h",
   Degenerator = "oraiJP7H3LAt57DkFXNLDbLdBFNRRPvS8jg2j5AZkd9",
   BlackRack = "D7yP4ycfsRWUGYionGpi64sLF2ddZ2JXxuRAti2M7uck",
 }
@@ -31,15 +25,6 @@ export enum StakeTokenAddress {
 export const LIST_TOKEN_STAKE = [
   {
     id: 1,
-    address: StakeTokenAddress.Max,
-    label: "MAX",
-    decimals: 6,
-    tokenName: "MAX",
-    avatar: maxAvatar,
-    coinGeckoId: CoinGeckoId["max-2"],
-  },
-  {
-    id: 2,
     address: StakeTokenAddress.Degenerator,
     label: "Degenerator",
     decimals: 6,
@@ -48,7 +33,7 @@ export const LIST_TOKEN_STAKE = [
     coinGeckoId: null,
   },
   {
-    id: 3,
+    id: 2,
     address: StakeTokenAddress.BlackRack,
     label: "BlackRack",
     decimals: 6,
@@ -69,7 +54,7 @@ const Stake = () => {
   const { list, getListUnbonding } = useGetUnbondingList()
   useEffect(() => {
     if (!tokenAddress)
-      navigate(`${PATH_NAMES.STAKING}?token=${StakeTokenAddress.Max}`)
+      navigate(`${PATH_NAMES.STAKING}?token=${StakeTokenAddress.BlackRack}`)
   }, [])
   const tokenInfo = getInfoTokenByAddress(tokenAddress as StakeTokenAddress)
 

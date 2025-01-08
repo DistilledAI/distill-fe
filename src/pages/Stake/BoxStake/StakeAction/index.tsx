@@ -4,11 +4,12 @@ import { getInfoTokenByAddress } from "@pages/Stake/helpers"
 import useConnectPhantom from "@pages/Stake/useConnectPhantom"
 import useGetBalance from "@pages/Stake/useGetBalance"
 import { numberWithCommas, toBN } from "@utils/format"
-import React, { ChangeEvent, useState } from "react"
+import React, { useState } from "react"
 import { useSearchParams } from "react-router-dom"
 import SelectToken from "../SelectToken"
 import { Web3SolanaLockingToken } from "@pages/Stake/web3Locking"
 import { useWallet } from "@solana/wallet-adapter-react"
+import NumberFormat from "react-number-format"
 import { ALL_CONFIGS, SPL_DECIMAL } from "@pages/Stake/config"
 import { toast } from "react-toastify"
 
@@ -45,11 +46,10 @@ const StakeAction: React.FC<{
     },
   ]
 
-  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value
-    if (!isNaN(parseFloat(value))) {
-      setAmountVal(value)
-    } else if (value === "") {
+  const handleInputChange = (value: number) => {
+    if (value || value === 0) {
+      setAmountVal(value.toString())
+    } else {
       setAmountVal("")
     }
   }
@@ -100,15 +100,23 @@ const StakeAction: React.FC<{
       <div className="rounded-lg border-1 border-mercury-400 bg-white px-4 py-3">
         <div className="flex items-center justify-between">
           <div>
-            <input
-              type="number"
-              pattern="\d*"
+            <NumberFormat
+              placeholder={`0.0`}
+              thousandSeparator
               className="w-full bg-transparent text-[24px] font-medium capitalize text-mercury-950 outline-none [appearance:textfield] placeholder:text-[#585A6B] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
-              placeholder="0.0"
-              required
+              decimalScale={SPL_DECIMAL}
+              type="text"
               value={amountVal}
-              onChange={handleInputChange}
+              onChange={() => {}}
+              isAllowed={(values) => {
+                const { floatValue } = values
+                return !floatValue || (floatValue >= 0 && floatValue <= 1e14)
+              }}
+              onValueChange={({ floatValue }: any) => {
+                handleInputChange(floatValue)
+              }}
             />
+
             <div className="flex items-center gap-1 text-14 font-medium text-mercury-700">
               <p>Available:</p>
               <p>
