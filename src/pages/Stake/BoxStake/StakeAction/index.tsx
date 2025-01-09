@@ -98,7 +98,7 @@ const StakeAction: React.FC<{
   return (
     <div className="mt-3">
       <div className="rounded-lg border-1 border-mercury-400 bg-white px-4 py-3">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between gap-1">
           <div>
             <NumberFormat
               placeholder={`0.0`}
@@ -117,10 +117,12 @@ const StakeAction: React.FC<{
               }}
             />
 
-            <div className="flex items-center gap-1 text-14 font-medium text-mercury-700">
+            <div className="flex items-center gap-1 text-14 font-medium text-mercury-700 max-md:text-12">
               <p>Available:</p>
               <p>
-                {loading ? "--" : numberWithCommas(balance)}{" "}
+                {loading
+                  ? "--"
+                  : numberWithCommas(toBN(balance.toFixed(3)).toNumber())}{" "}
                 {tokenInfo?.tokenName}
               </p>
             </div>
