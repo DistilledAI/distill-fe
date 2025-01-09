@@ -151,10 +151,6 @@ const LeftContent: React.FC<{
         ) : (
           <div className="relative">
             <ImageLive groupConfig={groupConfig} />
-            <VaultButton
-              key={groupConfig?.contractAddress}
-              address={groupConfig?.contractAddress as StakeTokenAddress}
-            />
           </div>
         )}
 
@@ -172,6 +168,10 @@ const LeftContent: React.FC<{
               classNames={{
                 wrapper: "mt-3 hidden md:flex",
               }}
+            />
+            <VaultButton
+              key={groupConfig?.contractAddress}
+              address={groupConfig?.contractAddress as StakeTokenAddress}
             />
             <div className="mt-3 hidden md:block">
               <TradeTokenButton tradeLink={groupConfig?.tradeLink} />
