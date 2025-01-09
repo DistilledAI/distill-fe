@@ -14,13 +14,17 @@ const UserStakedInfo = ({ total }: { total: number }) => {
   const tokenPrice = tokenInfo?.coinGeckoId
     ? Number(prices?.[tokenInfo.coinGeckoId] || 0)
     : 0
-  const totalPriceUsd = toBN(tokenPrice * toBN(total).toNumber()).toNumber()
+  const totalPriceUsd = toBN(
+    toBN(tokenPrice * toBN(total).toNumber())
+      .toNumber()
+      .toFixed(3),
+  ).toNumber()
 
   return (
     <div className="flex flex-wrap items-center justify-between rounded-[14px] border-1 border-[#A88E67] bg-brown-50 px-6 py-4">
       <div>
         <p className="text-14 font-medium text-mercury-700">Staked Amount</p>
-        <p className="text-24 font-semibold text-brown-600">
+        <p className="text-24 font-semibold text-brown-600 max-md:text-20">
           {totalPriceUsd === 0 ? "--" : `$${numberWithCommas(totalPriceUsd)}`}
         </p>
         <p className="text-14 text-brown-600">
@@ -31,7 +35,9 @@ const UserStakedInfo = ({ total }: { total: number }) => {
         <p className="text-14 font-medium text-mercury-700">
           Claimable Rewards
         </p>
-        <p className="text-24 font-semibold text-brown-600">$0</p>
+        <p className="text-24 font-semibold text-brown-600 max-md:text-20">
+          $0
+        </p>
         <p className="text-14 text-brown-600">0 Asset</p>
         {/* <Popover placement="right">
           <PopoverTrigger>
@@ -100,7 +106,7 @@ const UserStakedInfo = ({ total }: { total: number }) => {
           </PopoverContent>
         </Popover> */}
       </div>
-      <div className="cursor-default font-semibold text-brown-600 opacity-65 max-md:mt-3 max-md:w-full max-md:text-center">
+      <div className="cursor-default font-semibold text-brown-600 opacity-65 max-md:mt-3 max-md:w-full max-md:text-center max-md:text-14">
         Claim Rewards
       </div>
     </div>

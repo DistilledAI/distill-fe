@@ -135,12 +135,12 @@ const StakeTable: React.FC<{
     switch (columnKey) {
       case ColumnKey.Amount:
         return (
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 pr-4">
             <img
               className="h-5 w-5 rounded-full object-cover"
               src={tokenInfo?.avatar}
             />
-            <span className="text-16 font-bold text-mercury-900">
+            <span className="text-16 font-bold text-mercury-900 max-md:text-15">
               {numberWithCommas(totalAmount)}
             </span>
           </div>

@@ -30,7 +30,7 @@ export const LIST_TOKEN_STAKE = [
     decimals: 6,
     tokenName: "GNRT",
     avatar: gnrtAvatar,
-    coinGeckoId: null,
+    coinGeckoId: CoinGeckoId["degenerator-project"],
   },
   {
     id: 2,
