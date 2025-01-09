@@ -26,7 +26,7 @@ const VaultButton = ({ address }: Props) => {
       className="mt-3 flex cursor-pointer items-center justify-between rounded-full bg-[rgba(52,54,54,0.7)] backdrop-blur-[10px]"
     >
       <div
-        className="flex h-12 w-full items-center gap-10 rounded-full bg-center bg-no-repeat px-3"
+        className="flex h-11 w-full items-center gap-[54px] rounded-full bg-center bg-no-repeat px-[6px]"
         style={{
           backgroundImage: `url(${vaultButtonBg})`,
           backgroundSize: "105% 105%",
@@ -36,7 +36,7 @@ const VaultButton = ({ address }: Props) => {
           <img
             src={avatarUrl}
             alt={`${tokenInfo.label} avatar`}
-            className="h-9 w-9 rounded-full bg-cover"
+            className="h-8 w-8 rounded-full bg-cover"
             loading="lazy"
           />
           <img
