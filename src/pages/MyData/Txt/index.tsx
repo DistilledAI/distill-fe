@@ -152,7 +152,7 @@ const TxtData: React.FC<{
             rows={data}
             renderCell={renderCell}
             loadMore={{ onLoadMore: fetchNextPage, hasMore: hasNextPage }}
-            baseClassName="max-h-[400px]"
+            baseClassName="max-h-[400px] overflow-auto"
           />
         )}
       </div>

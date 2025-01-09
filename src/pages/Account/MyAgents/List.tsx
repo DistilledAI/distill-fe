@@ -172,7 +172,7 @@ const ListAgent: React.FC<{
         columns={columns}
         rows={agents}
         renderCell={renderCell}
-        baseClassName="max-h-[400px]"
+        baseClassName="max-h-[400px] overflow-auto"
       />
       <ShareModal
         shareUrl={`${appUrl}${PATH_NAMES.INVITE}/${agentSelected}`}
