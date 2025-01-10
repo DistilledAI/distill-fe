@@ -54,7 +54,8 @@ const StakeAction: React.FC<{
     }
   }
 
-  const handleStake = async () => {
+  const handleStake = async (isDisable = true) => {
+    if (isDisable) return
     try {
       if (!tokenAddress) {
         return toast.warning("Token address not found!")
@@ -106,6 +107,7 @@ const StakeAction: React.FC<{
               className="w-full bg-transparent text-[24px] font-medium capitalize text-mercury-950 outline-none [appearance:textfield] placeholder:text-[#585A6B] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
               decimalScale={SPL_DECIMAL}
               type="text"
+              disabled
               value={amountVal}
               onChange={() => {}}
               isAllowed={(values) => {
@@ -135,7 +137,7 @@ const StakeAction: React.FC<{
       <div className="mt-2 flex items-center gap-2">
         {AMOUNT_LIST.map((percent) => (
           <div
-            onClick={() => setAmountVal(percent.value.toString())}
+            // onClick={() => setAmountVal(percent.value.toString())}
             key={percent.label}
             className="cursor-pointer rounded-[4px] border-1 border-mercury-300 bg-mercury-100 px-2 py-1 text-12 font-medium text-mercury-900 hover:opacity-80"
           >
@@ -143,11 +145,15 @@ const StakeAction: React.FC<{
           </div>
         ))}
       </div>
+      <p className="mb-3 mt-7 text-[17px] leading-4 text-orange-600">
+        This feature is currently under maintenance.
+      </p>
       {isConnectWallet ? (
         <Button
           isLoading={loadingSubmit}
-          onClick={handleStake}
-          className="mt-7 h-[48px] w-full rounded-full bg-mercury-950 text-white"
+          isDisabled
+          onClick={() => handleStake(true)}
+          className="h-[48px] w-full rounded-full bg-mercury-950 text-white"
         >
           STAKE
         </Button>
