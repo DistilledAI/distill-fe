@@ -1,8 +1,8 @@
+import LoadingFallback from "@components/LoadingFallback"
+import { PATH_NAMES } from "@constants/index"
+import useWindowSize from "@hooks/useWindowSize"
 import { Suspense, lazy } from "react"
 import { Route, Routes } from "react-router-dom"
-import useWindowSize from "@hooks/useWindowSize"
-import { PATH_NAMES } from "@constants/index"
-import LoadingFallback from "@components/LoadingFallback"
 
 const MainLayout = lazy(() => import("@components/Layout/MainLayout"))
 const MainLayoutDesktop = lazy(
@@ -79,7 +79,7 @@ const AppRouter = () => {
             element={<AuthorProfile />}
           />
           <Route
-            path={`${PATH_NAMES.ORCHESTRATION}/:chatId`}
+            path={`${PATH_NAMES.ORCHESTRATION}/:conversationId`}
             element={<Orchestration />}
           />
           {isMobile && (

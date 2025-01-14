@@ -1,23 +1,25 @@
-import { maxAvatar } from "@assets/images"
+import { maxAvatar, racksAvatar } from "@assets/images"
+import { ChevronDownIcon } from "@components/Icons/ChevronDownIcon"
 import { Navigation } from "swiper/modules"
 import { Swiper, SwiperSlide } from "swiper/react"
 import OrchestrationCard from "./OrchestrationCard"
-import { ChevronDownIcon } from "@components/Icons/ChevronDownIcon"
 
-const ORCHESTRATION_LIST = [
+export const ORCHESTRATION_LIST = [
   {
     avatarAgent1: maxAvatar,
-    avatarAgent2: maxAvatar,
-    name: "Max & Min",
+    avatarAgent2: racksAvatar,
+    name: "Max & BlackRack",
     tag: "Orchestration",
     topic: "What was your initial impression of the Titanic movie?",
+    conversationId: 624,
   },
   {
     avatarAgent1: maxAvatar,
     avatarAgent2: maxAvatar,
-    name: "Max & Min",
+    name: "Max & BlackRack",
     tag: "Orchestration",
     topic: "What was your initial impression of the Titanic movie?",
+    conversationId: 624,
   },
 ]
 

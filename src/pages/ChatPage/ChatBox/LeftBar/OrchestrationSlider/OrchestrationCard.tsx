@@ -1,6 +1,8 @@
 import { maxAvatar } from "@assets/images"
 import OrchestrationHeader from "@components/ChatInfoCurrent/OrchestrationHeader"
 import { BroadcastIcon } from "@components/Icons/Broadcast"
+import { PATH_NAMES } from "@constants/index"
+import { useNavigate } from "react-router-dom"
 
 interface Props {
   item: {
@@ -9,16 +11,23 @@ interface Props {
     name: string
     tag: string
     topic: string
+    conversationId: number
   }
 }
 
 const OrchestrationCard = ({ item }: Props) => {
+  const navigate = useNavigate()
   return (
     <div
-      className="flex w-full flex-col gap-2 rounded-[22px] rounded-bl-none bg-mercury-800 p-3"
+      className="flex w-full cursor-pointer flex-col gap-2 rounded-[22px] rounded-bl-none bg-mercury-800 p-3"
       style={{
         background: "linear-gradient(71deg, #000 0%, #797676 100%)",
       }}
+      onClick={() =>
+        navigate(`${PATH_NAMES.ORCHESTRATION}/${item.conversationId}`, {
+          state: item,
+        })
+      }
     >
       <div className="flex justify-between">
         <OrchestrationHeader

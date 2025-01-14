@@ -9,6 +9,7 @@ import { twMerge } from "tailwind-merge"
 import AnalyticsInfoWrap from "./AnalyticsInfoWrap"
 import ChatClans from "./Clans"
 import MyEcho from "./MyEcho"
+import OrchestrationSlider from "./OrchestrationSlider"
 import PrivateAI from "./PrivateAI"
 import SidebarCollapsed from "./SidebarCollapsed"
 // import OrchestrationSlider from "./OrchestrationSlider"
@@ -52,7 +53,7 @@ const LeftBar = () => {
             <ChatClans />
             <PrivateAI />
           </div>
-          {/* <OrchestrationSlider /> */}
+          <OrchestrationSlider />
           <div
             className={twMerge(
               "flex justify-between gap-2",

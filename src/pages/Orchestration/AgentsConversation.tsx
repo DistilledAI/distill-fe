@@ -1,8 +1,9 @@
+import AvatarCustom from "@components/AvatarCustom"
 import ChatWindow from "@components/ChatWindow"
-import MessageLive from "@pages/ChatBoxLive/MessageLive"
+import MarkdownMessage from "@components/Markdown"
 import { IMessageBox } from "@pages/ChatPage/ChatBox/ChatMessages/helpers"
-import useFetchMessages from "@pages/ChatPage/ChatBox/ChatMessages/useFetchMessages"
 import { twMerge } from "tailwind-merge"
+import useFetchConversation from "./useFetchConversation"
 
 const AgentsConversation = () => {
   const {
@@ -13,7 +14,9 @@ const AgentsConversation = () => {
     hasPreviousMore,
     isFetchingPreviousPage,
     groupId,
-  } = useFetchMessages()
+  } = useFetchConversation()
+
+  // const conversationDetail = ORCHESTRATION_LIST.find(item => item.conversationId = )
 
   const renderMessage = (index: number, message: IMessageBox) => {
     return (
@@ -24,12 +27,18 @@ const AgentsConversation = () => {
           index === messages.length - 1 && "pb-40",
         )}
       >
-        <MessageLive
-          key={index}
-          message={message}
-          // onReply={() => onReply(message)}
-          groupId={groupId}
-        />
+        <div className="group/item relative flex gap-3 md:gap-4">
+          <AvatarCustom
+            key={message.id}
+            src={message?.avatar}
+            publicAddress={message?.publicAddress}
+            className="relative"
+            loading="lazy"
+          />
+          <div className="relative flex flex-1 flex-col">
+            <MarkdownMessage msg={message?.messages} />
+          </div>
+        </div>
       </div>
     )
   }
