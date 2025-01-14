@@ -38,7 +38,7 @@ const MessageLive: React.FC<MessageLiveProps> = ({
   return (
     <div className="group/item relative flex gap-3 md:gap-4">
       <div className="absolute -bottom-2 -left-4 -top-2 right-0 hidden rounded-[8px] bg-mercury-70 transition-all duration-100 ease-linear group-hover/item:block">
-        <div className="absolute -top-4 right-3 flex items-center gap-2">
+        <div className="absolute -top-4 right-3 z-10 flex items-center gap-2">
           <EmojiReactions onEmojiReaction={handleEmojiReaction} />
           {!isOwner && onReply && (
             <button

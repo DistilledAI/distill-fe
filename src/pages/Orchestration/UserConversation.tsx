@@ -62,7 +62,7 @@ const UserConversation = () => {
     return (
       <div
         className={twMerge(
-          "p-3 pl-7",
+          "px-0 py-3 pl-4",
           index === 0 && "pt-8",
           index === messages.length - 1 && "pb-8",
         )}
@@ -97,7 +97,7 @@ const UserConversation = () => {
         chatId={groupId}
         isChatActions={false}
         msgBoxClassName="p-0"
-        className={twMerge("md:max-h-[calc(100%-60px)]")}
+        className={"px-3 md:max-h-[calc(100%-60px)]"}
         // scrollBottomClassName="md:!bottom-10 h-40"
       />
       <div>
@@ -108,7 +108,7 @@ const UserConversation = () => {
           hasFocus={hasFocus}
           setHasFocus={setHasFocus}
           resetRely={resetReply}
-          wrapperClassName={twMerge("md:bottom-0 inset-x-1")}
+          wrapperClassName={twMerge("md:bottom-1 inset-x-1")}
         />
         <ReCaptchaWraper reCaptchaRef={reCaptchaRef} />
       </div>

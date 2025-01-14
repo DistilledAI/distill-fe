@@ -1,12 +1,11 @@
 import { solanaCircleIcon } from "@assets/svg"
 import AvatarCustom from "@components/AvatarCustom"
+import { AgentDotLandIcon } from "@components/Icons/FilledSquareCircleIcon"
 import { ExternalLinkIcon } from "@components/Icons/Share"
-import {
-  DexScreenerIcon,
-  TelegramOutlineIcon,
-} from "@components/Icons/SocialLinkIcon"
+import { TelegramOutlineIcon } from "@components/Icons/SocialLinkIcon"
 import { TwitterIcon } from "@components/Icons/Twitter"
 import { centerTextEllipsis } from "@utils/index"
+import { Link } from "react-router-dom"
 
 const HostsBox = ({ conversationInfo }: { conversationInfo: any }) => {
   return (
@@ -39,23 +38,15 @@ const HostsBox = ({ conversationInfo }: { conversationInfo: any }) => {
           </div>
         </div>
         <div className="flex items-center gap-3">
-          <a
-            type="button"
-            href={conversationInfo?.agent1?.tradeLink}
-            target="_blank"
-          >
-            <DexScreenerIcon />
-          </a>
-          <a type="button" href={conversationInfo?.agent1?.x} target="_blank">
+          <Link to={conversationInfo?.agent1?.tradeLink} target="_blank">
+            <AgentDotLandIcon size={20} />
+          </Link>
+          <Link to={conversationInfo?.agent1?.x} target="_blank">
             <TwitterIcon size={20} />
-          </a>
-          <a
-            type="button"
-            href={conversationInfo?.agent1?.telegram}
-            target="_blank"
-          >
+          </Link>
+          <Link to={conversationInfo?.agent1?.telegram} target="_blank">
             <TelegramOutlineIcon size={20} />
-          </a>
+          </Link>
         </div>
       </div>
       <div className="h-11 w-[1px] bg-mercury-100" />
@@ -71,9 +62,9 @@ const HostsBox = ({ conversationInfo }: { conversationInfo: any }) => {
             <h4 className="text-16 font-bold text-mercury-950">
               {conversationInfo?.agent2?.name}
             </h4>
-            <a
+            <Link
               className="flex items-center gap-1 hover:underline"
-              href={conversationInfo?.agent2?.tradeLink}
+              to={conversationInfo?.agent2?.tradeLink}
               target="_blank"
             >
               <span className="text-13 font-medium text-mercury-600">
@@ -83,27 +74,19 @@ const HostsBox = ({ conversationInfo }: { conversationInfo: any }) => {
                 )}
               </span>
               <ExternalLinkIcon />
-            </a>
+            </Link>
           </div>
         </div>
         <div className="flex items-center gap-3">
-          <a
-            type="button"
-            href={conversationInfo?.agent2?.tradeLink}
-            target="_blank"
-          >
-            <DexScreenerIcon />
-          </a>
-          <a type="button" href={conversationInfo?.agent2?.x} target="_blank">
+          <Link to={conversationInfo?.agent2?.tradeLink} target="_blank">
+            <AgentDotLandIcon size={20} />
+          </Link>
+          <Link to={conversationInfo?.agent2?.x} target="_blank">
             <TwitterIcon size={20} />
-          </a>
-          <a
-            type="button"
-            href={conversationInfo?.agent2?.telegram}
-            target="_blank"
-          >
+          </Link>
+          <Link to={conversationInfo?.agent2?.telegram} target="_blank">
             <TelegramOutlineIcon size={20} />
-          </a>
+          </Link>
         </div>
       </div>
       <div className="absolute -top-[11px] left-1 flex h-[22px] items-center gap-[6px] rounded-full border border-mercury-100 bg-white/30 px-1 backdrop-blur-[1.5px]">

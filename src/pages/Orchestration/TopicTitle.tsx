@@ -1,5 +1,4 @@
 import AvatarCustom from "@components/AvatarCustom"
-import { ShareArrowIcon } from "@components/Icons/Share"
 
 const TopicTitle = ({ conversationInfo }: { conversationInfo: any }) => {
   return (
@@ -21,9 +20,9 @@ const TopicTitle = ({ conversationInfo }: { conversationInfo: any }) => {
           </div>
           {/* <span className="text-14 text-mercury-950">2 days ago</span> */}
         </div>
-        <button type="button">
+        {/* <button type="button">
           <ShareArrowIcon />
-        </button>
+        </button> */}
       </div>
     </div>
   )
