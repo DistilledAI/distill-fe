@@ -6,6 +6,7 @@ import {
   TelegramOutlineIcon,
 } from "@components/Icons/SocialLinkIcon"
 import { TwitterIcon } from "@components/Icons/Twitter"
+import { centerTextEllipsis } from "@utils/index"
 
 const HostsBox = ({ conversationInfo }: { conversationInfo: any }) => {
   return (
@@ -28,7 +29,10 @@ const HostsBox = ({ conversationInfo }: { conversationInfo: any }) => {
               target="_blank"
             >
               <span className="text-13 font-medium text-mercury-600">
-                {conversationInfo?.agent1?.contractAddress}
+                {centerTextEllipsis(
+                  conversationInfo?.agent1?.contractAddress,
+                  8,
+                )}
               </span>
               <ExternalLinkIcon />
             </a>
@@ -73,7 +77,10 @@ const HostsBox = ({ conversationInfo }: { conversationInfo: any }) => {
               target="_blank"
             >
               <span className="text-13 font-medium text-mercury-600">
-                {conversationInfo?.agent2?.contractAddress}
+                {centerTextEllipsis(
+                  conversationInfo?.agent2?.contractAddress,
+                  8,
+                )}
               </span>
               <ExternalLinkIcon />
             </a>

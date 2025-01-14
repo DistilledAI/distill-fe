@@ -79,7 +79,7 @@ const AppRouter = () => {
             element={<AuthorProfile />}
           />
           <Route
-            path={`${PATH_NAMES.ORCHESTRATION}/:conversationId`}
+            path={`${PATH_NAMES.ORCHESTRATION}/:chatId`}
             element={<Orchestration />}
           />
           {isMobile && (

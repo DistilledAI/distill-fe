@@ -1,15 +1,12 @@
 import { useEffect } from "react"
 import { useParams } from "react-router-dom"
-
 import { PATH_NAMES } from "@constants/index"
-import useAuthState from "@hooks/useAuthState"
 import { IMessageBox } from "@pages/ChatPage/ChatBox/ChatMessages/helpers"
 import { IGroup } from "@pages/ChatPage/ChatBox/LeftBar/useFetchGroups"
 import { IUser } from "@reducers/userSlice"
 import {
   InfiniteData,
   useInfiniteQuery,
-  useQuery,
   useQueryClient,
 } from "@tanstack/react-query"
 import { useNavigate } from "react-router-dom"
@@ -67,17 +64,13 @@ export interface ICachedMessageData {
 
 export const chatMessagesKey = (chatId: string | undefined) => {
   if (!chatId) return []
-  return [QueryDataKeys.CHAT_MESSAGES, chatId.toString()]
+  return [QueryDataKeys.CHAT_CONVERSATION, chatId.toString()]
 }
 
 const useFetchConversation = () => {
-  const { user, isLogin } = useAuthState()
-  const { conversationId: groupId } = useParams()
+  const { chatId: groupId } = useParams()
   const navigate = useNavigate()
   const queryClient = useQueryClient()
-  const { data: hasJoinedGroup } = useQuery<boolean>({
-    queryKey: [QueryDataKeys.HAS_JOINED_GROUP],
-  })
 
   const fetchMessages = async ({ pageParam = 0 }) => {
     if (!groupId) return
@@ -106,7 +99,7 @@ const useFetchConversation = () => {
   } = useInfiniteQuery({
     queryKey: chatMessagesKey(groupId),
     queryFn: fetchMessages,
-    enabled: isLogin && !!groupId && hasJoinedGroup,
+    enabled: !!groupId,
     getNextPageParam: (lastPage) => lastPage?.nextOffset,
     getPreviousPageParam: (firstPage) => firstPage?.nextOffset,
     refetchOnWindowFocus: false,

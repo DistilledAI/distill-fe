@@ -38,7 +38,7 @@ const OrchestrationHeader = ({
           src={agent2?.avatar}
         />
       </div>
-      <div>
+      <div className="text-left">
         <h4
           className={twMerge(
             "text-left text-[14px] font-bold text-mercury-800",

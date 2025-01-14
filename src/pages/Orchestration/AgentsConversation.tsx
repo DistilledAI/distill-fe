@@ -65,7 +65,7 @@ const AgentsConversation = () => {
       chatId={groupId}
       isChatActions={false}
       msgBoxClassName="p-0 "
-      className="pt-4 md:max-h-full"
+      className="pt-4 md:max-h-[96%]"
       scrollBottomClassName="md:!bottom-10 h-40"
     />
   )

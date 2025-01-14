@@ -19,7 +19,7 @@ const TopicTitle = ({ conversationInfo }: { conversationInfo: any }) => {
               {conversationInfo?.agent1?.name}
             </span>
           </div>
-          <span className="text-14 text-mercury-950">2 days ago</span>
+          {/* <span className="text-14 text-mercury-950">2 days ago</span> */}
         </div>
         <button type="button">
           <ShareArrowIcon />

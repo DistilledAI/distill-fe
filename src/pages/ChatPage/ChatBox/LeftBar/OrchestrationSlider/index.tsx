@@ -5,11 +5,11 @@ import {
   racksAvatar,
 } from "@assets/images"
 import { ChevronDownIcon } from "@components/Icons/ChevronDownIcon"
-import { PATH_NAMES } from "@constants/index"
-import { useNavigate } from "react-router-dom"
 import { Navigation } from "swiper/modules"
 import { Swiper, SwiperSlide } from "swiper/react"
 import OrchestrationCard from "./OrchestrationCard"
+import { useNavigate } from "react-router-dom"
+import { PATH_NAMES } from "@constants/index"
 
 export const ORCHESTRATION_LIST = [
   {
@@ -71,32 +71,38 @@ const OrchestrationSlider = () => {
       <Swiper
         spaceBetween={8}
         slidesPerView={1.3}
-        loop={true}
+        loop={false}
         modules={[Navigation]}
         navigation={{
           nextEl: ".custom-next",
-          prevEl: null,
+          prevEl: ".custom-prev",
         }}
       >
-        {ORCHESTRATION_LIST.map((item, index) => (
+        {ORCHESTRATION_LIST.map((item: any) => (
           <SwiperSlide
-            key={index}
+            key={item.conversationId}
             className="min-w-[200px]"
-            onClick={() => {
-              navigate(`${PATH_NAMES.ORCHESTRATION}/${item.conversationId}`, {
-                replace: true,
-              })
-            }}
+            onClick={() =>
+              navigate(`${PATH_NAMES.ORCHESTRATION}/${item.conversationId}`)
+            }
           >
             <OrchestrationCard item={item} />
           </SwiperSlide>
         ))}
       </Swiper>
       <button
-        className="custom-next absolute -right-3 top-1/2 z-10 h-6 w-6 -translate-y-1/2 transform rounded-full bg-[#5454541A] p-2 shadow-10 backdrop-blur-[10px]"
+        className="custom-next absolute -right-3 top-1/2 z-10 flex h-6 w-6 -translate-y-1/2 transform items-center justify-center rounded-full bg-[#5454541A] shadow-10 backdrop-blur-[10px]"
         aria-label="Next slide"
       >
-        <div className="-rotate-90">
+        <div className="w-fit -rotate-90">
+          <ChevronDownIcon color="#676767" />
+        </div>
+      </button>
+      <button
+        className="custom-prev absolute -left-3 top-1/2 z-10 flex h-6 w-6 -translate-y-1/2 transform items-center justify-center rounded-full bg-[#5454541A] shadow-10 backdrop-blur-[10px]"
+        aria-label="Next slide"
+      >
+        <div className="w-fit -rotate-[270deg]">
           <ChevronDownIcon color="#676767" />
         </div>
       </button>

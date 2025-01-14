@@ -1,19 +1,19 @@
-import { ORCHESTRATION_LIST } from "@pages/ChatPage/ChatBox/LeftBar/OrchestrationSlider"
 import { useParams } from "react-router-dom"
 import AgentsConversation from "./AgentsConversation"
 import HostsBox from "./HostsBox"
 import TopicTitle from "./TopicTitle"
 import UserConversation from "./UserConversation"
+import { ORCHESTRATION_LIST } from "@pages/ChatPage/ChatBox/LeftBar/OrchestrationSlider"
 
 const Orchestration = () => {
-  const { conversationId } = useParams()
+  const { chatId: conversationId } = useParams()
   const conversationInfo = ORCHESTRATION_LIST.find(
-    (item: any) => (item.conversationId = conversationId),
+    (item: any) => item.conversationId.toString() === conversationId,
   )
 
   return (
-    <div className="grid h-full max-h-[calc(100dvh-68px)] grid-cols-3 gap-12 overflow-hidden p-4 pl-12">
-      <div className="col-span-2">
+    <div className="grid h-full max-h-[calc(100dvh-68px)] grid-cols-[1fr_400px] gap-6 overflow-hidden p-4 pl-6">
+      <div>
         <TopicTitle conversationInfo={conversationInfo} />
         <HostsBox conversationInfo={conversationInfo} />
         <AgentsConversation />
