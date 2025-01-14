@@ -7,10 +7,13 @@ import {
 import AvatarCustom from "@components/AvatarCustom"
 import ChatWindow from "@components/ChatWindow"
 import MarkdownMessage from "@components/Markdown"
+import useConversationSocket from "@pages/ChatPage/ChatBox/useConversationSocket"
 import { twMerge } from "tailwind-merge"
 import useFetchConversation from "./useFetchConversation"
 
 const AgentsConversation = () => {
+  useConversationSocket()
+
   const {
     isLoading,
     isFetched,

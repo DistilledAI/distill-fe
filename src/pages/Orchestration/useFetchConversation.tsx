@@ -1,5 +1,3 @@
-import { useEffect } from "react"
-import { useParams } from "react-router-dom"
 import { PATH_NAMES } from "@constants/index"
 import { IMessageBox } from "@pages/ChatPage/ChatBox/ChatMessages/helpers"
 import { IGroup } from "@pages/ChatPage/ChatBox/LeftBar/useFetchGroups"
@@ -9,7 +7,8 @@ import {
   useInfiniteQuery,
   useQueryClient,
 } from "@tanstack/react-query"
-import { useNavigate } from "react-router-dom"
+import { useEffect } from "react"
+import { useNavigate, useParams } from "react-router-dom"
 import { getAgentConversation } from "services/group"
 import { QueryDataKeys } from "types/queryDataKeys"
 import { EmojiReaction } from "types/reactions"
@@ -62,7 +61,7 @@ export interface ICachedMessageData {
   }>
 }
 
-export const chatMessagesKey = (chatId: string | undefined) => {
+export const chatConversationKey = (chatId: string | undefined) => {
   if (!chatId) return []
   return [QueryDataKeys.CHAT_CONVERSATION, chatId.toString()]
 }
@@ -97,7 +96,7 @@ const useFetchConversation = () => {
     isLoading,
     isFetchingPreviousPage,
   } = useInfiniteQuery({
-    queryKey: chatMessagesKey(groupId),
+    queryKey: chatConversationKey(groupId),
     queryFn: fetchMessages,
     enabled: !!groupId,
     getNextPageParam: (lastPage) => lastPage?.nextOffset,
@@ -109,7 +108,7 @@ const useFetchConversation = () => {
   })
 
   const resetInfiniteQueryPagination = () => {
-    queryClient.setQueryData(chatMessagesKey(groupId), (oldData: any) => {
+    queryClient.setQueryData(chatConversationKey(groupId), (oldData: any) => {
       if (!oldData) return undefined
       const lastPages = oldData.pages.slice(-1)
       const lastPageParams = oldData.pageParams.slice(-1)
@@ -120,7 +119,7 @@ const useFetchConversation = () => {
       }
     })
     queryClient.invalidateQueries({
-      queryKey: chatMessagesKey(groupId),
+      queryKey: chatConversationKey(groupId),
     })
     queryClient.invalidateQueries({
       queryKey: [QueryDataKeys.DELEGATE_PRIVATE_AGENT, groupId],
