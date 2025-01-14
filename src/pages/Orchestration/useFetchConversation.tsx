@@ -80,15 +80,12 @@ const useFetchConversation = () => {
   })
 
   const fetchMessages = async ({ pageParam = 0 }) => {
-    console.log("🚀 ~ useFetchConversation ~ groupId:", groupId)
-
     if (!groupId) return
 
     const res = await getAgentConversation({
       id: Number(groupId),
       offset: pageParam,
     })
-    console.log("🚀 ~ fetchMessages ~ res:", res)
     return {
       messages: res.data.items,
       nextOffset:

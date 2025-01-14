@@ -12,14 +12,8 @@ interface Props {
   }
   name: string
   tag: string
-  agent1: {
-    avatarSrc: string
-    publicAddress: string
-  }
-  agent2: {
-    avatarSrc: string
-    publicAddress: string
-  }
+  agent1: any
+  agent2: any
 }
 
 const OrchestrationHeader = ({
@@ -33,8 +27,7 @@ const OrchestrationHeader = ({
     <div className={twMerge("flex gap-6", classNames?.wrapper)}>
       <div className={twMerge("relative", classNames?.avatarWrapper)}>
         <AvatarCustom
-          src={agent1?.avatarSrc}
-          publicAddress={agent1.publicAddress}
+          src={agent1?.avatar}
           className={twMerge("h-7 w-7", classNames?.avatar1)}
         />
         <AvatarCustom
@@ -42,8 +35,7 @@ const OrchestrationHeader = ({
             "absolute -right-3 top-3 z-[-1] h-7 w-7",
             classNames?.avatar2,
           )}
-          src={agent2?.avatarSrc}
-          publicAddress={agent2?.publicAddress}
+          src={agent2?.avatar}
         />
       </div>
       <div>

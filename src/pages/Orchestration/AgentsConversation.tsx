@@ -1,7 +1,12 @@
+import {
+  gnrtAvatar,
+  leeQuidAvatar,
+  maxAvatar,
+  racksAvatar,
+} from "@assets/images"
 import AvatarCustom from "@components/AvatarCustom"
 import ChatWindow from "@components/ChatWindow"
 import MarkdownMessage from "@components/Markdown"
-import { IMessageBox } from "@pages/ChatPage/ChatBox/ChatMessages/helpers"
 import { twMerge } from "tailwind-merge"
 import useFetchConversation from "./useFetchConversation"
 
@@ -16,9 +21,14 @@ const AgentsConversation = () => {
     groupId,
   } = useFetchConversation()
 
-  // const conversationDetail = ORCHESTRATION_LIST.find(item => item.conversationId = )
+  const AVATAR = {
+    [`Lee Quid`]: leeQuidAvatar,
+    ["Max"]: maxAvatar,
+    ["BlackRack"]: racksAvatar,
+    ["GNRT"]: gnrtAvatar,
+  } as any
 
-  const renderMessage = (index: number, message: IMessageBox) => {
+  const renderMessage = (index: number, message: any) => {
     return (
       <div
         className={twMerge(
@@ -30,7 +40,7 @@ const AgentsConversation = () => {
         <div className="group/item relative flex gap-3 md:gap-4">
           <AvatarCustom
             key={message.id}
-            src={message?.avatar}
+            src={AVATAR[message?.agentName]}
             publicAddress={message?.publicAddress}
             className="relative"
             loading="lazy"

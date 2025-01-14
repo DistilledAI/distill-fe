@@ -1,8 +1,5 @@
-import { maxAvatar } from "@assets/images"
 import OrchestrationHeader from "@components/ChatInfoCurrent/OrchestrationHeader"
 import { BroadcastIcon } from "@components/Icons/Broadcast"
-import { PATH_NAMES } from "@constants/index"
-import { useNavigate } from "react-router-dom"
 
 interface Props {
   item: {
@@ -12,39 +9,29 @@ interface Props {
     tag: string
     topic: string
     conversationId: number
+    agent1?: any
+    agent2?: any
   }
 }
 
 const OrchestrationCard = ({ item }: Props) => {
-  const navigate = useNavigate()
   return (
     <div
       className="flex w-full cursor-pointer flex-col gap-2 rounded-[22px] rounded-bl-none bg-mercury-800 p-3"
       style={{
         background: "linear-gradient(71deg, #000 0%, #797676 100%)",
       }}
-      onClick={() =>
-        navigate(`${PATH_NAMES.ORCHESTRATION}/${item.conversationId}`, {
-          state: item,
-        })
-      }
     >
       <div className="flex justify-between">
         <OrchestrationHeader
-          agent1={{
-            avatarSrc: maxAvatar,
-            publicAddress: "orai...Vo5h",
-          }}
-          agent2={{
-            avatarSrc: "",
-            publicAddress: "orai...Vo5h",
-          }}
-          name="Max & Min"
-          tag="Orchestration"
+          agent1={item?.agent1}
+          agent2={item?.agent2}
+          name={item.name}
+          tag={item.tag}
           classNames={{
             wrapper: "gap-5",
             avatarWrapper: "z-0",
-            name: "text-[16px] font-bold text-white leading-[110%] tracking-[-0.16px] line-clamp-1",
+            name: "text-[14px] font-bold text-white leading-[110%] tracking-[-0.16px] line-clamp-1",
             tag: "bg-white/10 rounded text-[13px] text-white/60 font-medium px-1 leading-[100%] tracking-[-0.325px] line-camp-1",
           }}
         />
