@@ -4,13 +4,12 @@ import {
   maxAvatar,
   racksAvatar,
 } from "@assets/images"
-import AvatarCustom from "@components/AvatarCustom"
 import ChatWindow from "@components/ChatWindow"
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
-import MarkdownMessage from "@components/Markdown"
 import useConversationSocket from "@pages/ChatPage/ChatBox/useConversationSocket"
 import { twMerge } from "tailwind-merge"
 import useFetchConversation from "./useFetchConversation"
+import ReceiverMessage from "@components/ReceiverMessage"
 
 const AgentsConversation = () => {
   useConversationSocket()
@@ -41,20 +40,20 @@ const AgentsConversation = () => {
           index === messages.length - 1 && "pb-32 md:pb-40",
         )}
       >
-        <div className="relative flex gap-3 md:gap-4">
-          <AvatarCustom
-            key={message.id}
-            src={AVATAR[message?.agentName]}
-            publicAddress={message?.publicAddress}
-            loading="lazy"
-            badgeIcon={<FilledBrainAIIcon size={14} />}
-            className="relative max-md:h-6 max-md:w-6"
-            badgeClassName="bg-[#FC0] min-w-4 min-h-4 max-md:w-4 max-md:h-4 md:min-w-[18px] md:min-h-[18px]"
-          />
-          <div className="relative flex flex-1 flex-col">
-            <MarkdownMessage msg={message?.messages} />
-          </div>
-        </div>
+        <ReceiverMessage
+          key={message.id}
+          avatar={{
+            src: AVATAR[message?.agentName],
+            badgeIcon: <FilledBrainAIIcon size={14} />,
+            className: "relative max-md:h-6 max-md:w-6",
+            badgeClassName:
+              "bg-[#FC0] min-w-4 min-h-4 max-md:w-4 max-md:h-4 md:min-w-[18px] md:min-h-[18px]",
+            loading: "lazy",
+          }}
+          content={message.messages}
+          isTyping={message.isTyping}
+          baseClassName="relative flex gap-3 md:gap-4"
+        />
       </div>
     )
   }
@@ -71,7 +70,7 @@ const AgentsConversation = () => {
       chatId={groupId}
       isChatActions={false}
       msgBoxClassName="p-0 "
-      className="max-h-[calc(100dvh-250px)] pt-1 md:max-h-[96%] md:pt-4"
+      className="max-h-[calc(100dvh-250px)] pt-1 md:max-h-[calc(100dvh-135px)]"
       scrollBottomClassName="max-md:fixed !bottom-[11.7%] h-32 md:h-40 md:!bottom-24"
       increaseViewportBy={1000}
     />

@@ -42,7 +42,14 @@ const useConversationSocket = () => {
             ...cachedData.pages.slice(0, -1),
             {
               ...lastPage,
-              messages: [...lastPage.messages, e],
+              messages: [
+                ...lastPage.messages,
+                {
+                  ...e,
+                  id: e.idLlm,
+                  isTyping: true,
+                },
+              ],
             },
           ],
         }
@@ -75,10 +82,20 @@ const useConversationSocket = () => {
             {
               ...lastPage,
               messages: lastPage.messages.map((item: any) => {
-                if (item.idLlm === e.idLlm) {
+                if (item.id === e.idLlm) {
+                  // const oldMessages = removeLeadingDots(item.content)
+                  // const newMessages = isPlusMsg
+                  //   ? oldMessages + e.messages
+                  //   : e.messages
+
+                  // if (newMessages === oldMessages) {
+                  //   return item
+                  // }
+
                   return {
                     ...item,
                     messages: e.messages,
+                    isTyping: false,
                   }
                 }
                 return item
@@ -92,6 +109,7 @@ const useConversationSocket = () => {
 
   const handleResponseForMessage = (e: any) => {
     if (e.event === StatusMessageSocket.TYPING) addNewMsg(e)
+    // if (e.event === StatusMessageSocket.UPDATE) updateNewMsg(e)
     if (e.event === StatusMessageSocket.DONE) updateNewMsg(e)
   }
 

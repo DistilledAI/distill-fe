@@ -20,7 +20,7 @@ const TopicTitle = ({ conversationInfo }: { conversationInfo: any }) => {
         >
           <ChevronDownIcon />
         </button>
-        <h3 className="text-wrap text-18 font-semibold text-mercury-950 max-sm:max-w-[400px] md:text-24">
+        <h3 className="line-clamp-2 text-wrap text-18 font-semibold text-mercury-950 max-md:max-w-[400px] md:text-22">
           {conversationInfo?.topic}
         </h3>
       </div>

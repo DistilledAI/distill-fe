@@ -92,12 +92,7 @@ const MarkdownMessage = ({ msg }: { msg: string }) => {
     p: ({ children }: any) => {
       const wordBreakStyle = checkTextBreak(children)
       return (
-        <p
-          className={twMerge(
-            wordBreakStyle,
-            "text-[16px] font-medium text-mercury-900",
-          )}
-        >
+        <p className={twMerge(wordBreakStyle, "text-[16px] font-medium")}>
           {children}
         </p>
       )
