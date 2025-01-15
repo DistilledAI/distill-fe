@@ -3,7 +3,7 @@ import AvatarCustom from "@components/AvatarCustom"
 const TopicTitle = ({ conversationInfo }: { conversationInfo: any }) => {
   return (
     <div>
-      <h3 className="text-24 font-semibold text-mercury-950">
+      <h3 className="text-wrap text-24 font-semibold text-mercury-950 max-sm:max-w-[400px] max-sm:text-20">
         {conversationInfo?.topic}
       </h3>
       <div className="flex items-center justify-between">
@@ -18,7 +18,6 @@ const TopicTitle = ({ conversationInfo }: { conversationInfo: any }) => {
               {conversationInfo?.agent1?.name}
             </span>
           </div>
-          {/* <span className="text-14 text-mercury-950">2 days ago</span> */}
         </div>
         {/* <button type="button">
           <ShareArrowIcon />

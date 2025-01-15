@@ -1,5 +1,6 @@
 import OrchestrationHeader from "@components/ChatInfoCurrent/OrchestrationHeader"
 import { BroadcastIcon } from "@components/Icons/Broadcast"
+import { useParams } from "react-router-dom"
 
 interface Props {
   item: {
@@ -15,12 +16,15 @@ interface Props {
 }
 
 const OrchestrationCard = ({ item }: Props) => {
+  const { chatId: conversationId } = useParams()
+
   return (
     <div
-      className="flex w-full cursor-pointer flex-col gap-2 rounded-[22px] rounded-bl-none bg-mercury-800 p-3"
+      className="flex w-full cursor-pointer flex-col gap-2 rounded-[22px] rounded-bl-none bg-mercury-800 p-3 aria-selected:opacity-40"
       style={{
         background: "linear-gradient(71deg, #000 0%, #797676 100%)",
       }}
+      aria-selected={item.conversationId !== Number(conversationId)}
     >
       <div className="flex justify-between">
         <OrchestrationHeader

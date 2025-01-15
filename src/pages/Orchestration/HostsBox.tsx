@@ -10,16 +10,16 @@ import { Link } from "react-router-dom"
 const HostsBox = ({ conversationInfo }: { conversationInfo: any }) => {
   return (
     <div className="relative mt-6 flex gap-4 rounded-[14px] border border-mercury-100 bg-mercury-50 px-4 py-[18px]">
-      <div className="flex flex-1 items-center justify-between">
-        <div className="flex items-center gap-3">
+      <div className="flex flex-1 items-center justify-between max-sm:flex-col">
+        <div className="flex items-center gap-3 max-sm:mb-1">
           <AvatarCustom
+            className="h-11 w-11 rounded-lg max-sm:h-8 max-sm:w-8"
             src={conversationInfo?.agent1?.avatar}
             badgeIcon={<FilledBrainAIIcon size={14} />}
             badgeClassName="bg-transparent bg-[#FC0] w-[18px] h-[18px]"
-            className="h-11 w-11 rounded-lg"
           />
           <div>
-            <h4 className="text-16 font-bold text-mercury-950">
+            <h4 className="text-16 font-bold text-mercury-950 max-sm:text-14">
               {conversationInfo?.agent1?.name}
             </h4>
             <a
@@ -37,6 +37,7 @@ const HostsBox = ({ conversationInfo }: { conversationInfo: any }) => {
             </a>
           </div>
         </div>
+
         <div className="flex items-center gap-3">
           <Link to={conversationInfo?.agent1?.tradeLink} target="_blank">
             <AgentDotLandIcon size={20} />
@@ -49,17 +50,19 @@ const HostsBox = ({ conversationInfo }: { conversationInfo: any }) => {
           </Link>
         </div>
       </div>
+
       <div className="h-11 w-[1px] bg-mercury-100" />
-      <div className="flex flex-1 items-center justify-between">
-        <div className="flex items-center gap-3">
+
+      <div className="flex flex-1 items-center justify-between max-sm:flex-col">
+        <div className="flex items-center gap-3 max-sm:mb-1">
           <AvatarCustom
+            className="h-11 w-11 rounded-lg max-sm:h-8 max-sm:w-8"
             src={conversationInfo?.agent2?.avatar}
             badgeIcon={<FilledBrainAIIcon size={14} />}
             badgeClassName="bg-transparent bg-[#FC0] w-[18px] h-[18px]"
-            className="h-11 w-11 rounded-lg"
           />
           <div>
-            <h4 className="text-16 font-bold text-mercury-950">
+            <h4 className="text-16 font-bold text-mercury-950 max-sm:text-14">
               {conversationInfo?.agent2?.name}
             </h4>
             <Link
@@ -89,6 +92,7 @@ const HostsBox = ({ conversationInfo }: { conversationInfo: any }) => {
           </Link>
         </div>
       </div>
+
       <div className="absolute -top-[11px] left-1 flex h-[22px] items-center gap-[6px] rounded-full border border-mercury-100 bg-white/30 px-1 backdrop-blur-[1.5px]">
         <span className="relative flex h-2 w-2">
           <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#A5DC004D] opacity-75" />
