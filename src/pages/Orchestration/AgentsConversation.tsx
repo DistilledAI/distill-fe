@@ -38,7 +38,7 @@ const AgentsConversation = () => {
         className={twMerge(
           "p-4 pb-5 pt-0",
           index === 0 && "pt-6",
-          index === messages.length - 1 && "pb-40",
+          index === messages.length - 1 && "pb-32 md:pb-40",
         )}
       >
         <div className="relative flex gap-3 md:gap-4">
@@ -71,7 +71,7 @@ const AgentsConversation = () => {
       chatId={groupId}
       isChatActions={false}
       msgBoxClassName="p-0 "
-      className="max-h-[calc(100dvh-280px)] pt-4 md:max-h-[96%]"
+      className="max-h-[calc(100dvh-250px)] pt-1 md:max-h-[96%] md:pt-4"
       scrollBottomClassName="max-md:fixed !bottom-[11.7%] h-32 md:h-40 md:!bottom-24"
       increaseViewportBy={1000}
     />

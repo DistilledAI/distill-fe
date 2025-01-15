@@ -9,7 +9,7 @@ import { Link } from "react-router-dom"
 
 const HostsBox = ({ conversationInfo }: { conversationInfo: any }) => {
   return (
-    <div className="relative mt-6 flex gap-4 rounded-[14px] border border-mercury-100 bg-mercury-50 px-2 py-3 md:px-4 md:py-[18px]">
+    <div className="relative mt-4 flex gap-4 rounded-[14px] border border-mercury-100 bg-mercury-50 px-2 py-3 md:mt-6 md:px-4 md:py-[18px]">
       <div className="flex flex-1 items-center justify-between max-sm:flex-col">
         <div className="flex items-center gap-3 max-sm:mb-1">
           <AvatarCustom

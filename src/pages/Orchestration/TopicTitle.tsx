@@ -16,11 +16,11 @@ const TopicTitle = ({ conversationInfo }: { conversationInfo: any }) => {
         <button
           type="button"
           onClick={() => navigate(PATH_NAMES.HOME)}
-          className="flex h-8 w-8 min-w-8 rotate-90 items-center justify-center rounded-full bg-mercury-70 p-0 md:hidden"
+          className="flex h-7 w-7 min-w-7 rotate-90 items-center justify-center rounded-full bg-mercury-70 p-0 md:hidden"
         >
           <ChevronDownIcon />
         </button>
-        <h3 className="text-wrap text-24 font-semibold text-mercury-950 max-sm:max-w-[400px] max-sm:text-20">
+        <h3 className="text-wrap text-18 font-semibold text-mercury-950 max-sm:max-w-[400px] md:text-24">
           {conversationInfo?.topic}
         </h3>
       </div>

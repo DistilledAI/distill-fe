@@ -118,7 +118,7 @@ const UserConversation = () => {
         isChatActions={false}
         msgBoxClassName="p-0"
         className={twMerge(
-          "h-[10dvh] px-3 md:max-h-[calc(100%-60px)]",
+          "px-3 max-md:hidden md:max-h-[calc(100%-60px)]",
           isOpen && "max-md:block max-md:h-[64dvh]",
         )}
       />
