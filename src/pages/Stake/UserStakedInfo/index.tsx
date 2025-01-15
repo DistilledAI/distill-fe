@@ -5,8 +5,11 @@ import { numberWithCommas, toBN } from "@utils/format"
 import { useSearchParams } from "react-router-dom"
 import { getInfoTokenByAddress } from "../helpers"
 import { StakeTokenAddress } from ".."
+import { useDisclosure } from "@nextui-org/react"
+import ClaimReward from "./ClaimReward"
 
 const UserStakedInfo = ({ total }: { total: number }) => {
+  const { isOpen, onClose, onOpenChange } = useDisclosure()
   const { data: prices } = useCoinGeckoPrices()
   const [searchParams] = useSearchParams()
   const tokenAddress = searchParams.get("token")
@@ -109,6 +112,13 @@ const UserStakedInfo = ({ total }: { total: number }) => {
       <div className="cursor-default font-semibold text-brown-600 opacity-65 max-md:mt-3 max-md:w-full max-md:text-center max-md:text-14">
         Claim Rewards
       </div>
+      {isOpen && (
+        <ClaimReward
+          isOpen={isOpen}
+          onOpenChange={onOpenChange}
+          onClose={onClose}
+        />
+      )}
     </div>
   )
 }
