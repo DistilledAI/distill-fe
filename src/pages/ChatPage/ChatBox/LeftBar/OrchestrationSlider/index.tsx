@@ -43,8 +43,8 @@ export const ORCHESTRATION_LIST = [
       contractAddress: "oraim8c9d1nkfuQk9EzGYEUGxqL3MHQYndRw1huVo5h",
       tradeLink:
         "https://dexscreener.com/solana/4Qgn7AixnZJBwfFL5XmRDBVyzzq9tC6JdDToaKVhPJvz",
-      telegram: "https://t.me/leequidclan",
-      x: "https://x.com/LeeQuid_AI",
+      telegram: "https://t.me/maxisbuyin",
+      x: "https://x.com/maxisbuyin_",
     },
     agent2: {
       avatar: gnrtAvatar,
