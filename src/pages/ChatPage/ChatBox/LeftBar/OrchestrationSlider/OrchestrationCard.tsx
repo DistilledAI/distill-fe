@@ -24,7 +24,9 @@ const OrchestrationCard = ({ item }: Props) => {
       style={{
         background: "linear-gradient(71deg, #000 0%, #797676 100%)",
       }}
-      aria-selected={item.conversationId !== Number(conversationId)}
+      aria-selected={
+        item.conversationId !== Number(conversationId) && !!conversationId
+      }
     >
       <div className="flex justify-between">
         <OrchestrationHeader
@@ -41,7 +43,7 @@ const OrchestrationCard = ({ item }: Props) => {
         />
         <BroadcastIcon />
       </div>
-      <h5 className="text-13 font-bold leading-[140%] tracking-[-0.325px] text-mercury-100">
+      <h5 className="min-h-[36px] text-13 font-bold leading-[140%] tracking-[-0.325px] text-mercury-100">
         {item.topic}
       </h5>
     </div>

@@ -12,6 +12,7 @@ import useGetChatId from "../hooks/useGetChatId"
 import ChatList from "./ChatList"
 import ChatSearch from "./ChatSearch"
 import VideoCustom from "@components/VideoCustom"
+import OrchestrationSlider from "../ChatBox/LeftBar/OrchestrationSlider"
 
 const ChatPageMobile = () => {
   const { privateChatId } = useParams()
@@ -54,8 +55,13 @@ const ChatPageMobile = () => {
           </div>
         )}
       </div>
-      <div className="h-[calc(100vh-110px)] w-full bg-[rgba(255,255,255,0.85)] pt-[56px]">
-        <ChatList />
+      <div className="flex h-[calc(100vh-110px)] w-full flex-col bg-[rgba(255,255,255,0.85)] pt-[56px]">
+        <div className="flex-1">
+          <ChatList />
+        </div>
+        <div className="px-4 py-1">
+          <OrchestrationSlider />
+        </div>
       </div>
     </div>
   )
