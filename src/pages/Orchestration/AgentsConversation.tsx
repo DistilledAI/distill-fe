@@ -36,20 +36,20 @@ const AgentsConversation = () => {
     return (
       <div
         className={twMerge(
-          "p-4 pb-6 pt-0",
+          "p-4 pb-5 pt-0",
           index === 0 && "pt-6",
           index === messages.length - 1 && "pb-40",
         )}
       >
-        <div className="group/item relative flex gap-3 md:gap-4">
+        <div className="relative flex gap-3 md:gap-4">
           <AvatarCustom
             key={message.id}
             src={AVATAR[message?.agentName]}
             publicAddress={message?.publicAddress}
-            className="relative"
             loading="lazy"
             badgeIcon={<FilledBrainAIIcon size={14} />}
-            badgeClassName="bg-[#FC0] w-[18px] h-[18px]"
+            className="relative max-md:h-6 max-md:w-6"
+            badgeClassName="bg-[#FC0] min-w-4 min-h-4 max-md:w-4 max-md:h-4 md:min-w-[18px] md:min-h-[18px]"
           />
           <div className="relative flex flex-1 flex-col">
             <MarkdownMessage msg={message?.messages} />
@@ -71,8 +71,9 @@ const AgentsConversation = () => {
       chatId={groupId}
       isChatActions={false}
       msgBoxClassName="p-0 "
-      className="pt-4 md:max-h-[96%]"
-      scrollBottomClassName="md:!bottom-24 h-40"
+      className="max-h-[calc(100dvh-250px)] pt-4 md:max-h-[96%]"
+      scrollBottomClassName="max-md:fixed !bottom-[11.7%] h-32 md:h-40 md:!bottom-24"
+      increaseViewportBy={1000}
     />
   )
 }

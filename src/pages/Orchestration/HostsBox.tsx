@@ -9,14 +9,14 @@ import { Link } from "react-router-dom"
 
 const HostsBox = ({ conversationInfo }: { conversationInfo: any }) => {
   return (
-    <div className="relative mt-6 flex gap-4 rounded-[14px] border border-mercury-100 bg-mercury-50 px-4 py-[18px]">
+    <div className="relative mt-6 flex gap-4 rounded-[14px] border border-mercury-100 bg-mercury-50 px-2 py-3 md:px-4 md:py-[18px]">
       <div className="flex flex-1 items-center justify-between max-sm:flex-col">
         <div className="flex items-center gap-3 max-sm:mb-1">
           <AvatarCustom
-            className="h-11 w-11 rounded-lg max-sm:h-8 max-sm:w-8"
             src={conversationInfo?.agent1?.avatar}
             badgeIcon={<FilledBrainAIIcon size={14} />}
-            badgeClassName="bg-transparent bg-[#FC0] w-[18px] h-[18px]"
+            className="h-8 w-8 rounded-lg md:h-11 md:w-11"
+            badgeClassName="bg-[#FC0] min-w-4 min-h-4 max-md:w-4 max-md:h-4 md:min-w-[18px] md:min-h-[18px]"
           />
           <div>
             <h4 className="text-16 font-bold text-mercury-950 max-sm:text-14">
@@ -56,10 +56,10 @@ const HostsBox = ({ conversationInfo }: { conversationInfo: any }) => {
       <div className="flex flex-1 items-center justify-between max-sm:flex-col">
         <div className="flex items-center gap-3 max-sm:mb-1">
           <AvatarCustom
-            className="h-11 w-11 rounded-lg max-sm:h-8 max-sm:w-8"
             src={conversationInfo?.agent2?.avatar}
             badgeIcon={<FilledBrainAIIcon size={14} />}
-            badgeClassName="bg-transparent bg-[#FC0] w-[18px] h-[18px]"
+            className="h-8 w-8 rounded-lg md:h-11 md:w-11"
+            badgeClassName="bg-[#FC0] min-w-4 min-h-4 max-md:w-4 max-md:h-4 md:min-w-[18px] md:min-h-[18px]"
           />
           <div>
             <h4 className="text-16 font-bold text-mercury-950 max-sm:text-14">

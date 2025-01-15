@@ -12,15 +12,13 @@ const Orchestration = () => {
   )
 
   return (
-    <div className="grid h-full max-h-[calc(100dvh-68px)] grid-cols-[2fr_1fr] gap-6 overflow-hidden p-4 pl-10 max-sm:flex max-sm:h-[100dvh] max-sm:flex-col">
-      <div className="max-sm:h-full">
+    <div className="relative grid h-[calc(100dvh-50px)] grid-cols-1 overflow-hidden p-2 pb-0 max-sm:flex md:h-full md:max-h-[calc(100dvh-68px)] md:grid-cols-[2fr_1fr] md:gap-6 md:p-4 md:pl-10">
+      <div className="h-full w-full">
         <TopicTitle conversationInfo={conversationInfo} />
         <HostsBox conversationInfo={conversationInfo} />
         <AgentsConversation />
       </div>
-      <div className="h-full rounded-[32px] border border-mercury-100">
-        <UserConversation />
-      </div>
+      <UserConversation />
     </div>
   )
 }

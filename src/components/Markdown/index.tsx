@@ -2,6 +2,7 @@ import { useQueryClient } from "@tanstack/react-query"
 import { getActiveColorRandomById, isImageUrl } from "@utils/index"
 import Markdown from "react-markdown"
 import { useParams } from "react-router-dom"
+import { twMerge } from "tailwind-merge"
 import { QueryDataKeys } from "types/queryDataKeys"
 
 const MarkdownMessage = ({ msg }: { msg: string }) => {
@@ -90,7 +91,16 @@ const MarkdownMessage = ({ msg }: { msg: string }) => {
     ),
     p: ({ children }: any) => {
       const wordBreakStyle = checkTextBreak(children)
-      return <p className={wordBreakStyle}>{children}</p>
+      return (
+        <p
+          className={twMerge(
+            wordBreakStyle,
+            "text-[16px] font-medium text-mercury-900",
+          )}
+        >
+          {children}
+        </p>
+      )
     },
   }
 

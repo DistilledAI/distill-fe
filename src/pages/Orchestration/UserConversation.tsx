@@ -1,8 +1,10 @@
 import ChatWindow from "@components/ChatWindow"
+import { ChevronDownIcon } from "@components/Icons/ChevronDownIcon"
 import ReCaptchaWraper from "@components/ReCaptchaWraper"
 import useAuthState from "@hooks/useAuthState"
 import useJoinGroupLive from "@hooks/useJoinGroupLive"
 import useSubmitChat from "@hooks/useSubmitChat"
+import { useDisclosure } from "@nextui-org/react"
 import MessageLive from "@pages/ChatBoxLive/MessageLive"
 import ChatInput from "@pages/ChatPage/ChatBox/ChatInput"
 import { IMessageBox } from "@pages/ChatPage/ChatBox/ChatMessages/helpers"
@@ -17,6 +19,7 @@ const UserConversation = () => {
   const [replyId, setReplyId] = useState<number>(NaN)
   const [replyTxt, setReplyTxt] = useState<string>("")
   const [hasFocus, setHasFocus] = useState(false)
+  const { isOpen, onOpenChange } = useDisclosure()
 
   const {
     isLoading,
@@ -85,7 +88,24 @@ const UserConversation = () => {
   }
 
   return (
-    <div className="relative h-full w-full">
+    <div className="absolute inset-x-0 bottom-0 z-10 w-full rounded-[14px] bg-white transition-all duration-300 ease-in-out md:relative md:h-full md:rounded-[32px] md:border md:border-mercury-100">
+      {/* header mobile */}
+      <div className="flex items-center justify-between border-b border-b-mercury-100 px-4 py-2 md:hidden">
+        <h4 className="text-16 font-bold text-mercury-950">Live Discussion</h4>
+
+        <div className="flex items-center gap-4">
+          <button
+            type="button"
+            className={twMerge(
+              "rotate-180 rounded-full p-[5.5px] hover:bg-mercury-30",
+              isOpen && "block rotate-0",
+            )}
+            onClick={onOpenChange}
+          >
+            <ChevronDownIcon />
+          </button>
+        </div>
+      </div>
       <ChatWindow
         messages={messages}
         itemContent={renderMessage}
@@ -97,10 +117,12 @@ const UserConversation = () => {
         chatId={groupId}
         isChatActions={false}
         msgBoxClassName="p-0"
-        className={"px-3 md:max-h-[calc(100%-60px)]"}
-        // scrollBottomClassName="md:!bottom-10 h-40"
+        className={twMerge(
+          "px-3 max-md:hidden md:max-h-[calc(100%-60px)]",
+          isOpen && "max-md:block max-md:h-[64dvh]",
+        )}
       />
-      <div>
+      <div className="p-2 md:p-0">
         <ChatInput
           onSubmit={onChatSubmit}
           isDisabledInput={!isEnableTextInput}
