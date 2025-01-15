@@ -7,5 +7,5 @@ export const emojiReactionsMap: EmojiReactionsMap = EMOJI_REACTIONS.reduce(
 )
 
 export const replaceAtBrackets = (input: string) => {
-  return input.replace(/@\[(\w+)\]/g, "@$1")
+  return input?.replace(/\[(.*?)\]/g, "$1")
 }

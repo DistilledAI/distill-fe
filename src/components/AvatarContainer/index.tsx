@@ -173,3 +173,29 @@ export const AvatarMention: React.FC<{
     </div>
   )
 }
+
+export const AvatarConversation: React.FC<{
+  avatarAgent1: string
+  avatarAgent2: string
+  classNames?: {
+    avatarWrapper?: string
+    avatar1?: string
+    avatar2?: string
+  }
+}> = ({ avatarAgent1, avatarAgent2, classNames }) => {
+  return (
+    <div className={twMerge("relative", classNames?.avatarWrapper)}>
+      <AvatarCustom
+        src={avatarAgent1}
+        className={twMerge("h-7 w-7", classNames?.avatar1)}
+      />
+      <AvatarCustom
+        className={twMerge(
+          "absolute -right-3 top-3 z-[-1] h-7 w-7",
+          classNames?.avatar2,
+        )}
+        src={avatarAgent2}
+      />
+    </div>
+  )
+}

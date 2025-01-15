@@ -35,7 +35,10 @@ const MainLayout = () => {
     [chatId, inviteAgentId, privateChatId],
   )
 
-  const ignoreFooter = useMemo(() => [`${PATH_NAMES.CLAN}`], [])
+  const ignoreFooter = useMemo(
+    () => [`${PATH_NAMES.CLAN}`, `${PATH_NAMES.ORCHESTRATION}/${chatId}`],
+    [],
+  )
 
   const isIgnoreLayout = useMemo(
     () => ignoreLayout.some((path) => pathname.startsWith(path)),

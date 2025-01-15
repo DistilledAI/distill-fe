@@ -55,10 +55,10 @@ const ChatClans: React.FC = () => {
   }
 
   return (
-    <div className="mt-5">
+    <div className="mt-5 max-md:mt-0">
       <div
         className={twMerge(
-          "mb-2 flex items-center justify-between px-2",
+          "mb-2 flex items-center justify-between px-2 max-md:hidden",
           sidebarCollapsed && "justify-center",
         )}
       >

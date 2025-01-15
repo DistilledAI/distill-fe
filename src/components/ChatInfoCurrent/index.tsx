@@ -1,4 +1,3 @@
-import { maxAvatar } from "@assets/images"
 import AvatarContainer from "@components/AvatarContainer"
 import AvatarCustom from "@components/AvatarCustom"
 import AvatarGroup from "@components/AvatarGroup"
@@ -17,10 +16,11 @@ import {
   UserGroup,
 } from "@pages/ChatPage/ChatBox/LeftBar/useFetchGroups"
 import React from "react"
-import { useLocation } from "react-router-dom"
+import { useLocation, useParams } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
 import MoreAction from "./MoreAction"
 import OrchestrationHeader from "./OrchestrationHeader"
+import { ORCHESTRATION_LIST } from "@pages/ChatPage/ChatBox/LeftBar/OrchestrationSlider"
 
 const ChatInfoCurrent: React.FC<{
   groupDetail: UserGroup | null
@@ -31,22 +31,27 @@ const ChatInfoCurrent: React.FC<{
   const isGroupPublic = groupDetail?.group?.typeGroup === TypeGroup.PUBLIC_GROUP
   const isLive = isGroupPublic && groupDetail?.group?.live === 1
   const location = useLocation()
+  const { chatId: conversationId } = useParams()
 
   if (!groupDetail) return null
 
   if (location.pathname.includes(PATH_NAMES.ORCHESTRATION)) {
+    const conversationInfo = ORCHESTRATION_LIST.find(
+      (item: any) => item.conversationId.toString() === conversationId,
+    )
+
     return (
       <OrchestrationHeader
         agent1={{
-          avatarSrc: maxAvatar,
-          publicAddress: "orai...Vo5h",
+          avatar: conversationInfo?.agent1.avatar,
+          publicAddress: conversationInfo?.agent1.contractAddress,
         }}
         agent2={{
-          avatarSrc: "",
-          publicAddress: "orai...Vo5h",
+          avatar: conversationInfo?.agent2.avatar,
+          publicAddress: conversationInfo?.agent2.contractAddress,
         }}
-        name="Max & Min"
-        tag="Orchestration"
+        name={conversationInfo?.name || "-"}
+        tag={conversationInfo?.tag || "-"}
       />
     )
   }

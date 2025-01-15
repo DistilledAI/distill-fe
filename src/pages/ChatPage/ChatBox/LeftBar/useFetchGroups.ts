@@ -10,6 +10,7 @@ export enum TypeGroup {
   DIRECT = "DIRECT",
   PRIVATE_GROUP = "PRIVATE_GROUP",
   PUBLIC_GROUP = "PUBLIC_GROUP",
+  PUBLIC_GROUP_CONVERSATION = "PUBLIC_GROUP_CONVERSATION",
 }
 export interface IGroup {
   id: number
@@ -115,7 +116,11 @@ const useFetchGroups = () => {
   const dataByPrivateMsg = isMobile
     ? data
     : data?.filter(
-        (item: any) => item?.group?.typeGroup !== TypeGroup.PUBLIC_GROUP,
+        (item: any) =>
+          ![
+            TypeGroup.PUBLIC_GROUP,
+            TypeGroup.PUBLIC_GROUP_CONVERSATION,
+          ].includes(item?.group?.typeGroup),
       )
 
   return {

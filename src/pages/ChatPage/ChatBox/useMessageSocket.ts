@@ -40,7 +40,7 @@ enum StatusMessage {
   GROUP = "chat-group",
 }
 
-const removeLeadingDots = (text: string) => {
+export const removeLeadingDots = (text: string) => {
   if (text) {
     return text.replace(/^\.{3}/, "")
   }

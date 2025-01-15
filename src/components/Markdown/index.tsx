@@ -2,6 +2,7 @@ import { useQueryClient } from "@tanstack/react-query"
 import { getActiveColorRandomById, isImageUrl } from "@utils/index"
 import Markdown from "react-markdown"
 import { useParams } from "react-router-dom"
+import { twMerge } from "tailwind-merge"
 import { QueryDataKeys } from "types/queryDataKeys"
 
 const MarkdownMessage = ({ msg }: { msg: string }) => {
@@ -20,7 +21,7 @@ const MarkdownMessage = ({ msg }: { msg: string }) => {
 
   const replaceSrcImage = (src: string) => {
     if (src.includes("https://defi-lens.s3.us-east-2.amazonaws.com/")) {
-      const imageSrc = src.replace(
+      const imageSrc = src?.replace(
         /https:\/\/defi-lens\.s3\.us-east-2\.amazonaws\.com\/media\/(.*\.jpeg)/,
         "https://static.distilled.ai/media/$1",
       )
@@ -31,21 +32,21 @@ const MarkdownMessage = ({ msg }: { msg: string }) => {
   }
 
   const breakLine = (text: string) => {
-    const newText = text.replace(/\n+$/, "")
+    const newText = text?.replace(/\n+$/, "")
 
     let md = newText
     // Support multiple linebreaks
-    md = newText.replace(/```[\s\S]*?```/g, (m) => m.replace(/\n/g, "\n "))
-    md = md.replace(/(?<=\n\n)(?![*-])\n/g, "&nbsp;\n ")
+    md = newText?.replace(/```[\s\S]*?```/g, (m) => m.replace(/\n/g, "\n "))
+    md = md?.replace(/(?<=\n\n)(?![*-])\n/g, "&nbsp;\n ")
     // Support single linebreak
-    md = md.replace(/(\n)/gm, "  \n")
+    md = md?.replace(/(\n)/gm, "  \n")
 
     return md
   }
 
   const enhancedMessage = (text: string) => {
     const urlRegex = /(https?:\/\/[^\s]+)/g
-    return text.replace(urlRegex, (url) => {
+    return text?.replace(urlRegex, (url) => {
       if (isImageUrl(url)) {
         return `![image](${url})`
       }
@@ -90,7 +91,16 @@ const MarkdownMessage = ({ msg }: { msg: string }) => {
     ),
     p: ({ children }: any) => {
       const wordBreakStyle = checkTextBreak(children)
-      return <p className={wordBreakStyle}>{children}</p>
+      return (
+        <p
+          className={twMerge(
+            wordBreakStyle,
+            "text-[16px] font-medium text-mercury-900",
+          )}
+        >
+          {children}
+        </p>
+      )
     },
   }
 
