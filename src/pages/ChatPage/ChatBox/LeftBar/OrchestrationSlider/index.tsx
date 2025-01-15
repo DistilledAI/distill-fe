@@ -5,13 +5,37 @@ import {
   racksAvatar,
 } from "@assets/images"
 import { ChevronDownIcon } from "@components/Icons/ChevronDownIcon"
+import { PATH_NAMES } from "@constants/index"
+import { useNavigate } from "react-router-dom"
 import { Navigation } from "swiper/modules"
 import { Swiper, SwiperSlide } from "swiper/react"
 import OrchestrationCard from "./OrchestrationCard"
-import { useNavigate } from "react-router-dom"
-import { PATH_NAMES } from "@constants/index"
 
 export const ORCHESTRATION_LIST = [
+  {
+    agent1: {
+      avatar: maxAvatar,
+      name: "Max",
+      contractAddress: "oraim8c9d1nkfuQk9EzGYEUGxqL3MHQYndRw1huVo5h",
+      tradeLink:
+        "https://dexscreener.com/solana/4Qgn7AixnZJBwfFL5XmRDBVyzzq9tC6JdDToaKVhPJvz",
+      telegram: "https://t.me/maxisbuyin",
+      x: "https://x.com/maxisbuyin_",
+    },
+    agent2: {
+      avatar: racksAvatar,
+      name: "BlackRack",
+      contractAddress: "D7yP4ycfsRWUGYionGpi64sLF2ddZ2JXxuRAti2M7uck",
+      tradeLink:
+        "https://agents.land/trading/D7yP4ycfsRWUGYionGpi64sLF2ddZ2JXxuRAti2M7uck",
+      telegram: "https://t.me/BlackRack_AI",
+      x: "https://x.com/BlackRack_AI",
+    },
+    name: "Max & BlackRack",
+    tag: "Orchestration",
+    topic: "Why does FOMC impact crypto so much?",
+    conversationId: 23266,
+  },
   {
     agent1: {
       avatar: leeQuidAvatar,
@@ -34,7 +58,7 @@ export const ORCHESTRATION_LIST = [
     name: "Lee Quid & BlackRack",
     tag: "Orchestration",
     topic: "Diversification in Investment Portfolios",
-    conversationId: 624,
+    conversationId: 23260,
   },
   {
     agent1: {
@@ -59,7 +83,7 @@ export const ORCHESTRATION_LIST = [
     tag: "Orchestration",
     topic:
       "Long-term Viability: Is Bitcoin the Future or Can Meme Coins Evolve?",
-    conversationId: 629,
+    conversationId: 23263,
   },
 ]
 
