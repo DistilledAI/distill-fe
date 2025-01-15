@@ -12,7 +12,7 @@ const Orchestration = () => {
   )
 
   return (
-    <div className="grid h-full max-h-[calc(100dvh-68px)] grid-cols-[1fr_420px] gap-6 overflow-hidden p-4 pl-6">
+    <div className="grid h-full max-h-[calc(100dvh-68px)] grid-cols-[2fr_1fr] gap-6 overflow-hidden p-4 pl-6">
       <div>
         <TopicTitle conversationInfo={conversationInfo} />
         <HostsBox conversationInfo={conversationInfo} />

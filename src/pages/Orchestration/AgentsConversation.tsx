@@ -10,6 +10,7 @@ import MarkdownMessage from "@components/Markdown"
 import useConversationSocket from "@pages/ChatPage/ChatBox/useConversationSocket"
 import { twMerge } from "tailwind-merge"
 import useFetchConversation from "./useFetchConversation"
+import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 
 const AgentsConversation = () => {
   useConversationSocket()
@@ -47,6 +48,8 @@ const AgentsConversation = () => {
             publicAddress={message?.publicAddress}
             className="relative"
             loading="lazy"
+            badgeIcon={<FilledBrainAIIcon size={14} />}
+            badgeClassName="bg-[#FC0] w-[18px] h-[18px]"
           />
           <div className="relative flex flex-1 flex-col">
             <MarkdownMessage msg={message?.messages} />

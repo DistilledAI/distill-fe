@@ -1,5 +1,5 @@
-import { solanaCircleIcon } from "@assets/svg"
 import AvatarCustom from "@components/AvatarCustom"
+import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { AgentDotLandIcon } from "@components/Icons/FilledSquareCircleIcon"
 import { ExternalLinkIcon } from "@components/Icons/Share"
 import { TelegramOutlineIcon } from "@components/Icons/SocialLinkIcon"
@@ -13,10 +13,10 @@ const HostsBox = ({ conversationInfo }: { conversationInfo: any }) => {
       <div className="flex flex-1 items-center justify-between">
         <div className="flex items-center gap-3">
           <AvatarCustom
-            className="h-11 w-11 rounded-lg"
-            badgeClassName="bg-transparent"
             src={conversationInfo?.agent1?.avatar}
-            badgeIcon={<img src={solanaCircleIcon} />}
+            badgeIcon={<FilledBrainAIIcon size={14} />}
+            badgeClassName="bg-transparent bg-[#FC0] w-[18px] h-[18px]"
+            className="h-11 w-11 rounded-lg"
           />
           <div>
             <h4 className="text-16 font-bold text-mercury-950">
@@ -30,7 +30,7 @@ const HostsBox = ({ conversationInfo }: { conversationInfo: any }) => {
               <span className="text-13 font-medium text-mercury-600">
                 {centerTextEllipsis(
                   conversationInfo?.agent1?.contractAddress,
-                  8,
+                  5,
                 )}
               </span>
               <ExternalLinkIcon />
@@ -53,10 +53,10 @@ const HostsBox = ({ conversationInfo }: { conversationInfo: any }) => {
       <div className="flex flex-1 items-center justify-between">
         <div className="flex items-center gap-3">
           <AvatarCustom
-            className="h-11 w-11 rounded-lg"
-            badgeClassName="bg-transparent"
             src={conversationInfo?.agent2?.avatar}
-            badgeIcon={<img src={solanaCircleIcon} />}
+            badgeIcon={<FilledBrainAIIcon size={14} />}
+            badgeClassName="bg-transparent bg-[#FC0] w-[18px] h-[18px]"
+            className="h-11 w-11 rounded-lg"
           />
           <div>
             <h4 className="text-16 font-bold text-mercury-950">
@@ -70,7 +70,7 @@ const HostsBox = ({ conversationInfo }: { conversationInfo: any }) => {
               <span className="text-13 font-medium text-mercury-600">
                 {centerTextEllipsis(
                   conversationInfo?.agent2?.contractAddress,
-                  8,
+                  5,
                 )}
               </span>
               <ExternalLinkIcon />
