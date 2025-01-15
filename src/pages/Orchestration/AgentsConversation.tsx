@@ -1,10 +1,19 @@
+import {
+  gnrtAvatar,
+  leeQuidAvatar,
+  maxAvatar,
+  racksAvatar,
+} from "@assets/images"
 import ChatWindow from "@components/ChatWindow"
-import MessageLive from "@pages/ChatBoxLive/MessageLive"
-import { IMessageBox } from "@pages/ChatPage/ChatBox/ChatMessages/helpers"
-import useFetchMessages from "@pages/ChatPage/ChatBox/ChatMessages/useFetchMessages"
+import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
+import useConversationSocket from "@pages/ChatPage/ChatBox/useConversationSocket"
 import { twMerge } from "tailwind-merge"
+import useFetchConversation from "./useFetchConversation"
+import ReceiverMessage from "@components/ReceiverMessage"
 
 const AgentsConversation = () => {
+  useConversationSocket()
+
   const {
     isLoading,
     isFetched,
@@ -13,22 +22,37 @@ const AgentsConversation = () => {
     hasPreviousMore,
     isFetchingPreviousPage,
     groupId,
-  } = useFetchMessages()
+  } = useFetchConversation()
 
-  const renderMessage = (index: number, message: IMessageBox) => {
+  const AVATAR = {
+    [`Lee Quid`]: leeQuidAvatar,
+    ["Max"]: maxAvatar,
+    ["BlackRack"]: racksAvatar,
+    ["GNRT"]: gnrtAvatar,
+  } as any
+
+  const renderMessage = (index: number, message: any) => {
     return (
       <div
         className={twMerge(
-          "p-4 pt-0",
-          index === 0 && "pt-4",
-          index === messages.length - 1 && "pb-40",
+          "p-4 pb-5 pt-0",
+          index === 0 && "pt-6",
+          index === messages.length - 1 && "pb-32 md:pb-40",
         )}
       >
-        <MessageLive
-          key={index}
-          message={message}
-          // onReply={() => onReply(message)}
-          groupId={groupId}
+        <ReceiverMessage
+          key={message.id}
+          avatar={{
+            src: AVATAR[message?.agentName],
+            badgeIcon: <FilledBrainAIIcon size={14} />,
+            className: "relative max-md:h-6 max-md:w-6",
+            badgeClassName:
+              "bg-[#FC0] min-w-4 min-h-4 max-md:w-4 max-md:h-4 md:min-w-[18px] md:min-h-[18px]",
+            loading: "lazy",
+          }}
+          content={message.messages}
+          isTyping={message.isTyping}
+          baseClassName="relative flex gap-3 md:gap-4"
         />
       </div>
     )
@@ -46,8 +70,9 @@ const AgentsConversation = () => {
       chatId={groupId}
       isChatActions={false}
       msgBoxClassName="p-0 "
-      className="pt-4 md:max-h-full"
-      scrollBottomClassName="md:!bottom-10 h-40"
+      className="max-h-[calc(100dvh-250px)] pt-1 md:max-h-[calc(100dvh-135px)]"
+      scrollBottomClassName="max-md:fixed !bottom-[11.7%] h-32 md:h-40 md:!bottom-24"
+      increaseViewportBy={1000}
     />
   )
 }

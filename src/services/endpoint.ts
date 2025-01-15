@@ -62,6 +62,8 @@ const endpoint = {
     withBaseURL(`/group/clear-cached/${groupId}`),
   GET_TOTAL_MEMBER_GROUP: (groupId: number) =>
     withBaseURL(`/group/total-member/${groupId}`),
+  GET_AGENT_CONVERSATION: (groupId: number) =>
+    withBaseURL(`/agent-conversation/message/${groupId}`),
 
   // my data
   UPLOAD_MY_DATA: withBaseURL("/my-data/upload"),

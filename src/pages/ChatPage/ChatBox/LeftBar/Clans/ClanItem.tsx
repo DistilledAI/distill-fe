@@ -46,7 +46,7 @@ const ClanItem: React.FC<{
         member={group.groupMemberStats?.total}
       />
       {!isJoined && (
-        <div className="absolute right-[6px] top-[-4px] flex h-5 w-5 items-center justify-center rounded-full bg-white">
+        <div className="absolute right-[6px] top-[-4px] flex h-5 w-5 items-center justify-center rounded-full bg-white max-md:right-[12px]">
           <PlusIcon size={14} color="#545454" />
         </div>
       )}

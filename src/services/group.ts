@@ -25,3 +25,22 @@ export const getListGroupAgentPublic = async (filter?: string) => {
     },
   })
 }
+
+export const getAgentConversation = async ({
+  id,
+  offset = 0,
+  limit = 20,
+}: {
+  id: number
+  offset?: number
+  limit?: number
+}) => {
+  return fetchApiAuth({
+    method: "GET",
+    url: endpoint.GET_AGENT_CONVERSATION(id),
+    params: {
+      offset,
+      limit,
+    },
+  })
+}

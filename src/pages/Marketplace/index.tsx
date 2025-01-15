@@ -11,6 +11,7 @@ import { CloudUpload } from "@components/Icons/CloudUpload"
 import { useNavigate } from "react-router-dom"
 import useActiveAgent from "@pages/ChatPage/ChatBox/RightContent/MyPrivateAgentContent/useActiveAgent"
 import ClanAgents from "./ClanAgents"
+import Orchestration from "./Orchestration"
 
 const Marketplace = () => {
   const siderCollapsed = useAppSelector((state) => state.sidebarCollapsed)
@@ -18,6 +19,12 @@ const Marketplace = () => {
   const { isAgentActive } = useActiveAgent()
 
   const CATEGORIES = [
+    {
+      id: "orchestration",
+      name: "Orchestration",
+      component: <Orchestration />,
+      isComing: false,
+    },
     {
       id: "group-public",
       name: "Clans",
