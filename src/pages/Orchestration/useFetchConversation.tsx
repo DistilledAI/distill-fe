@@ -79,7 +79,10 @@ const useFetchConversation = () => {
       offset: pageParam,
     })
     return {
-      messages: res.data.items,
+      messages: res.data.items?.sort(
+        (a: any, b: any) =>
+          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
+      ),
       nextOffset:
         res.data.items.length > 0
           ? pageParam + res.data.items.length

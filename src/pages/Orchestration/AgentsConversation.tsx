@@ -36,8 +36,8 @@ const AgentsConversation = () => {
     return (
       <div
         className={twMerge(
-          "p-4 pt-0",
-          index === 0 && "pt-4",
+          "p-4 pb-6 pt-0",
+          index === 0 && "pt-6",
           index === messages.length - 1 && "pb-40",
         )}
       >
