@@ -1,4 +1,4 @@
-import AvatarCustom from "@components/AvatarCustom"
+import { AvatarConversation } from "@components/AvatarContainer"
 import { twMerge } from "tailwind-merge"
 
 interface Props {
@@ -25,19 +25,15 @@ const OrchestrationHeader = ({
 }: Props) => {
   return (
     <div className={twMerge("flex gap-6", classNames?.wrapper)}>
-      <div className={twMerge("relative", classNames?.avatarWrapper)}>
-        <AvatarCustom
-          src={agent1?.avatar}
-          className={twMerge("h-7 w-7", classNames?.avatar1)}
-        />
-        <AvatarCustom
-          className={twMerge(
-            "absolute -right-3 top-3 z-[-1] h-7 w-7",
-            classNames?.avatar2,
-          )}
-          src={agent2?.avatar}
-        />
-      </div>
+      <AvatarConversation
+        avatarAgent1={agent1?.avatar}
+        avatarAgent2={agent2?.avatar}
+        classNames={{
+          avatarWrapper: classNames?.avatarWrapper,
+          avatar1: classNames?.avatar1,
+          avatar2: classNames?.avatar2,
+        }}
+      />
       <div className="text-left">
         <h4
           className={twMerge(
