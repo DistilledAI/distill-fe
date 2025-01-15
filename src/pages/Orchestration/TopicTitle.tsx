@@ -1,6 +1,11 @@
 import AvatarCustom from "@components/AvatarCustom"
+import { ShareArrowIcon } from "@components/Icons/Share"
+import ShareQRModal from "@components/ShareQRModal"
+import { useDisclosure } from "@nextui-org/react"
 
 const TopicTitle = ({ conversationInfo }: { conversationInfo: any }) => {
+  const { isOpen, onOpen, onClose } = useDisclosure()
+
   return (
     <div>
       <h3 className="text-wrap text-24 font-semibold text-mercury-950 max-sm:max-w-[400px] max-sm:text-20">
@@ -18,11 +23,17 @@ const TopicTitle = ({ conversationInfo }: { conversationInfo: any }) => {
               {conversationInfo?.agent1?.name}
             </span>
           </div>
+          <button type="button" onClick={onOpen}>
+            <ShareArrowIcon />
+          </button>
         </div>
-        {/* <button type="button">
-          <ShareArrowIcon />
-        </button> */}
       </div>
+      <ShareQRModal
+        title="Orchestration"
+        isOpen={isOpen}
+        shareUrl={window.location.href}
+        onClose={onClose}
+      />
     </div>
   )
 }
