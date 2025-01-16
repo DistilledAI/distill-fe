@@ -11,6 +11,7 @@ import {
   getNameGroup,
   getPublicAddressGroupChat,
 } from "@pages/ChatPage/ChatBox/LeftBar/helpers"
+import { ORCHESTRATION_LIST } from "@pages/ChatPage/ChatBox/LeftBar/OrchestrationSlider"
 import {
   TypeGroup,
   UserGroup,
@@ -20,7 +21,6 @@ import { useLocation, useParams } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
 import MoreAction from "./MoreAction"
 import OrchestrationHeader from "./OrchestrationHeader"
-import { ORCHESTRATION_LIST } from "@pages/ChatPage/ChatBox/LeftBar/OrchestrationSlider"
 
 const ChatInfoCurrent: React.FC<{
   groupDetail: UserGroup | null
@@ -52,6 +52,10 @@ const ChatInfoCurrent: React.FC<{
         }}
         name={conversationInfo?.name || "-"}
         tag={conversationInfo?.tag || "-"}
+        conversationId={conversationId}
+        classNames={{
+          textContainer: "flex gap-2",
+        }}
       />
     )
   }
