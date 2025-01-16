@@ -42,6 +42,11 @@ jobs:
           VITE_BASE_API_URL: https://api-echo.distilled.ai/distill
           VITE_SOCKET_URL: wss://api-echo.distilled.ai
           VITE_GROUP_DEFAULT_FOR_PRIVATE_AGENT: 5
+          VITE_AGENTLAND_BACKEND_URL: https://backend-release.agents.land
+          VITE_MEME_BACKEND_URL: https://backend-meme.agents.land
+          VITE_STAKING_AIRDROP_BACKEND_URL: https://airdrop-be-stag.agents.land
+          VITE_SOLANA_RPC: https://devnet.helius-rpc.com/?api-key=791e2c4e-4495-45c4-b873-c8f35344e0c0
+          VITE_SOLANA_WS: wss://devnet.helius-rpc.com/?api-key=791e2c4e-4495-45c4-b873-c8f35344e0c0
           VITE_GIT_COMMIT_ID: ${{ github.sha }}
 
       - name: Import Firebase service account credentials
