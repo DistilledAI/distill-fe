@@ -25,7 +25,7 @@ const ReceiverMessage = ({
         className={twMerge("flex-1 text-[16px] font-medium", contentClassName)}
       >
         {isTyping ? (
-          <DotLoading className="mt-3" />
+          <DotLoading className="mt-2" />
         ) : (
           <MarkdownMessage msg={content} />
         )}

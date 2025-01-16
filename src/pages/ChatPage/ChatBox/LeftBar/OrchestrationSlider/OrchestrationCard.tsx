@@ -1,6 +1,7 @@
 import OrchestrationHeader from "@components/ChatInfoCurrent/OrchestrationHeader"
 import { BroadcastIcon } from "@components/Icons/Broadcast"
 import { useParams } from "react-router-dom"
+import { twMerge } from "tailwind-merge"
 
 interface Props {
   item: {
@@ -13,20 +14,29 @@ interface Props {
     agent1?: any
     agent2?: any
   }
+  index: number
 }
 
-const OrchestrationCard = ({ item }: Props) => {
+const ORCHESTRATION_BG_COLORS = [
+  "linear-gradient(71deg, #000 0%, #797676 100%)",
+  "linear-gradient(45deg, #5C3F74 -2.49%, #9A7CB4 100%)",
+  "linear-gradient(47deg, #353158 0%, #7E7AB8 100%)",
+]
+
+const OrchestrationCard = ({ item, index }: Props) => {
   const { chatId: conversationId } = useParams()
 
   return (
     <div
-      className="flex w-full cursor-pointer flex-col gap-2 rounded-[22px] rounded-bl-none bg-mercury-800 p-3 aria-selected:opacity-40"
+      className={twMerge(
+        "flex w-full cursor-pointer flex-col gap-2 rounded-[22px] rounded-bl-none bg-mercury-800 p-3",
+        item.conversationId !== Number(conversationId) &&
+          !!conversationId &&
+          "opacity-40",
+      )}
       style={{
-        background: "linear-gradient(71deg, #000 0%, #797676 100%)",
+        background: ORCHESTRATION_BG_COLORS[index],
       }}
-      aria-selected={
-        item.conversationId !== Number(conversationId) && !!conversationId
-      }
     >
       <div className="flex justify-between">
         <OrchestrationHeader

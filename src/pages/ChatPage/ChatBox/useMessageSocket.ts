@@ -65,7 +65,7 @@ const useMessageSocket = () => {
   }
 
   const isPassRuleMessage = (e: IDataListen) => {
-    if (e.user.id === user?.id) return false
+    if (e?.user?.id === user?.id) return false
 
     return true
   }
@@ -139,11 +139,11 @@ const useMessageSocket = () => {
           const newMsg: IMessageBox = {
             id: e.msgId,
             role: RoleChat.CUSTOMER,
-            roleOwner: e.user.role,
+            roleOwner: e.user?.role,
             content: e.messages,
             isTyping: false,
-            avatar: e.user.avatar,
-            username: e.user.username,
+            avatar: e.user?.avatar,
+            username: e.user?.username,
             createdAt: new Date().toISOString(),
           }
           return {
@@ -206,12 +206,12 @@ const useMessageSocket = () => {
       id: e.msgId,
       role: RoleChat.CUSTOMER,
       content: "...",
-      avatar: e.user.avatar,
+      avatar: e.user?.avatar,
       isTyping: true,
-      roleOwner: e.user.role,
+      roleOwner: e.user?.role,
       createdAt: new Date().toISOString(),
-      publicAddress: e.user.publicAddress,
-      username: e.user.username,
+      publicAddress: e.user?.publicAddress,
+      username: e.user?.username,
     }
     addNewMsg(newMsg, e)
   }

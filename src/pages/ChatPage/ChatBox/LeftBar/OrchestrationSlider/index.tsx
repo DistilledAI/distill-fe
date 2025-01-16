@@ -8,8 +8,12 @@ import { ChevronDownIcon } from "@components/Icons/ChevronDownIcon"
 import { PATH_NAMES } from "@constants/index"
 import { useNavigate } from "react-router-dom"
 import { Navigation } from "swiper/modules"
-import { Swiper, SwiperSlide } from "swiper/react"
+import { Swiper, SwiperRef, SwiperSlide } from "swiper/react"
 import OrchestrationCard from "./OrchestrationCard"
+import { useRef } from "react"
+
+const urlStaging = ["mesh-distilled-ai-dev.web.app", "localhost:5173"]
+const isStaging = urlStaging.includes(window.location.host)
 
 export const ORCHESTRATION_LIST = [
   {
@@ -34,7 +38,7 @@ export const ORCHESTRATION_LIST = [
     name: "Max & BlackRack",
     tag: "Orchestration",
     topic: "Why does FOMC impact crypto so much?",
-    conversationId: 23266,
+    conversationId: isStaging ? 641 : 23266,
   },
   {
     agent1: {
@@ -58,7 +62,7 @@ export const ORCHESTRATION_LIST = [
     name: "Lee Quid & BlackRack",
     tag: "Orchestration",
     topic: "Diversification in Investment Portfolios",
-    conversationId: 23260,
+    conversationId: isStaging ? 624 : 23260,
   },
   {
     agent1: {
@@ -83,16 +87,34 @@ export const ORCHESTRATION_LIST = [
     tag: "Orchestration",
     topic:
       "Long-term Viability: Is Bitcoin the Future or Can Meme Coins Evolve?",
-    conversationId: 23263,
+    conversationId: isStaging ? 629 : 23263,
   },
 ]
 
+console.log("hicccc", window.location.host)
+
 const OrchestrationSlider = () => {
   const navigate = useNavigate()
+  const swiperRef = useRef<SwiperRef | null>(null)
+
+  const handleSlideClick = (conversationId: string, index: number) => {
+    const currentIndex = swiperRef.current?.swiper?.activeIndex
+
+    if (currentIndex !== undefined) {
+      if (index < currentIndex) {
+        swiperRef?.current?.swiper.slidePrev()
+      } else if (index > currentIndex) {
+        swiperRef?.current?.swiper.slideNext()
+      }
+    }
+
+    navigate(`${PATH_NAMES.ORCHESTRATION}/${conversationId}`)
+  }
 
   return (
     <div className="relative w-full">
       <Swiper
+        ref={swiperRef}
         spaceBetween={8}
         slidesPerView={1.3}
         loop={false}
@@ -102,15 +124,13 @@ const OrchestrationSlider = () => {
           prevEl: ".custom-prev",
         }}
       >
-        {ORCHESTRATION_LIST.map((item: any) => (
+        {ORCHESTRATION_LIST.map((item: any, index) => (
           <SwiperSlide
             key={item.conversationId}
             className="min-w-[200px]"
-            onClick={() =>
-              navigate(`${PATH_NAMES.ORCHESTRATION}/${item.conversationId}`)
-            }
+            onClick={() => handleSlideClick(item.conversationId, index)}
           >
-            <OrchestrationCard item={item} />
+            <OrchestrationCard item={item} index={index} />
           </SwiperSlide>
         ))}
       </Swiper>

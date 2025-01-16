@@ -6,42 +6,44 @@ interface DotLoadingProps {
   className?: string
 }
 
-const DotLoading: React.FC<DotLoadingProps> = ({ dotColor, className }) => {
-  const [loading, setLoading] = useState<boolean>(false)
-
-  const handleAnimation = () => {
-    setTimeout(() => setLoading(!loading), 820)
-  }
+const DotLoading: React.FC<DotLoadingProps> = ({
+  dotColor = "#888888",
+  className,
+}) => {
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
-    handleAnimation()
-  }, [loading])
+    const animationInterval = setInterval(() => {
+      setIsLoading((prev) => !prev)
+    }, 800)
+
+    return () => clearInterval(animationInterval)
+  }, [])
 
   return (
-    <div className={twMerge("relative flex w-8 items-center", className)}>
+    <div className={twMerge("relative flex w-6 items-center", className)}>
+      {/* Static Dot */}
       <div className="absolute left-1/2 -translate-x-1/2">
         <div
-          className={twMerge(
-            "h-3 w-3 rounded-full",
-            dotColor ? `bg-[${dotColor}]` : "bg-mercury-600",
-          )}
+          className="h-[10px] w-[10px] rounded-full"
+          style={{ backgroundColor: dotColor }}
         />
       </div>
 
+      {/* Animated Dot */}
       <div
         className={twMerge(
-          "relative transition-all duration-500 ease-out",
-          loading ? "left-6" : "left-0",
+          "relative transition-all duration-500 ease-linear",
+          isLoading ? "left-5" : "left-[-2px]",
         )}
       >
         <div
-          className={twMerge(
-            "h-[6px] w-[6px] rounded-full",
-            dotColor ? `bg-[${dotColor}]` : "bg-mercury-600",
-          )}
+          className="h-[6px] w-[6px] rounded-full"
+          style={{ backgroundColor: dotColor }}
         />
       </div>
     </div>
   )
 }
+
 export default DotLoading

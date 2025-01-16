@@ -11,7 +11,7 @@ const MarkdownMessage = ({ msg }: { msg: string }) => {
   const queryClient = useQueryClient()
 
   const checkTextBreak = (text: string) => {
-    const tokenRegex = /[a-zA-Z0-9]{40,43}/
+    const tokenRegex = /[a-zA-Z0-9/]{40,}/
 
     if (tokenRegex.test(text)) {
       return "break-all"
@@ -67,6 +67,7 @@ const MarkdownMessage = ({ msg }: { msg: string }) => {
 
       return (
         <img
+          loading="lazy"
           src={imageSrc}
           alt={alt}
           className="max-h-[300px] min-h-[200px] cursor-pointer rounded-3xl border border-mercury-100 object-cover shadow-1"

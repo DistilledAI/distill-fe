@@ -20,6 +20,7 @@ import { QueryDataKeys } from "types/queryDataKeys"
 import { BOT_STATUS } from "../ChatMessages/ChatActions/DelegatePrivateAgent"
 import VoiceChat from "./Voice"
 import { ArrowUpFilledIcon } from "@components/Icons/Arrow"
+import "./index.css"
 
 const MentionsInputAny =
   MentionsInput as React.ComponentType<MentionsInputProps>
@@ -196,18 +197,20 @@ const ChatInput = ({
           highlighter: {
             maxHeight: isMobile ? "40px" : "200px",
             border: "0px",
+            fontSize: isMobile ? "14px" : "18px",
+            lineHeight: "normal",
           },
           input: {
             overflowY: "auto",
             maxHeight: isMobile ? "40px" : "200px",
             border: "none",
             outline: "none",
+            fontSize: isMobile ? "14px" : "18px",
+            lineHeight: "normal",
+            color: isDarkTheme ? "#fafafa" : "inherit",
           },
         }}
-        className={twMerge(
-          "text-[14px] md:text-[18px]",
-          isDarkTheme && "text-mercury-30",
-        )}
+        className="mention-margin"
         placeholder="Enter chat.."
         rows={4}
         disabled={isDisabledInput}
@@ -224,6 +227,7 @@ const ChatInput = ({
             zIndex: "1",
             left: "0px",
             top: "0px",
+            width: "100%",
           }}
         />
       </MentionsInputAny>

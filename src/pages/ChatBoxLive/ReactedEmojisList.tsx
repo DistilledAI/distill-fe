@@ -30,7 +30,7 @@ const ReactedEmojisList: React.FC<ReactedEmojisListProps> = ({
             key={`${item.msgId}-${index}`}
             onClick={() => handleEmojiReaction(item)}
           >
-            <span className="text-13">{emoji}</span>
+            <span className="text-[13px]">{emoji}</span>
             <span
               className={twMerge(
                 "text-[13px] font-medium text-mercury-500",
