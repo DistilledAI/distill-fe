@@ -11,6 +11,9 @@ import { Navigation } from "swiper/modules"
 import { Swiper, SwiperSlide } from "swiper/react"
 import OrchestrationCard from "./OrchestrationCard"
 
+const urlStaging = ["mesh-distilled-ai-dev.web.app", "localhost:5173"]
+const isStaging = urlStaging.includes(window.location.host)
+
 export const ORCHESTRATION_LIST = [
   {
     agent1: {
@@ -34,7 +37,7 @@ export const ORCHESTRATION_LIST = [
     name: "Max & BlackRack",
     tag: "Orchestration",
     topic: "Why does FOMC impact crypto so much?",
-    conversationId: 23266,
+    conversationId: isStaging ? 641 : 23266,
   },
   {
     agent1: {
@@ -58,7 +61,7 @@ export const ORCHESTRATION_LIST = [
     name: "Lee Quid & BlackRack",
     tag: "Orchestration",
     topic: "Diversification in Investment Portfolios",
-    conversationId: 23260,
+    conversationId: isStaging ? 624 : 23260,
   },
   {
     agent1: {
@@ -83,9 +86,11 @@ export const ORCHESTRATION_LIST = [
     tag: "Orchestration",
     topic:
       "Long-term Viability: Is Bitcoin the Future or Can Meme Coins Evolve?",
-    conversationId: 23263,
+    conversationId: isStaging ? 629 : 23263,
   },
 ]
+
+console.log("hicccc", window.location.host)
 
 const OrchestrationSlider = () => {
   const navigate = useNavigate()
