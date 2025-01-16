@@ -5,9 +5,21 @@ import { numberWithCommas, toBN } from "@utils/format"
 import { useSearchParams } from "react-router-dom"
 import { getInfoTokenByAddress } from "../helpers"
 import { StakeTokenAddress } from ".."
+import { useDisclosure } from "@nextui-org/react"
+import ClaimReward from "./ClaimReward"
+import useGetRewardStrongVault from "./useGetListReward"
+import useGetListTokenWithInfo from "./useGetListToken"
+import { twMerge } from "tailwind-merge"
+import { formatNumberWithComma } from "@utils/index"
+import ItemRewardPreview from "./ItemRewardPreview"
+import { useEffect, useState } from "react"
 
 const UserStakedInfo = ({ total }: { total: number }) => {
+  const { isOpen, onClose, onOpenChange, onOpen } = useDisclosure()
   const { data: prices } = useCoinGeckoPrices()
+  const [totalToken, setTotalToken] = useState<number>(0)
+  const { rewardList, totalClaimable } = useGetRewardStrongVault(prices)
+  const { tokens } = useGetListTokenWithInfo(rewardList)
   const [searchParams] = useSearchParams()
   const tokenAddress = searchParams.get("token")
   const tokenInfo = getInfoTokenByAddress(tokenAddress as StakeTokenAddress)
@@ -19,6 +31,12 @@ const UserStakedInfo = ({ total }: { total: number }) => {
       .toNumber()
       .toFixed(3),
   ).toNumber()
+
+  useEffect(() => {
+    setTotalToken(tokens.length)
+  }, [tokens])
+
+  const isGNRT = tokenInfo?.address === StakeTokenAddress.Degenerator
 
   return (
     <div className="flex flex-wrap items-center justify-between rounded-[14px] border-1 border-[#A88E67] bg-brown-50 px-6 py-4">
@@ -35,80 +53,68 @@ const UserStakedInfo = ({ total }: { total: number }) => {
         <p className="text-14 font-medium text-mercury-700">
           Claimable Rewards
         </p>
-        <p className="text-24 font-semibold text-brown-600 max-md:text-20">
-          $0
-        </p>
-        <p className="text-14 text-brown-600">0 Asset</p>
-        {/* <Popover placement="right">
-          <PopoverTrigger>
-            <div className="inline-flex cursor-pointer items-center gap-1">
-              <div className="item-center flex">
-                <img
-                  className="h-4 w-4 rounded-full object-cover"
-                  src={maxAvatar}
-                />
-                <img
-                  className="-ml-2 h-4 w-4 rounded-full object-cover"
-                  src={maxAvatar}
-                />
-                <img
-                  className="-ml-2 h-4 w-4 rounded-full object-cover"
-                  src={maxAvatar}
-                />
+        {isGNRT ? (
+          <p className="text-24 font-semibold text-brown-600 max-md:text-20">
+            {totalClaimable === 0
+              ? "--"
+              : `$${formatNumberWithComma(totalClaimable)}`}
+          </p>
+        ) : (
+          <p className="text-24 font-semibold text-brown-600 max-md:text-20">
+            --
+          </p>
+        )}
+        {isGNRT ? (
+          <div
+            onClick={() => {
+              if (totalToken > 0) onOpen()
+            }}
+            className={twMerge(
+              "inline-flex items-center gap-1",
+              totalToken > 0 && "cursor-pointer",
+            )}
+          >
+            {totalToken > 0 ? (
+              <div className="flex items-center">
+                {[...tokens].slice(0, 3).map((item, index) => (
+                  <ItemRewardPreview
+                    key={item.rewardToken}
+                    item={item}
+                    index={index}
+                  />
+                ))}
               </div>
-              <p className="text-14 text-brown-600">21 Assets</p>
-            </div>
-          </PopoverTrigger>
-          <PopoverContent>
-            <div className="w-[280px] rounded-[22px] bg-white p-4 max-md:w-[210px] max-md:p-2">
-              <p className="mb-3 text-14 font-medium text-mercury-700">
-                21 Assets
-              </p>
-              <div className="flex flex-col gap-1">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <img
-                      src={maxAvatar}
-                      className="h-4 w-4 rounded-full object-cover"
-                    />
-                    <p className="text-14 font-semibold text-mercury-950">
-                      1,234,544 MAX
-                    </p>
-                  </div>
-                  <p className="text-14 text-brown-500">$89,242</p>
-                </div>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <img
-                      src={maxAvatar}
-                      className="h-4 w-4 rounded-full object-cover"
-                    />
-                    <p className="text-14 font-semibold text-mercury-950">
-                      1,234,544 MAX
-                    </p>
-                  </div>
-                  <p className="text-14 text-brown-500">$89,242</p>
-                </div>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <img
-                      src={maxAvatar}
-                      className="h-4 w-4 rounded-full object-cover"
-                    />
-                    <p className="text-14 font-semibold text-mercury-950">
-                      1,234,544 MAX
-                    </p>
-                  </div>
-                  <p className="text-14 text-brown-500">$89,242</p>
-                </div>
-              </div>
-            </div>
-          </PopoverContent>
-        </Popover> */}
+            ) : (
+              ""
+            )}
+            <p className="text-14 text-brown-600">
+              {totalToken} {totalToken > 1 ? "Assets" : "Asset"}
+            </p>
+          </div>
+        ) : (
+          <p className="text-14 text-brown-600">0 Asset</p>
+        )}
       </div>
-      <div className="cursor-default font-semibold text-brown-600 opacity-65 max-md:mt-3 max-md:w-full max-md:text-center max-md:text-14">
+      <div
+        onClick={() => {
+          if (totalToken > 0 && isGNRT) onOpen()
+        }}
+        className={twMerge(
+          "font-semibold text-brown-600 opacity-65 max-md:mt-3 max-md:w-full max-md:text-center max-md:text-14",
+          totalToken > 0 && isGNRT && "cursor-pointer opacity-100",
+        )}
+      >
         Claim Rewards
       </div>
+      {isOpen && (
+        <ClaimReward
+          isOpen={isOpen}
+          onOpenChange={onOpenChange}
+          onClose={onClose}
+          tokens={tokens}
+          refresh={() => setTotalToken((prev) => prev - 1)}
+        />
+      )}
     </div>
   )
 }
