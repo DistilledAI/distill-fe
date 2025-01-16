@@ -1,14 +1,18 @@
-import { maxAvatar } from "@assets/images"
-import { GiftBorderIcon } from "@components/Icons"
+// import { GiftBorderIcon } from "@components/Icons"
 import { CloseFilledIcon } from "@components/Icons/DefiLens"
-import { Button, Modal, ModalContent } from "@nextui-org/react"
+import { Modal, ModalContent } from "@nextui-org/react"
 import React from "react"
+import ItemReward from "./ItemReward"
+import { Virtuoso } from "react-virtuoso"
+import { TokenInfo } from "./useGetListToken"
 
 const ClaimReward: React.FC<{
   isOpen: boolean
   onClose: () => void
   onOpenChange: () => void
-}> = ({ isOpen, onClose, onOpenChange }) => {
+  tokens: TokenInfo[]
+  refresh: () => void
+}> = ({ isOpen, onClose, onOpenChange, refresh, tokens }) => {
   return (
     <Modal
       isOpen={isOpen}
@@ -18,37 +22,46 @@ const ClaimReward: React.FC<{
       classNames={{
         base: "bg-[#E6E6E6]",
       }}
-      size="sm"
+      size="md"
       placement="center"
     >
       <ModalContent>
         <div className="relative p-6">
           <div className="mb-3 flex items-center justify-between">
-            <p className="text-14 font-medium text-mercury-700">21 Assets</p>
+            <p className="text-14 font-medium text-mercury-700">
+              {tokens.length} {tokens.length > 1 ? "Assets" : "Asset"}
+            </p>
             <div onClick={onClose} className="cursor-pointer">
               <CloseFilledIcon />
             </div>
           </div>
-          <div className="flex flex-col gap-1">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <img
-                  src={maxAvatar}
-                  className="h-8 w-8 rounded-full object-cover"
-                />
-                <div>
-                  <p className="text-14 font-semibold text-mercury-950">
-                    1,234,544 MAX
-                  </p>
-                  <p className="text-14 text-brown-500">$89,242</p>
-                </div>
-              </div>
-              <Button className="h-8 gap-1 rounded-full bg-[#2CB34E] text-14 font-semibold text-white">
-                <GiftBorderIcon />
-                Claim
-              </Button>
-            </div>
+          <div className="relative flex h-[250px] flex-col gap-1 overflow-y-auto">
+            <Virtuoso
+              style={{ height: "100%" }}
+              data={tokens}
+              increaseViewportBy={300}
+              itemContent={(index, item) => {
+                return (
+                  <ItemReward
+                    key={item.rewardToken}
+                    item={item}
+                    refresh={refresh}
+                    className={index === tokens.length - 1 ? "pb-5" : ""}
+                  />
+                )
+              }}
+            />
+            <div
+              style={{
+                background:
+                  "linear-gradient(180deg, rgba(255, 255, 255, 0.00) 0%, #E6E6E6 100%)",
+              }}
+              className="absolute bottom-0 z-10 flex h-6 w-full"
+            ></div>
           </div>
+          {/* <Button className="mt-2 w-full rounded-full bg-mercury-950 font-semibold text-white">
+            <GiftBorderIcon /> Claim All
+          </Button> */}
         </div>
       </ModalContent>
     </Modal>
