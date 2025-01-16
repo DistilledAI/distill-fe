@@ -2,18 +2,14 @@ import { envConfig } from "@configs/env"
 import { Connection, PublicKey } from "@solana/web3.js"
 import { coinInfo } from "@types"
 import axios from "axios"
-// import { SOLANA_RPC, SOLANA_WS } from "program/utils/web3Utils"
+import { SOLANA_RPC, SOLANA_WS } from "program/utils/web3Utils"
 import { Metaplex } from "@metaplex-foundation/js"
 import { fetchRetry } from "@oraichain/oraidex-common"
 
-const connection = new Connection(
-  "https://devnet.helius-rpc.com/?api-key=791e2c4e-4495-45c4-b873-c8f35344e0c0",
-  {
-    wsEndpoint:
-      "wss://devnet.helius-rpc.com/?api-key=791e2c4e-4495-45c4-b873-c8f35344e0c0",
-    commitment: "confirmed",
-  },
-)
+const connection = new Connection(SOLANA_RPC, {
+  wsEndpoint: SOLANA_WS,
+  commitment: "confirmed",
+})
 const metaplex = Metaplex.make(connection)
 
 export const getAgentCoinsInfo = async (

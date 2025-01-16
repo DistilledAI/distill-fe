@@ -10,21 +10,17 @@ import {
 import { MerkleAirdrop } from "./idl/merkle_airdrop.ts"
 import idl from "./idl/merkle_airdrop.json"
 import { handleTransaction } from "../utils.ts"
-// import { SOLANA_RPC, SOLANA_WS } from "program/utils/web3Utils.ts"
+import { SOLANA_RPC, SOLANA_WS } from "program/utils/web3Utils.ts"
 
 export const vaultProgramId = new PublicKey(idl.address)
 export const vaultInterface = JSON.parse(JSON.stringify(idl))
 
 export class Web3Airdrop {
   constructor(
-    private readonly connection = new Connection(
-      "https://devnet.helius-rpc.com/?api-key=791e2c4e-4495-45c4-b873-c8f35344e0c0",
-      {
-        commitment: "confirmed",
-        wsEndpoint:
-          "wss://devnet.helius-rpc.com/?api-key=791e2c4e-4495-45c4-b873-c8f35344e0c0",
-      },
-    ),
+    private readonly connection = new Connection(SOLANA_RPC, {
+      commitment: "confirmed",
+      wsEndpoint: SOLANA_WS,
+    }),
   ) {}
 
   async claim({

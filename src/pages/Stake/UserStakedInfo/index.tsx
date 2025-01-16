@@ -12,12 +12,13 @@ import useGetListTokenWithInfo from "./useGetListToken"
 import { twMerge } from "tailwind-merge"
 import { formatNumberWithComma } from "@utils/index"
 import ItemRewardPreview from "./ItemRewardPreview"
+import { useEffect, useState } from "react"
 
 const UserStakedInfo = ({ total }: { total: number }) => {
   const { isOpen, onClose, onOpenChange, onOpen } = useDisclosure()
   const { data: prices } = useCoinGeckoPrices()
-  const { rewardList, totalClaimable, getListReward } =
-    useGetRewardStrongVault(prices)
+  const [totalToken, setTotalToken] = useState<number>(0)
+  const { rewardList, totalClaimable } = useGetRewardStrongVault(prices)
   const { tokens } = useGetListTokenWithInfo(rewardList)
   const [searchParams] = useSearchParams()
   const tokenAddress = searchParams.get("token")
@@ -30,6 +31,12 @@ const UserStakedInfo = ({ total }: { total: number }) => {
       .toNumber()
       .toFixed(3),
   ).toNumber()
+
+  useEffect(() => {
+    setTotalToken(tokens.length)
+  }, [tokens])
+
+  const isGNRT = tokenInfo?.address === StakeTokenAddress.Degenerator
 
   return (
     <div className="flex flex-wrap items-center justify-between rounded-[14px] border-1 border-[#A88E67] bg-brown-50 px-6 py-4">
@@ -46,41 +53,55 @@ const UserStakedInfo = ({ total }: { total: number }) => {
         <p className="text-14 font-medium text-mercury-700">
           Claimable Rewards
         </p>
-        <p className="text-24 font-semibold text-brown-600 max-md:text-20">
-          {totalClaimable === 0
-            ? "--"
-            : `$${formatNumberWithComma(totalClaimable)}`}
-        </p>
-        <div
-          onClick={() => {
-            if (tokens.length > 0) onOpen()
-          }}
-          className={twMerge(
-            "inline-flex items-center gap-1",
-            tokens.length > 0 && "cursor-pointer",
-          )}
-        >
-          <div className="flex items-center">
-            {[...tokens].slice(0, 3).map((item, index) => (
-              <ItemRewardPreview
-                key={item.rewardToken}
-                item={item}
-                index={index}
-              />
-            ))}
-          </div>
-          <p className="text-14 text-brown-600">
-            {tokens.length} {tokens.length > 1 ? "Assets" : "Asset"}
+        {isGNRT ? (
+          <p className="text-24 font-semibold text-brown-600 max-md:text-20">
+            {totalClaimable === 0
+              ? "--"
+              : `$${formatNumberWithComma(totalClaimable)}`}
           </p>
-        </div>
+        ) : (
+          <p className="text-24 font-semibold text-brown-600 max-md:text-20">
+            --
+          </p>
+        )}
+        {isGNRT ? (
+          <div
+            onClick={() => {
+              if (totalToken > 0) onOpen()
+            }}
+            className={twMerge(
+              "inline-flex items-center gap-1",
+              totalToken > 0 && "cursor-pointer",
+            )}
+          >
+            {totalToken > 0 ? (
+              <div className="flex items-center">
+                {[...tokens].slice(0, 3).map((item, index) => (
+                  <ItemRewardPreview
+                    key={item.rewardToken}
+                    item={item}
+                    index={index}
+                  />
+                ))}
+              </div>
+            ) : (
+              ""
+            )}
+            <p className="text-14 text-brown-600">
+              {totalToken} {totalToken > 1 ? "Assets" : "Asset"}
+            </p>
+          </div>
+        ) : (
+          <p className="text-14 text-brown-600">0 Asset</p>
+        )}
       </div>
       <div
         onClick={() => {
-          if (tokens.length > 0) onOpen()
+          if (totalToken > 0 && isGNRT) onOpen()
         }}
         className={twMerge(
           "font-semibold text-brown-600 opacity-65 max-md:mt-3 max-md:w-full max-md:text-center max-md:text-14",
-          tokens.length > 0 && "cursor-pointer opacity-100",
+          totalToken > 0 && isGNRT && "cursor-pointer opacity-100",
         )}
       >
         Claim Rewards
@@ -91,7 +112,7 @@ const UserStakedInfo = ({ total }: { total: number }) => {
           onOpenChange={onOpenChange}
           onClose={onClose}
           tokens={tokens}
-          refresh={getListReward}
+          refresh={() => setTotalToken((prev) => prev - 1)}
         />
       )}
     </div>

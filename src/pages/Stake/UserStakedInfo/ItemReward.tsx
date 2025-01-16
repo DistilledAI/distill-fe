@@ -51,7 +51,7 @@ const ItemReward: React.FC<{
 
   return (
     <div
-      className={twMerge("mb-2 flex items-center justify-between", className)}
+      className={twMerge("mb-4 flex items-center justify-between", className)}
     >
       <div className="flex items-center gap-2">
         {imgUrl ? (

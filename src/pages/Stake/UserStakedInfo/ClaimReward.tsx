@@ -1,10 +1,10 @@
-// import { GiftBorderIcon } from "@components/Icons"
 import { CloseFilledIcon } from "@components/Icons/DefiLens"
-import { Modal, ModalContent } from "@nextui-org/react"
-import React from "react"
+import { Input, Modal, ModalContent } from "@nextui-org/react"
+import React, { useState } from "react"
 import ItemReward from "./ItemReward"
 import { Virtuoso } from "react-virtuoso"
 import { TokenInfo } from "./useGetListToken"
+import { FilledSearchIcon } from "@components/Icons/SearchIcon"
 
 const ClaimReward: React.FC<{
   isOpen: boolean
@@ -13,6 +13,11 @@ const ClaimReward: React.FC<{
   tokens: TokenInfo[]
   refresh: () => void
 }> = ({ isOpen, onClose, onOpenChange, refresh, tokens }) => {
+  const [searchTokenAddr, setSearchTokenAddr] = useState("")
+  const filteredRewardList = tokens.filter((item) =>
+    item.rewardToken.toLowerCase().includes(searchTokenAddr.toLowerCase()),
+  )
+
   return (
     <Modal
       isOpen={isOpen}
@@ -22,23 +27,31 @@ const ClaimReward: React.FC<{
       classNames={{
         base: "bg-[#E6E6E6]",
       }}
-      size="md"
+      size="sm"
       placement="center"
     >
       <ModalContent>
         <div className="relative p-6">
-          <div className="mb-3 flex items-center justify-between">
-            <p className="text-14 font-medium text-mercury-700">
-              {tokens.length} {tokens.length > 1 ? "Assets" : "Asset"}
+          <div className="relative mb-4 flex items-center justify-center">
+            <p className="text-14 font-medium text-mercury-950">
+              Claimable Rewards
             </p>
-            <div onClick={onClose} className="cursor-pointer">
+            <div onClick={onClose} className="absolute right-0 cursor-pointer">
               <CloseFilledIcon />
             </div>
           </div>
-          <div className="relative flex h-[250px] flex-col gap-1 overflow-y-auto">
+          <Input
+            onValueChange={setSearchTokenAddr}
+            startContent={<FilledSearchIcon />}
+            placeholder="Search by name or contract address.."
+            classNames={{
+              inputWrapper: "!bg-mercury-70 rounded-full",
+            }}
+          />
+          <div className="relative mt-5 flex h-[280px] flex-col gap-1 overflow-y-auto">
             <Virtuoso
               style={{ height: "100%" }}
-              data={tokens}
+              data={filteredRewardList}
               increaseViewportBy={300}
               itemContent={(index, item) => {
                 return (

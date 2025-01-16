@@ -6,6 +6,7 @@ import { toBN } from "@utils/format"
 import { getTokensPriceByIds } from "@utils/index"
 import { useEffect, useState } from "react"
 import { SPL_DECIMAL } from "../config"
+import { GNRT_STAKING_VAULT } from "./constants"
 
 export type RewardByToken = {
   randomKp: string
@@ -25,7 +26,7 @@ const useGetRewardStrongVault = (
   const [totalClaimable, setTotalClaimable] = useState(0)
   const [loading, setLoading] = useState(true)
   const wallet = useWallet()
-  const strongboxVaultAddr = "6bsoBXPeRCBuChB1swueDwSWsubAHZJMZJYeFxdfrymL"
+  const strongboxVaultAddr = GNRT_STAKING_VAULT
 
   const getListReward = async () => {
     try {

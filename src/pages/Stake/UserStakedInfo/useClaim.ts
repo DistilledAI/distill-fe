@@ -5,13 +5,14 @@ import { useWallet } from "@solana/wallet-adapter-react"
 import { toast } from "react-toastify"
 import { Web3Airdrop } from "./web3Airdrop"
 import { BN } from "@coral-xyz/anchor"
+import { GNRT_STAKING_VAULT } from "./constants"
 
 const web3Airdrop = new Web3Airdrop()
 
 const useClaim = () => {
   const [isLoading, setIsLoading] = useState(false)
   const wallet = useWallet()
-  const stakingVault = "6bsoBXPeRCBuChB1swueDwSWsubAHZJMZJYeFxdfrymL"
+  const stakingVault = GNRT_STAKING_VAULT
 
   const handleClaim = async ({
     rewardToken,
