@@ -1,4 +1,5 @@
 import { AvatarConversation } from "@components/AvatarContainer"
+import TotalMemberBadge from "@components/TotalMemberBadge"
 import { twMerge } from "tailwind-merge"
 
 interface Props {
@@ -9,11 +10,14 @@ interface Props {
     avatar2?: string
     name?: string
     tag?: string
+    textContainer?: string
+    totalMember?: string
   }
   name: string
-  tag: string
   agent1: any
   agent2: any
+  conversationId: any
+  tag?: string
 }
 
 const OrchestrationHeader = ({
@@ -21,6 +25,7 @@ const OrchestrationHeader = ({
   agent1,
   agent2,
   name,
+  conversationId,
   tag,
 }: Props) => {
   return (
@@ -34,20 +39,31 @@ const OrchestrationHeader = ({
           avatar2: classNames?.avatar2,
         }}
       />
-      <div className="text-left">
-        <h4
-          className={twMerge(
-            "text-[14px] font-bold text-mercury-950",
-            classNames?.name,
+
+      <div className={twMerge("text-left", classNames?.textContainer)}>
+        <div>
+          <h4
+            className={twMerge(
+              "text-[14px] font-bold text-mercury-950",
+              classNames?.name,
+            )}
+          >
+            {name}
+          </h4>
+          {tag && (
+            <span
+              className={twMerge(
+                "text-[14px] text-mercury-800",
+                classNames?.tag,
+              )}
+            >
+              {tag}
+            </span>
           )}
-        >
-          {name}
-        </h4>
-        <span
-          className={twMerge("text-[14px] text-mercury-800", classNames?.tag)}
-        >
-          {tag}
-        </span>
+        </div>
+        <div className={classNames?.totalMember}>
+          <TotalMemberBadge groupId={conversationId} />
+        </div>
       </div>
     </div>
   )

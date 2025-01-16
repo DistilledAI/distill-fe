@@ -33,12 +33,13 @@ const OrchestrationCard = ({ item }: Props) => {
           agent1={item?.agent1}
           agent2={item?.agent2}
           name={item.name}
-          tag={item.tag}
+          conversationId={item?.conversationId}
           classNames={{
             wrapper: "gap-5",
             avatarWrapper: "z-0",
             name: "text-[14px] font-bold text-white leading-[110%] tracking-[-0.16px] line-clamp-1",
             tag: "bg-white/10 rounded text-[13px] text-white/60 font-medium px-1 leading-[100%] tracking-[-0.325px] line-camp-1",
+            totalMember: "mt-1",
           }}
         />
         <BroadcastIcon />
