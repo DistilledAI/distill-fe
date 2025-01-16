@@ -12,6 +12,7 @@ import { twMerge } from "tailwind-merge"
 import { emojiReactionsMap, replaceAtBrackets } from "./helpers"
 import useEmojiReactions from "./hooks/useEmojiReactions"
 import ReactedEmojisList from "./ReactedEmojisList"
+import DotLoading from "@components/DotLoading"
 
 interface MessageLiveProps {
   message: IMessageBox
@@ -73,10 +74,8 @@ const MessageLive: React.FC<MessageLiveProps> = ({
         <div className="flex items-center gap-2">
           <p
             className={twMerge(
-              "line-clamp-1 max-w-[220px]",
-              isBot
-                ? "bg-lgd-code-hot-ramp bg-clip-text text-base font-bold text-transparent"
-                : "text-base-b",
+              "line-clamp-1 max-w-[220px] text-[16px] font-bold",
+              isBot && "bg-lgd-code-hot-ramp bg-clip-text text-transparent",
             )}
           >
             {message?.username}
@@ -97,10 +96,14 @@ const MessageLive: React.FC<MessageLiveProps> = ({
           )}
         </div>
         <div
-          className="text-base text-mercury-900 aria-selected:italic"
-          aria-selected={isBot}
+          className={twMerge("text-[16px] text-mercury-900", isBot && "italic")}
         >
-          <MarkdownMessage msg={message?.content} />
+          {message?.isTyping ? (
+            <DotLoading className="mt-1" />
+          ) : (
+            <MarkdownMessage msg={message?.content} />
+          )}
+
           <ReactedEmojisList
             emojiReactions={emojiReactions}
             emojiReactionsMap={emojiReactionsMap}

@@ -65,7 +65,7 @@ const useMessageSocket = () => {
   }
 
   const isPassRuleMessage = (e: IDataListen) => {
-    if (e.user.id === user?.id) return false
+    if (e?.user?.id === user?.id) return false
 
     return true
   }
