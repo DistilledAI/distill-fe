@@ -22,7 +22,7 @@ const HeaderMobile: React.FC = () => {
 
   return (
     <>
-      <div className="fixed left-0 top-0 z-[1] flex h-[50px] w-full items-center justify-between bg-white px-4">
+      <div className="fixed left-0 top-0 z-10 flex h-[50px] w-full items-center justify-between bg-white px-4">
         <div onClick={onOpen}>
           <BarIcon />
         </div>
