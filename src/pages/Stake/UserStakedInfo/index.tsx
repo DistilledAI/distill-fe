@@ -18,7 +18,8 @@ const UserStakedInfo = ({ total }: { total: number }) => {
   const { isOpen, onClose, onOpenChange, onOpen } = useDisclosure()
   const { data: prices } = useCoinGeckoPrices()
   const [totalToken, setTotalToken] = useState<number>(0)
-  const { rewardList, totalClaimable } = useGetRewardStrongVault(prices)
+  const { rewardList, totalClaimable, getListReward } =
+    useGetRewardStrongVault(prices)
   const { tokens } = useGetListTokenWithInfo(rewardList)
   const [searchParams] = useSearchParams()
   const tokenAddress = searchParams.get("token")
@@ -109,8 +110,14 @@ const UserStakedInfo = ({ total }: { total: number }) => {
       {isOpen && (
         <ClaimReward
           isOpen={isOpen}
-          onOpenChange={onOpenChange}
-          onClose={onClose}
+          onOpenChange={(isOpen) => {
+            onOpenChange()
+            if (!isOpen) getListReward()
+          }}
+          onClose={() => {
+            onClose()
+            getListReward()
+          }}
           tokens={tokens}
           refresh={() => setTotalToken((prev) => prev - 1)}
         />

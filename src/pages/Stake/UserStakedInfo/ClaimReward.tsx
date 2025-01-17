@@ -9,7 +9,7 @@ import { FilledSearchIcon } from "@components/Icons/SearchIcon"
 const ClaimReward: React.FC<{
   isOpen: boolean
   onClose: () => void
-  onOpenChange: () => void
+  onOpenChange: (val: boolean) => void
   tokens: TokenInfo[]
   refresh: () => void
 }> = ({ isOpen, onClose, onOpenChange, refresh, tokens }) => {
