@@ -43,7 +43,7 @@ const useGetListTokenWithInfo = (rewardList: RewardByToken[]) => {
     getListToken()
   }, [rewardList])
 
-  return { tokens, loading }
+  return { tokens, loading, setTokens }
 }
 
 export default useGetListTokenWithInfo

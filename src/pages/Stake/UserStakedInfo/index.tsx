@@ -20,7 +20,7 @@ const UserStakedInfo = ({ total }: { total: number }) => {
   const [totalToken, setTotalToken] = useState<number>(0)
   const { rewardList, totalClaimable, getListReward } =
     useGetRewardStrongVault(prices)
-  const { tokens } = useGetListTokenWithInfo(rewardList)
+  const { tokens, setTokens } = useGetListTokenWithInfo(rewardList)
   const [searchParams] = useSearchParams()
   const tokenAddress = searchParams.get("token")
   const tokenInfo = getInfoTokenByAddress(tokenAddress as StakeTokenAddress)
@@ -119,7 +119,11 @@ const UserStakedInfo = ({ total }: { total: number }) => {
             getListReward()
           }}
           tokens={tokens}
-          refresh={() => setTotalToken((prev) => prev - 1)}
+          refresh={(rewardToken) =>
+            setTokens((prev) =>
+              prev.filter((item) => item.rewardToken !== rewardToken),
+            )
+          }
         />
       )}
     </div>

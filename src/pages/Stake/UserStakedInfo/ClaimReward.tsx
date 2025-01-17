@@ -11,7 +11,7 @@ const ClaimReward: React.FC<{
   onClose: () => void
   onOpenChange: (val: boolean) => void
   tokens: TokenInfo[]
-  refresh: () => void
+  refresh: (rewardToken: string) => void
 }> = ({ isOpen, onClose, onOpenChange, refresh, tokens }) => {
   const [searchTokenAddr, setSearchTokenAddr] = useState("")
   const filteredRewardList = tokens.filter((item) =>
@@ -43,7 +43,7 @@ const ClaimReward: React.FC<{
           <Input
             onValueChange={setSearchTokenAddr}
             startContent={<FilledSearchIcon />}
-            placeholder="Search by name or contract address.."
+            placeholder="Search by contract address"
             classNames={{
               inputWrapper: "!bg-mercury-70 rounded-full",
             }}

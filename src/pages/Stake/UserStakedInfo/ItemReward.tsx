@@ -13,7 +13,7 @@ import useClaim from "./useClaim"
 const ItemReward: React.FC<{
   className?: string
   item: TokenInfo
-  refresh: () => void
+  refresh: (rewardToken: string) => void
 }> = ({ className, item, refresh }) => {
   const [isClaimed, setIsClaimed] = useState(false)
   const { isLoading, handleClaim } = useClaim()
@@ -67,7 +67,7 @@ const ItemReward: React.FC<{
             {formatNumberWithComma(toBN(amount).toNumber())}{" "}
             {item.ticker || ticket}
           </p>
-          <p className="text-14 font-medium text-brown-500">
+          <p className="text-13 font-medium leading-4 text-brown-500">
             {item.amountUsd && item.amountUsd !== 0
               ? `$${formatNumberWithComma(item.amountUsd)}`
               : "$ --"}
@@ -81,7 +81,7 @@ const ItemReward: React.FC<{
           handleClaim({
             callbackDone: () => {
               setIsClaimed(true)
-              refresh()
+              refresh(item.rewardToken)
             },
             rewardToken: item.rewardToken,
             randomKp: item.randomKp,
