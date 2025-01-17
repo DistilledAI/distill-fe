@@ -1,17 +1,17 @@
 import ComingSoon from "@components/ComingSoon"
+import { CloudUpload } from "@components/Icons/CloudUpload"
 import { useAppSelector } from "@hooks/useAppRedux"
 import { Button, ScrollShadow } from "@nextui-org/react"
+import useActiveAgent from "@pages/ChatPage/ChatBox/RightContent/MyPrivateAgentContent/useActiveAgent"
 import { useEffect, useRef } from "react"
+import { useNavigate } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
+import AIAgentList from "./AIAgentList"
+import ClanAgents from "./ClanAgents"
 import GenAITools from "./GenAITools"
+import Orchestration from "./Orchestration"
 import Productivity from "./Productivity"
 import useScrollTabActive from "./useScrollTabActive"
-import AIAgentList from "./AIAgentList"
-import { CloudUpload } from "@components/Icons/CloudUpload"
-import { useNavigate } from "react-router-dom"
-import useActiveAgent from "@pages/ChatPage/ChatBox/RightContent/MyPrivateAgentContent/useActiveAgent"
-import ClanAgents from "./ClanAgents"
-import Orchestration from "./Orchestration"
 
 const Marketplace = () => {
   const siderCollapsed = useAppSelector((state) => state.sidebarCollapsed)
@@ -20,8 +20,8 @@ const Marketplace = () => {
 
   const CATEGORIES = [
     {
-      id: "orchestration",
-      name: "Orchestration",
+      id: "multi-agent-chatroom",
+      name: "Multi-agent Chatroom",
       component: <Orchestration />,
       isComing: false,
     },
