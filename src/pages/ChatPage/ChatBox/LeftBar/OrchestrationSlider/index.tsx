@@ -6,11 +6,11 @@ import {
 } from "@assets/images"
 import { ChevronDownIcon } from "@components/Icons/ChevronDownIcon"
 import { PATH_NAMES } from "@constants/index"
+import { useRef } from "react"
 import { useNavigate } from "react-router-dom"
 import { Navigation } from "swiper/modules"
 import { Swiper, SwiperRef, SwiperSlide } from "swiper/react"
 import OrchestrationCard from "./OrchestrationCard"
-import { useRef } from "react"
 
 const urlStaging = ["mesh-distilled-ai-dev.web.app", "localhost:5173"]
 const isStaging = urlStaging.includes(window.location.host)
@@ -113,6 +113,9 @@ const OrchestrationSlider = () => {
 
   return (
     <div className="relative w-full">
+      <div className="border-t-1 border-mercury-100 py-3">
+        <span className="text-base-14-b">Multi-agent Chatroom</span>
+      </div>
       <Swiper
         ref={swiperRef}
         spaceBetween={8}
