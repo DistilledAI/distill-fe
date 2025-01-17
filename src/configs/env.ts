@@ -9,4 +9,12 @@ export const envConfig = {
   groupDefaultForPrivateAgent: import.meta.env
     .VITE_GROUP_DEFAULT_FOR_PRIVATE_AGENT,
   groupIdMax: urlStaging.includes(window.location.host) ? 98 : 1177,
+  memeBackendUrl:
+    import.meta.env.VITE_MEME_BACKEND_URL || "https://backend-meme.agents.land",
+  agentBackendUrl:
+    import.meta.env.VITE_AGENTLAND_BACKEND_URL ||
+    "https://backend-release.agents.land",
+  stakingAirdropBackendUrl:
+    import.meta.env.VITE_STAKING_AIRDROP_BACKEND_URL ||
+    "https://airdrop-be-stag.agents.land",
 }

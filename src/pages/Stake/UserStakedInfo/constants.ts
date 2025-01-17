@@ -1,0 +1,1 @@
+export const GNRT_STAKING_VAULT = "6bsoBXPeRCBuChB1swueDwSWsubAHZJMZJYeFxdfrymL"

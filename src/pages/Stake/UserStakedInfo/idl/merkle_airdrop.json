@@ -1,0 +1,536 @@
+{
+  "address": "GAp8WvZK3LnYNjg1YRuvygnXeaf8y9Dauuprk3MxjP7X",
+  "metadata": {
+    "name": "merkle_airdrop",
+    "version": "0.1.0",
+    "spec": "0.1.0",
+    "description": "Created with Anchor"
+  },
+  "instructions": [
+    {
+      "name": "claim",
+      "discriminator": [62, 198, 214, 193, 213, 159, 108, 210],
+      "accounts": [
+        {
+          "name": "signer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "distributor",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  109, 101, 114, 107, 108, 101, 95, 100, 105, 115, 116, 114,
+                  105, 98, 117, 116, 111, 114
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "random_kp"
+              }
+            ]
+          }
+        },
+        {
+          "name": "claim_status",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99, 108, 97, 105, 109, 95, 115, 116, 97, 116, 117, 115
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "distributor"
+              },
+              {
+                "kind": "arg",
+                "path": "index"
+              }
+            ]
+          }
+        },
+        {
+          "name": "distributor_token_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "distributor"
+              },
+              {
+                "kind": "const",
+                "value": [
+                  6, 221, 246, 225, 215, 101, 161, 147, 217, 203, 225, 70, 206,
+                  235, 121, 172, 28, 180, 133, 237, 95, 91, 55, 145, 58, 140,
+                  245, 133, 126, 255, 0, 169
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "token_mint"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140, 151, 37, 143, 78, 36, 137, 241, 187, 61, 16, 41, 20, 142,
+                13, 131, 11, 90, 19, 153, 218, 255, 16, 132, 4, 142, 123, 216,
+                219, 233, 248, 89
+              ]
+            }
+          }
+        },
+        {
+          "name": "signer_token_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "signer"
+              },
+              {
+                "kind": "const",
+                "value": [
+                  6, 221, 246, 225, 215, 101, 161, 147, 217, 203, 225, 70, 206,
+                  235, 121, 172, 28, 180, 133, 237, 95, 91, 55, 145, 58, 140,
+                  245, 133, 126, 255, 0, 169
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "token_mint"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140, 151, 37, 143, 78, 36, 137, 241, 187, 61, 16, 41, 20, 142,
+                13, 131, 11, 90, 19, 153, 218, 255, 16, 132, 4, 142, 123, 216,
+                219, 233, 248, 89
+              ]
+            }
+          }
+        },
+        {
+          "name": "token_mint",
+          "docs": ["The mint to distribute."]
+        },
+        {
+          "name": "staking_vault",
+          "docs": ["CHECK"]
+        },
+        {
+          "name": "system_program",
+          "docs": ["The [System] program."],
+          "address": "11111111111111111111111111111111"
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "associated_token_program",
+          "address": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
+        }
+      ],
+      "args": [
+        {
+          "name": "random_kp",
+          "type": "pubkey"
+        },
+        {
+          "name": "index",
+          "type": "u64"
+        },
+        {
+          "name": "amount",
+          "type": "u64"
+        },
+        {
+          "name": "proof",
+          "type": {
+            "vec": {
+              "array": ["u8", 32]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "initialize",
+      "discriminator": [175, 175, 109, 31, 13, 152, 155, 237],
+      "accounts": [
+        {
+          "name": "signer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "new_distributor",
+      "discriminator": [32, 139, 112, 171, 0, 2, 225, 155],
+      "accounts": [
+        {
+          "name": "signer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "distributor",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  109, 101, 114, 107, 108, 101, 95, 100, 105, 115, 116, 114,
+                  105, 98, 117, 116, 111, 114
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "random_kp"
+              }
+            ]
+          }
+        },
+        {
+          "name": "distributor_token_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "distributor"
+              },
+              {
+                "kind": "const",
+                "value": [
+                  6, 221, 246, 225, 215, 101, 161, 147, 217, 203, 225, 70, 206,
+                  235, 121, 172, 28, 180, 133, 237, 95, 91, 55, 145, 58, 140,
+                  245, 133, 126, 255, 0, 169
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "token_mint"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140, 151, 37, 143, 78, 36, 137, 241, 187, 61, 16, 41, 20, 142,
+                13, 131, 11, 90, 19, 153, 218, 255, 16, 132, 4, 142, 123, 216,
+                219, 233, 248, 89
+              ]
+            }
+          }
+        },
+        {
+          "name": "signer_token_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "signer"
+              },
+              {
+                "kind": "const",
+                "value": [
+                  6, 221, 246, 225, 215, 101, 161, 147, 217, 203, 225, 70, 206,
+                  235, 121, 172, 28, 180, 133, 237, 95, 91, 55, 145, 58, 140,
+                  245, 133, 126, 255, 0, 169
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "token_mint"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140, 151, 37, 143, 78, 36, 137, 241, 187, 61, 16, 41, 20, 142,
+                13, 131, 11, 90, 19, 153, 218, 255, 16, 132, 4, 142, 123, 216,
+                219, 233, 248, 89
+              ]
+            }
+          }
+        },
+        {
+          "name": "token_mint",
+          "docs": ["The mint to distribute."]
+        },
+        {
+          "name": "staking_vault",
+          "docs": [
+            "CHECK staking vault of user. Can be anything, don't matter since it is only used for querying"
+          ]
+        },
+        {
+          "name": "system_program",
+          "docs": ["The [System] program."],
+          "address": "11111111111111111111111111111111"
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "associated_token_program",
+          "address": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
+        }
+      ],
+      "args": [
+        {
+          "name": "random_kp",
+          "type": "pubkey"
+        },
+        {
+          "name": "root",
+          "type": {
+            "array": ["u8", 32]
+          }
+        },
+        {
+          "name": "max_total_claim",
+          "type": "u64"
+        },
+        {
+          "name": "max_num_nodes",
+          "type": "u64"
+        }
+      ]
+    }
+  ],
+  "accounts": [
+    {
+      "name": "ClaimStatus",
+      "discriminator": [22, 183, 249, 157, 247, 95, 150, 96]
+    },
+    {
+      "name": "MerkleDistributor",
+      "discriminator": [77, 119, 139, 70, 84, 247, 12, 26]
+    }
+  ],
+  "events": [
+    {
+      "name": "ClaimedEvent",
+      "discriminator": [144, 172, 209, 86, 144, 87, 84, 115]
+    },
+    {
+      "name": "NewAirdropEvent",
+      "discriminator": [196, 28, 48, 102, 124, 17, 36, 253]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "InvalidProof",
+      "msg": "Invalid Merkle proof."
+    },
+    {
+      "code": 6001,
+      "name": "DropAlreadyClaimed",
+      "msg": "Drop already claimed."
+    },
+    {
+      "code": 6002,
+      "name": "ExceededMaxClaim",
+      "msg": "Exceeded maximum claim amount."
+    },
+    {
+      "code": 6003,
+      "name": "ExceededMaxNumNodes",
+      "msg": "Exceeded maximum number of claimed nodes."
+    },
+    {
+      "code": 6004,
+      "name": "Unauthorized",
+      "msg": "Account is not authorized to execute this instruction"
+    },
+    {
+      "code": 6005,
+      "name": "OwnerMismatch",
+      "msg": "Token account owner did not match intended owner"
+    }
+  ],
+  "types": [
+    {
+      "name": "ClaimStatus",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "is_claimed",
+            "docs": ["If true, the tokens have been claimed."],
+            "type": "bool"
+          },
+          {
+            "name": "claimant",
+            "docs": ["Authority that claimed the tokens."],
+            "type": "pubkey"
+          },
+          {
+            "name": "claimed_at",
+            "docs": ["When the tokens were claimed."],
+            "type": "i64"
+          },
+          {
+            "name": "amount",
+            "docs": ["Amount of tokens claimed."],
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ClaimedEvent",
+      "docs": ["Emitted when tokens are claimed."],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "index",
+            "docs": ["Index of the claim."],
+            "type": "u64"
+          },
+          {
+            "name": "reward_token",
+            "type": "pubkey"
+          },
+          {
+            "name": "staking_vault",
+            "type": "pubkey"
+          },
+          {
+            "name": "random_kp",
+            "type": "pubkey"
+          },
+          {
+            "name": "claimant",
+            "docs": ["User that claimed."],
+            "type": "pubkey"
+          },
+          {
+            "name": "amount",
+            "docs": ["Amount of tokens to distribute."],
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "MerkleDistributor",
+      "docs": ["State for the account which distributes tokens."],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "bump",
+            "docs": ["Bump seed."],
+            "type": "u8"
+          },
+          {
+            "name": "root",
+            "docs": ["The 256-bit merkle root."],
+            "type": {
+              "array": ["u8", 32]
+            }
+          },
+          {
+            "name": "reward_token",
+            "type": "pubkey"
+          },
+          {
+            "name": "staking_vault",
+            "type": "pubkey"
+          },
+          {
+            "name": "random_kp",
+            "type": "pubkey"
+          },
+          {
+            "name": "creator",
+            "type": "pubkey"
+          },
+          {
+            "name": "max_total_claim",
+            "docs": [
+              "Maximum number of tokens that can ever be claimed from this [MerkleDistributor]."
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "max_num_nodes",
+            "docs": [
+              "Maximum number of nodes that can ever be claimed from this [MerkleDistributor]."
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "total_amount_claimed",
+            "docs": ["Total amount of tokens that have been claimed."],
+            "type": "u64"
+          },
+          {
+            "name": "num_nodes_claimed",
+            "docs": ["Number of nodes that have been claimed."],
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "NewAirdropEvent",
+      "docs": ["Emitted when a new airdrop is created"],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "random_kp",
+            "docs": ["Unique event round"],
+            "type": "pubkey"
+          },
+          {
+            "name": "distributor",
+            "docs": ["distributor info, since we probably need whitelisting"],
+            "type": "pubkey"
+          },
+          {
+            "name": "reward_token",
+            "docs": ["reward token for dapps to paginate"],
+            "type": "pubkey"
+          },
+          {
+            "name": "staking_vault",
+            "docs": ["staking_vault for dapps to paginate"],
+            "type": "pubkey"
+          },
+          {
+            "name": "creation_timestamp",
+            "docs": ["also emit creation date for UI display"],
+            "type": "i64"
+          }
+        ]
+      }
+    }
+  ]
+}

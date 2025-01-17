@@ -1,5 +1,6 @@
 import { ACTIVE_COLORS } from "@constants/index"
 import FingerprintJS from "@fingerprintjs/fingerprintjs"
+import { fetchRetry } from "@oraichain/oraidex-common"
 import { cloneElement, createElement } from "react"
 import { toast } from "react-toastify"
 
@@ -249,6 +250,51 @@ export const isMarkdownImage = (str: string) => {
   const markdownImageRegex =
     /^!\[.*\]\(https?:\/\/[^\s]+\.(?:jpg|jpeg|png|gif|svg|webp)(\?.*)?\)$/i
   return markdownImageRegex.test(str.trim())
+}
+
+export const getTokensPriceByIds = async (
+  tokens: string[],
+  cachedPrices = {},
+): Promise<any> => {
+  if (tokens.length === 0) return cachedPrices
+
+  const BASE_URL =
+    "https://api.geckoterminal.com/api/v2/networks/solana/tokens/multi/"
+  const TOKEN_LIST = tokens.map(encodeURIComponent).join(",")
+  const fullUrl = BASE_URL + TOKEN_LIST
+  const prices: any = { ...cachedPrices }
+  try {
+    const resp = await fetchRetry(fullUrl)
+    const rawData = await resp.json()
+    // update cached
+    for (const key of tokens) {
+      const tokenInfo = rawData.data.find(
+        (item: any) => item.attributes.address,
+      )
+      prices[key] = tokenInfo?.attributes?.price_usd
+    }
+  } catch {
+    // remain old cache
+    console.log("error getTokensPriceByIds: ", prices)
+  }
+  return prices
+}
+
+export async function fetchJSONDataFromUrl(url: string) {
+  try {
+    const response = await fetch(url)
+    if (!response.ok) {
+      throw new Error(`Response status: ${response.status}`)
+    }
+    const json = await response.json()
+
+    return json
+  } catch (error) {
+    console.log("error", error)
+    return {
+      image: url,
+    }
+  }
 }
 
 export const shortenNumber = (number: number) => {
