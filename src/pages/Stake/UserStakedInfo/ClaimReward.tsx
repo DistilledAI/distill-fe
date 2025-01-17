@@ -52,7 +52,7 @@ const ClaimReward: React.FC<{
             <Virtuoso
               style={{ height: "100%" }}
               data={filteredRewardList}
-              increaseViewportBy={300}
+              increaseViewportBy={500}
               itemContent={(index, item) => {
                 return (
                   <ItemReward
