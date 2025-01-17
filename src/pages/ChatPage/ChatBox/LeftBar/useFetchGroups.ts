@@ -1,5 +1,4 @@
 import useAuthState from "@hooks/useAuthState"
-import useWindowSize from "@hooks/useWindowSize"
 import { IUser } from "@reducers/userSlice"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { useState } from "react"
@@ -61,7 +60,6 @@ interface FetchConfig {
 export const LIMIT = 10
 
 const useFetchGroups = () => {
-  const { isMobile } = useWindowSize()
   const { isLogin } = useAuthState()
   const [hasMore, setHasMore] = useState(true)
   const [offset, setOffset] = useState(LIMIT)
@@ -113,15 +111,12 @@ const useFetchGroups = () => {
     }
   }
 
-  const dataByPrivateMsg = isMobile
-    ? data
-    : data?.filter(
-        (item: any) =>
-          ![
-            TypeGroup.PUBLIC_GROUP,
-            TypeGroup.PUBLIC_GROUP_CONVERSATION,
-          ].includes(item?.group?.typeGroup),
-      )
+  const dataByPrivateMsg = data?.filter(
+    (item: any) =>
+      ![TypeGroup.PUBLIC_GROUP, TypeGroup.PUBLIC_GROUP_CONVERSATION].includes(
+        item?.group?.typeGroup,
+      ),
+  )
 
   return {
     isLoading: isFetching,

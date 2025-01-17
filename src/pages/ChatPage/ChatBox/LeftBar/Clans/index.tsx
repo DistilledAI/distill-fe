@@ -14,7 +14,7 @@ import { QueryDataKeys } from "types/queryDataKeys"
 // import { FilledSearchIcon } from "@components/Icons/SearchIcon"
 import { useAppSelector } from "@hooks/useAppRedux"
 
-const ChatClans: React.FC = () => {
+const ChatClans = () => {
   const prevRef = useRef<any>(null)
   const nextRef = useRef<any>(null)
   const sidebarCollapsed = useAppSelector((state) => state.sidebarCollapsed)
@@ -62,14 +62,14 @@ const ChatClans: React.FC = () => {
           sidebarCollapsed && "justify-center",
         )}
       >
-        <p
+        <span
           className={twMerge(
             "text-14 text-[#11181c]",
             sidebarCollapsed && "hidden",
           )}
         >
           Clan
-        </p>
+        </span>
         {/* <div className="flex items-center gap-4">
           <div className="cursor-pointer">
             <FilledSearchIcon />

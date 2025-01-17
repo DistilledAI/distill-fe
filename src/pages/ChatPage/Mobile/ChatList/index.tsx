@@ -29,7 +29,7 @@ import { StartNewChat } from ".."
 import useGetChatId from "../../hooks/useGetChatId"
 
 const ChatList = () => {
-  const { user } = useAuthState()
+  const { user, isLogin } = useAuthState()
   const navigate = useNavigate()
   const { chatId } = useGetChatId()
   const { groups, isLoading, handleLoadMore, isFetched } = useFetchGroups()
@@ -111,7 +111,8 @@ const ChatList = () => {
       ))
   }
 
-  if (isFetched && groups.length === 0 && !isLoading) return <StartNewChat />
+  if (isFetched && groups.length === 0 && !isLoading && !isLogin)
+    return <StartNewChat />
 
   return (
     <Virtuoso
@@ -123,9 +124,7 @@ const ChatList = () => {
             <div className="flex items-center justify-center">
               <DotLoading />
             </div>
-          ) : (
-            <></>
-          ),
+          ) : null,
       }}
       increaseViewportBy={500}
       endReached={(index) => {
