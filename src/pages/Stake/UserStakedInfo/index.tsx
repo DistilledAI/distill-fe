@@ -44,7 +44,7 @@ const UserStakedInfo = ({ total }: { total: number }) => {
       <div>
         <p className="text-14 font-medium text-mercury-700">Staked Amount</p>
         <p className="text-24 font-semibold text-brown-600 max-md:text-20">
-          {totalPriceUsd === 0 ? "--" : `$${numberWithCommas(totalPriceUsd)}`}
+          {totalPriceUsd === 0 ? "$ --" : `$${numberWithCommas(totalPriceUsd)}`}
         </p>
         <p className="text-14 text-brown-600">
           {numberWithCommas(total)} {tokenInfo?.tokenName}
@@ -57,7 +57,7 @@ const UserStakedInfo = ({ total }: { total: number }) => {
         {isGNRT ? (
           <p className="text-24 font-semibold text-brown-600 max-md:text-20">
             {totalClaimable === 0
-              ? "--"
+              ? "$ --"
               : `$${formatNumberWithComma(totalClaimable)}`}
           </p>
         ) : (

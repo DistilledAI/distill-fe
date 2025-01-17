@@ -67,10 +67,10 @@ const ItemReward: React.FC<{
             {formatNumberWithComma(toBN(amount).toNumber())}{" "}
             {item.ticker || ticket}
           </p>
-          <p className="text-14 text-brown-500">
+          <p className="text-14 font-medium text-brown-500">
             {item.amountUsd && item.amountUsd !== 0
-              ? formatNumberWithComma(item.amountUsd)
-              : ""}
+              ? `$${formatNumberWithComma(item.amountUsd)}`
+              : "$ --"}
           </p>
         </div>
       </div>
