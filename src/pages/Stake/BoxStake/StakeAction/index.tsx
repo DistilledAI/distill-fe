@@ -149,7 +149,7 @@ const StakeAction: React.FC<{
           onClick={handleStake}
           className="mt-7 h-[48px] w-full rounded-full bg-mercury-950 text-white"
         >
-          STAKE
+          Deposit
         </Button>
       ) : (
         <Button

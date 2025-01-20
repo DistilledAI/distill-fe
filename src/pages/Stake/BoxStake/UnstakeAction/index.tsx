@@ -148,7 +148,7 @@ const UnStakeAction: React.FC<{
             onClick={handleUnStake}
             className="mt-7 h-[48px] w-full rounded-full bg-mercury-950 text-white"
           >
-            UNSTAKE
+            Unbond
           </Button>
         </div>
       ) : (

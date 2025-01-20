@@ -1,12 +1,8 @@
 import { Tab, Tabs } from "@nextui-org/react"
-import StakeAction from "./StakeAction"
-import UnStakeAction from "./UnstakeAction"
-import React from "react"
+import DepositAction from "./DepositAction"
+import WithdrawAction from "./WithdrawAction"
 
-const BoxStake: React.FC<{
-  total: number
-  fetchTotal: () => void
-}> = ({ total, fetchTotal }) => {
+const BoxInvest = () => {
   return (
     <div>
       <div className="rounded-[22px] border-1 border-mercury-100 bg-mercury-70 px-8 pb-6 pt-8 max-md:px-4">
@@ -18,10 +14,10 @@ const BoxStake: React.FC<{
           }}
         >
           <Tab key="stake" title="Deposit">
-            <StakeAction fetchTotalStaked={fetchTotal} />
+            <DepositAction />
           </Tab>
           <Tab key="unstake" title="Withdraw">
-            <UnStakeAction total={total} fetchTotal={fetchTotal} />
+            <WithdrawAction />
           </Tab>
         </Tabs>
       </div>
@@ -29,4 +25,4 @@ const BoxStake: React.FC<{
   )
 }
 
-export default BoxStake
+export default BoxInvest
