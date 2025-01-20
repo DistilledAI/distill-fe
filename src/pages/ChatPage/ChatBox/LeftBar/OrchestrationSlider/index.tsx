@@ -112,47 +112,51 @@ const OrchestrationSlider = () => {
   }
 
   return (
-    <div className="relative w-full">
-      <div className="border-t-1 border-mercury-100 py-3">
-        <span className="text-base-14-b">Multi-agent Chatroom</span>
+    <div>
+      <div className="border-t-1 border-mercury-100 py-2">
+        <h4 className="text-14 font-bold text-mercury-950">
+          Multi-agent Chatroom
+        </h4>
       </div>
-      <Swiper
-        ref={swiperRef}
-        spaceBetween={8}
-        slidesPerView={1.3}
-        loop={false}
-        modules={[Navigation]}
-        navigation={{
-          nextEl: ".custom-next",
-          prevEl: ".custom-prev",
-        }}
-      >
-        {ORCHESTRATION_LIST.map((item: any, index) => (
-          <SwiperSlide
-            key={item.conversationId}
-            className="min-w-[200px]"
-            onClick={() => handleSlideClick(item.conversationId, index)}
-          >
-            <OrchestrationCard item={item} index={index} />
-          </SwiperSlide>
-        ))}
-      </Swiper>
-      <button
-        className="custom-next absolute -right-3 top-1/2 z-10 flex h-6 w-6 -translate-y-1/2 transform items-center justify-center rounded-full bg-[#5454541A] shadow-10 backdrop-blur-[10px]"
-        aria-label="Next slide"
-      >
-        <div className="w-fit -rotate-90">
-          <ChevronDownIcon color="#676767" />
-        </div>
-      </button>
-      <button
-        className="custom-prev absolute -left-3 top-1/2 z-10 flex h-6 w-6 -translate-y-1/2 transform items-center justify-center rounded-full bg-[#5454541A] shadow-10 backdrop-blur-[10px]"
-        aria-label="Next slide"
-      >
-        <div className="w-fit -rotate-[270deg]">
-          <ChevronDownIcon color="#676767" />
-        </div>
-      </button>
+      <div className="relative">
+        <Swiper
+          ref={swiperRef}
+          spaceBetween={8}
+          slidesPerView={1.3}
+          loop={false}
+          modules={[Navigation]}
+          navigation={{
+            nextEl: ".custom-next",
+            prevEl: ".custom-prev",
+          }}
+        >
+          {ORCHESTRATION_LIST.map((item: any, index) => (
+            <SwiperSlide
+              key={item.conversationId}
+              className="min-w-[200px]"
+              onClick={() => handleSlideClick(item.conversationId, index)}
+            >
+              <OrchestrationCard item={item} index={index} />
+            </SwiperSlide>
+          ))}
+        </Swiper>
+        <button
+          className="custom-next absolute -right-3 top-1/2 z-10 flex h-6 w-6 -translate-y-1/2 transform items-center justify-center rounded-full bg-[#5454541A] shadow-10 backdrop-blur-[10px]"
+          aria-label="Next slide"
+        >
+          <div className="w-fit -rotate-90">
+            <ChevronDownIcon color="#676767" />
+          </div>
+        </button>
+        <button
+          className="custom-prev absolute -left-3 top-1/2 z-10 flex h-6 w-6 -translate-y-1/2 transform items-center justify-center rounded-full bg-[#5454541A] shadow-10 backdrop-blur-[10px]"
+          aria-label="Next slide"
+        >
+          <div className="w-fit -rotate-[270deg]">
+            <ChevronDownIcon color="#676767" />
+          </div>
+        </button>
+      </div>
     </div>
   )
 }
