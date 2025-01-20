@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom"
 import { Navigation } from "swiper/modules"
 import { Swiper, SwiperRef, SwiperSlide } from "swiper/react"
 import OrchestrationCard from "./OrchestrationCard"
+import { twMerge } from "tailwind-merge"
 
 const urlStaging = ["mesh-distilled-ai-dev.web.app", "localhost:5173"]
 const isStaging = urlStaging.includes(window.location.host)
@@ -91,7 +92,22 @@ export const ORCHESTRATION_LIST = [
   },
 ]
 
-console.log("hicccc", window.location.host)
+const SlideButton = ({ direction }: { direction: "next" | "prev" }) => {
+  const isNext = direction === "next"
+  return (
+    <button
+      className={twMerge(
+        "absolute top-1/2 z-10 flex h-6 w-6 -translate-y-1/2 transform items-center justify-center rounded-full bg-[#5454541A] shadow-10 backdrop-blur-[10px]",
+        isNext ? "custom-next -right-3" : "custom-prev -left-3",
+      )}
+      aria-label={`${isNext ? "Next" : "Prev"} slide`}
+    >
+      <div className={`w-fit ${isNext ? "-rotate-90" : "-rotate-[270deg]"}`}>
+        <ChevronDownIcon color="#676767" />
+      </div>
+    </button>
+  )
+}
 
 const OrchestrationSlider = () => {
   const navigate = useNavigate()
@@ -140,22 +156,9 @@ const OrchestrationSlider = () => {
             </SwiperSlide>
           ))}
         </Swiper>
-        <button
-          className="custom-next absolute -right-3 top-1/2 z-10 flex h-6 w-6 -translate-y-1/2 transform items-center justify-center rounded-full bg-[#5454541A] shadow-10 backdrop-blur-[10px]"
-          aria-label="Next slide"
-        >
-          <div className="w-fit -rotate-90">
-            <ChevronDownIcon color="#676767" />
-          </div>
-        </button>
-        <button
-          className="custom-prev absolute -left-3 top-1/2 z-10 flex h-6 w-6 -translate-y-1/2 transform items-center justify-center rounded-full bg-[#5454541A] shadow-10 backdrop-blur-[10px]"
-          aria-label="Next slide"
-        >
-          <div className="w-fit -rotate-[270deg]">
-            <ChevronDownIcon color="#676767" />
-          </div>
-        </button>
+        {(["next", "prev"] as const).map((direction) => (
+          <SlideButton key={direction} direction={direction} />
+        ))}
       </div>
     </div>
   )
