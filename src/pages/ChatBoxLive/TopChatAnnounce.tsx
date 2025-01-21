@@ -8,7 +8,6 @@ import {
 import { useEffect } from "react"
 import { Link } from "react-router-dom"
 import { getUserTopChat } from "services/user"
-import { twMerge } from "tailwind-merge"
 
 const TopChatAnnounce = () => {
   const dispatch = useAppDispatch()
@@ -32,13 +31,9 @@ const TopChatAnnounce = () => {
     return null
 
   return (
-    <div
-      className={twMerge(
-        "absolute inset-x-4 top-[-68px] flex rounded-b-[22px] border border-t-0 border-brown-500 bg-orange-100 px-6 py-1",
-      )}
-    >
+    <div className="fixed inset-x-4 top-0 z-10 flex flex-col gap-2 rounded-b-[22px] border border-t-0 border-brown-500 bg-orange-100 px-2 py-1 md:absolute md:top-[-68px] md:flex-row md:px-6">
       <div className="flex-1">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 max-md:justify-center">
           <img
             src={distilledAiCircleLogo}
             alt="distilled ai logo"
@@ -49,7 +44,7 @@ const TopChatAnnounce = () => {
             <span className="font-bold">Our Creator Community!</span>
           </h4>
         </div>
-        <p className="text-14 font-medium leading-[110%]">
+        <p className="text-14 font-medium leading-[110%] max-md:text-center">
           Not everyone gets this chance —{" "}
           <span className="font-bold">
             your contributions have earned you a spot.{" "}
@@ -65,7 +60,7 @@ const TopChatAnnounce = () => {
         <Link
           to="https://t.me/+05p4nHkoL6RmMmJl"
           target="_blank"
-          className="rounded-full border border-mercury-900 bg-mercury-950 px-4 py-[2px] text-16 font-medium text-white"
+          className="rounded-full border border-mercury-900 bg-mercury-950 px-4 py-[2px] text-center text-16 font-medium text-white"
         >
           Join us here
         </Link>

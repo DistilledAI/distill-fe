@@ -5,9 +5,9 @@ import RightContent from "./RightContent"
 import useGroupDetail from "@pages/ChatPage/hooks/useGroupDetail"
 import useJoinGroupLive from "@hooks/useJoinGroupLive"
 import { lazy } from "react"
-import TopChatAnnounce from "./TopChatAnnounce"
 
 const ChatLiveHeader = lazy(() => import("./ChatLiveHeader"))
+const TopChatAnnounce = lazy(() => import("./TopChatAnnounce"))
 
 const ChatBoxLive = () => {
   const { isMobile } = useWindowSize()
