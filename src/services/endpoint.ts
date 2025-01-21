@@ -16,6 +16,7 @@ const endpoint = {
   GET_REFERRAL_CODE: withBaseURL("/user/referral/total-referral"),
   POST_REFERRAL_CODE: withBaseURL("/user/referral/add-referral"),
   KYC: withBaseURL("/user/kyc"),
+  GET_USER_TOP_CHAT: withBaseURL("/info/user/top-chat"),
 
   //bot
   CREATE_BOT: withBaseURL("/bot/create-bot"),

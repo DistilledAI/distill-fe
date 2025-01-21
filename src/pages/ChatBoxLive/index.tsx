@@ -5,6 +5,7 @@ import RightContent from "./RightContent"
 import useGroupDetail from "@pages/ChatPage/hooks/useGroupDetail"
 import useJoinGroupLive from "@hooks/useJoinGroupLive"
 import { lazy } from "react"
+import TopChatAnnounce from "./TopChatAnnounce"
 
 const ChatLiveHeader = lazy(() => import("./ChatLiveHeader"))
 
@@ -20,6 +21,7 @@ const ChatBoxLive = () => {
       )}
     >
       {isMobile ? <ChatLiveHeader groupDetail={groupDetail} /> : null}
+      <TopChatAnnounce />
 
       <div className="flex h-full gap-2 pb-4 max-lg:flex-col md:gap-5">
         <LeftContent groupDetail={groupDetail} isFetched={isFetched} />
