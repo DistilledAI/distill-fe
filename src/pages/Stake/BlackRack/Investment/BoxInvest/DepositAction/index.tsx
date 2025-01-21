@@ -1,46 +1,58 @@
-import { usdcLogo } from "@assets/images"
+import { aiFund2Ava, usdcLogo } from "@assets/images"
 import { ArrowLeftFilledIcon } from "@components/Icons/Arrow"
 import { Button } from "@nextui-org/react"
-import { LIST_TOKEN_STAKE, StakeTokenAddress } from "@pages/Stake"
+import { StakeTokenAddress } from "@pages/Stake"
 import { SPL_DECIMAL } from "@pages/Stake/config"
 import useConnectPhantom from "@pages/Stake/useConnectPhantom"
-import { useState } from "react"
+import useGetBalance from "@pages/Stake/useGetBalance"
+import { numberWithCommas, toBN } from "@utils/format"
+import { debounce } from "lodash"
+import { useCallback, useMemo, useState } from "react"
 import NumberFormat from "react-number-format"
 
 const DepositAction = () => {
   const [amountVal, setAmountVal] = useState<string>("")
   const { connectWallet, isConnectWallet } = useConnectPhantom()
+  const { balance, loading } = useGetBalance(StakeTokenAddress.Usdc)
 
-  const rackInfo = LIST_TOKEN_STAKE.find(
-    (item) => item.address === StakeTokenAddress.BlackRack,
+  const debouncedFetchQuantity = useCallback(
+    debounce((value: any) => {
+      console.log(value)
+    }, 500),
+    [],
   )
 
-  const handleInputChange = (value: number) => {
+  const handleInputChange = useCallback((value: number) => {
     if (value || value === 0) {
       setAmountVal(value.toString())
+      debouncedFetchQuantity(value.toString())
     } else {
       setAmountVal("")
+      debouncedFetchQuantity("0")
     }
-  }
+  }, [])
 
-  const AMOUNT_LIST = [
-    {
-      label: "25%",
-      value: 0 / 4,
-    },
-    {
-      label: "50%",
-      value: 0 / 2,
-    },
-    {
-      label: "75%",
-      value: (0 / 4) * 3,
-    },
-    {
-      label: "100%",
-      value: 0,
-    },
-  ]
+  const AMOUNT_LIST = useMemo(
+    () => [
+      {
+        label: "25%",
+        value: balance / 4,
+      },
+      {
+        label: "50%",
+        value: balance / 2,
+      },
+      {
+        label: "75%",
+        value: (balance / 4) * 3,
+      },
+      {
+        label: "100%",
+        value: balance,
+      },
+    ],
+    [balance],
+  )
 
   return (
     <div className="mt-3">
@@ -54,7 +66,6 @@ const DepositAction = () => {
               decimalScale={SPL_DECIMAL}
               type="text"
               value={amountVal}
-              onChange={() => {}}
               isAllowed={(values) => {
                 const { floatValue } = values
                 return !floatValue || (floatValue >= 0 && floatValue <= 1e14)
@@ -66,7 +77,12 @@ const DepositAction = () => {
 
             <div className="flex items-center gap-1 text-14 font-medium text-mercury-700 max-md:text-12">
               <p>Available:</p>
-              <p>10,000 USDC</p>
+              <p>
+                {loading
+                  ? "--"
+                  : numberWithCommas(toBN(balance.toFixed(3)).toNumber())}{" "}
+                USDC
+              </p>
             </div>
           </div>
           <div>
@@ -100,11 +116,11 @@ const DepositAction = () => {
       </div>
       <div className="flex items-center justify-between rounded-lg border-1 border-[#A88E67] bg-brown-50 px-4 py-3">
         <p className="font-semibold text-mercury-950">Receive:</p>
-        <div className="flex items-center gap-2">
-          <img className="h-5 w-5 rounded-full" src={rackInfo?.avatar2} />
+        <div className="flex items-center gap-1">
+          <img className="h-5 w-5 rounded-full" src={aiFund2Ava} />
           <p className="font-semibold text-brown-600">
             98,292 Shares{" "}
-            <span className="font-medium text-mercury-700">(xRACKS)</span>
+            <span className="font-medium text-mercury-700">(AIFUND2)</span>
           </p>
         </div>
       </div>

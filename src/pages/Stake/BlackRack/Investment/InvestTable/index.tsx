@@ -11,12 +11,12 @@ import {
 } from "@nextui-org/react"
 import { numberWithCommas, toBN } from "@utils/format"
 import { twMerge } from "tailwind-merge"
-import { getInfoTokenByAddress } from "../helpers"
-import { StakeTokenAddress } from ".."
-import { SPL_DECIMAL } from "../config"
 import moment from "moment"
-import ItemWithdraw from "./ItemWithdraw"
 import React from "react"
+import ItemWithdraw from "./ItemWithdraw"
+import { getInfoTokenByAddress } from "@pages/Stake/helpers"
+import { StakeTokenAddress } from "@pages/Stake"
+import { SPL_DECIMAL } from "@pages/Stake/config"
 
 enum ColumnKey {
   Amount = "amount",
@@ -48,7 +48,7 @@ const columns = [
   },
 ]
 
-const StakeTable: React.FC<{
+const InvestTable: React.FC<{
   list: {
     id: number
     amount: number
@@ -182,11 +182,7 @@ const StakeTable: React.FC<{
       <TableHeader columns={columns}>
         {(column) => (
           <TableColumn
-            className={twMerge(
-              // thClassName(column.key),
-              "data-[hover=true]:text-[#363636]",
-              // sortDescriptor.column === column.key && "text-[#363636]",
-            )}
+            className={twMerge("data-[hover=true]:text-[#363636]")}
             key={column.key}
             allowsSorting={column.sortable}
           >
@@ -212,4 +208,4 @@ const StakeTable: React.FC<{
   )
 }
 
-export default StakeTable
+export default InvestTable

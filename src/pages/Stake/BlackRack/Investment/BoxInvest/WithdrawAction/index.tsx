@@ -1,7 +1,6 @@
-import { usdcLogo } from "@assets/images"
+import { aiFund2Ava, usdcLogo } from "@assets/images"
 import { ArrowLeftFilledIcon } from "@components/Icons/Arrow"
 import { Button } from "@nextui-org/react"
-import { LIST_TOKEN_STAKE, StakeTokenAddress } from "@pages/Stake"
 import { SPL_DECIMAL } from "@pages/Stake/config"
 import useConnectPhantom from "@pages/Stake/useConnectPhantom"
 import { useState } from "react"
@@ -10,10 +9,6 @@ import NumberFormat from "react-number-format"
 const WithdrawAction = () => {
   const [amountVal, setAmountVal] = useState<string>("")
   const { connectWallet, isConnectWallet } = useConnectPhantom()
-
-  const rackInfo = LIST_TOKEN_STAKE.find(
-    (item) => item.address === StakeTokenAddress.BlackRack,
-  )
 
   const handleInputChange = (value: number) => {
     if (value || value === 0) {
@@ -66,16 +61,16 @@ const WithdrawAction = () => {
 
             <div className="flex items-center gap-1 text-14 font-medium text-mercury-700 max-md:text-12">
               <p>Available:</p>
-              <p>10,000 xRACKS</p>
+              <p>10,000 AIFUND2</p>
             </div>
           </div>
           <div>
             <div className="flex h-[46px] min-w-[100px] items-center gap-1 rounded-full bg-mercury-100 px-2">
               <img
                 className="h-8 w-8 rounded-full object-cover"
-                src={rackInfo?.avatar2}
+                src={aiFund2Ava}
               />
-              <span>xRACKS</span>
+              <span>AIFUND2</span>
             </div>
           </div>
         </div>
@@ -100,7 +95,7 @@ const WithdrawAction = () => {
       </div>
       <div className="flex items-center justify-between rounded-lg border-1 border-[#A88E67] bg-brown-50 px-4 py-3">
         <p className="font-semibold text-mercury-950">Receive:</p>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1">
           <img className="h-5 w-5 rounded-full" src={usdcLogo} />
           <p className="font-semibold text-brown-600">98,292 USDC</p>
         </div>

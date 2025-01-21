@@ -91,8 +91,6 @@ export const ORCHESTRATION_LIST = [
   },
 ]
 
-console.log("hicccc", window.location.host)
-
 const OrchestrationSlider = () => {
   const navigate = useNavigate()
   const swiperRef = useRef<SwiperRef | null>(null)

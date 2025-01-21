@@ -5,7 +5,7 @@ const AumInfo = () => {
         <p className="text-14 font-bold text-mercury-900">
           AUM{" "}
           <span className="font-medium text-mercury-700">
-            (BlackRack’s Investment Portfolio)
+            (Assets Under Management)
           </span>
         </p>
         <p className="text-24 font-bold text-mercury-950">$1,223,556</p>

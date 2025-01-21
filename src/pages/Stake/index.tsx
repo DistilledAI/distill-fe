@@ -1,17 +1,23 @@
 import { ArrowLeftFilledIcon } from "@components/Icons/Arrow"
 import { useNavigate, useSearchParams } from "react-router-dom"
-import { blackrackAvartar2, gnrtAvatar, racksAvatar } from "@assets/images"
+import {
+  blackrackAvartar2,
+  gnrtAvatar,
+  racksAvatar,
+  usdcLogo,
+} from "@assets/images"
 import { CoinGeckoId } from "@hooks/useCoingecko"
 import { lazy, useEffect } from "react"
 import { PATH_NAMES } from "@constants/index"
-import BlackRackVault from "./BlackRack"
 const SimpleStaking = lazy(() => import("./SimpleStaking"))
+const BlackRackVault = lazy(() => import("./BlackRack"))
 
 export const SOLANA_ENV = import.meta.env.VITE_APP_SOLANA_ENV || "mainnet-beta"
 
 export enum StakeTokenAddress {
   Degenerator = "oraiJP7H3LAt57DkFXNLDbLdBFNRRPvS8jg2j5AZkd9",
   BlackRack = "D7yP4ycfsRWUGYionGpi64sLF2ddZ2JXxuRAti2M7uck",
+  Usdc = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
 }
 
 export const LIST_TOKEN_STAKE = [
@@ -33,6 +39,15 @@ export const LIST_TOKEN_STAKE = [
     avatar: racksAvatar,
     avatar2: blackrackAvartar2,
     coinGeckoId: CoinGeckoId["blackrack"],
+  },
+  {
+    id: 3,
+    address: StakeTokenAddress.Usdc,
+    label: "USDC",
+    decimals: 6,
+    tokenName: "USDC",
+    avatar: usdcLogo,
+    coinGeckoId: null,
   },
 ]
 
