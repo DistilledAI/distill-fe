@@ -61,7 +61,7 @@ const ListMessage: React.FC<{
         isClan && "md:max-h-[calc(100%-130px)]",
       )}
       scrollBottomClassName="max-md:!bottom-[200px] max-md:bg-none"
-      increaseViewportBy={500}
+      increaseViewportBy={800}
     />
   )
 }
