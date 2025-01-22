@@ -68,6 +68,21 @@ export type FungStakingVault = {
           }
         },
         {
+          name: "whitelistVault"
+          pda: {
+            seeds: [
+              {
+                kind: "const"
+                value: [119, 104, 105, 116, 101, 108, 105, 115, 116]
+              },
+              {
+                kind: "account"
+                path: "vault"
+              },
+            ]
+          }
+        },
+        {
           name: "vaultTokenAccount"
           writable: true
           pda: {
@@ -392,6 +407,22 @@ export type FungStakingVault = {
           }
         },
         {
+          name: "whitelistVault"
+          writable: true
+          pda: {
+            seeds: [
+              {
+                kind: "const"
+                value: [119, 104, 105, 116, 101, 108, 105, 115, 116]
+              },
+              {
+                kind: "account"
+                path: "vault"
+              },
+            ]
+          }
+        },
+        {
           name: "vaultTokenAccount"
           writable: true
           pda: {
@@ -555,6 +586,21 @@ export type FungStakingVault = {
               {
                 kind: "arg"
                 path: "unbondingPeriod"
+              },
+            ]
+          }
+        },
+        {
+          name: "whitelistVault"
+          pda: {
+            seeds: [
+              {
+                kind: "const"
+                value: [119, 104, 105, 116, 101, 108, 105, 115, 116]
+              },
+              {
+                kind: "account"
+                path: "vault"
               },
             ]
           }
@@ -1091,6 +1137,50 @@ export type FungStakingVault = {
       ]
     },
     {
+      name: "pauseContract"
+      discriminator: [210, 36, 5, 85, 177, 65, 35, 89]
+      accounts: [
+        {
+          name: "signer"
+          writable: true
+          signer: true
+        },
+        {
+          name: "authority"
+          pda: {
+            seeds: [
+              {
+                kind: "const"
+                value: [97, 117, 116, 104, 111, 114, 105, 116, 121]
+              },
+            ]
+          }
+        },
+        {
+          name: "pause"
+          writable: true
+          pda: {
+            seeds: [
+              {
+                kind: "const"
+                value: [112, 97, 117, 115, 101]
+              },
+            ]
+          }
+        },
+        {
+          name: "systemProgram"
+          address: "11111111111111111111111111111111"
+        },
+      ]
+      args: [
+        {
+          name: "status"
+          type: "bool"
+        },
+      ]
+    },
+    {
       name: "stake"
       discriminator: [206, 176, 202, 18, 200, 209, 179, 108]
       accounts: [
@@ -1410,6 +1500,98 @@ export type FungStakingVault = {
         },
       ]
     },
+    {
+      name: "whitelist"
+      discriminator: [0, 143, 193, 93, 69, 29, 183, 140]
+      accounts: [
+        {
+          name: "admin"
+          writable: true
+          signer: true
+        },
+        {
+          name: "authority"
+          pda: {
+            seeds: [
+              {
+                kind: "const"
+                value: [97, 117, 116, 104, 111, 114, 105, 116, 121]
+              },
+            ]
+          }
+        },
+        {
+          name: "vault"
+          pda: {
+            seeds: [
+              {
+                kind: "const"
+                value: [
+                  115,
+                  116,
+                  97,
+                  107,
+                  105,
+                  110,
+                  103,
+                  95,
+                  118,
+                  97,
+                  117,
+                  108,
+                  116,
+                ]
+              },
+              {
+                kind: "account"
+                path: "stakeCurrencyMint"
+              },
+              {
+                kind: "arg"
+                path: "unbondingPeriod"
+              },
+            ]
+          }
+        },
+        {
+          name: "whitelistVault"
+          writable: true
+          pda: {
+            seeds: [
+              {
+                kind: "const"
+                value: [119, 104, 105, 116, 101, 108, 105, 115, 116]
+              },
+              {
+                kind: "account"
+                path: "vault"
+              },
+            ]
+          }
+        },
+        {
+          name: "stakeCurrencyMint"
+        },
+        {
+          name: "tokenProgram"
+          address: "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          name: "systemProgram"
+          address: "11111111111111111111111111111111"
+        },
+      ]
+      args: [
+        {
+          name: "unbondingPeriod"
+          type: "u64"
+        },
+        {
+          name: "status"
+          type: "bool"
+        },
+      ]
+    },
   ]
   accounts: [
     {
@@ -1435,6 +1617,10 @@ export type FungStakingVault = {
     {
       name: "vault"
       discriminator: [211, 8, 232, 43, 2, 152, 117, 119]
+    },
+    {
+      name: "whitelistVault"
+      discriminator: [179, 240, 242, 156, 206, 64, 241, 221]
     },
   ]
   events: [
@@ -1862,6 +2048,22 @@ export type FungStakingVault = {
           {
             name: "unbondingPeriod"
             type: "u64"
+          },
+        ]
+      }
+    },
+    {
+      name: "whitelistVault"
+      type: {
+        kind: "struct"
+        fields: [
+          {
+            name: "whitelisted"
+            type: "bool"
+          },
+          {
+            name: "vault"
+            type: "pubkey"
           },
         ]
       }
