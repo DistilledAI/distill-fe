@@ -6,6 +6,9 @@ import instructBannerReducer from "./instructBannerSlice"
 import priceInfoReducer, { PriceInfoState } from "./priceInfoSlice"
 import cachePrice, { CachePriceState } from "./cachePrice"
 import sidebarCollapsedReducer from "./sidebarCollapsedSlice"
+import topChatAnnounceReducer, {
+  TopChatAnnounceState,
+} from "./userTopChatAnnounceSlice"
 import userReducer, { IUserState } from "./userSlice"
 
 type TReducer = {
@@ -17,6 +20,7 @@ type TReducer = {
   firstLogin: boolean
   priceInfo: PriceInfoState
   cachePrice: CachePriceState
+  topChatAnnounce: TopChatAnnounceState
 }
 
 const rootReducer: Reducer<TReducer> = combineReducers({
@@ -28,6 +32,7 @@ const rootReducer: Reducer<TReducer> = combineReducers({
   firstLogin: firstLoginReducer,
   priceInfo: priceInfoReducer,
   cachePrice: cachePrice,
+  topChatAnnounce: topChatAnnounceReducer,
 })
 
 export default rootReducer

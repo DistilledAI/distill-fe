@@ -36,6 +36,7 @@ const persistConfig = {
     "instructBanner",
     "firstLogin",
     "priceInfo",
+    "topChatAnnounce",
   ],
 }
 

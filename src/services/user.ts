@@ -116,3 +116,10 @@ export const postCodeKYC = async (data: {
     data,
   })
 }
+
+export const getUserTopChat = async () => {
+  return fetchApiAuth({
+    method: "GET",
+    url: endpoint.GET_USER_TOP_CHAT,
+  })
+}

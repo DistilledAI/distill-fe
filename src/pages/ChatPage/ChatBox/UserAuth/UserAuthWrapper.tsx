@@ -25,7 +25,7 @@ const UserAuthWrapper = () => {
     >
       <BackAction />
       <Title />
-      <div className="w-full flex-1 px-4 pb-2 pt-4">
+      <div className="w-full flex-1 pb-2 pl-[18px] pr-4 pt-4">
         <UserAuth connectWallet={connectMultipleWallet} />
       </div>
     </div>

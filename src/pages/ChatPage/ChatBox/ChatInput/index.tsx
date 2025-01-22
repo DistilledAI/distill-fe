@@ -185,6 +185,7 @@ const ChatInput = ({
         onFocus={() => setIsFocus(true)}
         onBlur={() => setIsFocus(false)}
         style={{
+          overflowX: "hidden",
           width: "100%",
           height: "100%",
           maxWidth: "100%",

@@ -32,6 +32,11 @@ interface BehaviorItem {
   desc?: string
 }
 
+enum BehaviorAgentKeys {
+  personality_traits = "personality_traits",
+  communication_style = "communication_style",
+}
+
 export interface SelectedBehaviors {
   personality_traits: string[]
   communication_style: string[]
@@ -54,6 +59,10 @@ const AgentBehaviors: React.FC<AgentBehaviorsProps> = ({
   const [customFields, setCustomFields] = useState<{
     [key: string]: { value: string; isFocused: boolean }
   }>({})
+  const [showMore, setShowMore] = useState({
+    [BehaviorAgentKeys.personality_traits]: false,
+    [BehaviorAgentKeys.communication_style]: false,
+  })
 
   useEffect(() => {
     if (valueCustomDefault) {
@@ -190,6 +199,33 @@ const AgentBehaviors: React.FC<AgentBehaviorsProps> = ({
     )
   }
 
+  const renderShowMoreButton = (
+    behaviorKey: BehaviorAgentKeys,
+    value: boolean,
+  ) => {
+    const isShoreMore = showMore[behaviorKey]
+
+    return (
+      <button
+        type="button"
+        className="mt-2 flex items-center gap-1"
+        onClick={() =>
+          setShowMore((prevState) => ({
+            ...prevState,
+            [behaviorKey]: value,
+          }))
+        }
+      >
+        <span className="text-16 text-brown-500">
+          {!isShoreMore ? "Show more" : "Show less"}
+        </span>
+        <div className={twMerge(isShoreMore && "rotate-180")}>
+          <ChevronDownIcon color="#A2845E" />
+        </div>
+      </button>
+    )
+  }
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -298,11 +334,20 @@ const AgentBehaviors: React.FC<AgentBehaviorsProps> = ({
           desc="Select the trait that best describe your agent's personality."
           containerClassName="mb-4"
         />
-        <div className="flex flex-col flex-wrap gap-2">
+        <div
+          className={twMerge(
+            "flex h-[150px] flex-col gap-2 overflow-hidden",
+            showMore[BehaviorAgentKeys.personality_traits] && "h-full",
+          )}
+        >
           {PERSONALITY_LIST.map((item: BehaviorItem) =>
             renderBehaviorItem(item, "personality_traits"),
           )}
         </div>
+        {renderShowMoreButton(
+          BehaviorAgentKeys.personality_traits,
+          !showMore[BehaviorAgentKeys.personality_traits],
+        )}
       </div>
 
       <div>
@@ -311,11 +356,20 @@ const AgentBehaviors: React.FC<AgentBehaviorsProps> = ({
           desc="Select one tone and style your agent should use when communicating."
           containerClassName="mb-4"
         />
-        <div className="flex flex-wrap gap-2">
+        <div
+          className={twMerge(
+            "flex h-[150px] flex-col gap-2 overflow-hidden",
+            showMore[BehaviorAgentKeys.communication_style] && "h-full",
+          )}
+        >
           {COMMUNICATION_STYLE_LIST.map((item: BehaviorItem) =>
             renderBehaviorItem(item, "communication_style"),
           )}
         </div>
+        {renderShowMoreButton(
+          BehaviorAgentKeys.communication_style,
+          !showMore[BehaviorAgentKeys.communication_style],
+        )}
       </div>
 
       {!isCreate && (
