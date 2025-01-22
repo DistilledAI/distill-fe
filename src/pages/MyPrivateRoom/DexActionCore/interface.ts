@@ -16,6 +16,7 @@ export type SwapParams = {
   assetAddressIn: string
   assetAddressOut: string
   amount: number
+  signerAddress: string
   timestamp: number
 }
 
@@ -25,15 +26,18 @@ export type LockParams = {
   fromWalletAddress: string
   tokenAddress: string
   amount: number
+  signerAddress: string
   timestamp: number
   duration: number
 }
 
 export type SendParams = {
   network: Network
+  msgSign: MsgSignSwap
   fromWalletAddress: string
   tokenAddress: string
   amount: number
+  signerAddress: string
   timestamp: number
   toWalletAddress: string
   decimals: number
@@ -50,6 +54,7 @@ export type TransferParams = {
 
 export type PostSignParams = {
   message: string
+  signerAddress: string
   timestamp: number
   signature: string
   agentId: number

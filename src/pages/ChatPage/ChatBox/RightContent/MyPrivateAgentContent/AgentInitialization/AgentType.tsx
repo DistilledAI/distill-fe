@@ -16,7 +16,7 @@ import { Controller, useFormContext } from "react-hook-form"
 import { toast } from "react-toastify"
 import { twMerge } from "tailwind-merge"
 
-const AGENT_TYPE_KEY = {
+export const AGENT_TYPE_KEY = {
   DEFAULT: 0,
   DEFAI: 1,
 }
@@ -44,14 +44,15 @@ const AGENT_TYPE_OPTIONS = [
   },
 ]
 
-const AgentType: React.FC = () => {
+const AgentType: React.FC<{ isDisabled?: boolean }> = ({ isDisabled }) => {
   const { control } = useFormContext()
   const { handleSend } = useSend()
   const [isLoading, setIsLoading] = useState(false)
   const { user } = useAuthState()
   const amountMAX = 5000
   const maxTokenAddress = "oraim8c9d1nkfuQk9EzGYEUGxqL3MHQYndRw1huVo5h"
-  const distilledWalletAddress = "2Fm77XTuvcaFM88kynuzUbT1eRFcgcgbUrcWJA7xUo4p"
+  const ADDRESS_PAYMENT_NETWORK_SOL =
+    "H65QnPNMWj1EGgwDD5RH3oHQBbwmuBbAzXgW8no6gKwQ"
 
   const handleSubmit = async ({
     toAccountAddress,
@@ -75,19 +76,13 @@ const AgentType: React.FC = () => {
 
       const result = await handleSend({
         network: Network.SOL,
-        msgSign: {
-          action: "sign_solana",
-          timestamp,
-        },
-        agentWalletAddress: "6qe2EtWg2uLVD2isYGeN6d6Rx3cp5Z9gctZwZ8qWj3vh",
+        fromWalletAddress: user?.publicAddress,
         tokenAddress,
         toWalletAddress: toAccountAddress,
         amount: sendAmount,
-        signerAddress: user.publicAddress,
         timestamp,
         decimals,
       })
-      console.log("🚀 ~ result:", result)
       if (result) {
         toast.success("Sent successfully!")
       }
@@ -107,16 +102,18 @@ const AgentType: React.FC = () => {
 
           return (
             <Controller
-              name="agentType"
+              name="typeAgent"
               control={control}
               render={({ field: { value, onChange } }: any) => {
                 const isSelected = value === item.key
                 return (
                   <div
-                    className="flex h-[200px] items-start justify-between gap-3 rounded-[14px] border-[2px] border-transparent bg-mercury-30 p-4 hover:cursor-pointer aria-selected:border-brown-500"
+                    className="flex h-[200px] items-start justify-between gap-3 rounded-[14px] border-[2px] border-transparent bg-mercury-30 p-4 hover:cursor-pointer aria-checked:opacity-60 aria-selected:border-brown-500"
                     key={item.key}
                     aria-selected={isSelected}
+                    aria-checked={isDisabled}
                     onClick={() => {
+                      if (isDisabled) return
                       onChange(item.key)
                     }}
                   >
@@ -148,13 +145,14 @@ const AgentType: React.FC = () => {
                       {isDefaiType && (
                         <Button
                           className="mt-2 h-8 rounded-full bg-mercury-950"
-                          onPress={() =>
+                          onPress={() => {
+                            if (isDisabled) return
                             handleSubmit({
                               tokenAddress: maxTokenAddress,
-                              toAccountAddress: distilledWalletAddress,
+                              toAccountAddress: ADDRESS_PAYMENT_NETWORK_SOL,
                               amount: amountMAX.toString(),
                             })
-                          }
+                          }}
                           isLoading={isLoading}
                         >
                           <div className="flex items-center gap-1">
@@ -175,7 +173,6 @@ const AgentType: React.FC = () => {
                         </Button>
                       )}
                     </div>
-
                     <Checkbox radius="full" isSelected={isSelected} />
                   </div>
                 )

@@ -1,9 +1,13 @@
 import { BoltOutlineIcon, TargetIcon } from "@components/Icons"
 import { ClipboardTextIcon } from "@components/Icons/ClipboardTextIcon"
 import { DatabaseSettingIcon } from "@components/Icons/DatabaseImportIcon"
-import { StarUserIconOutline } from "@components/Icons/UserIcon"
+import {
+  StarUserIconOutline,
+  UserHexagonIcon,
+} from "@components/Icons/UserIcon"
 import SmoothScrollTo from "@components/SmoothScrollTo"
 import { BEHAVIORS_AGENT, STATUS_AGENT } from "@constants/index"
+import AgentType from "@pages/ChatPage/ChatBox/RightContent/MyPrivateAgentContent/AgentInitialization/AgentType"
 import { refreshFetchMyAgent } from "@reducers/agentSlice"
 import { useEffect, useState } from "react"
 import { FormProvider, useForm } from "react-hook-form"
@@ -46,6 +50,7 @@ const AgentDetail: React.FC = () => {
   const descriptionData = agentData?.description
   const firstMsgData = agentData?.firstMsg
   const avatarData = agentData?.avatar
+  const typeAgentData = agentData?.typeAgent
 
   const methods = useForm<any>({
     defaultValues: {
@@ -65,6 +70,7 @@ const AgentDetail: React.FC = () => {
       customization_instruction: "",
       post_interval: "30m",
       category: "crypto",
+      typeAgent: 0,
     },
   })
 
@@ -104,6 +110,7 @@ const AgentDetail: React.FC = () => {
       description: descriptionData,
       firstMsg: firstMsgData,
       avatar: avatarData,
+      typeAgent: typeAgentData,
       ...getConfigAgentValueByKeys(agentConfigs, LIST_AGENT_CONFIG_KEYS),
     }
     const selectedBehaviors = {
@@ -153,6 +160,11 @@ const AgentDetail: React.FC = () => {
   }
 
   const componentScrollTo = [
+    {
+      title: "Agent Type",
+      content: <AgentType isDisabled />,
+      icon: <UserHexagonIcon />,
+    },
     {
       title: "Public Appearance",
       content: <GeneralInfo agentData={agentData} />,

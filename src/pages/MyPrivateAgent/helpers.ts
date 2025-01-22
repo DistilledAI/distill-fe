@@ -1,8 +1,5 @@
-import { bs58 } from "@coral-xyz/anchor/dist/cjs/utils/bytes"
 import { ComputeBudgetProgram, Connection, PublicKey } from "@solana/web3.js"
 import { toast } from "react-toastify"
-import endpoint from "services/endpoint"
-import { fetchApiAuth } from "services/fetchApi"
 import { match } from "ts-pattern"
 import {
   SOL_COMPUTE_UNIT_LIMIT,
@@ -11,50 +8,7 @@ import {
   SOLANA_WS,
   TOKENS,
 } from "./constants"
-import {
-  ConfirmTxParams,
-  MsgSignSwap,
-  Network,
-  PostSignParams,
-} from "./interface"
-
-const postSignAgentWithSol = async (params: PostSignParams) => {
-  try {
-    const { message, signerAddress, signature, timestamp, agentId } = params
-    const res = await fetchApiAuth({
-      method: "post",
-      url: endpoint.CALL_AGENT,
-      data: {
-        botId: agentId,
-        path: "/wallet/sign-solana",
-        body: {
-          data: {
-            metadata: {
-              message,
-            },
-            signer_addr: signerAddress,
-            timestamp,
-            network: "solana",
-          },
-          signature,
-        },
-      },
-    })
-    if (!res.data.signature) return null
-    return res.data.signature
-  } catch (error: any) {
-    console.error(error)
-  }
-}
-
-export const postSignAgentByNetwork = async (
-  network: Network,
-  params: PostSignParams,
-) => {
-  return match(network)
-    .with(Network.SOL, () => postSignAgentWithSol(params))
-    .run()
-}
+import { ConfirmTxParams, Network } from "./interface"
 
 const getProvider = () => {
   if ("solana" in window) {
@@ -66,24 +20,25 @@ const getProvider = () => {
   return null
 }
 
-const getSignatureWithSol = async (msgSign: MsgSignSwap) => {
+const getSignatureWithSol = async (transaction: any) => {
   const provider = getProvider()
   if (!provider) {
     return toast.warning("Provider not found")
   }
-  const message = JSON.stringify(msgSign)
-  const encodedMessage = new TextEncoder().encode(message)
-  const signedMessage = await provider.signMessage(encodedMessage, "utf8")
-  const signature = bs58.encode(signedMessage.signature)
-  return signature
+
+  const signedTransactions = await provider.signAndSendAllTransactions([
+    transaction,
+  ])
+
+  return signedTransactions
 }
 
 export const getSignatureByNetwork = async (
   network: Network,
-  msgSign: MsgSignSwap,
+  transaction: any,
 ) => {
   return match(network)
-    .with(Network.SOL, () => getSignatureWithSol(msgSign))
+    .with(Network.SOL, () => getSignatureWithSol(transaction))
     .run()
 }
 
@@ -96,11 +51,11 @@ export const getMsgDataTx = (transaction: any) => {
 
 const confirmTransactionWithSol = async ({
   transaction,
-  agentWalletAddress,
+  fromWalletAddress,
   signatureByAgent,
 }: ConfirmTxParams) => {
   transaction.addSignature(
-    new PublicKey(agentWalletAddress),
+    new PublicKey(fromWalletAddress),
     Buffer.from(signatureByAgent),
   )
   const connection = new Connection(SOLANA_RPC, {
@@ -121,6 +76,7 @@ const confirmTransactionWithSol = async ({
       result: null,
     }
   }
+
   console.log("txid: ", txid)
   return {
     error: null,

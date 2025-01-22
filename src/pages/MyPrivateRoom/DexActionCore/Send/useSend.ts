@@ -1,14 +1,21 @@
+import { useAppSelector } from "@hooks/useAppRedux"
 import { getAssociatedTokenAddress } from "@solana/spl-token"
 import { PublicKey } from "@solana/web3.js"
 import { useState } from "react"
 import { toast } from "react-toastify"
-import { getSignatureByNetwork } from "../helpers"
+import {
+  confirmTransactionByNetwork,
+  getMsgDataTx,
+  getSignatureByNetwork,
+  postSignAgentByNetwork,
+} from "../helpers"
 import { SendParams } from "../interface"
 import { sendWithSolNetwork } from "./helpers"
 
 const useSend = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [txh, setTxh] = useState<string | null>("")
+  const myAgent = useAppSelector((state) => state.agents.myAgent)
 
   const handleSend = async (params: SendParams) => {
     try {
@@ -16,8 +23,11 @@ const useSend = () => {
       setTxh("")
       const {
         network,
+        msgSign,
         fromWalletAddress,
         amount,
+        signerAddress,
+        timestamp,
         decimals,
         tokenAddress,
         toWalletAddress,
@@ -30,24 +40,42 @@ const useSend = () => {
         token,
         agentAddress,
       )
-
       const receiverTokenAccount = await getAssociatedTokenAddress(
         token,
         toAccount,
       )
 
+      const signature = await getSignatureByNetwork(network, msgSign)
       const transaction = await sendWithSolNetwork({
         senderTokenAccount,
-        token,
         receiverTokenAccount,
+        token,
         fromWalletAddress: agentAddress,
         amount,
         decimals,
       })
 
-      if (!transaction) return toast.error("Send error!")
-      const signature = await getSignatureByNetwork(network, transaction)
-      return signature
+      if (!signature || !transaction) return toast.error("Send error!")
+      const signatureByAgent = await postSignAgentByNetwork(network, {
+        message: getMsgDataTx(transaction),
+        signerAddress,
+        timestamp,
+        signature: signature as string,
+        agentId: myAgent?.id as number,
+      })
+
+      if (!signatureByAgent) return toast.error("Send error!")
+      const { error, result } = await confirmTransactionByNetwork(network, {
+        transaction,
+        fromWalletAddress,
+        signatureByAgent,
+      })
+      if (error) {
+        toast.error(`Error: ${error}`)
+        return result
+      }
+      setTxh(result)
+      return result
     } catch (error) {
       console.error(error)
     } finally {

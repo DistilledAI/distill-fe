@@ -19,6 +19,7 @@ const ConnectData = () => {
   const navigate = useNavigate()
   const { botId } = useParams()
   const { isAgentActive, agentDataList, isAgentDataFetched } = useActiveAgent()
+  console.log("🚀 ~ ConnectData ~ agentDataList:", agentDataList)
 
   const onMoreCustomRequest = async (data: any) => {
     try {
