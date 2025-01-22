@@ -37,6 +37,7 @@ const columns = [
 
 const HistoryTable: React.FC = () => {
   const renderCell = (item: Record<string, any>, columnKey: string) => {
+    console.log(item)
     switch (columnKey) {
       default:
         return null

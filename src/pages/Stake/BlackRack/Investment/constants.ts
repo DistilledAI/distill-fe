@@ -1,11 +1,11 @@
 export const INVEST_ADDRESS = {
-  vault: "6kGD7KZmzYeShJab5659TNGaKxs8XHYJb9Dpnc3unhC8",
-  usdc: "v6ZegfKumXFEKzLAWiHouPe7KZsZq8kv6dq4Sc1Aqvq",
-  shareToken: "v41emVMVDU8FEukVPc56Gtoc4cn1dHmPBYrBxuPduPs",
-  vault_config: "4Yhev2YSPYcmQEZLvtxJDqkgeFia89jHCCFfcpR6RiEh",
-  authority: "85jP2e8ZGLRepsBA81vv6aZTV7T672mN5gR6F6S9K61F",
-  whitelistDepositPda: "GfdZoLuEsz9vhB2MDw61CX38rAjJczkaV9DR4yoCCvs6",
+  vault: "QrXtXQcwNgZJpc5JE56WdnnkHft4agsf7rxj1XrD8A3",
   manager: "vafeqL4dT3pejF7NE9HSevf1b7i1HwuCMG3CUGvEoSm",
+  usdc: "v6ZegfKumXFEKzLAWiHouPe7KZsZq8kv6dq4Sc1Aqvq",
+  shareToken: "vpi96fiFLfy7wHJB8G5XuzNVYz98WyX6MQWjBYvTDQJ",
+  vault_config: "4Diisj5QK2JnYuKp1PR39yy2H35wGxj38Ys4VvZVZHQJ",
+  authority: "XPRDB7M3JeMhFh7xW3mpzC7M56CjAJyoaTinpL9T16h",
+  whitelistDepositPda: "ArfV1s9Q3cG2NQEpaRHeGmcEDKsQAfS5HmaspYX31CMZ",
 }
 
 export function toUtfBytes(str: string): Uint8Array {
@@ -19,3 +19,5 @@ export const SEED_WHITELIST_DEPOSIT = toUtfBytes("whitelist_deposit")
 export const SEED_AUTHORITY = toUtfBytes("authority")
 export const SEED_SELL_SHARE_INFO = toUtfBytes("sell_share_info")
 export const SEED_SELL_SHARE_INFO_DETAIL = toUtfBytes("sell_share_info_detail")
+
+export const NAV_SCALE = 10000

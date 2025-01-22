@@ -5,7 +5,7 @@
  * IDL can be found at `target/idl/racks_vault.json`.
  */
 export type RacksVault = {
-  address: "BLToJKQ2JHQ3NLAdFtyhw9hfQDWEaLnFy1rcCZuJBets"
+  address: "FRu5K51jQB6t4abD4XWyw5xbzi6QqNGdev5yj9RnAY5A"
   metadata: {
     name: "racksVault"
     version: "0.1.0"
@@ -148,6 +148,96 @@ export type RacksVault = {
               {
                 kind: "account"
                 path: "signer"
+              },
+              {
+                kind: "const"
+                value: [
+                  6,
+                  221,
+                  246,
+                  225,
+                  215,
+                  101,
+                  161,
+                  147,
+                  217,
+                  203,
+                  225,
+                  70,
+                  206,
+                  235,
+                  121,
+                  172,
+                  28,
+                  180,
+                  133,
+                  237,
+                  95,
+                  91,
+                  55,
+                  145,
+                  58,
+                  140,
+                  245,
+                  133,
+                  126,
+                  255,
+                  0,
+                  169,
+                ]
+              },
+              {
+                kind: "account"
+                path: "depositToken"
+              },
+            ]
+            program: {
+              kind: "const"
+              value: [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89,
+              ]
+            }
+          }
+        },
+        {
+          name: "managerTokenAccount"
+          writable: true
+          pda: {
+            seeds: [
+              {
+                kind: "account"
+                path: "manager"
               },
               {
                 kind: "const"
@@ -475,6 +565,379 @@ export type RacksVault = {
       ]
     },
     {
+      name: "claim"
+      discriminator: [62, 198, 214, 193, 213, 159, 108, 210]
+      accounts: [
+        {
+          name: "signer"
+          writable: true
+          signer: true
+        },
+        {
+          name: "authority"
+          pda: {
+            seeds: [
+              {
+                kind: "const"
+                value: [97, 117, 116, 104, 111, 114, 105, 116, 121]
+              },
+            ]
+          }
+        },
+        {
+          name: "manager"
+        },
+        {
+          name: "vaultConfig"
+          pda: {
+            seeds: [
+              {
+                kind: "const"
+                value: [118, 97, 117, 108, 116, 95, 99, 111, 110, 102, 105, 103]
+              },
+              {
+                kind: "account"
+                path: "manager"
+              },
+            ]
+          }
+        },
+        {
+          name: "vault"
+          pda: {
+            seeds: [
+              {
+                kind: "const"
+                value: [118, 97, 117, 108, 116]
+              },
+              {
+                kind: "account"
+                path: "vaultConfig"
+              },
+              {
+                kind: "account"
+                path: "shareToken"
+              },
+            ]
+          }
+        },
+        {
+          name: "minter"
+          pda: {
+            seeds: [
+              {
+                kind: "const"
+                value: [
+                  115,
+                  104,
+                  97,
+                  114,
+                  101,
+                  95,
+                  109,
+                  105,
+                  110,
+                  116,
+                  101,
+                  114,
+                ]
+              },
+            ]
+          }
+        },
+        {
+          name: "shareToken"
+        },
+        {
+          name: "depositToken"
+        },
+        {
+          name: "sellerTokenAccount"
+          writable: true
+          pda: {
+            seeds: [
+              {
+                kind: "account"
+                path: "signer"
+              },
+              {
+                kind: "const"
+                value: [
+                  6,
+                  221,
+                  246,
+                  225,
+                  215,
+                  101,
+                  161,
+                  147,
+                  217,
+                  203,
+                  225,
+                  70,
+                  206,
+                  235,
+                  121,
+                  172,
+                  28,
+                  180,
+                  133,
+                  237,
+                  95,
+                  91,
+                  55,
+                  145,
+                  58,
+                  140,
+                  245,
+                  133,
+                  126,
+                  255,
+                  0,
+                  169,
+                ]
+              },
+              {
+                kind: "account"
+                path: "depositToken"
+              },
+            ]
+            program: {
+              kind: "const"
+              value: [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89,
+              ]
+            }
+          }
+        },
+        {
+          name: "vaultDepositTokenAccount"
+          writable: true
+          pda: {
+            seeds: [
+              {
+                kind: "account"
+                path: "vault"
+              },
+              {
+                kind: "const"
+                value: [
+                  6,
+                  221,
+                  246,
+                  225,
+                  215,
+                  101,
+                  161,
+                  147,
+                  217,
+                  203,
+                  225,
+                  70,
+                  206,
+                  235,
+                  121,
+                  172,
+                  28,
+                  180,
+                  133,
+                  237,
+                  95,
+                  91,
+                  55,
+                  145,
+                  58,
+                  140,
+                  245,
+                  133,
+                  126,
+                  255,
+                  0,
+                  169,
+                ]
+              },
+              {
+                kind: "account"
+                path: "depositToken"
+              },
+            ]
+            program: {
+              kind: "const"
+              value: [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89,
+              ]
+            }
+          }
+        },
+        {
+          name: "sellShareInfoPda"
+          pda: {
+            seeds: [
+              {
+                kind: "const"
+                value: [
+                  115,
+                  101,
+                  108,
+                  108,
+                  95,
+                  115,
+                  104,
+                  97,
+                  114,
+                  101,
+                  95,
+                  105,
+                  110,
+                  102,
+                  111,
+                ]
+              },
+              {
+                kind: "account"
+                path: "vault"
+              },
+              {
+                kind: "account"
+                path: "signer"
+              },
+            ]
+          }
+        },
+        {
+          name: "sellShareInfoDetailPda"
+          writable: true
+          pda: {
+            seeds: [
+              {
+                kind: "const"
+                value: [
+                  115,
+                  101,
+                  108,
+                  108,
+                  95,
+                  115,
+                  104,
+                  97,
+                  114,
+                  101,
+                  95,
+                  105,
+                  110,
+                  102,
+                  111,
+                  95,
+                  100,
+                  101,
+                  116,
+                  97,
+                  105,
+                  108,
+                ]
+              },
+              {
+                kind: "account"
+                path: "sellShareInfoPda"
+              },
+              {
+                kind: "arg"
+                path: "id"
+              },
+            ]
+          }
+        },
+        {
+          name: "clockSysVar"
+          address: "SysvarC1ock11111111111111111111111111111111"
+        },
+        {
+          name: "systemProgram"
+          address: "11111111111111111111111111111111"
+        },
+        {
+          name: "tokenProgram"
+          address: "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          name: "rent"
+          address: "SysvarRent111111111111111111111111111111111"
+        },
+        {
+          name: "associatedTokenProgram"
+          address: "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
+        },
+      ]
+      args: [
+        {
+          name: "id"
+          type: "u64"
+        },
+      ]
+    },
+    {
       name: "createVault"
       discriminator: [29, 237, 247, 208, 193, 82, 54, 135]
       accounts: [
@@ -728,6 +1191,10 @@ export type RacksVault = {
         },
         {
           name: "shareToken"
+        },
+        {
+          name: "clockSysVar"
+          address: "SysvarC1ock11111111111111111111111111111111"
         },
         {
           name: "systemProgram"
@@ -1445,6 +1912,7 @@ export type RacksVault = {
         },
         {
           name: "sellShareInfoPda"
+          writable: true
           pda: {
             seeds: [
               {
@@ -1481,6 +1949,46 @@ export type RacksVault = {
         {
           name: "sellShareInfoDetailPda"
           writable: true
+          pda: {
+            seeds: [
+              {
+                kind: "const"
+                value: [
+                  115,
+                  101,
+                  108,
+                  108,
+                  95,
+                  115,
+                  104,
+                  97,
+                  114,
+                  101,
+                  95,
+                  105,
+                  110,
+                  102,
+                  111,
+                  95,
+                  100,
+                  101,
+                  116,
+                  97,
+                  105,
+                  108,
+                ]
+              },
+              {
+                kind: "account"
+                path: "sellShareInfoPda"
+              },
+              {
+                kind: "account"
+                path: "sell_share_info_pda.current_id"
+                account: "sellShareInfo"
+              },
+            ]
+          }
         },
         {
           name: "clockSysVar"
@@ -1798,8 +2306,8 @@ export type RacksVault = {
     },
     {
       code: 6006
-      name: "unbondingTimeNotOverYet"
-      msg: "The unbonding time is not over yet"
+      name: "withdrawTimeNotOverYet"
+      msg: "The withdraw time is not over yet"
     },
     {
       code: 6007
@@ -1885,7 +2393,11 @@ export type RacksVault = {
           },
           {
             name: "withdrawPeriod"
-            type: "u64"
+            type: "i64"
+          },
+          {
+            name: "nextTimeTakeManagementFee"
+            type: "i64"
           },
         ]
       }
@@ -1914,6 +2426,10 @@ export type RacksVault = {
           {
             name: "newAum"
             type: "u64"
+          },
+          {
+            name: "nextTimeTakeManagementFee"
+            type: "i64"
           },
         ]
       }
@@ -1948,12 +2464,15 @@ export type RacksVault = {
         kind: "struct"
         fields: [
           {
-            name: "id"
-            type: "u64"
+            name: "bump"
+            docs: ["Bump seed used to generate the program address / authority"]
+            type: {
+              array: ["u8", 1]
+            }
           },
           {
-            name: "user"
-            type: "pubkey"
+            name: "currentId"
+            type: "u64"
           },
         ]
       }
@@ -1964,14 +2483,12 @@ export type RacksVault = {
         kind: "struct"
         fields: [
           {
-            name: "bump"
-            type: {
-              array: ["u8", 1]
-            }
-          },
-          {
             name: "id"
             type: "u64"
+          },
+          {
+            name: "user"
+            type: "pubkey"
           },
           {
             name: "shareAmount"
@@ -1983,7 +2500,11 @@ export type RacksVault = {
           },
           {
             name: "withdrawTime"
-            type: "u64"
+            type: "i64"
+          },
+          {
+            name: "claimed"
+            type: "bool"
           },
         ]
       }
@@ -2026,15 +2547,11 @@ export type RacksVault = {
           },
           {
             name: "withdrawPeriod"
-            type: "u64"
+            type: "i64"
           },
           {
-            name: "lastTimeTakeManagementFee"
-            type: "u64"
-          },
-          {
-            name: "lastTimeTakePerformanceFee"
-            type: "u64"
+            name: "nextTimeTakeManagementFee"
+            type: "i64"
           },
         ]
       }

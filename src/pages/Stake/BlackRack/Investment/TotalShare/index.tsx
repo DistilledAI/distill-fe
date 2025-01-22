@@ -9,7 +9,7 @@ const TotalShare = () => {
         <div className="flex items-center gap-2">
           <img className="h-6 w-6 rounded-full object-cover" src={aiFund2Ava} />
           <p className="text-24 font-semibold text-mercury-950 max-md:text-20">
-            341.5M Shares
+            -- Shares
           </p>
         </div>
       </div>
@@ -18,7 +18,7 @@ const TotalShare = () => {
           Your Shares Power
         </p>
         <p className="text-24 font-semibold text-mercury-950 max-md:text-20">
-          2.5%
+          --%
         </p>
       </div>
     </div>

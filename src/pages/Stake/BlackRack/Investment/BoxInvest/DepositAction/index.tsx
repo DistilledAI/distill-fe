@@ -7,26 +7,31 @@ import useConnectPhantom from "@pages/Stake/useConnectPhantom"
 import useGetBalance from "@pages/Stake/useGetBalance"
 import { numberWithCommas, toBN } from "@utils/format"
 import { debounce } from "lodash"
-import { useCallback, useMemo, useState } from "react"
+import React, { useCallback, useMemo, useState } from "react"
 import NumberFormat from "react-number-format"
 import { toast } from "react-toastify"
 import { Web3Invest } from "../../web3Invest"
 import { BN } from "@coral-xyz/anchor"
 import { useWallet } from "@solana/wallet-adapter-react"
+import { formatNumberWithComma } from "@utils/index"
 
 const web3Invest = new Web3Invest()
 
-const DepositAction = () => {
+const DepositAction: React.FC<{
+  callback: () => void
+  nav: number
+}> = ({ callback, nav }) => {
   const [loadingSubmit, setLoadingSubmit] = useState(false)
   const [amountVal, setAmountVal] = useState<string>("")
+  const [toReward, setToReward] = useState(0)
   const wallet = useWallet()
   const { connectWallet, isConnectWallet } = useConnectPhantom()
   const { balance, loading, getBalance } = useGetBalance(StakeTokenAddress.Usdc)
 
   const debouncedFetchQuantity = useCallback(
-    debounce((value: any) => {
-      console.log(value)
-    }, 500),
+    debounce((value: string) => {
+      if (nav !== 0) setToReward(toBN(toBN(value).toNumber() / nav).toNumber())
+    }, 300),
     [],
   )
 
@@ -84,6 +89,7 @@ const DepositAction = () => {
       if (res) {
         toast.success("Deposit successfully!")
         getBalance()
+        callback()
         setAmountVal("")
       }
     } catch (error) {
@@ -159,7 +165,7 @@ const DepositAction = () => {
         <div className="flex items-center gap-1">
           <img className="h-5 w-5 rounded-full" src={aiFund2Ava} />
           <p className="font-semibold text-brown-600">
-            98,292 Shares{" "}
+            {formatNumberWithComma(toReward)} Shares{" "}
             <span className="font-medium text-mercury-700">(AIFII)</span>
           </p>
         </div>

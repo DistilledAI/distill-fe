@@ -14,9 +14,8 @@ import { twMerge } from "tailwind-merge"
 import moment from "moment"
 import React from "react"
 import ItemWithdraw from "./ItemWithdraw"
-import { getInfoTokenByAddress } from "@pages/Stake/helpers"
-import { StakeTokenAddress } from "@pages/Stake"
 import { SPL_DECIMAL } from "@pages/Stake/config"
+import { usdcLogo } from "@assets/images"
 
 enum ColumnKey {
   Amount = "amount",
@@ -53,7 +52,6 @@ const InvestTable: React.FC<{
     id: number
     amount: number
     unstakedAtTime: number
-    stakeCurrencyMint: string
   }[]
   getListUnbonding: () => void
 }> = ({ list, getListUnbonding }) => {
@@ -71,7 +69,7 @@ const InvestTable: React.FC<{
           <div className="flex items-center gap-1">
             <HourglassHighIcon />
             <span className="text-14 font-medium text-orange-600">
-              Unstaking
+              Unbonding
             </span>
           </div>
         )
@@ -80,7 +78,7 @@ const InvestTable: React.FC<{
           <div className="flex items-center gap-1">
             <UnTrendingIcon />
             <span className="text-14 font-medium text-mercury-800">
-              Unstaked
+              Unbonded
             </span>
           </div>
         )
@@ -117,9 +115,6 @@ const InvestTable: React.FC<{
   }
 
   const renderCell = (item: Record<string, any>, columnKey: string) => {
-    const tokenInfo = getInfoTokenByAddress(
-      item.stakeCurrencyMint as StakeTokenAddress,
-    )
     const totalAmount = toBN(item.amount)
       .div(10 ** SPL_DECIMAL)
       .toNumber()
@@ -131,10 +126,7 @@ const InvestTable: React.FC<{
       case ColumnKey.Amount:
         return (
           <div className="flex items-center gap-2 pr-4">
-            <img
-              className="h-5 w-5 rounded-full object-cover"
-              src={tokenInfo?.avatar}
-            />
+            <img className="h-5 w-5 rounded-full object-cover" src={usdcLogo} />
             <span className="text-16 font-bold text-mercury-900 max-md:text-15">
               {numberWithCommas(totalAmount)}
             </span>

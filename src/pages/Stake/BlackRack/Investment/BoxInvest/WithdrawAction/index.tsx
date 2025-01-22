@@ -4,45 +4,62 @@ import { Button } from "@nextui-org/react"
 import { SPL_DECIMAL } from "@pages/Stake/config"
 import useConnectPhantom from "@pages/Stake/useConnectPhantom"
 import { toBN } from "@utils/format"
-import { useState } from "react"
+import React, { useCallback, useState } from "react"
 import NumberFormat from "react-number-format"
 import { toast } from "react-toastify"
 import { Web3Invest } from "../../web3Invest"
 import { useWallet } from "@solana/wallet-adapter-react"
 import { BN } from "@coral-xyz/anchor"
+import { formatNumberWithComma } from "@utils/index"
+import { debounce } from "lodash"
 
 const web3Invest = new Web3Invest()
 
-const WithdrawAction = () => {
+const WithdrawAction: React.FC<{
+  totalShare: number
+  loadingTotalShare: boolean
+  nav: number
+  callback: () => void
+}> = ({ totalShare, loadingTotalShare, nav, callback }) => {
   const [amountVal, setAmountVal] = useState<string>("")
   const [loadingSubmit, setLoadingSubmit] = useState(false)
+  const [toUsdc, setToUsdc] = useState(0)
   const { connectWallet, isConnectWallet } = useConnectPhantom()
   const wallet = useWallet()
+
+  const debouncedFetchQuantity = useCallback(
+    debounce((value: string) => {
+      setToUsdc(toBN(nav * toBN(value).toNumber()).toNumber())
+    }, 300),
+    [],
+  )
 
   const handleInputChange = (value: number) => {
     if (value || value === 0) {
       setAmountVal(value.toString())
+      debouncedFetchQuantity(value.toString())
     } else {
       setAmountVal("")
+      debouncedFetchQuantity("0")
     }
   }
 
   const AMOUNT_LIST = [
     {
       label: "25%",
-      value: 0 / 4,
+      value: totalShare / 4,
     },
     {
       label: "50%",
-      value: 0 / 2,
+      value: totalShare / 2,
     },
     {
       label: "75%",
-      value: (0 / 4) * 3,
+      value: (totalShare / 4) * 3,
     },
     {
       label: "100%",
-      value: 0,
+      value: totalShare,
     },
   ]
 
@@ -54,9 +71,9 @@ const WithdrawAction = () => {
       if (Number(amountVal) <= 0) {
         return toast.warning("Amount must large 0!")
       }
-      // if (Number(amountVal) > total) {
-      //   return toast.warning(`Max: ${total}!`)
-      // }
+      if (Number(amountVal) > totalShare) {
+        return toast.warning(`Max: ${totalShare}!`)
+      }
       if (loadingSubmit) return
       setLoadingSubmit(true)
       const amount = toBN(
@@ -71,6 +88,7 @@ const WithdrawAction = () => {
       if (res) {
         toast.success("Unbond Successfully!")
         setAmountVal("")
+        callback()
       }
     } catch (error) {
       console.error(error)
@@ -104,7 +122,10 @@ const WithdrawAction = () => {
 
             <div className="flex items-center gap-1 text-14 font-medium text-mercury-700 max-md:text-12">
               <p>Available:</p>
-              <p>10,000 AIFII</p>
+              <p>
+                {loadingTotalShare ? "--" : formatNumberWithComma(totalShare)}{" "}
+                AIFII
+              </p>
             </div>
           </div>
           <div>
@@ -140,7 +161,9 @@ const WithdrawAction = () => {
         <p className="font-semibold text-mercury-950">Receive:</p>
         <div className="flex items-center gap-1">
           <img className="h-5 w-5 rounded-full" src={usdcLogo} />
-          <p className="font-semibold text-brown-600">98,292 USDC</p>
+          <p className="font-semibold text-brown-600">
+            {formatNumberWithComma(toUsdc)} USDC
+          </p>
         </div>
       </div>
       {isConnectWallet ? (
