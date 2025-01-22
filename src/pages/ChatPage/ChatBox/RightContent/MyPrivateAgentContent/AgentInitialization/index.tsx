@@ -41,6 +41,7 @@ const AgentInitialization = () => {
       website_link: "",
       x_link: "",
       telegram_link: "",
+      agentType: 0,
     },
   })
 
