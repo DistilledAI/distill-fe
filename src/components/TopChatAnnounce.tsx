@@ -7,6 +7,7 @@ import {
 } from "@reducers/userTopChatAnnounceSlice"
 import { useEffect } from "react"
 import { Link } from "react-router-dom"
+import { twMerge } from "tailwind-merge"
 
 const USER_ID_LIST = [
   6649, 9503, 152261, 44602, 50626, 6037, 51452, 65953, 2760, 72209, 19398,
@@ -26,6 +27,7 @@ const TopChatAnnounce = () => {
   const topChatAnnounce: TopChatAnnounceState = useAppSelector(
     (state) => state.topChatAnnounce,
   )
+  const sidebarCollapsed = useAppSelector((state) => state.sidebarCollapsed)
   const { user, isAnonymous } = useAuthState()
 
   useEffect(() => {
@@ -34,6 +36,8 @@ const TopChatAnnounce = () => {
         // const res = await getUserTopChat()
         if (USER_ID_LIST.includes(Number(user?.id))) {
           dispatch(updateTopChatAnnounce("open"))
+        } else {
+          dispatch(updateTopChatAnnounce("close"))
         }
       }
     })()
@@ -43,7 +47,12 @@ const TopChatAnnounce = () => {
     return null
 
   return (
-    <div className="fixed inset-x-4 top-0 z-10 flex flex-col gap-2 rounded-b-[22px] border border-t-0 border-brown-500 bg-orange-100 px-2 py-1 md:absolute md:top-[-68px] md:flex-row md:px-6">
+    <div
+      className={twMerge(
+        "fixed right-4 top-0 z-20 flex w-[calc(100%-361px)] flex-col gap-2 rounded-b-[22px] border border-t-0 border-brown-500 bg-orange-100 px-2 py-1 duration-300 md:flex-row md:px-6",
+        sidebarCollapsed && "w-[calc(100%-136px)]",
+      )}
+    >
       <div className="flex-1">
         <div className="flex items-center gap-2 max-md:justify-center">
           <img

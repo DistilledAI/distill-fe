@@ -7,7 +7,6 @@ import useJoinGroupLive from "@hooks/useJoinGroupLive"
 import { lazy } from "react"
 
 const ChatLiveHeader = lazy(() => import("./ChatLiveHeader"))
-const TopChatAnnounce = lazy(() => import("./TopChatAnnounce"))
 
 const ChatBoxLive = () => {
   const { isMobile } = useWindowSize()
@@ -21,7 +20,6 @@ const ChatBoxLive = () => {
       )}
     >
       {isMobile ? <ChatLiveHeader groupDetail={groupDetail} /> : null}
-      <TopChatAnnounce />
 
       <div className="flex h-full gap-2 pb-4 max-lg:flex-col md:gap-5">
         <LeftContent groupDetail={groupDetail} isFetched={isFetched} />

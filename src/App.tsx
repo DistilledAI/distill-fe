@@ -8,6 +8,7 @@ import AppRouter from "./routes/AppRouter"
 
 const EarnedPointToast = lazy(() => import("@components/EarnedPointToast"))
 const MediaPreview = lazy(() => import("@components/MediaPreview"))
+const TopChatAnnounce = lazy(() => import("@components/TopChatAnnounce"))
 
 const mixpanelToken = import.meta.env.VITE_APP_MIXPANEL_TOKEN
 const envMode = import.meta.env.VITE_APP_ENV_MODE
@@ -52,9 +53,10 @@ function App() {
       <AppRouter />
       <Suspense fallback={null}>
         <EarnedPointToast />
+        <MediaPreview />
       </Suspense>
       <Suspense fallback={null}>
-        <MediaPreview />
+        <TopChatAnnounce />
       </Suspense>
     </>
   )

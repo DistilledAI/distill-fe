@@ -11,7 +11,6 @@ const MarkdownMessage = ({ msg }: { msg: string }) => {
   const queryClient = useQueryClient()
 
   const checkTextBreak = (text: string) => {
-    console.log({ text })
     const tokenRegex = /[a-zA-Z0-9/]{40,}/
 
     if (tokenRegex.test(text)) {
