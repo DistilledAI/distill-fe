@@ -7,7 +7,19 @@ import {
 } from "@reducers/userTopChatAnnounceSlice"
 import { useEffect } from "react"
 import { Link } from "react-router-dom"
-import { getUserTopChat } from "services/user"
+
+const USER_ID_LIST = [
+  6649, 9503, 152261, 44602, 50626, 6037, 51452, 65953, 2760, 72209, 19398,
+  45113, 144820, 48749, 84786, 54894, 11476, 2511, 54979, 2023, 45952, 72217,
+  131481, 56585, 2540, 130483, 59652, 2723, 44352, 55825, 54453, 82207, 46486,
+  66030, 124047, 48454, 61978, 40811, 139000, 66294, 61967, 129105, 131466,
+  66589, 47539, 66296, 80986, 44746, 9363, 66064, 66101, 66204, 66618, 67142,
+  66048, 66278, 66935, 66193, 66211, 67118, 66205, 66226, 66713, 66129, 66375,
+  43748, 66069, 66276, 66456, 66113, 66124, 66179, 66207, 66271, 66280, 66059,
+  66079, 66139, 66160, 66837, 66960, 66065, 66082, 66105, 66219, 66349, 66484,
+  67008, 67018, 67029, 67182, 66131, 66248, 66275, 66287, 66444, 66716, 67098,
+  67139, 67226,
+]
 
 const TopChatAnnounce = () => {
   const dispatch = useAppDispatch()
@@ -19,13 +31,13 @@ const TopChatAnnounce = () => {
   useEffect(() => {
     ;(async () => {
       if (user?.id && !isAnonymous && topChatAnnounce !== "dontShowAgain") {
-        const res = await getUserTopChat()
-        if (res?.data[user?.id]) {
+        // const res = await getUserTopChat()
+        if (USER_ID_LIST.includes(Number(user?.id))) {
           dispatch(updateTopChatAnnounce("open"))
         }
       }
     })()
-  }, [user?.id, isAnonymous, topChatAnnounce])
+  }, [user?.id, isAnonymous, topChatAnnounce, USER_ID_LIST])
 
   if (topChatAnnounce === "close" || topChatAnnounce === "dontShowAgain")
     return null
