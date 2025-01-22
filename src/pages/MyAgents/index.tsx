@@ -20,6 +20,7 @@ const MyAgentPage = () => {
   const agents = useAppSelector((state) => state.agents.myAgents)
   const agent = agents[0]
   const isAgentActive = agent && agent?.status === STATUS_AGENT.ACTIVE
+  //@ts-ignore
   const typeAgentData = agent?.typeAgent
 
   const { handleSend } = useSend()
