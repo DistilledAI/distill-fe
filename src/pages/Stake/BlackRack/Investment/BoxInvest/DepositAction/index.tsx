@@ -9,11 +9,19 @@ import { numberWithCommas, toBN } from "@utils/format"
 import { debounce } from "lodash"
 import { useCallback, useMemo, useState } from "react"
 import NumberFormat from "react-number-format"
+import { toast } from "react-toastify"
+import { Web3Invest } from "../../web3Invest"
+import { BN } from "@coral-xyz/anchor"
+import { useWallet } from "@solana/wallet-adapter-react"
+
+const web3Invest = new Web3Invest()
 
 const DepositAction = () => {
+  const [loadingSubmit, setLoadingSubmit] = useState(false)
   const [amountVal, setAmountVal] = useState<string>("")
+  const wallet = useWallet()
   const { connectWallet, isConnectWallet } = useConnectPhantom()
-  const { balance, loading } = useGetBalance(StakeTokenAddress.Usdc)
+  const { balance, loading, getBalance } = useGetBalance(StakeTokenAddress.Usdc)
 
   const debouncedFetchQuantity = useCallback(
     debounce((value: any) => {
@@ -53,6 +61,38 @@ const DepositAction = () => {
     ],
     [balance],
   )
+
+  const handleDeposit = async () => {
+    try {
+      if (!amountVal || amountVal === "0") {
+        return toast.warning("Please enter amount!")
+      }
+      if (Number(amountVal) <= 0) {
+        return toast.warning("Amount must large 0!")
+      }
+      if (Number(amountVal) > balance) {
+        return toast.warning(`Max: ${balance}!`)
+      }
+      if (loadingSubmit) return
+      setLoadingSubmit(true)
+      const amount = toBN(
+        toBN(amountVal)
+          .multipliedBy(10 ** SPL_DECIMAL)
+          .toFixed(0, 1),
+      ).toNumber()
+      const res = await web3Invest.deposit({ amount: new BN(amount), wallet })
+      if (res) {
+        toast.success("Deposit successfully!")
+        getBalance()
+        setAmountVal("")
+      }
+    } catch (error) {
+      console.error(error)
+      toast.error(JSON.stringify(error))
+    } finally {
+      setLoadingSubmit(false)
+    }
+  }
 
   return (
     <div className="mt-3">
@@ -120,12 +160,16 @@ const DepositAction = () => {
           <img className="h-5 w-5 rounded-full" src={aiFund2Ava} />
           <p className="font-semibold text-brown-600">
             98,292 Shares{" "}
-            <span className="font-medium text-mercury-700">(AIFUND2)</span>
+            <span className="font-medium text-mercury-700">(AIFII)</span>
           </p>
         </div>
       </div>
       {isConnectWallet ? (
-        <Button className="mt-7 h-[48px] w-full rounded-full bg-mercury-950 text-white">
+        <Button
+          isLoading={loadingSubmit}
+          onClick={handleDeposit}
+          className="mt-7 h-[48px] w-full rounded-full bg-mercury-950 text-white"
+        >
           Deposit
         </Button>
       ) : (

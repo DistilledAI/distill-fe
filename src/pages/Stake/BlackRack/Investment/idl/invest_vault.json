@@ -1,15 +1,15 @@
 {
-  "address": "GAp8WvZK3LnYNjg1YRuvygnXeaf8y9Dauuprk3MxjP7X",
+  "address": "BLToJKQ2JHQ3NLAdFtyhw9hfQDWEaLnFy1rcCZuJBets",
   "metadata": {
-    "name": "merkle_airdrop",
+    "name": "racks_vault",
     "version": "0.1.0",
     "spec": "0.1.0",
     "description": "Created with Anchor"
   },
   "instructions": [
     {
-      "name": "claim",
-      "discriminator": [62, 198, 214, 193, 213, 159, 108, 210],
+      "name": "buy_share",
+      "discriminator": [225, 72, 68, 20, 61, 152, 46, 177],
       "accounts": [
         {
           "name": "signer",
@@ -17,80 +17,101 @@
           "signer": true
         },
         {
-          "name": "distributor",
-          "writable": true,
+          "name": "authority",
           "pda": {
             "seeds": [
               {
                 "kind": "const",
-                "value": [
-                  109, 101, 114, 107, 108, 101, 95, 100, 105, 115, 116, 114,
-                  105, 98, 117, 116, 111, 114
-                ]
-              },
-              {
-                "kind": "arg",
-                "path": "random_kp"
+                "value": [97, 117, 116, 104, 111, 114, 105, 116, 121]
               }
             ]
           }
         },
         {
-          "name": "claim_status",
-          "writable": true,
+          "name": "manager"
+        },
+        {
+          "name": "vault_config",
           "pda": {
             "seeds": [
               {
                 "kind": "const",
                 "value": [
-                  99, 108, 97, 105, 109, 95, 115, 116, 97, 116, 117, 115
+                  118, 97, 117, 108, 116, 95, 99, 111, 110, 102, 105, 103
                 ]
               },
               {
                 "kind": "account",
-                "path": "distributor"
-              },
-              {
-                "kind": "arg",
-                "path": "index"
+                "path": "manager"
               }
             ]
           }
         },
         {
-          "name": "distributor_token_account",
+          "name": "vault",
           "writable": true,
           "pda": {
             "seeds": [
               {
-                "kind": "account",
-                "path": "distributor"
+                "kind": "const",
+                "value": [118, 97, 117, 108, 116]
               },
+              {
+                "kind": "account",
+                "path": "vault_config"
+              },
+              {
+                "kind": "account",
+                "path": "share_token"
+              }
+            ]
+          }
+        },
+        {
+          "name": "whitelist_deposit",
+          "pda": {
+            "seeds": [
               {
                 "kind": "const",
                 "value": [
-                  6, 221, 246, 225, 215, 101, 161, 147, 217, 203, 225, 70, 206,
-                  235, 121, 172, 28, 180, 133, 237, 95, 91, 55, 145, 58, 140,
-                  245, 133, 126, 255, 0, 169
+                  119, 104, 105, 116, 101, 108, 105, 115, 116, 95, 100, 101,
+                  112, 111, 115, 105, 116
                 ]
               },
               {
                 "kind": "account",
-                "path": "token_mint"
+                "path": "vault"
+              },
+              {
+                "kind": "account",
+                "path": "deposit_token"
               }
-            ],
-            "program": {
-              "kind": "const",
-              "value": [
-                140, 151, 37, 143, 78, 36, 137, 241, 187, 61, 16, 41, 20, 142,
-                13, 131, 11, 90, 19, 153, 218, 255, 16, 132, 4, 142, 123, 216,
-                219, 233, 248, 89
-              ]
-            }
+            ]
           }
         },
         {
-          "name": "signer_token_account",
+          "name": "minter",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  115, 104, 97, 114, 101, 95, 109, 105, 110, 116, 101, 114
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "share_token",
+          "writable": true
+        },
+        {
+          "name": "deposit_token"
+        },
+        {
+          "name": "depositor_token_account",
           "writable": true,
           "pda": {
             "seeds": [
@@ -108,7 +129,7 @@
               },
               {
                 "kind": "account",
-                "path": "token_mint"
+                "path": "deposit_token"
               }
             ],
             "program": {
@@ -122,21 +143,103 @@
           }
         },
         {
-          "name": "token_mint",
-          "docs": ["The mint to distribute."]
+          "name": "depositor_share_token_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "signer"
+              },
+              {
+                "kind": "const",
+                "value": [
+                  6, 221, 246, 225, 215, 101, 161, 147, 217, 203, 225, 70, 206,
+                  235, 121, 172, 28, 180, 133, 237, 95, 91, 55, 145, 58, 140,
+                  245, 133, 126, 255, 0, 169
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "share_token"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140, 151, 37, 143, 78, 36, 137, 241, 187, 61, 16, 41, 20, 142,
+                13, 131, 11, 90, 19, 153, 218, 255, 16, 132, 4, 142, 123, 216,
+                219, 233, 248, 89
+              ]
+            }
+          }
         },
         {
-          "name": "staking_vault",
-          "docs": ["CHECK"]
+          "name": "vault_deposit_token_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "vault"
+              },
+              {
+                "kind": "const",
+                "value": [
+                  6, 221, 246, 225, 215, 101, 161, 147, 217, 203, 225, 70, 206,
+                  235, 121, 172, 28, 180, 133, 237, 95, 91, 55, 145, 58, 140,
+                  245, 133, 126, 255, 0, 169
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "deposit_token"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140, 151, 37, 143, 78, 36, 137, 241, 187, 61, 16, 41, 20, 142,
+                13, 131, 11, 90, 19, 153, 218, 255, 16, 132, 4, 142, 123, 216,
+                219, 233, 248, 89
+              ]
+            }
+          }
+        },
+        {
+          "name": "sell_share_info_pda",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  115, 101, 108, 108, 95, 115, 104, 97, 114, 101, 95, 105, 110,
+                  102, 111
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "vault"
+              },
+              {
+                "kind": "account",
+                "path": "signer"
+              }
+            ]
+          }
         },
         {
           "name": "system_program",
-          "docs": ["The [System] program."],
           "address": "11111111111111111111111111111111"
         },
         {
           "name": "token_program",
           "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "rent",
+          "address": "SysvarRent111111111111111111111111111111111"
         },
         {
           "name": "associated_token_program",
@@ -145,22 +248,113 @@
       ],
       "args": [
         {
-          "name": "random_kp",
-          "type": "pubkey"
-        },
-        {
-          "name": "index",
-          "type": "u64"
-        },
-        {
-          "name": "amount",
-          "type": "u64"
-        },
-        {
-          "name": "proof",
+          "name": "args",
           "type": {
-            "vec": {
-              "array": ["u8", 32]
+            "defined": {
+              "name": "BuyShareArgs"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "create_vault",
+      "discriminator": [29, 237, 247, 208, 193, 82, 54, 135],
+      "accounts": [
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "authority",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [97, 117, 116, 104, 111, 114, 105, 116, 121]
+              }
+            ]
+          }
+        },
+        {
+          "name": "vault_config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  118, 97, 117, 108, 116, 95, 99, 111, 110, 102, 105, 103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "manager"
+              }
+            ]
+          }
+        },
+        {
+          "name": "manager"
+        },
+        {
+          "name": "vault",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [118, 97, 117, 108, 116]
+              },
+              {
+                "kind": "account",
+                "path": "vault_config"
+              },
+              {
+                "kind": "account",
+                "path": "share_token"
+              }
+            ]
+          }
+        },
+        {
+          "name": "minter",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  115, 104, 97, 114, 101, 95, 109, 105, 110, 116, 101, 114
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "share_token",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "rent",
+          "address": "SysvarRent111111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "args",
+          "type": {
+            "defined": {
+              "name": "CreateVaultArgs"
             }
           }
         }
@@ -176,48 +370,220 @@
           "signer": true
         },
         {
-          "name": "system_program",
-          "address": "11111111111111111111111111111111"
-        }
-      ],
-      "args": []
-    },
-    {
-      "name": "new_distributor",
-      "discriminator": [32, 139, 112, 171, 0, 2, 225, 155],
-      "accounts": [
-        {
-          "name": "signer",
+          "name": "authority",
           "writable": true,
-          "signer": true
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [97, 117, 116, 104, 111, 114, 105, 116, 121]
+              }
+            ]
+          }
         },
         {
-          "name": "distributor",
+          "name": "vault_config",
           "writable": true,
           "pda": {
             "seeds": [
               {
                 "kind": "const",
                 "value": [
-                  109, 101, 114, 107, 108, 101, 95, 100, 105, 115, 116, 114,
-                  105, 98, 117, 116, 111, 114
+                  118, 97, 117, 108, 116, 95, 99, 111, 110, 102, 105, 103
                 ]
               },
               {
-                "kind": "arg",
-                "path": "random_kp"
+                "kind": "account",
+                "path": "manager"
               }
             ]
           }
         },
         {
-          "name": "distributor_token_account",
+          "name": "manager"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        },
+        {
+          "name": "rent",
+          "address": "SysvarRent111111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "args",
+          "type": {
+            "defined": {
+              "name": "InitializeArgs"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "manager_update_aum",
+      "discriminator": [237, 119, 28, 99, 175, 119, 5, 26],
+      "accounts": [
+        {
+          "name": "manager",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "authority",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [97, 117, 116, 104, 111, 114, 105, 116, 121]
+              }
+            ]
+          }
+        },
+        {
+          "name": "vault_config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  118, 97, 117, 108, 116, 95, 99, 111, 110, 102, 105, 103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "manager"
+              }
+            ]
+          }
+        },
+        {
+          "name": "vault",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [118, 97, 117, 108, 116]
+              },
+              {
+                "kind": "account",
+                "path": "vault_config"
+              },
+              {
+                "kind": "account",
+                "path": "share_token"
+              }
+            ]
+          }
+        },
+        {
+          "name": "minter",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  115, 104, 97, 114, 101, 95, 109, 105, 110, 116, 101, 114
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "share_token"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "rent",
+          "address": "SysvarRent111111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "args",
+          "type": {
+            "defined": {
+              "name": "ManagerUpdateAUMArgs"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "manager_withdraw",
+      "discriminator": [201, 248, 190, 143, 86, 43, 183, 254],
+      "accounts": [
+        {
+          "name": "manager",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "authority",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [97, 117, 116, 104, 111, 114, 105, 116, 121]
+              }
+            ]
+          }
+        },
+        {
+          "name": "vault_config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  118, 97, 117, 108, 116, 95, 99, 111, 110, 102, 105, 103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "manager"
+              }
+            ]
+          }
+        },
+        {
+          "name": "vault",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [118, 97, 117, 108, 116]
+              },
+              {
+                "kind": "account",
+                "path": "vault_config"
+              },
+              {
+                "kind": "account",
+                "path": "share_token"
+              }
+            ]
+          }
+        },
+        {
+          "name": "vault_deposit_token_account",
           "writable": true,
           "pda": {
             "seeds": [
               {
                 "kind": "account",
-                "path": "distributor"
+                "path": "vault"
               },
               {
                 "kind": "const",
@@ -229,7 +595,7 @@
               },
               {
                 "kind": "account",
-                "path": "token_mint"
+                "path": "deposit_token"
               }
             ],
             "program": {
@@ -243,7 +609,190 @@
           }
         },
         {
-          "name": "signer_token_account",
+          "name": "manager_deposit_token_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "manager"
+              },
+              {
+                "kind": "const",
+                "value": [
+                  6, 221, 246, 225, 215, 101, 161, 147, 217, 203, 225, 70, 206,
+                  235, 121, 172, 28, 180, 133, 237, 95, 91, 55, 145, 58, 140,
+                  245, 133, 126, 255, 0, 169
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "deposit_token"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140, 151, 37, 143, 78, 36, 137, 241, 187, 61, 16, 41, 20, 142,
+                13, 131, 11, 90, 19, 153, 218, 255, 16, 132, 4, 142, 123, 216,
+                219, 233, 248, 89
+              ]
+            }
+          }
+        },
+        {
+          "name": "minter",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  115, 104, 97, 114, 101, 95, 109, 105, 110, 116, 101, 114
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "share_token"
+        },
+        {
+          "name": "deposit_token"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "rent",
+          "address": "SysvarRent111111111111111111111111111111111"
+        },
+        {
+          "name": "associated_token_program",
+          "address": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
+        }
+      ],
+      "args": [
+        {
+          "name": "args",
+          "type": {
+            "defined": {
+              "name": "ManagerWithdrawArgs"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "sell_share",
+      "discriminator": [7, 52, 139, 219, 156, 100, 88, 209],
+      "accounts": [
+        {
+          "name": "signer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "authority",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [97, 117, 116, 104, 111, 114, 105, 116, 121]
+              }
+            ]
+          }
+        },
+        {
+          "name": "manager"
+        },
+        {
+          "name": "vault_config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  118, 97, 117, 108, 116, 95, 99, 111, 110, 102, 105, 103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "manager"
+              }
+            ]
+          }
+        },
+        {
+          "name": "vault",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [118, 97, 117, 108, 116]
+              },
+              {
+                "kind": "account",
+                "path": "vault_config"
+              },
+              {
+                "kind": "account",
+                "path": "share_token"
+              }
+            ]
+          }
+        },
+        {
+          "name": "whitelist_deposit",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  119, 104, 105, 116, 101, 108, 105, 115, 116, 95, 100, 101,
+                  112, 111, 115, 105, 116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "vault"
+              },
+              {
+                "kind": "account",
+                "path": "deposit_token"
+              }
+            ]
+          }
+        },
+        {
+          "name": "minter",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  115, 104, 97, 114, 101, 95, 109, 105, 110, 116, 101, 114
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "share_token",
+          "writable": true
+        },
+        {
+          "name": "deposit_token"
+        },
+        {
+          "name": "seller_token_account",
           "writable": true,
           "pda": {
             "seeds": [
@@ -261,7 +810,7 @@
               },
               {
                 "kind": "account",
-                "path": "token_mint"
+                "path": "deposit_token"
               }
             ],
             "program": {
@@ -275,23 +824,110 @@
           }
         },
         {
-          "name": "token_mint",
-          "docs": ["The mint to distribute."]
+          "name": "seller_share_token_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "signer"
+              },
+              {
+                "kind": "const",
+                "value": [
+                  6, 221, 246, 225, 215, 101, 161, 147, 217, 203, 225, 70, 206,
+                  235, 121, 172, 28, 180, 133, 237, 95, 91, 55, 145, 58, 140,
+                  245, 133, 126, 255, 0, 169
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "share_token"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140, 151, 37, 143, 78, 36, 137, 241, 187, 61, 16, 41, 20, 142,
+                13, 131, 11, 90, 19, 153, 218, 255, 16, 132, 4, 142, 123, 216,
+                219, 233, 248, 89
+              ]
+            }
+          }
         },
         {
-          "name": "staking_vault",
-          "docs": [
-            "CHECK staking vault of user. Can be anything, don't matter since it is only used for querying"
-          ]
+          "name": "vault_deposit_token_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "vault"
+              },
+              {
+                "kind": "const",
+                "value": [
+                  6, 221, 246, 225, 215, 101, 161, 147, 217, 203, 225, 70, 206,
+                  235, 121, 172, 28, 180, 133, 237, 95, 91, 55, 145, 58, 140,
+                  245, 133, 126, 255, 0, 169
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "deposit_token"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140, 151, 37, 143, 78, 36, 137, 241, 187, 61, 16, 41, 20, 142,
+                13, 131, 11, 90, 19, 153, 218, 255, 16, 132, 4, 142, 123, 216,
+                219, 233, 248, 89
+              ]
+            }
+          }
+        },
+        {
+          "name": "sell_share_info_pda",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  115, 101, 108, 108, 95, 115, 104, 97, 114, 101, 95, 105, 110,
+                  102, 111
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "vault"
+              },
+              {
+                "kind": "account",
+                "path": "signer"
+              }
+            ]
+          }
+        },
+        {
+          "name": "sell_share_info_detail_pda",
+          "writable": true
+        },
+        {
+          "name": "clock_sys_var",
+          "address": "SysvarC1ock11111111111111111111111111111111"
         },
         {
           "name": "system_program",
-          "docs": ["The [System] program."],
           "address": "11111111111111111111111111111111"
         },
         {
           "name": "token_program",
           "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "rent",
+          "address": "SysvarRent111111111111111111111111111111111"
         },
         {
           "name": "associated_token_program",
@@ -300,234 +936,515 @@
       ],
       "args": [
         {
-          "name": "random_kp",
-          "type": "pubkey"
+          "name": "args",
+          "type": {
+            "defined": {
+              "name": "SellShareArgs"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "whitelist_deposit",
+      "discriminator": [143, 172, 171, 182, 132, 5, 52, 70],
+      "accounts": [
+        {
+          "name": "signer",
+          "writable": true,
+          "signer": true
         },
         {
-          "name": "root",
-          "type": {
-            "array": ["u8", 32]
+          "name": "vault_config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  118, 97, 117, 108, 116, 95, 99, 111, 110, 102, 105, 103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "signer"
+              }
+            ]
           }
         },
         {
-          "name": "max_total_claim",
-          "type": "u64"
+          "name": "authority"
         },
         {
-          "name": "max_num_nodes",
-          "type": "u64"
+          "name": "vault",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [118, 97, 117, 108, 116]
+              },
+              {
+                "kind": "account",
+                "path": "vault_config"
+              },
+              {
+                "kind": "account",
+                "path": "share_token"
+              }
+            ]
+          }
+        },
+        {
+          "name": "minter",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  115, 104, 97, 114, 101, 95, 109, 105, 110, 116, 101, 114
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "share_token"
+        },
+        {
+          "name": "deposit_token"
+        },
+        {
+          "name": "whitelist_deposit",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  119, 104, 105, 116, 101, 108, 105, 115, 116, 95, 100, 101,
+                  112, 111, 115, 105, 116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "vault"
+              },
+              {
+                "kind": "account",
+                "path": "deposit_token"
+              }
+            ]
+          }
+        },
+        {
+          "name": "vault_deposit_token_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "vault"
+              },
+              {
+                "kind": "const",
+                "value": [
+                  6, 221, 246, 225, 215, 101, 161, 147, 217, 203, 225, 70, 206,
+                  235, 121, 172, 28, 180, 133, 237, 95, 91, 55, 145, 58, 140,
+                  245, 133, 126, 255, 0, 169
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "deposit_token"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140, 151, 37, 143, 78, 36, 137, 241, 187, 61, 16, 41, 20, 142,
+                13, 131, 11, 90, 19, 153, 218, 255, 16, 132, 4, 142, 123, 216,
+                219, 233, 248, 89
+              ]
+            }
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "rent",
+          "address": "SysvarRent111111111111111111111111111111111"
+        },
+        {
+          "name": "associated_token_program",
+          "address": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
         }
-      ]
+      ],
+      "args": []
     }
   ],
   "accounts": [
     {
-      "name": "ClaimStatus",
-      "discriminator": [22, 183, 249, 157, 247, 95, 150, 96]
+      "name": "Authority",
+      "discriminator": [36, 108, 254, 18, 167, 144, 27, 36]
     },
     {
-      "name": "MerkleDistributor",
-      "discriminator": [77, 119, 139, 70, 84, 247, 12, 26]
-    }
-  ],
-  "events": [
-    {
-      "name": "ClaimedEvent",
-      "discriminator": [144, 172, 209, 86, 144, 87, 84, 115]
+      "name": "SellShareInfo",
+      "discriminator": [148, 24, 117, 188, 89, 55, 151, 202]
     },
     {
-      "name": "NewAirdropEvent",
-      "discriminator": [196, 28, 48, 102, 124, 17, 36, 253]
+      "name": "SellShareInfoDetail",
+      "discriminator": [219, 238, 75, 22, 156, 7, 38, 116]
+    },
+    {
+      "name": "Vault",
+      "discriminator": [211, 8, 232, 43, 2, 152, 117, 119]
+    },
+    {
+      "name": "VaultConfig",
+      "discriminator": [99, 86, 43, 216, 184, 102, 119, 77]
+    },
+    {
+      "name": "WhitelistDeposit",
+      "discriminator": [171, 115, 105, 245, 84, 115, 170, 159]
     }
   ],
   "errors": [
     {
       "code": 6000,
-      "name": "InvalidProof",
-      "msg": "Invalid Merkle proof."
+      "name": "IsStaked",
+      "msg": "Tokens are already staked"
     },
     {
       "code": 6001,
-      "name": "DropAlreadyClaimed",
-      "msg": "Drop already claimed."
+      "name": "NotStaked",
+      "msg": "Tokens not staked"
     },
     {
       "code": 6002,
-      "name": "ExceededMaxClaim",
-      "msg": "Exceeded maximum claim amount."
+      "name": "NoTokens",
+      "msg": "No Tokens to stake"
     },
     {
       "code": 6003,
-      "name": "ExceededMaxNumNodes",
-      "msg": "Exceeded maximum number of claimed nodes."
+      "name": "InvalidAmount",
+      "msg": "Invalid amount"
     },
     {
       "code": 6004,
-      "name": "Unauthorized",
-      "msg": "Account is not authorized to execute this instruction"
+      "name": "VaultEnded",
+      "msg": "Vault has been ended"
     },
     {
       "code": 6005,
-      "name": "OwnerMismatch",
-      "msg": "Token account owner did not match intended owner"
+      "name": "VaultNotStarted",
+      "msg": "Vault not started"
+    },
+    {
+      "code": 6006,
+      "name": "UnbondingTimeNotOverYet",
+      "msg": "The unbonding time is not over yet"
+    },
+    {
+      "code": 6007,
+      "name": "TgeNotYetReached",
+      "msg": "Soft cap reached, but need to wait til TGE. Cannot unstake!"
+    },
+    {
+      "code": 6008,
+      "name": "OverflowError",
+      "msg": "Overflow"
+    },
+    {
+      "code": 6009,
+      "name": "AlreadyClaimed",
+      "msg": "Already claimed"
+    },
+    {
+      "code": 6010,
+      "name": "IncorrectAuthority",
+      "msg": "IncorrectAuthority"
+    },
+    {
+      "code": 6011,
+      "name": "IncorrectStakeDetailId",
+      "msg": "Incorrect Stake detail ID. It must be current stake info id"
+    },
+    {
+      "code": 6012,
+      "name": "IncorrectLockPeriod",
+      "msg": "Incorrect Lock Period"
+    },
+    {
+      "code": 6013,
+      "name": "Paused",
+      "msg": "Paused"
     }
   ],
   "types": [
     {
-      "name": "ClaimStatus",
+      "name": "Authority",
       "type": {
         "kind": "struct",
         "fields": [
           {
-            "name": "is_claimed",
-            "docs": ["If true, the tokens have been claimed."],
-            "type": "bool"
-          },
-          {
-            "name": "claimant",
-            "docs": ["Authority that claimed the tokens."],
+            "name": "admin",
             "type": "pubkey"
           },
           {
-            "name": "claimed_at",
-            "docs": ["When the tokens were claimed."],
-            "type": "i64"
-          },
+            "name": "pending_admin",
+            "type": "pubkey"
+          }
+        ]
+      }
+    },
+    {
+      "name": "BuyShareArgs",
+      "type": {
+        "kind": "struct",
+        "fields": [
           {
             "name": "amount",
-            "docs": ["Amount of tokens claimed."],
             "type": "u64"
           }
         ]
       }
     },
     {
-      "name": "ClaimedEvent",
-      "docs": ["Emitted when tokens are claimed."],
+      "name": "CreateVaultArgs",
       "type": {
         "kind": "struct",
         "fields": [
           {
-            "name": "index",
-            "docs": ["Index of the claim."],
+            "name": "version",
+            "type": "u8"
+          },
+          {
+            "name": "init_aum",
             "type": "u64"
           },
           {
-            "name": "reward_token",
-            "type": "pubkey"
+            "name": "init_nav",
+            "type": "u64"
           },
           {
-            "name": "staking_vault",
-            "type": "pubkey"
-          },
-          {
-            "name": "random_kp",
-            "type": "pubkey"
-          },
-          {
-            "name": "claimant",
-            "docs": ["User that claimed."],
-            "type": "pubkey"
-          },
-          {
-            "name": "amount",
-            "docs": ["Amount of tokens to distribute."],
+            "name": "withdraw_period",
             "type": "u64"
           }
         ]
       }
     },
     {
-      "name": "MerkleDistributor",
-      "docs": ["State for the account which distributes tokens."],
+      "name": "InitializeArgs",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "management_fee",
+            "type": "u64"
+          },
+          {
+            "name": "performance_fee",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ManagerUpdateAUMArgs",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "new_aum",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ManagerWithdrawArgs",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "amount",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "SellShareArgs",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "share_amount",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "SellShareInfo",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "id",
+            "type": "u64"
+          },
+          {
+            "name": "user",
+            "type": "pubkey"
+          }
+        ]
+      }
+    },
+    {
+      "name": "SellShareInfoDetail",
       "type": {
         "kind": "struct",
         "fields": [
           {
             "name": "bump",
-            "docs": ["Bump seed."],
-            "type": "u8"
-          },
-          {
-            "name": "root",
-            "docs": ["The 256-bit merkle root."],
             "type": {
-              "array": ["u8", 32]
+              "array": ["u8", 1]
             }
           },
           {
-            "name": "reward_token",
-            "type": "pubkey"
+            "name": "id",
+            "type": "u64"
           },
           {
-            "name": "staking_vault",
-            "type": "pubkey"
+            "name": "share_amount",
+            "type": "u64"
           },
           {
-            "name": "random_kp",
-            "type": "pubkey"
+            "name": "snapshot_nav",
+            "type": "u64"
           },
           {
-            "name": "creator",
-            "type": "pubkey"
+            "name": "withdraw_time",
+            "type": "u64"
           },
           {
-            "name": "max_total_claim",
+            "name": "claimed",
+            "type": "bool"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Vault",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "bump",
             "docs": [
-              "Maximum number of tokens that can ever be claimed from this [MerkleDistributor]."
+              "Bump seed used to generate the program address / authority"
             ],
+            "type": {
+              "array": ["u8", 1]
+            }
+          },
+          {
+            "name": "version",
+            "type": "u8"
+          },
+          {
+            "name": "share_token",
+            "type": "pubkey"
+          },
+          {
+            "name": "prev_aum",
             "type": "u64"
           },
           {
-            "name": "max_num_nodes",
-            "docs": [
-              "Maximum number of nodes that can ever be claimed from this [MerkleDistributor]."
-            ],
+            "name": "highest_nav",
             "type": "u64"
           },
           {
-            "name": "total_amount_claimed",
-            "docs": ["Total amount of tokens that have been claimed."],
+            "name": "aum",
             "type": "u64"
           },
           {
-            "name": "num_nodes_claimed",
-            "docs": ["Number of nodes that have been claimed."],
+            "name": "nav",
+            "type": "u64"
+          },
+          {
+            "name": "withdraw_period",
+            "type": "u64"
+          },
+          {
+            "name": "last_time_take_management_fee",
+            "type": "u64"
+          },
+          {
+            "name": "last_time_take_performance_fee",
             "type": "u64"
           }
         ]
       }
     },
     {
-      "name": "NewAirdropEvent",
-      "docs": ["Emitted when a new airdrop is created"],
+      "name": "VaultConfig",
       "type": {
         "kind": "struct",
         "fields": [
           {
-            "name": "random_kp",
-            "docs": ["Unique event round"],
+            "name": "bump",
+            "type": {
+              "array": ["u8", 1]
+            }
+          },
+          {
+            "name": "manager",
             "type": "pubkey"
           },
           {
-            "name": "distributor",
-            "docs": ["distributor info, since we probably need whitelisting"],
+            "name": "management_fee",
+            "type": "u64"
+          },
+          {
+            "name": "performance_fee",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "WhitelistDeposit",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "bump",
+            "docs": [
+              "Bump seed used to generate the program address / authority"
+            ],
+            "type": {
+              "array": ["u8", 1]
+            }
+          },
+          {
+            "name": "deposit_token",
             "type": "pubkey"
           },
           {
-            "name": "reward_token",
-            "docs": ["reward token for dapps to paginate"],
+            "name": "deposit_token_account",
             "type": "pubkey"
           },
           {
-            "name": "staking_vault",
-            "docs": ["staking_vault for dapps to paginate"],
-            "type": "pubkey"
-          },
-          {
-            "name": "creation_timestamp",
-            "docs": ["also emit creation date for UI display"],
-            "type": "i64"
+            "name": "is_whitelist",
+            "type": "bool"
           }
         ]
       }

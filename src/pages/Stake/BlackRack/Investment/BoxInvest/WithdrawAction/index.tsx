@@ -3,12 +3,21 @@ import { ArrowLeftFilledIcon } from "@components/Icons/Arrow"
 import { Button } from "@nextui-org/react"
 import { SPL_DECIMAL } from "@pages/Stake/config"
 import useConnectPhantom from "@pages/Stake/useConnectPhantom"
+import { toBN } from "@utils/format"
 import { useState } from "react"
 import NumberFormat from "react-number-format"
+import { toast } from "react-toastify"
+import { Web3Invest } from "../../web3Invest"
+import { useWallet } from "@solana/wallet-adapter-react"
+import { BN } from "@coral-xyz/anchor"
+
+const web3Invest = new Web3Invest()
 
 const WithdrawAction = () => {
   const [amountVal, setAmountVal] = useState<string>("")
+  const [loadingSubmit, setLoadingSubmit] = useState(false)
   const { connectWallet, isConnectWallet } = useConnectPhantom()
+  const wallet = useWallet()
 
   const handleInputChange = (value: number) => {
     if (value || value === 0) {
@@ -37,6 +46,40 @@ const WithdrawAction = () => {
     },
   ]
 
+  const handleUnStake = async () => {
+    try {
+      if (!amountVal || amountVal === "0") {
+        return toast.warning("Please enter amount!")
+      }
+      if (Number(amountVal) <= 0) {
+        return toast.warning("Amount must large 0!")
+      }
+      // if (Number(amountVal) > total) {
+      //   return toast.warning(`Max: ${total}!`)
+      // }
+      if (loadingSubmit) return
+      setLoadingSubmit(true)
+      const amount = toBN(
+        toBN(amountVal)
+          .multipliedBy(10 ** SPL_DECIMAL)
+          .toFixed(0, 1),
+      ).toNumber()
+      const res = await web3Invest.unbound({
+        wallet,
+        amount: new BN(amount),
+      })
+      if (res) {
+        toast.success("Unbond Successfully!")
+        setAmountVal("")
+      }
+    } catch (error) {
+      console.error(error)
+      toast.error(JSON.stringify(error))
+    } finally {
+      setLoadingSubmit(false)
+    }
+  }
+
   return (
     <div className="mt-3">
       <div className="rounded-lg border-1 border-mercury-400 bg-white px-4 py-3">
@@ -61,7 +104,7 @@ const WithdrawAction = () => {
 
             <div className="flex items-center gap-1 text-14 font-medium text-mercury-700 max-md:text-12">
               <p>Available:</p>
-              <p>10,000 AIFUND2</p>
+              <p>10,000 AIFII</p>
             </div>
           </div>
           <div>
@@ -70,7 +113,7 @@ const WithdrawAction = () => {
                 className="h-8 w-8 rounded-full object-cover"
                 src={aiFund2Ava}
               />
-              <span>AIFUND2</span>
+              <span>AIFII</span>
             </div>
           </div>
         </div>
@@ -101,7 +144,11 @@ const WithdrawAction = () => {
         </div>
       </div>
       {isConnectWallet ? (
-        <Button className="mt-7 h-[48px] w-full rounded-full bg-mercury-950 text-white">
+        <Button
+          onClick={handleUnStake}
+          isLoading={loadingSubmit}
+          className="mt-7 h-[48px] w-full rounded-full bg-mercury-950 text-white"
+        >
           Unbond
         </Button>
       ) : (

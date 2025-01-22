@@ -33,18 +33,18 @@ export const LIST_TOKEN_STAKE = [
   {
     id: 1,
     address: InvestTokenAddress.AIFund1,
-    label: "AI Fund 1",
+    label: "AI Fund I",
     decimals: 6,
-    tokenName: "AIFUND1",
+    tokenName: "AIFI",
     avatar: aiFund1Ava,
     coinGeckoId: null,
   },
   {
     id: 2,
     address: InvestTokenAddress.AIFund2,
-    label: "AI Fund 2",
+    label: "AI Fund II",
     decimals: 6,
-    tokenName: "AIFUND2",
+    tokenName: "AIFII",
     avatar: aiFund2Ava,
     coinGeckoId: null,
   },
@@ -165,7 +165,7 @@ const BlackRackVault = () => {
                   }}
                   className="pr-10 text-20 font-bold italic max-md:text-18"
                 >
-                  AI Fund 2 Vault
+                  AI Fund II Vault
                 </p>
                 <p className="max-md:text-14">Deposit USDC</p>
               </div>
@@ -182,9 +182,9 @@ const BlackRackVault = () => {
             className="flex flex-col justify-between bg-mercury-100 p-6 max-md:p-4"
           >
             <p className="mb-2 font-medium text-mercury-900 max-md:text-14">
-              Deposit USDC into the vault and receive shares (AIFUND2), your
-              stake in the vault’s growing profits. <br /> Watch your share
-              value rise as BlackRack’s investments thrive!
+              Deposit USDC into the vault and receive shares (AIFII), your stake
+              in the vault’s growing profits. <br /> Watch your share value rise
+              as BlackRack’s investments thrive!
             </p>
             <div className="relative grid grid-cols-2 gap-4">
               <div className="absolute left-[86px] top-10">
@@ -231,7 +231,7 @@ const BlackRackVault = () => {
               />
               <div className="text-white">
                 <p className="pr-10 text-20 font-bold italic max-md:text-18">
-                  AI Fund 1 Vault
+                  AI Fund I Vault
                 </p>
               </div>
             </div>

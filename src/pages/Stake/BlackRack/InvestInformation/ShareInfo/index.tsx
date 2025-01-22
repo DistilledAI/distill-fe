@@ -10,7 +10,7 @@ const ShareInfo = () => {
         </p>
         <div className="flex items-center gap-1">
           <img className="h-4 w-4 rounded-full object-cover" src={aiFund1Ava} />
-          <p className="text-14 text-brown-600">155,452.89 Shares</p>
+          <p className="text-14 text-brown-600">0 Shares</p>
         </div>
       </div>
       <div>

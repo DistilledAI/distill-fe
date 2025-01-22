@@ -5,7 +5,7 @@ const InvestInformation = () => {
   return (
     <div className="pb-10">
       <p className="text-[36px] font-semibold max-md:text-[22px]">
-        AI Fund 1 Vault
+        AI Fund I Vault
       </p>
       <div className="mt-10 flex flex-wrap gap-8 max-md:mt-6 max-md:flex-col-reverse">
         <div className="w-[calc(60%-16px)] max-md:w-full">
@@ -19,7 +19,7 @@ const InvestInformation = () => {
         </div>
         <div className="w-[calc(40%-16px)] max-md:w-full">
           <p className="mb-4 text-24 font-semibold text-mercury-950 max-md:text-20">
-            How Does AI Fund 1 Work?
+            How Does AI Fund I Work?
           </p>
           <p className="text-mercury-800">
             AI Agent Fund I is the first vault of BlackRack Agent. It manages
