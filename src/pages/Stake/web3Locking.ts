@@ -192,6 +192,40 @@ export class Web3SolanaLockingToken {
     }
   }
 
+  async isWhiteList(stakeCurrencyMint: string, wallet: WalletContextState) {
+    try {
+      let provider
+      provider = new anchor.AnchorProvider(this.connection, wallet as any, {
+        preflightCommitment: "confirmed",
+      })
+      anchor.setProvider(provider)
+      provider = anchor.getProvider()
+      const program = new Program(
+        vaultInterface,
+        provider,
+      ) as Program<FungStakingVault>
+      const [vaultPda] = PublicKey.findProgramAddressSync(
+        [
+          Buffer.from(STAKING_VAULT_SEED),
+          new PublicKey(stakeCurrencyMint).toBytes(),
+          new BN(ALL_CONFIGS.DURATION_STAKE).toBuffer("le", 8),
+        ],
+        program.programId,
+      )
+
+      const [whitelist_vault_pda] = PublicKey.findProgramAddressSync(
+        [Buffer.from("whitelist"), vaultPda.toBytes()],
+        program.programId,
+      )
+      const whitelist =
+        await program.account.whitelistVault.fetch(whitelist_vault_pda)
+      return whitelist.whitelisted
+    } catch (error) {
+      console.error(error)
+      return false
+    }
+  }
+
   // async getListLockedOfUser(lockPeriod: number, wallet: WalletContextState) {
   //   let vaultInfo = { totalStaked: new BN("0") }
   //   try {
