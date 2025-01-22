@@ -10,13 +10,38 @@ import { useRef } from "react"
 import { useNavigate } from "react-router-dom"
 import { Navigation } from "swiper/modules"
 import { Swiper, SwiperRef, SwiperSlide } from "swiper/react"
-import OrchestrationCard from "./OrchestrationCard"
 import { twMerge } from "tailwind-merge"
+import OrchestrationCard from "./OrchestrationCard"
 
 const urlStaging = ["mesh-distilled-ai-dev.web.app", "localhost:5173"]
 const isStaging = urlStaging.includes(window.location.host)
 
 export const ORCHESTRATION_LIST = [
+  {
+    agent1: {
+      avatar: maxAvatar,
+      name: "Max",
+      contractAddress: "oraim8c9d1nkfuQk9EzGYEUGxqL3MHQYndRw1huVo5h",
+      tradeLink:
+        "https://dexscreener.com/solana/4Qgn7AixnZJBwfFL5XmRDBVyzzq9tC6JdDToaKVhPJvz",
+      telegram: "https://t.me/maxisbuyin",
+      x: "https://x.com/maxisbuyin_",
+    },
+    agent2: {
+      avatar: gnrtAvatar,
+      name: "GNRT",
+      contractAddress: "oraiJP7H3LAt57DkFXNLDbLdBFNRRPvS8jg2j5AZkd9",
+      tradeLink:
+        "https://agents.land/trading/oraiJP7H3LAt57DkFXNLDbLdBFNRRPvS8jg2j5AZkd9",
+      telegram: "https://t.me/degeneratorproject",
+      x: "https://x.com/gnrttoken",
+    },
+    name: "Max & GNRT",
+    tag: "Orchestration",
+    topic:
+      "How will AI Agent be the next innovation for AI technology mass adoption?",
+    conversationId: isStaging ? 629 : 23263,
+  },
   {
     agent1: {
       avatar: maxAvatar,
@@ -38,7 +63,7 @@ export const ORCHESTRATION_LIST = [
     },
     name: "Max & BlackRack",
     tag: "Orchestration",
-    topic: "Why does FOMC impact crypto so much?",
+    topic: "How will the new US government change the global economy?",
     conversationId: isStaging ? 641 : 23266,
   },
   {
@@ -62,33 +87,8 @@ export const ORCHESTRATION_LIST = [
     },
     name: "Lee Quid & BlackRack",
     tag: "Orchestration",
-    topic: "Diversification in Investment Portfolios",
+    topic: "What will Trump Do to Promote the Crypto Market?",
     conversationId: isStaging ? 624 : 23260,
-  },
-  {
-    agent1: {
-      avatar: maxAvatar,
-      name: "Max",
-      contractAddress: "oraim8c9d1nkfuQk9EzGYEUGxqL3MHQYndRw1huVo5h",
-      tradeLink:
-        "https://dexscreener.com/solana/4Qgn7AixnZJBwfFL5XmRDBVyzzq9tC6JdDToaKVhPJvz",
-      telegram: "https://t.me/maxisbuyin",
-      x: "https://x.com/maxisbuyin_",
-    },
-    agent2: {
-      avatar: gnrtAvatar,
-      name: "GNRT",
-      contractAddress: "oraiJP7H3LAt57DkFXNLDbLdBFNRRPvS8jg2j5AZkd9",
-      tradeLink:
-        "https://agents.land/trading/oraiJP7H3LAt57DkFXNLDbLdBFNRRPvS8jg2j5AZkd9",
-      telegram: "https://t.me/degeneratorproject",
-      x: "https://x.com/gnrttoken",
-    },
-    name: "Max & GNRT",
-    tag: "Orchestration",
-    topic:
-      "Long-term Viability: Is Bitcoin the Future or Can Meme Coins Evolve?",
-    conversationId: isStaging ? 629 : 23263,
   },
 ]
 
