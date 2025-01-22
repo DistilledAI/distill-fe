@@ -1,71 +1,78 @@
+import { aiFund2Ava, usdcLogo } from "@assets/images"
+import { ArrowLeftFilledIcon } from "@components/Icons/Arrow"
 import { Button } from "@nextui-org/react"
-import { StakeTokenAddress } from "@pages/Stake"
-import { getInfoTokenByAddress } from "@pages/Stake/helpers"
+import { SPL_DECIMAL } from "@pages/Stake/config"
 import useConnectPhantom from "@pages/Stake/useConnectPhantom"
-import { useSearchParams } from "react-router-dom"
-import SelectToken from "../SelectToken"
-import { Web3SolanaLockingToken } from "@pages/Stake/web3Locking"
-import { numberWithCommas, toBN } from "@utils/format"
-import { useWallet } from "@solana/wallet-adapter-react"
-import { ALL_CONFIGS, SPL_DECIMAL } from "@pages/Stake/config"
-import React, { useState } from "react"
-import { toast } from "react-toastify"
+import { toBN } from "@utils/format"
+import React, { useCallback, useState } from "react"
 import NumberFormat from "react-number-format"
+import { toast } from "react-toastify"
+import { Web3Invest } from "../../web3Invest"
+import { useWallet } from "@solana/wallet-adapter-react"
+import { BN } from "@coral-xyz/anchor"
+import { formatNumberWithComma } from "@utils/index"
+import { debounce } from "lodash"
 
-const web3Locking = new Web3SolanaLockingToken()
+const web3Invest = new Web3Invest()
 
-const UnStakeAction: React.FC<{
-  total: number
-  fetchTotal: () => void
-}> = ({ total, fetchTotal }) => {
-  const [searchParams] = useSearchParams()
-  const tokenAddress = searchParams.get("token")
-  const [amountVal, setAmountVal] = useState("")
+const WithdrawAction: React.FC<{
+  totalShare: number
+  loadingTotalShare: boolean
+  nav: number
+  callback: () => void
+}> = ({ totalShare, loadingTotalShare, nav, callback }) => {
+  const [amountVal, setAmountVal] = useState<string>("")
   const [loadingSubmit, setLoadingSubmit] = useState(false)
+  const [toUsdc, setToUsdc] = useState(0)
   const { connectWallet, isConnectWallet } = useConnectPhantom()
-  const tokenInfo = getInfoTokenByAddress(tokenAddress as StakeTokenAddress)
   const wallet = useWallet()
 
-  const AMOUNT_LIST = [
-    {
-      label: "25%",
-      value: total / 4,
-    },
-    {
-      label: "50%",
-      value: total / 2,
-    },
-    {
-      label: "75%",
-      value: (total / 4) * 3,
-    },
-    {
-      label: "100%",
-      value: total,
-    },
-  ]
+  const debouncedFetchQuantity = useCallback(
+    debounce((value: string) => {
+      setToUsdc(toBN(nav * toBN(value).toNumber()).toNumber())
+    }, 300),
+    [],
+  )
 
   const handleInputChange = (value: number) => {
     if (value || value === 0) {
       setAmountVal(value.toString())
+      debouncedFetchQuantity(value.toString())
     } else {
       setAmountVal("")
+      debouncedFetchQuantity("0")
     }
   }
 
+  const AMOUNT_LIST = [
+    {
+      label: "25%",
+      value: totalShare / 4,
+    },
+    {
+      label: "50%",
+      value: totalShare / 2,
+    },
+    {
+      label: "75%",
+      value: (totalShare / 4) * 3,
+    },
+    {
+      label: "100%",
+      value: totalShare,
+    },
+  ]
+
   const handleUnStake = async () => {
     try {
-      if (!tokenAddress) {
-        return toast.warning("Token address not found!")
-      }
       if (!amountVal || amountVal === "0") {
         return toast.warning("Please enter amount!")
       }
       if (Number(amountVal) <= 0) {
         return toast.warning("Amount must large 0!")
       }
-      if (Number(amountVal) > total) {
-        return toast.warning(`Max: ${total}!`)
+      if (Number(amountVal) > totalShare) {
+        return toast.warning(`Max: ${totalShare}!`)
       }
       if (loadingSubmit) return
       setLoadingSubmit(true)
@@ -74,16 +81,14 @@ const UnStakeAction: React.FC<{
           .multipliedBy(10 ** SPL_DECIMAL)
           .toFixed(0, 1),
       ).toNumber()
-      const res = await web3Locking.unStake(
-        ALL_CONFIGS.DURATION_STAKE,
-        amount,
+      const res = await web3Invest.unbound({
         wallet,
-        tokenAddress,
-      )
+        amount: new BN(amount),
+      })
       if (res) {
-        toast.success("UnStake Successfully!")
-        fetchTotal()
+        toast.success("Unbond Successfully!")
         setAmountVal("")
+        callback()
       }
     } catch (error) {
       console.error(error)
@@ -114,43 +119,61 @@ const UnStakeAction: React.FC<{
                 handleInputChange(floatValue)
               }}
             />
+
             <div className="flex items-center gap-1 text-14 font-medium text-mercury-700 max-md:text-12">
               <p>Available:</p>
               <p>
-                {numberWithCommas(toBN(total.toFixed(3)).toNumber())}{" "}
-                {tokenInfo?.tokenName}
+                {loadingTotalShare ? "--" : formatNumberWithComma(totalShare)}{" "}
+                AIFII
               </p>
             </div>
           </div>
           <div>
-            <SelectToken />
+            <div className="flex h-[46px] min-w-[100px] items-center gap-1 rounded-full bg-mercury-100 px-2">
+              <img
+                className="h-8 w-8 rounded-full object-cover"
+                src={aiFund2Ava}
+              />
+              <span>AIFII</span>
+            </div>
           </div>
         </div>
       </div>
       <div className="mt-2 flex items-center gap-2">
         {AMOUNT_LIST.map((percent) => (
           <div
-            key={percent.label}
             onClick={() => setAmountVal(percent.value.toString())}
+            key={percent.label}
             className="cursor-pointer rounded-[4px] border-1 border-mercury-300 bg-mercury-100 px-2 py-1 text-12 font-medium text-mercury-900 hover:opacity-80"
           >
             {percent.label}
           </div>
         ))}
       </div>
-      {isConnectWallet ? (
-        <div className="w-full">
-          {/* <Button className="mt-7 h-[48px] w-full rounded-full border-1 border-mercury-600 bg-mercury-100 font-semibold text-mercury-900">
-            QUICK UNSTAKE
-          </Button> */}
-          <Button
-            isLoading={loadingSubmit}
-            onClick={handleUnStake}
-            className="mt-7 h-[48px] w-full rounded-full bg-mercury-950 text-white"
-          >
-            Unbond
-          </Button>
+      <div className="my-5 flex items-center justify-center">
+        <div className="flex h-7 w-7 rotate-[-90deg] items-center justify-center rounded-full bg-mercury-200">
+          <div className="scale-80">
+            <ArrowLeftFilledIcon />
+          </div>
         </div>
+      </div>
+      <div className="flex items-center justify-between rounded-lg border-1 border-[#A88E67] bg-brown-50 px-4 py-3">
+        <p className="font-semibold text-mercury-950">Receive:</p>
+        <div className="flex items-center gap-1">
+          <img className="h-5 w-5 rounded-full" src={usdcLogo} />
+          <p className="font-semibold text-brown-600">
+            {formatNumberWithComma(toUsdc)} USDC
+          </p>
+        </div>
+      </div>
+      {isConnectWallet ? (
+        <Button
+          onClick={handleUnStake}
+          isLoading={loadingSubmit}
+          className="mt-7 h-[48px] w-full rounded-full bg-mercury-950 text-white"
+        >
+          Unbond
+        </Button>
       ) : (
         <Button
           onClick={connectWallet}
@@ -163,4 +186,4 @@ const UnStakeAction: React.FC<{
   )
 }
 
-export default UnStakeAction
+export default WithdrawAction

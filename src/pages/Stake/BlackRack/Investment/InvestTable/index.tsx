@@ -11,15 +11,11 @@ import {
 } from "@nextui-org/react"
 import { numberWithCommas, toBN } from "@utils/format"
 import { twMerge } from "tailwind-merge"
-import { getInfoTokenByAddress } from "../helpers"
-import { StakeTokenAddress } from ".."
-import { SPL_DECIMAL } from "../config"
 import moment from "moment"
+import React from "react"
 import ItemWithdraw from "./ItemWithdraw"
-import React, { useEffect, useState } from "react"
-import { Web3SolanaLockingToken } from "../web3Locking"
-import { useSearchParams } from "react-router-dom"
-import { useWallet } from "@solana/wallet-adapter-react"
+import { SPL_DECIMAL } from "@pages/Stake/config"
+import { usdcLogo } from "@assets/images"
 
 enum ColumnKey {
   Amount = "amount",
@@ -51,31 +47,14 @@ const columns = [
   },
 ]
 
-const StakeTable: React.FC<{
+const InvestTable: React.FC<{
   list: {
     id: number
     amount: number
     unstakedAtTime: number
-    stakeCurrencyMint: string
   }[]
   getListUnbonding: () => void
 }> = ({ list, getListUnbonding }) => {
-  const [isWhiteList, setIsWhiteList] = useState(false)
-  const [searchParams] = useSearchParams()
-  const tokenAddress = searchParams.get("token")
-  const wallet = useWallet()
-
-  const checkIsWhiteList = async () => {
-    if (!tokenAddress || !wallet) return
-    const web3Locking = new Web3SolanaLockingToken()
-    const resWhiteList = await web3Locking.isWhiteList(tokenAddress, wallet)
-    setIsWhiteList(resWhiteList)
-  }
-
-  useEffect(() => {
-    checkIsWhiteList()
-  }, [wallet.publicKey, tokenAddress])
-
   const renderState = (state: string) => {
     switch (state) {
       case "staking":
@@ -90,7 +69,7 @@ const StakeTable: React.FC<{
           <div className="flex items-center gap-1">
             <HourglassHighIcon />
             <span className="text-14 font-medium text-orange-600">
-              Unstaking
+              Unbonding
             </span>
           </div>
         )
@@ -99,7 +78,7 @@ const StakeTable: React.FC<{
           <div className="flex items-center gap-1">
             <UnTrendingIcon />
             <span className="text-14 font-medium text-mercury-800">
-              Unstaked
+              Unbonded
             </span>
           </div>
         )
@@ -136,25 +115,18 @@ const StakeTable: React.FC<{
   }
 
   const renderCell = (item: Record<string, any>, columnKey: string) => {
-    const tokenInfo = getInfoTokenByAddress(
-      item.stakeCurrencyMint as StakeTokenAddress,
-    )
     const totalAmount = toBN(item.amount)
       .div(10 ** SPL_DECIMAL)
       .toNumber()
 
     const duration = moment(item.unstakedAtTime * 1000).format("lll")
-    const isCanWithdraw =
-      isWhiteList || Date.now() >= item.unstakedAtTime * 1000
+    const isCanWithdraw = Date.now() >= item.unstakedAtTime * 1000
 
     switch (columnKey) {
       case ColumnKey.Amount:
         return (
           <div className="flex items-center gap-2 pr-4">
-            <img
-              className="h-5 w-5 rounded-full object-cover"
-              src={tokenInfo?.avatar}
-            />
+            <img className="h-5 w-5 rounded-full object-cover" src={usdcLogo} />
             <span className="text-16 font-bold text-mercury-900 max-md:text-15">
               {numberWithCommas(totalAmount)}
             </span>
@@ -202,11 +174,7 @@ const StakeTable: React.FC<{
       <TableHeader columns={columns}>
         {(column) => (
           <TableColumn
-            className={twMerge(
-              // thClassName(column.key),
-              "data-[hover=true]:text-[#363636]",
-              // sortDescriptor.column === column.key && "text-[#363636]",
-            )}
+            className={twMerge("data-[hover=true]:text-[#363636]")}
             key={column.key}
             allowsSorting={column.sortable}
           >
@@ -232,4 +200,4 @@ const StakeTable: React.FC<{
   )
 }
 
-export default StakeTable
+export default InvestTable

@@ -1,64 +1,74 @@
+import { aiFund2Ava, usdcLogo } from "@assets/images"
+import { ArrowLeftFilledIcon } from "@components/Icons/Arrow"
 import { Button } from "@nextui-org/react"
 import { StakeTokenAddress } from "@pages/Stake"
-import { getInfoTokenByAddress } from "@pages/Stake/helpers"
+import { SPL_DECIMAL } from "@pages/Stake/config"
 import useConnectPhantom from "@pages/Stake/useConnectPhantom"
 import useGetBalance from "@pages/Stake/useGetBalance"
 import { numberWithCommas, toBN } from "@utils/format"
-import React, { useState } from "react"
-import { useSearchParams } from "react-router-dom"
-import SelectToken from "../SelectToken"
-import { Web3SolanaLockingToken } from "@pages/Stake/web3Locking"
-import { useWallet } from "@solana/wallet-adapter-react"
+import { debounce } from "lodash"
+import React, { useCallback, useMemo, useState } from "react"
 import NumberFormat from "react-number-format"
-import { ALL_CONFIGS, SPL_DECIMAL } from "@pages/Stake/config"
 import { toast } from "react-toastify"
+import { Web3Invest } from "../../web3Invest"
+import { BN } from "@coral-xyz/anchor"
+import { useWallet } from "@solana/wallet-adapter-react"
+import { formatNumberWithComma } from "@utils/index"
 
-const web3Locking = new Web3SolanaLockingToken()
+const web3Invest = new Web3Invest()
 
-const StakeAction: React.FC<{
-  fetchTotalStaked: () => void
-}> = ({ fetchTotalStaked }) => {
-  const [searchParams] = useSearchParams()
-  const [amountVal, setAmountVal] = useState<string>("")
+const DepositAction: React.FC<{
+  callback: () => void
+  nav: number
+}> = ({ callback, nav }) => {
   const [loadingSubmit, setLoadingSubmit] = useState(false)
-  const tokenAddress = searchParams.get("token")
+  const [amountVal, setAmountVal] = useState<string>("")
+  const [toReward, setToReward] = useState(0)
   const wallet = useWallet()
   const { connectWallet, isConnectWallet } = useConnectPhantom()
-  const { balance, loading, getBalance } = useGetBalance(tokenAddress)
-  const tokenInfo = getInfoTokenByAddress(tokenAddress as StakeTokenAddress)
+  const { balance, loading, getBalance } = useGetBalance(StakeTokenAddress.Usdc)
 
-  const AMOUNT_LIST = [
-    {
-      label: "25%",
-      value: balance / 4,
-    },
-    {
-      label: "50%",
-      value: balance / 2,
-    },
-    {
-      label: "75%",
-      value: (balance / 4) * 3,
-    },
-    {
-      label: "100%",
-      value: balance,
-    },
-  ]
+  const debouncedFetchQuantity = useCallback(
+    debounce((value: string) => {
+      if (nav !== 0) setToReward(toBN(toBN(value).toNumber() / nav).toNumber())
+    }, 300),
+    [],
+  )
 
-  const handleInputChange = (value: number) => {
+  const handleInputChange = useCallback((value: number) => {
     if (value || value === 0) {
       setAmountVal(value.toString())
+      debouncedFetchQuantity(value.toString())
     } else {
       setAmountVal("")
+      debouncedFetchQuantity("0")
     }
-  }
+  }, [])
 
-  const handleStake = async () => {
+  const AMOUNT_LIST = useMemo(
+    () => [
+      {
+        label: "25%",
+        value: balance / 4,
+      },
+      {
+        label: "50%",
+        value: balance / 2,
+      },
+      {
+        label: "75%",
+        value: (balance / 4) * 3,
+      },
+      {
+        label: "100%",
+        value: balance,
+      },
+    ],
+    [balance],
+  )
+
+  const handleDeposit = async () => {
     try {
-      if (!tokenAddress) {
-        return toast.warning("Token address not found!")
-      }
       if (!amountVal || amountVal === "0") {
         return toast.warning("Please enter amount!")
       }
@@ -75,16 +85,11 @@ const StakeAction: React.FC<{
           .multipliedBy(10 ** SPL_DECIMAL)
           .toFixed(0, 1),
       ).toNumber()
-      const res = await web3Locking.stake(
-        ALL_CONFIGS.DURATION_STAKE,
-        amount,
-        wallet,
-        tokenAddress,
-      )
+      const res = await web3Invest.deposit({ amount: new BN(amount), wallet })
       if (res) {
-        toast.success("Staked successfully!")
-        fetchTotalStaked()
+        toast.success("Deposit successfully!")
         getBalance()
+        callback()
         setAmountVal("")
       }
     } catch (error) {
@@ -107,7 +112,6 @@ const StakeAction: React.FC<{
               decimalScale={SPL_DECIMAL}
               type="text"
               value={amountVal}
-              onChange={() => {}}
               isAllowed={(values) => {
                 const { floatValue } = values
                 return !floatValue || (floatValue >= 0 && floatValue <= 1e14)
@@ -123,12 +127,18 @@ const StakeAction: React.FC<{
                 {loading
                   ? "--"
                   : numberWithCommas(toBN(balance.toFixed(3)).toNumber())}{" "}
-                {tokenInfo?.tokenName}
+                USDC
               </p>
             </div>
           </div>
           <div>
-            <SelectToken />
+            <div className="flex h-[46px] min-w-[100px] items-center gap-1 rounded-full bg-mercury-100 px-2">
+              <img
+                className="h-8 w-8 rounded-full object-cover"
+                src={usdcLogo}
+              />
+              <span>USDC</span>
+            </div>
           </div>
         </div>
       </div>
@@ -143,10 +153,27 @@ const StakeAction: React.FC<{
           </div>
         ))}
       </div>
+      <div className="my-5 flex items-center justify-center">
+        <div className="flex h-7 w-7 rotate-[-90deg] items-center justify-center rounded-full bg-mercury-200">
+          <div className="scale-80">
+            <ArrowLeftFilledIcon />
+          </div>
+        </div>
+      </div>
+      <div className="flex items-center justify-between rounded-lg border-1 border-[#A88E67] bg-brown-50 px-4 py-3">
+        <p className="font-semibold text-mercury-950">Receive:</p>
+        <div className="flex items-center gap-1">
+          <img className="h-5 w-5 rounded-full" src={aiFund2Ava} />
+          <p className="font-semibold text-brown-600">
+            {formatNumberWithComma(toReward)} Shares{" "}
+            <span className="font-medium text-mercury-700">(AIFII)</span>
+          </p>
+        </div>
+      </div>
       {isConnectWallet ? (
         <Button
           isLoading={loadingSubmit}
-          onClick={handleStake}
+          onClick={handleDeposit}
           className="mt-7 h-[48px] w-full rounded-full bg-mercury-950 text-white"
         >
           Deposit
@@ -163,4 +190,4 @@ const StakeAction: React.FC<{
   )
 }
 
-export default StakeAction
+export default DepositAction
