@@ -16,7 +16,10 @@ import { StakeTokenAddress } from ".."
 import { SPL_DECIMAL } from "../config"
 import moment from "moment"
 import ItemWithdraw from "./ItemWithdraw"
-import React from "react"
+import React, { useEffect, useState } from "react"
+import { Web3SolanaLockingToken } from "../web3Locking"
+import { useSearchParams } from "react-router-dom"
+import { useWallet } from "@solana/wallet-adapter-react"
 
 enum ColumnKey {
   Amount = "amount",
@@ -57,10 +60,21 @@ const StakeTable: React.FC<{
   }[]
   getListUnbonding: () => void
 }> = ({ list, getListUnbonding }) => {
-  // const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({
-  //   column: ColumnKey.Amount,
-  //   direction: "descending",
-  // })
+  const [isWhiteList, setIsWhiteList] = useState(false)
+  const [searchParams] = useSearchParams()
+  const tokenAddress = searchParams.get("token")
+  const wallet = useWallet()
+
+  const checkIsWhiteList = async () => {
+    if (!tokenAddress || !wallet) return
+    const web3Locking = new Web3SolanaLockingToken()
+    const resWhiteList = await web3Locking.isWhiteList(tokenAddress, wallet)
+    setIsWhiteList(resWhiteList)
+  }
+
+  useEffect(() => {
+    checkIsWhiteList()
+  }, [wallet.publicKey, tokenAddress])
 
   const renderState = (state: string) => {
     switch (state) {
@@ -130,7 +144,8 @@ const StakeTable: React.FC<{
       .toNumber()
 
     const duration = moment(item.unstakedAtTime * 1000).format("lll")
-    const isCanWithdraw = Date.now() >= item.unstakedAtTime * 1000
+    const isCanWithdraw =
+      isWhiteList || Date.now() >= item.unstakedAtTime * 1000
 
     switch (columnKey) {
       case ColumnKey.Amount:
