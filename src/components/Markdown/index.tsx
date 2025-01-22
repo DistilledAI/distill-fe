@@ -11,6 +11,7 @@ const MarkdownMessage = ({ msg }: { msg: string }) => {
   const queryClient = useQueryClient()
 
   const checkTextBreak = (text: string) => {
+    console.log({ text })
     const tokenRegex = /[a-zA-Z0-9/]{40,}/
 
     if (tokenRegex.test(text)) {
@@ -61,7 +62,10 @@ const MarkdownMessage = ({ msg }: { msg: string }) => {
         {children}
       </ol>
     ),
-    li: ({ children }: any) => <li>{children}</li>,
+    li: ({ children }: any) => {
+      const wordBreakStyle = checkTextBreak(children)
+      return <li className={wordBreakStyle}>{children}</li>
+    },
     img: ({ src, alt }: any) => {
       const imageSrc = replaceSrcImage(src)
 
