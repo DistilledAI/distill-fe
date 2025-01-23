@@ -46,16 +46,20 @@ const AGENT_TYPE_OPTIONS = [
   },
 ]
 
+const urlStaging = ["mesh-distilled-ai-dev.web.app", "localhost:5173"]
+const isStaging = urlStaging.includes(window.location.host)
+
 const AgentType: React.FC<{ isDisabled?: boolean }> = ({ isDisabled }) => {
   const { isPaid, checkPayment } = useGetPaymentHistory()
   const { control } = useFormContext()
   const { handleSend } = useSend()
   const [isLoading, setIsLoading] = useState(false)
   const { user } = useAuthState()
-  const amountMAX = 1
+  const amountMAX = isStaging ? 1 : 5000
   const maxTokenAddress = "oraim8c9d1nkfuQk9EzGYEUGxqL3MHQYndRw1huVo5h"
-  const ADDRESS_PAYMENT_NETWORK_SOL =
-    "H65QnPNMWj1EGgwDD5RH3oHQBbwmuBbAzXgW8no6gKwQ"
+  const ADDRESS_PAYMENT_NETWORK_SOL = isStaging
+    ? "H65QnPNMWj1EGgwDD5RH3oHQBbwmuBbAzXgW8no6gKwQ"
+    : "G8BHHS9nf9Rrizecm1DJh2Lj124VERVRr59n36j18zfg"
   const [isPaymentSuccess, setPaymentSuccess] = useState<boolean>(false)
 
   useEffect(() => {
