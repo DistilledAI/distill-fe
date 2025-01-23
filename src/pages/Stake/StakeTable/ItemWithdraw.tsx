@@ -4,7 +4,7 @@ import { Web3SolanaLockingToken } from "../web3Locking"
 import { useSearchParams } from "react-router-dom"
 import { useWallet } from "@solana/wallet-adapter-react"
 import { toast } from "react-toastify"
-import { ALL_CONFIGS } from "../config"
+import { getDurationByAddress } from "../helpers"
 
 const ItemWithdraw: React.FC<{
   id: number
@@ -23,7 +23,7 @@ const ItemWithdraw: React.FC<{
       const web3Locking = new Web3SolanaLockingToken()
       const res = await web3Locking.withdraw(
         id,
-        ALL_CONFIGS.DURATION_STAKE,
+        getDurationByAddress(tokenAddress),
         wallet,
         tokenAddress,
       )
