@@ -110,3 +110,20 @@ export const checkRePostDistilledX = async (data: {
     data,
   })
 }
+
+export const getPaymentHistory = async ({
+  offset = 0,
+  size = 10,
+}: {
+  offset?: number
+  size?: number
+}) => {
+  return fetchApiAuth({
+    method: "GET",
+    url: endpoint.GET_PAYMENT_HISTORY,
+    params: {
+      offset,
+      size,
+    },
+  })
+}

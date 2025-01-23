@@ -3,6 +3,7 @@ import {
   DefaiAgentTypeIcon,
   DefaultAgentTypeIcon,
 } from "@components/Icons/BrainAIIcon"
+import { CheckFilledIcon } from "@components/Icons/DefiLens"
 import { UserHexagonIcon } from "@components/Icons/UserIcon"
 import useAuthState from "@hooks/useAuthState"
 import { Button, Checkbox } from "@nextui-org/react"
@@ -15,6 +16,7 @@ import { useState } from "react"
 import { Controller, useFormContext } from "react-hook-form"
 import { toast } from "react-toastify"
 import { twMerge } from "tailwind-merge"
+import useGetPaymentHistory from "./useGetPaymentHistory"
 
 export const AGENT_TYPE_KEY = {
   DEFAULT: 0,
@@ -45,6 +47,7 @@ const AGENT_TYPE_OPTIONS = [
 ]
 
 const AgentType: React.FC<{ isDisabled?: boolean }> = ({ isDisabled }) => {
+  const { isPaid } = useGetPaymentHistory()
   const { control } = useFormContext()
   const { handleSend } = useSend()
   const [isLoading, setIsLoading] = useState(false)
@@ -142,36 +145,47 @@ const AgentType: React.FC<{ isDisabled?: boolean }> = ({ isDisabled }) => {
                         })}
                       </div>
 
-                      {isDefaiType && (
-                        <Button
-                          className="mt-2 h-8 rounded-full bg-mercury-950"
-                          onPress={() => {
-                            if (isDisabled) return
-                            handleSubmit({
-                              tokenAddress: maxTokenAddress,
-                              toAccountAddress: ADDRESS_PAYMENT_NETWORK_SOL,
-                              amount: amountMAX.toString(),
-                            })
-                          }}
-                          isLoading={isLoading}
-                        >
-                          <div className="flex items-center gap-1">
-                            <img
-                              src={maxAvatar}
-                              width={16}
-                              className="rounded-full"
-                            />
-                            <span className="font-medium text-[#BCAA88]">
-                              <span className="font-bold">5,000 </span>
-                              Max
-                            </span>
-                            <span className="text-14-base-b text-mercury-30">
-                              {" "}
-                              Pay Now*
-                            </span>
-                          </div>
-                        </Button>
-                      )}
+                      {isDefaiType &&
+                        (isPaid ? (
+                          <Button className="mt-2 h-8 rounded-full bg-[#DEFAE5]">
+                            <div className="flex items-center gap-1">
+                              <CheckFilledIcon color="#20993F" />
+                              <span className="text-14 font-bold text-[#20993F]">
+                                Payment Successful
+                              </span>
+                            </div>
+                          </Button>
+                        ) : (
+                          <Button
+                            className="mt-2 h-8 rounded-full bg-mercury-950"
+                            onPress={() => {
+                              if (isDisabled) return
+                              handleSubmit({
+                                tokenAddress: maxTokenAddress,
+                                toAccountAddress: ADDRESS_PAYMENT_NETWORK_SOL,
+                                amount: amountMAX.toString(),
+                              })
+                            }}
+                            isLoading={isLoading}
+                            isDisabled={isPaid}
+                          >
+                            <div className="flex items-center gap-1">
+                              <img
+                                src={maxAvatar}
+                                width={16}
+                                className="rounded-full"
+                              />
+                              <span className="font-medium text-[#BCAA88]">
+                                <span className="font-bold">5,000 </span>
+                                Max
+                              </span>
+                              <span className="text-14-base-b text-mercury-30">
+                                {" "}
+                                Pay Now*
+                              </span>
+                            </div>
+                          </Button>
+                        ))}
                     </div>
                     <Checkbox radius="full" isSelected={isSelected} />
                   </div>

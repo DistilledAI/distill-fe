@@ -2,6 +2,7 @@ import { maxAvatar } from "@assets/images"
 import AlertBox from "@components/AlertBox"
 import HeaderMobileBack from "@components/HeaderMobileBack"
 import { DefaiAgentTypeIcon } from "@components/Icons/BrainAIIcon"
+import { CheckFilledIcon } from "@components/Icons/DefiLens"
 import { PATH_NAMES, STATUS_AGENT } from "@constants/index"
 import { useAppSelector } from "@hooks/useAppRedux"
 import useAuthState from "@hooks/useAuthState"
@@ -9,6 +10,7 @@ import { Button } from "@nextui-org/react"
 import MyAgents from "@pages/Account/MyAgents"
 import AgentStatus from "@pages/ChatPage/ChatBox/RightContent/MyPrivateAgentContent/AgentInitialization/AgentStatus"
 import { AGENT_TYPE_KEY } from "@pages/ChatPage/ChatBox/RightContent/MyPrivateAgentContent/AgentInitialization/AgentType"
+import useGetPaymentHistory from "@pages/ChatPage/ChatBox/RightContent/MyPrivateAgentContent/AgentInitialization/useGetPaymentHistory"
 import { findTokenByAddress } from "@pages/MyPrivateAgent/helpers"
 import { Network } from "@pages/MyPrivateAgent/interface"
 import useSend from "@pages/MyPrivateAgent/Send/useSend"
@@ -17,6 +19,7 @@ import { useState } from "react"
 import { toast } from "react-toastify"
 
 const MyAgentPage = () => {
+  const { isPaid } = useGetPaymentHistory()
   const agents = useAppSelector((state) => state.agents.myAgents)
   const agent = agents[0]
   const isAgentActive = agent && agent?.status === STATUS_AGENT.ACTIVE
@@ -26,7 +29,7 @@ const MyAgentPage = () => {
   const { handleSend } = useSend()
   const [isLoading, setIsLoading] = useState(false)
   const { user } = useAuthState()
-  const amountMAX = 5000
+  const amountMAX = 1
   const maxTokenAddress = "oraim8c9d1nkfuQk9EzGYEUGxqL3MHQYndRw1huVo5h"
   const ADDRESS_PAYMENT_NETWORK_SOL =
     "H65QnPNMWj1EGgwDD5RH3oHQBbwmuBbAzXgW8no6gKwQ"
@@ -95,29 +98,44 @@ const MyAgentPage = () => {
               ]}
               icon={<DefaiAgentTypeIcon />}
               extendButton={
-                <Button
-                  className="h-8 min-w-[165px] rounded-full bg-mercury-950"
-                  onPress={() => {
-                    handleSubmit({
-                      tokenAddress: maxTokenAddress,
-                      toAccountAddress: ADDRESS_PAYMENT_NETWORK_SOL,
-                      amount: amountMAX.toString(),
-                    })
-                  }}
-                  isLoading={isLoading}
-                >
-                  <div className="flex items-center gap-1">
-                    <img src={maxAvatar} width={14} className="rounded-full" />
-                    <span className="text-14 font-medium text-[#BCAA88]">
-                      <span className="font-bold">5,000 </span>
-                      Max
-                    </span>
-                    <span className="text-13 font-bold text-mercury-30">
-                      {" "}
-                      Pay Now
-                    </span>
-                  </div>
-                </Button>
+                isPaid ? (
+                  <Button className="mt-2 h-8 rounded-full bg-[#DEFAE5]">
+                    <div className="flex items-center gap-1">
+                      <CheckFilledIcon color="#20993F" />
+                      <span className="text-14 font-bold text-[#20993F]">
+                        Payment Successful
+                      </span>
+                    </div>
+                  </Button>
+                ) : (
+                  <Button
+                    className="h-8 min-w-[165px] rounded-full bg-mercury-950"
+                    onPress={() => {
+                      handleSubmit({
+                        tokenAddress: maxTokenAddress,
+                        toAccountAddress: ADDRESS_PAYMENT_NETWORK_SOL,
+                        amount: amountMAX.toString(),
+                      })
+                    }}
+                    isLoading={isLoading}
+                  >
+                    <div className="flex items-center gap-1">
+                      <img
+                        src={maxAvatar}
+                        width={14}
+                        className="rounded-full"
+                      />
+                      <span className="text-14 font-medium text-[#BCAA88]">
+                        <span className="font-bold">5,000 </span>
+                        Max
+                      </span>
+                      <span className="text-13 font-bold text-mercury-30">
+                        {" "}
+                        Pay Now
+                      </span>
+                    </div>
+                  </Button>
+                )
               }
             />
           ) : (
