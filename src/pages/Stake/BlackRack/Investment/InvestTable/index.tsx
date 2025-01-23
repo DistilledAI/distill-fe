@@ -53,8 +53,8 @@ const InvestTable: React.FC<{
     amount: number
     unstakedAtTime: number
   }[]
-  getListUnbonding: () => void
-}> = ({ list, getListUnbonding }) => {
+  callback: () => void
+}> = ({ list, callback }) => {
   const renderState = (state: string) => {
     switch (state) {
       case "staking":
@@ -103,11 +103,7 @@ const InvestTable: React.FC<{
         )
       case "unstaked":
         return (
-          <ItemWithdraw
-            id={id}
-            isWithdraw={isWithdraw}
-            callback={getListUnbonding}
-          />
+          <ItemWithdraw id={id} isWithdraw={isWithdraw} callback={callback} />
         )
       default:
         return null

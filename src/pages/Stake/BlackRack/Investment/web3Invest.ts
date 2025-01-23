@@ -318,11 +318,19 @@ export class Web3Invest {
         new PublicKey(INVEST_ADDRESS.shareToken),
       )
 
-      const vaultAccount = await program.account.vault.fetch(vault)
+      const [vaultAccount, vaultConfigData] = await Promise.all([
+        program.account.vault.fetch(vault),
+        program.account.vaultConfig.fetch(vault_config),
+      ])
+
       return {
         nav: vaultAccount.nav,
         aum: vaultAccount.aum,
         totalShares: mintInfo.supply,
+        highestNav: vaultAccount.highestNav,
+        managementFee: vaultConfigData.managementFee,
+        performanceFee: vaultConfigData.performanceFee,
+        nextTimeTakeManagementFee: vaultAccount.nextTimeTakeManagementFee,
       }
     } catch (error) {
       console.error(error)
@@ -330,6 +338,10 @@ export class Web3Invest {
         nav: new BN(0),
         aum: new BN(0),
         totalShares: new BN(0),
+        highestNav: new BN(0),
+        managementFee: new BN(0),
+        performanceFee: new BN(0),
+        nextTimeTakeManagementFee: new BN(0),
       }
     }
   }
@@ -415,5 +427,37 @@ export class Web3Invest {
         return { transaction, result }
       }
     }
+  }
+
+  static getBuyShareFee(
+    amount: number,
+    currentTimestamp: number,
+    nextTimeTakeManagementFee: number,
+    managementFee: number,
+  ) {
+    const period = nextTimeTakeManagementFee - currentTimestamp / 1000
+    const MAXIUM_DAYS_IN_MONTH = 60 * 60 * 24 * 31
+    const THIRDTY_DAYS_IN_MONTH = 60 * 60 * 24 * 30
+    const YEAR = 60 * 60 * 24 * 365
+
+    if (period < 0 || period > MAXIUM_DAYS_IN_MONTH) {
+      return (THIRDTY_DAYS_IN_MONTH * amount * managementFee) / 100 / YEAR
+    }
+
+    return (period * amount * managementFee) / 100
+  }
+
+  static getPerformanceFee(
+    amountShare: number,
+    nav: number,
+    highestNav: number,
+    performanceFee: number,
+  ) {
+    if (highestNav === 0 || nav < highestNav) {
+      return amountShare
+    }
+    return (
+      (amountShare * (performanceFee / 100) * (highestNav - nav)) / highestNav
+    )
   }
 }

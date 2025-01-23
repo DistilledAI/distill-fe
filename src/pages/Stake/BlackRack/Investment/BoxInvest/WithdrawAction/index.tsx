@@ -31,7 +31,7 @@ const WithdrawAction: React.FC<{
     debounce((value: string) => {
       setToUsdc(toBN(nav * toBN(value).toNumber()).toNumber())
     }, 300),
-    [],
+    [nav],
   )
 
   const handleInputChange = (value: number) => {

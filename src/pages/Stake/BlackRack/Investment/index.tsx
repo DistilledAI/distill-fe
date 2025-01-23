@@ -6,21 +6,25 @@ import useGetUnbondingList from "./InvestTable/useGetUnbondingList"
 // import InvestTable from "./InvestTable"
 import InvestShareUser from "./ShareUser"
 import TotalShare from "./TotalShare"
-import useGetShareValue from "./useGetShareValue"
+import useGetVaultInfo from "./useGetVaultInfo"
 import { toBN } from "@utils/format"
 import { DECIMAL_SPL } from "@pages/BetingPage/constants"
+import { useState } from "react"
 
 const InvestmentVault = () => {
   const { list, getListUnbonding } = useGetUnbondingList()
   const { isConnectWallet } = useConnectPhantom()
-  const { total: totalShare, loading, info, getVaultInfo } = useGetShareValue()
+  const [isFetchBalance, setIsFetchBalance] = useState(false)
+  const { total: totalShare, loading, info, getVaultInfo } = useGetVaultInfo()
 
   const nav = info.nav
   const totalShares = toBN(info.totalShares / 10 ** DECIMAL_SPL).toFixed(2)
   const percentStaker =
     info.totalShares === 0
       ? "0"
-      : toBN((totalShare / Number(totalShares)) * 100).toFixed(2)
+      : toBN(
+          (totalShare / toBN(totalShares.toString()).toNumber()) * 100,
+        ).toFixed(2)
   const aum = toBN(info.aum / 10 ** DECIMAL_SPL).toFixed(2)
 
   return (
@@ -55,7 +59,16 @@ const InvestmentVault = () => {
             </p>
           </div>
           {list.length > 0 && isConnectWallet ? (
-            <InvestTable list={list} getListUnbonding={getListUnbonding} />
+            <InvestTable
+              list={list}
+              callback={() => {
+                getListUnbonding()
+                setIsFetchBalance(true)
+                setTimeout(() => {
+                  setIsFetchBalance(false)
+                }, 500)
+              }}
+            />
           ) : (
             ""
           )}
@@ -68,9 +81,11 @@ const InvestmentVault = () => {
               getVaultInfo()
               getListUnbonding()
             }}
+            isFetchBalance={isFetchBalance}
             totalShare={totalShare}
             loadingTotalShare={loading}
             nav={nav}
+            info={info}
           />
         </div>
       </div>

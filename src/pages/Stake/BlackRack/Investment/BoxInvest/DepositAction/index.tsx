@@ -7,43 +7,66 @@ import useConnectPhantom from "@pages/Stake/useConnectPhantom"
 import useGetBalance from "@pages/Stake/useGetBalance"
 import { numberWithCommas, toBN } from "@utils/format"
 import { debounce } from "lodash"
-import React, { useCallback, useMemo, useState } from "react"
+import React, { useCallback, useEffect, useMemo, useState } from "react"
 import NumberFormat from "react-number-format"
 import { toast } from "react-toastify"
 import { Web3Invest } from "../../web3Invest"
 import { BN } from "@coral-xyz/anchor"
 import { useWallet } from "@solana/wallet-adapter-react"
 import { formatNumberWithComma } from "@utils/index"
+import { InfoVault } from "../../useGetVaultInfo"
 
 const web3Invest = new Web3Invest()
 
 const DepositAction: React.FC<{
   callback: () => void
   nav: number
-}> = ({ callback, nav }) => {
+  info: InfoVault
+  isFetchBalance: boolean
+}> = ({ callback, nav, info, isFetchBalance = false }) => {
   const [loadingSubmit, setLoadingSubmit] = useState(false)
   const [amountVal, setAmountVal] = useState<string>("")
+  const [fee, setFee] = useState(0)
   const [toReward, setToReward] = useState(0)
   const wallet = useWallet()
   const { connectWallet, isConnectWallet } = useConnectPhantom()
   const { balance, loading, getBalance } = useGetBalance(StakeTokenAddress.Usdc)
 
+  useEffect(() => {
+    if (isFetchBalance) getBalance()
+  }, [isFetchBalance])
+
   const debouncedFetchQuantity = useCallback(
     debounce((value: string) => {
       if (nav !== 0) setToReward(toBN(toBN(value).toNumber() / nav).toNumber())
     }, 300),
-    [],
+    [nav],
   )
 
-  const handleInputChange = useCallback((value: number) => {
+  const debouncedGetFee = useCallback(
+    debounce((value: string) => {
+      const resFee = Web3Invest.getBuyShareFee(
+        toBN(value).toNumber(),
+        Date.now(),
+        info.nextTimeTakeManagementFee,
+        info.managementFee,
+      )
+      setFee(resFee)
+    }, 300),
+    [info],
+  )
+
+  const handleInputChange = (value: number) => {
     if (value || value === 0) {
       setAmountVal(value.toString())
       debouncedFetchQuantity(value.toString())
+      debouncedGetFee(value.toString())
     } else {
       setAmountVal("")
       debouncedFetchQuantity("0")
+      debouncedGetFee("0")
     }
-  }, [])
+  }
 
   const AMOUNT_LIST = useMemo(
     () => [
@@ -165,11 +188,14 @@ const DepositAction: React.FC<{
         <div className="flex items-center gap-1">
           <img className="h-5 w-5 rounded-full" src={aiFund2Ava} />
           <p className="font-semibold text-brown-600">
-            {formatNumberWithComma(toReward)} Shares{" "}
+            {formatNumberWithComma(toReward - fee)} Shares{" "}
             <span className="font-medium text-mercury-700">(AIFII)</span>
           </p>
         </div>
       </div>
+      <p className="mt-1 text-right text-13 text-mercury-900">
+        Fee: {fee === 0 ? "0" : fee.toFixed(6)} Shares
+      </p>
       {isConnectWallet ? (
         <Button
           isLoading={loadingSubmit}

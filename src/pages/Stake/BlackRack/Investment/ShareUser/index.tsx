@@ -30,7 +30,7 @@ const InvestShareUser: React.FC<{
       <div>
         <p className="text-14 font-medium text-mercury-700">Share Price</p>
         <p className="text-24 font-semibold text-brown-600 max-md:text-20">
-          ${nav === 0 ? "--" : nav}
+          ${nav === 0 ? "--" : formatNumberWithComma(Number(nav.toFixed(2)))}
         </p>
       </div>
     </div>

@@ -26,7 +26,7 @@ const TotalShare: React.FC<{
           Your Shares Power
         </p>
         <p className="text-24 font-semibold text-mercury-950 max-md:text-20">
-          {percentStaker === "0" ? "--" : percentStaker}%
+          {Number(percentStaker) > 100 ? "100" : percentStaker}%
         </p>
       </div>
     </div>

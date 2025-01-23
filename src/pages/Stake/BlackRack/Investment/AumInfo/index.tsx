@@ -14,7 +14,7 @@ const AumInfo: React.FC<{
           </span>
         </p>
         <p className="mt-1 text-24 font-bold text-mercury-950">
-          $ {formatNumberWithComma(Number(aum))}
+          ${formatNumberWithComma(Number(aum))}
         </p>
         {/* <p className="inline-block rounded-md bg-[#F1FCF3] p-1 text-14 text-green-600">
           +3.44% Today

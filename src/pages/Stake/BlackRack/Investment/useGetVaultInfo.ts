@@ -7,17 +7,27 @@ import { NAV_SCALE } from "./constants"
 
 const web3Invest = new Web3Invest()
 
+export interface InfoVault {
+  nav: number
+  totalShares: number
+  aum: number
+  highestNav: number
+  managementFee: number
+  performanceFee: number
+  nextTimeTakeManagementFee: number
+}
+
 const useGetVaultInfo = () => {
   const wallet = useWallet()
   const [total, setTotal] = useState(0)
-  const [info, setInfo] = useState<{
-    nav: number
-    totalShares: number
-    aum: number
-  }>({
+  const [info, setInfo] = useState<InfoVault>({
     nav: 0,
     totalShares: 0,
     aum: 0,
+    highestNav: 0,
+    managementFee: 0,
+    performanceFee: 0,
+    nextTimeTakeManagementFee: 0,
   })
 
   const getVaultInfo = async () => {
@@ -38,6 +48,12 @@ const useGetVaultInfo = () => {
           nav: dt.nav.toNumber() / NAV_SCALE,
           aum: dt.aum.toNumber(),
           totalShares: toBN(Number(dt.totalShares)).toNumber(),
+          highestNav: toBN(Number(dt.highestNav)).toNumber(),
+          managementFee: toBN(Number(dt.managementFee)).toNumber(),
+          performanceFee: toBN(Number(dt.performanceFee)).toNumber(),
+          nextTimeTakeManagementFee: toBN(
+            Number(dt.nextTimeTakeManagementFee),
+          ).toNumber(),
         })
       }
     } catch (error) {
