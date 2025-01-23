@@ -19,7 +19,7 @@ const USER_ID_LIST = [
   43748, 66069, 66276, 66456, 66113, 66124, 66179, 66207, 66271, 66280, 66059,
   66079, 66139, 66160, 66837, 66960, 66065, 66082, 66105, 66219, 66349, 66484,
   67008, 67018, 67029, 67182, 66131, 66248, 66275, 66287, 66444, 66716, 67098,
-  67139, 67226, 1698,
+  67139, 67226, 1698, 1519,
 ]
 
 const TopChatAnnounce = () => {
@@ -49,7 +49,7 @@ const TopChatAnnounce = () => {
   return (
     <div
       className={twMerge(
-        "fixed right-4 top-0 z-20 flex w-[calc(100%-361px)] flex-col gap-2 rounded-b-[22px] border border-t-0 border-brown-500 bg-orange-100 px-2 py-1 duration-300 md:flex-row md:px-6",
+        "fixed right-4 top-0 z-20 flex w-[calc(100%-361px)] flex-col gap-2 rounded-b-[22px] border border-t-0 border-brown-500 bg-orange-100 px-2 py-1 duration-300 max-sm:right-0 max-sm:w-full md:flex-row md:px-6",
         sidebarCollapsed && "w-[calc(100%-136px)]",
       )}
     >
