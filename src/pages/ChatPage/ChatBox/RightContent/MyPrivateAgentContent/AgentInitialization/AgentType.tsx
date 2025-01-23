@@ -56,10 +56,11 @@ const AgentType: React.FC<{ isDisabled?: boolean }> = ({ isDisabled }) => {
   const maxTokenAddress = "oraim8c9d1nkfuQk9EzGYEUGxqL3MHQYndRw1huVo5h"
   const ADDRESS_PAYMENT_NETWORK_SOL =
     "H65QnPNMWj1EGgwDD5RH3oHQBbwmuBbAzXgW8no6gKwQ"
+  const [isPaymentSuccess, setPaymentSuccess] = useState<boolean>(false)
 
   useEffect(() => {
     checkPayment()
-  }, [isLoading])
+  }, [])
 
   const handleSubmit = async ({
     toAccountAddress,
@@ -92,6 +93,7 @@ const AgentType: React.FC<{ isDisabled?: boolean }> = ({ isDisabled }) => {
       })
       if (result) {
         toast.success("Sent successfully!")
+        setPaymentSuccess(true)
       }
     } catch (error) {
       console.error(error, "error")
@@ -150,7 +152,7 @@ const AgentType: React.FC<{ isDisabled?: boolean }> = ({ isDisabled }) => {
                       </div>
 
                       {isDefaiType &&
-                        (isPaid ? (
+                        (isPaymentSuccess || isPaid ? (
                           <Button className="mt-2 h-8 rounded-full bg-[#DEFAE5]">
                             <div className="flex items-center gap-1">
                               <CheckFilledIcon color="#20993F" />
