@@ -39,6 +39,7 @@ const endpoint = {
     "/point/xDstl/user/claim-task-success",
   ),
   REPOST_X: withBaseURL("/point/xDstl/retweet-x"),
+  GET_PAYMENT_HISTORY: withBaseURL("/payment/history"),
 
   //chat
   GET_MY_CHAT_GROUP_LIST: withBaseURL("/chat/group/list"),
