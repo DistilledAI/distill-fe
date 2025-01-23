@@ -1,13 +1,16 @@
 import { Button } from "@nextui-org/react"
 import { StakeTokenAddress } from "@pages/Stake"
-import { getInfoTokenByAddress } from "@pages/Stake/helpers"
+import {
+  getDurationByAddress,
+  getInfoTokenByAddress,
+} from "@pages/Stake/helpers"
 import useConnectPhantom from "@pages/Stake/useConnectPhantom"
 import { useSearchParams } from "react-router-dom"
 import SelectToken from "../SelectToken"
 import { Web3SolanaLockingToken } from "@pages/Stake/web3Locking"
 import { numberWithCommas, toBN } from "@utils/format"
 import { useWallet } from "@solana/wallet-adapter-react"
-import { ALL_CONFIGS, SPL_DECIMAL } from "@pages/Stake/config"
+import { SPL_DECIMAL } from "@pages/Stake/config"
 import React, { useState } from "react"
 import { toast } from "react-toastify"
 import NumberFormat from "react-number-format"
@@ -75,7 +78,7 @@ const UnStakeAction: React.FC<{
           .toFixed(0, 1),
       ).toNumber()
       const res = await web3Locking.unStake(
-        ALL_CONFIGS.DURATION_STAKE,
+        getDurationByAddress(tokenAddress),
         amount,
         wallet,
         tokenAddress,

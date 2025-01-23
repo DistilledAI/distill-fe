@@ -27,6 +27,7 @@ const UserStakedInfo = ({ total }: { total: number }) => {
   const tokenPrice = tokenInfo?.coinGeckoId
     ? Number(prices?.[tokenInfo.coinGeckoId] || 0)
     : 0
+
   const totalPriceUsd = toBN(
     toBN(tokenPrice * toBN(total).toNumber())
       .toNumber()

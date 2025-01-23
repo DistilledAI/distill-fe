@@ -7,7 +7,12 @@ import StakeTable from "./StakeTable"
 import StakedInfo from "./StakedInfo"
 import { PoolIcon } from "@components/Icons"
 import useConnectPhantom from "./useConnectPhantom"
-import { blackrackAvartar2, gnrtAvatar, racksAvatar } from "@assets/images"
+import {
+  blackrackAvartar2,
+  gnrtAvatar,
+  leeQuidAvatar,
+  racksAvatar,
+} from "@assets/images"
 import useGetStakedAmount from "./useGetStakedAmount"
 import { CoinGeckoId } from "@hooks/useCoingecko"
 import { useEffect } from "react"
@@ -20,6 +25,7 @@ export const SOLANA_ENV = import.meta.env.VITE_APP_SOLANA_ENV || "mainnet-beta"
 export enum StakeTokenAddress {
   Degenerator = "oraiJP7H3LAt57DkFXNLDbLdBFNRRPvS8jg2j5AZkd9",
   BlackRack = "D7yP4ycfsRWUGYionGpi64sLF2ddZ2JXxuRAti2M7uck",
+  LeeQuid = "oraix39mVDGnusyjag97Tz5H8GvGriSZmhVvkvXRoc4",
 }
 
 export const LIST_TOKEN_STAKE = [
@@ -41,6 +47,15 @@ export const LIST_TOKEN_STAKE = [
     avatar: racksAvatar,
     avatar2: blackrackAvartar2,
     coinGeckoId: CoinGeckoId["blackrack"],
+  },
+  {
+    id: 3,
+    address: StakeTokenAddress.LeeQuid,
+    label: "LeeQuid",
+    decimals: 6,
+    tokenName: "LEE",
+    avatar: leeQuidAvatar,
+    coinGeckoId: CoinGeckoId["lee-quid"],
   },
 ]
 
@@ -81,7 +96,7 @@ const Stake = () => {
           {isConnectWallet ? (
             <>
               <UserStakedInfo total={total} />
-              <WithdrawAll />
+              <WithdrawAll tokenAddress={tokenAddress} />
               <StakeTable list={list} getListUnbonding={getListUnbonding} />
             </>
           ) : (
