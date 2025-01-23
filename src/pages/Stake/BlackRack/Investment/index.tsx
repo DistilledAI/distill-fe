@@ -7,16 +7,21 @@ import useGetUnbondingList from "./InvestTable/useGetUnbondingList"
 import InvestShareUser from "./ShareUser"
 import TotalShare from "./TotalShare"
 import useGetShareValue from "./useGetShareValue"
+import { toBN } from "@utils/format"
+import { DECIMAL_SPL } from "@pages/BetingPage/constants"
 
 const InvestmentVault = () => {
   const { list, getListUnbonding } = useGetUnbondingList()
   const { isConnectWallet } = useConnectPhantom()
-  const {
-    total: totalShare,
-    loading,
-    nav,
-    getStakedAmount,
-  } = useGetShareValue()
+  const { total: totalShare, loading, info, getVaultInfo } = useGetShareValue()
+
+  const nav = info.nav
+  const totalShares = toBN(info.totalShares / 10 ** DECIMAL_SPL).toFixed(2)
+  const percentStaker =
+    info.totalShares === 0
+      ? "0"
+      : toBN((totalShare / Number(totalShares)) * 100).toFixed(2)
+  const aum = toBN(info.aum / 10 ** DECIMAL_SPL).toFixed(2)
 
   return (
     <div className="pb-10">
@@ -54,13 +59,13 @@ const InvestmentVault = () => {
           ) : (
             ""
           )}
-          <TotalShare />
+          <TotalShare percentStaker={percentStaker} totalShares={totalShares} />
         </div>
         <div className="w-[calc(40%-16px)] max-md:w-full">
-          <AumInfo />
+          <AumInfo aum={aum} />
           <BoxInvest
             callback={() => {
-              getStakedAmount()
+              getVaultInfo()
               getListUnbonding()
             }}
             totalShare={totalShare}

@@ -1,6 +1,11 @@
 import { aiFund2Ava } from "@assets/images"
+import { formatNumberWithComma } from "@utils/index"
+import React from "react"
 
-const TotalShare = () => {
+const TotalShare: React.FC<{
+  totalShares: string
+  percentStaker: string
+}> = ({ totalShares, percentStaker }) => {
   return (
     <div className="relative mt-8 grid grid-cols-2 gap-10 max-md:grid-cols-1 max-md:gap-4">
       <div className="absolute left-1/2 top-1/2 h-[50px] w-[1px] -translate-x-1/2 -translate-y-1/2 bg-mercury-200 max-md:hidden"></div>
@@ -9,7 +14,10 @@ const TotalShare = () => {
         <div className="flex items-center gap-2">
           <img className="h-6 w-6 rounded-full object-cover" src={aiFund2Ava} />
           <p className="text-24 font-semibold text-mercury-950 max-md:text-20">
-            -- Shares
+            {totalShares === "0"
+              ? "--"
+              : formatNumberWithComma(Number(totalShares))}{" "}
+            Shares
           </p>
         </div>
       </div>
@@ -18,7 +26,7 @@ const TotalShare = () => {
           Your Shares Power
         </p>
         <p className="text-24 font-semibold text-mercury-950 max-md:text-20">
-          --%
+          {percentStaker === "0" ? "--" : percentStaker}%
         </p>
       </div>
     </div>

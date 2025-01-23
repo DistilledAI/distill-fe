@@ -7,42 +7,49 @@ import { NAV_SCALE } from "./constants"
 
 const web3Invest = new Web3Invest()
 
-const useGetShareValue = () => {
+const useGetVaultInfo = () => {
   const wallet = useWallet()
-  const [loading, setLoading] = useState(false)
   const [total, setTotal] = useState(0)
-  const [nav, setNav] = useState(0)
+  const [info, setInfo] = useState<{
+    nav: number
+    totalShares: number
+    aum: number
+  }>({
+    nav: 0,
+    totalShares: 0,
+    aum: 0,
+  })
 
-  const getStakedAmount = async () => {
+  const getVaultInfo = async () => {
     try {
       if (!wallet.publicKey) {
         setTotal(0)
-        return
       }
-      setLoading(true)
       const amount = await web3Invest.getStakerShare(wallet)
-      const nav = await web3Invest.getVault(wallet)
+      const dt = await web3Invest.getVault(wallet)
       if (amount) {
         const amountDisplay = toBN(amount as any)
           .div(10 ** SPL_DECIMAL)
           .toNumber()
         setTotal(amountDisplay)
       }
-      if (nav) {
-        setNav(nav.toNumber() / NAV_SCALE)
+      if (dt) {
+        setInfo({
+          nav: dt.nav.toNumber() / NAV_SCALE,
+          aum: dt.aum.toNumber(),
+          totalShares: toBN(Number(dt.totalShares)).toNumber(),
+        })
       }
     } catch (error) {
       console.error(error)
-    } finally {
-      setLoading(false)
     }
   }
 
   useEffect(() => {
-    getStakedAmount()
+    getVaultInfo()
   }, [wallet.publicKey])
 
-  return { total, loading, nav, getStakedAmount }
+  return { total, loading: false, info, getVaultInfo }
 }
 
-export default useGetShareValue
+export default useGetVaultInfo

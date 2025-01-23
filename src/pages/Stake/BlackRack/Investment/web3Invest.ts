@@ -15,6 +15,7 @@ import { INVEST_ADDRESS, SEED_VAULT, SEED_VAULT_CONFIG } from "./constants"
 import {
   createAssociatedTokenAccountInstruction,
   getAssociatedTokenAddressSync,
+  getMint,
 } from "@solana/spl-token"
 
 export const vaultProgramId = new PublicKey(idl.address)
@@ -281,6 +282,7 @@ export class Web3Invest {
       return 0
     }
   }
+
   async getVault(wallet: WalletContextState) {
     let provider
     try {
@@ -311,12 +313,24 @@ export class Web3Invest {
         ],
         program.programId,
       )
+      const mintInfo = await getMint(
+        this.connection,
+        new PublicKey(INVEST_ADDRESS.shareToken),
+      )
 
       const vaultAccount = await program.account.vault.fetch(vault)
-      return vaultAccount.nav
+      return {
+        nav: vaultAccount.nav,
+        aum: vaultAccount.aum,
+        totalShares: mintInfo.supply,
+      }
     } catch (error) {
       console.error(error)
-      return new BN(0)
+      return {
+        nav: new BN(0),
+        aum: new BN(0),
+        totalShares: new BN(0),
+      }
     }
   }
 
