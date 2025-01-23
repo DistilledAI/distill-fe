@@ -15,7 +15,8 @@ import "./index.css"
 
 const sentryDSN =
   "https://5b7d7a06ec6e48a09991a984f4b02e86@o1323226.ingest.us.sentry.io/4508475831418880"
-const envMode = import.meta.env.VITE_APP_ENV_MODE
+const urlStaging = ["mesh-distilled-ai-dev.web.app", "localhost:5173"]
+const isStaging = urlStaging.includes(window.location.host)
 
 Sentry.init({
   dsn: sentryDSN,
@@ -24,7 +25,7 @@ Sentry.init({
   tracePropagationTargets: ["https://mesh.distilled.ai/"],
   replaysSessionSampleRate: 0.1,
   replaysOnErrorSampleRate: 1.0,
-  enabled: envMode === "production",
+  enabled: !isStaging,
   ignoreErrors: [
     "Non-Error exception captured",
     "Non-Error promise rejection captured",

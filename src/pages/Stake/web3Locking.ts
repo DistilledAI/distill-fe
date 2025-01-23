@@ -2,7 +2,6 @@ import {
   STAKER_INFO_SEED,
   STAKING_VAULT_SEED,
   STAKING_UNBONDING_INFO_SEED,
-  ALL_CONFIGS,
 } from "./config"
 import * as anchor from "@coral-xyz/anchor"
 import { BN, Program } from "@coral-xyz/anchor"
@@ -17,11 +16,10 @@ import { FungStakingVault } from "./staking_vault.ts"
 import idl from "./staking_vault.json"
 import { handleTransaction } from "./utils"
 import { SOLANA_RPC, SOLANA_WS } from "program/utils/web3Utils.ts"
+import { getDurationByAddress } from "./helpers.ts"
 
 export const vaultProgramId = new PublicKey(idl.address)
 export const vaultInterface = JSON.parse(JSON.stringify(idl))
-
-// const stakeCurrencyMint = ALL_CONFIGS.STAKE_CURRENCY_MINT
 
 export class Web3SolanaLockingToken {
   constructor(
@@ -135,7 +133,7 @@ export class Web3SolanaLockingToken {
         [
           Buffer.from(STAKING_VAULT_SEED),
           new PublicKey(stakeCurrencyMint).toBytes(),
-          new BN(ALL_CONFIGS.DURATION_STAKE).toBuffer("le", 8),
+          new BN(getDurationByAddress(stakeCurrencyMint)).toBuffer("le", 8),
         ],
         program.programId,
       )
@@ -178,7 +176,7 @@ export class Web3SolanaLockingToken {
         [
           Buffer.from(STAKING_VAULT_SEED),
           new PublicKey(stakeCurrencyMint).toBytes(),
-          new BN(ALL_CONFIGS.DURATION_STAKE).toBuffer("le", 8),
+          new BN(getDurationByAddress(stakeCurrencyMint)).toBuffer("le", 8),
         ],
         program.programId,
       )
@@ -208,7 +206,7 @@ export class Web3SolanaLockingToken {
         [
           Buffer.from(STAKING_VAULT_SEED),
           new PublicKey(stakeCurrencyMint).toBytes(),
-          new BN(ALL_CONFIGS.DURATION_STAKE).toBuffer("le", 8),
+          new BN(getDurationByAddress(stakeCurrencyMint)).toBuffer("le", 8),
         ],
         program.programId,
       )

@@ -43,7 +43,7 @@ const SimpleStaking = () => {
           {isConnectWallet ? (
             <>
               <UserStakedInfo total={total} />
-              <WithdrawAll />
+              <WithdrawAll tokenAddress={tokenAddress} />
               <StakeTable list={list} getListUnbonding={getListUnbonding} />
             </>
           ) : (

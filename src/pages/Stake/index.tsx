@@ -3,6 +3,7 @@ import { useNavigate, useSearchParams } from "react-router-dom"
 import {
   blackrackAvartar2,
   gnrtAvatar,
+  leeQuidAvatar,
   racksAvatar,
   usdcLogo,
 } from "@assets/images"
@@ -10,7 +11,7 @@ import { CoinGeckoId } from "@hooks/useCoingecko"
 import { lazy, useEffect } from "react"
 import { PATH_NAMES } from "@constants/index"
 const SimpleStaking = lazy(() => import("./SimpleStaking"))
-const BlackRackVault = lazy(() => import("./BlackRack"))
+// const BlackRackVault = lazy(() => import("./BlackRack"))
 
 export const SOLANA_ENV = import.meta.env.VITE_APP_SOLANA_ENV || "mainnet-beta"
 
@@ -18,6 +19,7 @@ export enum StakeTokenAddress {
   Degenerator = "oraiJP7H3LAt57DkFXNLDbLdBFNRRPvS8jg2j5AZkd9",
   BlackRack = "D7yP4ycfsRWUGYionGpi64sLF2ddZ2JXxuRAti2M7uck",
   Usdc = "v6ZegfKumXFEKzLAWiHouPe7KZsZq8kv6dq4Sc1Aqvq",
+  LeeQuid = "oraix39mVDGnusyjag97Tz5H8GvGriSZmhVvkvXRoc4",
 }
 
 export const LIST_TOKEN_STAKE = [
@@ -42,6 +44,15 @@ export const LIST_TOKEN_STAKE = [
   },
   {
     id: 3,
+    address: StakeTokenAddress.LeeQuid,
+    label: "LeeQuid",
+    decimals: 6,
+    tokenName: "LEE",
+    avatar: leeQuidAvatar,
+    coinGeckoId: CoinGeckoId["lee-quid"],
+  },
+  {
+    id: 4,
     address: StakeTokenAddress.Usdc,
     label: "USDC",
     decimals: 6,
@@ -60,7 +71,7 @@ const Stake = () => {
       navigate(`${PATH_NAMES.STAKING}?token=${StakeTokenAddress.BlackRack}`)
   }, [])
 
-  const isBlackRack = tokenAddress === StakeTokenAddress.BlackRack
+  // const isBlackRack = tokenAddress === StakeTokenAddress.BlackRack
 
   return (
     <div className="mx-auto max-w-[1232px] px-4 max-md:py-[60px]">
@@ -71,7 +82,7 @@ const Stake = () => {
         <ArrowLeftFilledIcon color="#545454" />
         <p className="font-medium">Back</p>
       </div>
-      {isBlackRack ? <BlackRackVault /> : <SimpleStaking />}
+      <SimpleStaking />
     </div>
   )
 }
