@@ -15,11 +15,11 @@ import { findTokenByAddress } from "@pages/MyPrivateAgent/helpers"
 import { Network } from "@pages/MyPrivateAgent/interface"
 import useSend from "@pages/MyPrivateAgent/Send/useSend"
 import { toBN } from "@utils/format"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { toast } from "react-toastify"
 
 const MyAgentPage = () => {
-  const { isPaid } = useGetPaymentHistory()
+  const { isPaid, checkPayment } = useGetPaymentHistory()
   const agents = useAppSelector((state) => state.agents.myAgents)
   const agent = agents[0]
   const isAgentActive = agent && agent?.status === STATUS_AGENT.ACTIVE
@@ -33,6 +33,10 @@ const MyAgentPage = () => {
   const maxTokenAddress = "oraim8c9d1nkfuQk9EzGYEUGxqL3MHQYndRw1huVo5h"
   const ADDRESS_PAYMENT_NETWORK_SOL =
     "H65QnPNMWj1EGgwDD5RH3oHQBbwmuBbAzXgW8no6gKwQ"
+
+  useEffect(() => {
+    checkPayment()
+  }, [])
 
   const handleSubmit = async ({
     toAccountAddress,

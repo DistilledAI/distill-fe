@@ -47,7 +47,7 @@ const AGENT_TYPE_OPTIONS = [
 ]
 
 const AgentType: React.FC<{ isDisabled?: boolean }> = ({ isDisabled }) => {
-  const { isPaid } = useGetPaymentHistory()
+  const { isPaid, checkPayment } = useGetPaymentHistory()
   const { control } = useFormContext()
   const { handleSend } = useSend()
   const [isLoading, setIsLoading] = useState(false)
@@ -88,6 +88,7 @@ const AgentType: React.FC<{ isDisabled?: boolean }> = ({ isDisabled }) => {
       })
       if (result) {
         toast.success("Sent successfully!")
+        checkPayment()
       }
     } catch (error) {
       console.error(error, "error")

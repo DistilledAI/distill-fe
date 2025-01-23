@@ -1,5 +1,5 @@
 import useAuthState from "@hooks/useAuthState"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { getPaymentHistory } from "services/agent"
 
 const useGetPaymentHistory = () => {
@@ -28,10 +28,6 @@ const useGetPaymentHistory = () => {
       console.log("error:", error)
     }
   }
-
-  useEffect(() => {
-    checkPayment()
-  }, [])
 
   return { checkPayment, isPaid }
 }

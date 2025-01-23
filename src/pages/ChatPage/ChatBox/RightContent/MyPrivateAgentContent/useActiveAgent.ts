@@ -39,8 +39,6 @@ const useActiveAgent = (): UseActiveAgentReturn => {
     agentList[0] ||
     null
 
-  console.log("🚀 ~ useActiveAgent ~ currentAgent:", currentAgent)
-
   const isAgentActive = currentAgent?.status === STATUS_AGENT.ACTIVE
 
   return {
