@@ -12,7 +12,7 @@ import { findTokenByAddress } from "@pages/MyPrivateAgent/helpers"
 import { Network } from "@pages/MyPrivateAgent/interface"
 import useSend from "@pages/MyPrivateAgent/Send/useSend"
 import { toBN } from "@utils/format"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Controller, useFormContext } from "react-hook-form"
 import { toast } from "react-toastify"
 import { twMerge } from "tailwind-merge"
@@ -57,6 +57,10 @@ const AgentType: React.FC<{ isDisabled?: boolean }> = ({ isDisabled }) => {
   const ADDRESS_PAYMENT_NETWORK_SOL =
     "H65QnPNMWj1EGgwDD5RH3oHQBbwmuBbAzXgW8no6gKwQ"
 
+  useEffect(() => {
+    checkPayment()
+  }, [isLoading])
+
   const handleSubmit = async ({
     toAccountAddress,
     amount,
@@ -88,7 +92,6 @@ const AgentType: React.FC<{ isDisabled?: boolean }> = ({ isDisabled }) => {
       })
       if (result) {
         toast.success("Sent successfully!")
-        checkPayment()
       }
     } catch (error) {
       console.error(error, "error")
@@ -168,7 +171,7 @@ const AgentType: React.FC<{ isDisabled?: boolean }> = ({ isDisabled }) => {
                               })
                             }}
                             isLoading={isLoading}
-                            isDisabled={isPaid}
+                            isDisabled={!isSelected}
                           >
                             <div className="flex items-center gap-1">
                               <img
