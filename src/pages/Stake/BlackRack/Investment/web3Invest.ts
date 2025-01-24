@@ -289,6 +289,28 @@ export class Web3Invest {
     }
   }
 
+  static async getAvgPrice(
+    wallet: WalletContextState,
+    program: anchor.Program<RacksVault>,
+  ) {
+    if (!wallet.publicKey) return new BN(0)
+    try {
+      const [shareInfoPda] = PublicKey.findProgramAddressSync(
+        [
+          SEED_SHARE_INFO,
+          new PublicKey(INVEST_ADDRESS.vault).toBytes(),
+          wallet.publicKey.toBytes(),
+        ],
+        program.programId,
+      )
+      const resInfo = await program.account.shareInfo.fetch(shareInfoPda)
+      return resInfo.avgPrice
+    } catch (error) {
+      console.error(error)
+      return new BN(0)
+    }
+  }
+
   async getVault(wallet: WalletContextState) {
     let provider
     try {
@@ -329,19 +351,7 @@ export class Web3Invest {
         program.account.vaultConfig.fetch(vault_config),
       ])
 
-      let avgPrice = new BN(0)
-      if (wallet.publicKey) {
-        const [shareInfoPda] = PublicKey.findProgramAddressSync(
-          [
-            SEED_SHARE_INFO,
-            new PublicKey(INVEST_ADDRESS.vault).toBytes(),
-            wallet.publicKey.toBytes(),
-          ],
-          program.programId,
-        )
-        const resInfo = await program.account.shareInfo.fetch(shareInfoPda)
-        if (resInfo) avgPrice = resInfo.avgPrice
-      }
+      const avgPrice = await Web3Invest.getAvgPrice(wallet, program)
 
       return {
         nav: vaultAccount.nav,
