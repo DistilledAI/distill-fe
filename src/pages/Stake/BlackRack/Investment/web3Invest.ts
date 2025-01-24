@@ -297,7 +297,7 @@ export class Web3Invest {
       })
       anchor.setProvider(provider)
       provider = anchor.getProvider()
-      if (!provider.connection || !wallet.publicKey) {
+      if (!provider.connection) {
         console.log("Warning: Wallet not connected")
         return
       }
@@ -306,15 +306,6 @@ export class Web3Invest {
         vaultInterface,
         provider,
       ) as Program<RacksVault>
-
-      const [shareInfoPda] = PublicKey.findProgramAddressSync(
-        [
-          SEED_SHARE_INFO,
-          new PublicKey(INVEST_ADDRESS.vault).toBytes(),
-          wallet.publicKey.toBytes(),
-        ],
-        program.programId,
-      )
 
       const [vault_config] = PublicKey.findProgramAddressSync(
         [SEED_VAULT_CONFIG, new PublicKey(INVEST_ADDRESS.manager).toBytes()],
@@ -333,16 +324,29 @@ export class Web3Invest {
         new PublicKey(INVEST_ADDRESS.shareToken),
       )
 
-      const [vaultAccount, vaultConfigData, shareInfo] = await Promise.all([
+      const [vaultAccount, vaultConfigData] = await Promise.all([
         program.account.vault.fetch(vault),
         program.account.vaultConfig.fetch(vault_config),
-        program.account.shareInfo.fetch(shareInfoPda),
       ])
+
+      let avgPrice = new BN(0)
+      if (wallet.publicKey) {
+        const [shareInfoPda] = PublicKey.findProgramAddressSync(
+          [
+            SEED_SHARE_INFO,
+            new PublicKey(INVEST_ADDRESS.vault).toBytes(),
+            wallet.publicKey.toBytes(),
+          ],
+          program.programId,
+        )
+        const resInfo = await program.account.shareInfo.fetch(shareInfoPda)
+        if (resInfo) avgPrice = resInfo.avgPrice
+      }
 
       return {
         nav: vaultAccount.nav,
         aum: vaultAccount.aum,
-        avgPrice: shareInfo.avgPrice,
+        avgPrice,
         totalShares: mintInfo.supply,
         highestNav: vaultAccount.highestNav,
         managementFee: vaultConfigData.managementFee,
@@ -354,6 +358,7 @@ export class Web3Invest {
       return {
         nav: new BN(0),
         aum: new BN(0),
+        avgPrice: new BN(0),
         totalShares: new BN(0),
         highestNav: new BN(0),
         managementFee: new BN(0),
