@@ -43,6 +43,7 @@ const BoxInvest: React.FC<{
               totalShare={totalShare}
               loadingTotalShare={loadingTotalShare}
               nav={nav}
+              info={info}
             />
           </Tab>
         </Tabs>

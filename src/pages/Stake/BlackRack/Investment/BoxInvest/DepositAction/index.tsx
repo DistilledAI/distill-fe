@@ -194,7 +194,7 @@ const DepositAction: React.FC<{
         </div>
       </div>
       <p className="mt-1 text-right text-13 text-mercury-900">
-        Fee: {fee === 0 ? "0" : fee.toFixed(6)} Shares
+        Fee: {fee === 0 ? "0" : +(fee * nav).toFixed(6)} USDC
       </p>
       {isConnectWallet ? (
         <Button

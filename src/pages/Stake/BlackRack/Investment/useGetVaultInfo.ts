@@ -3,7 +3,6 @@ import { useEffect, useState } from "react"
 import { toBN } from "@utils/format"
 import { Web3Invest } from "./web3Invest"
 import { SPL_DECIMAL } from "@pages/Stake/config"
-import { NAV_SCALE } from "./constants"
 
 const web3Invest = new Web3Invest()
 
@@ -45,7 +44,7 @@ const useGetVaultInfo = () => {
       }
       if (dt) {
         setInfo({
-          nav: dt.nav.toNumber() / NAV_SCALE,
+          nav: dt.nav.toNumber(),
           aum: dt.aum.toNumber(),
           totalShares: toBN(Number(dt.totalShares)).toNumber(),
           highestNav: toBN(Number(dt.highestNav)).toNumber(),
