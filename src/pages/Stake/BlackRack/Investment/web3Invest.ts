@@ -11,7 +11,13 @@ import { RacksVault } from "./idl/invest_vault"
 import idl from "./idl/invest_vault.json"
 import { SOLANA_RPC, SOLANA_WS } from "program/utils/web3Utils.ts"
 import { handleTransaction } from "@pages/Stake/utils.ts"
-import { INVEST_ADDRESS, SEED_VAULT, SEED_VAULT_CONFIG } from "./constants"
+import {
+  INVEST_ADDRESS,
+  NAV_SCALE,
+  SEED_SHARE_INFO,
+  SEED_VAULT,
+  SEED_VAULT_CONFIG,
+} from "./constants"
 import {
   createAssociatedTokenAccountInstruction,
   getAssociatedTokenAddressSync,
@@ -301,6 +307,15 @@ export class Web3Invest {
         provider,
       ) as Program<RacksVault>
 
+      const [shareInfoPda] = PublicKey.findProgramAddressSync(
+        [
+          SEED_SHARE_INFO,
+          new PublicKey(INVEST_ADDRESS.vault).toBytes(),
+          wallet.publicKey.toBytes(),
+        ],
+        program.programId,
+      )
+
       const [vault_config] = PublicKey.findProgramAddressSync(
         [SEED_VAULT_CONFIG, new PublicKey(INVEST_ADDRESS.manager).toBytes()],
         program.programId,
@@ -318,14 +333,16 @@ export class Web3Invest {
         new PublicKey(INVEST_ADDRESS.shareToken),
       )
 
-      const [vaultAccount, vaultConfigData] = await Promise.all([
+      const [vaultAccount, vaultConfigData, shareInfo] = await Promise.all([
         program.account.vault.fetch(vault),
         program.account.vaultConfig.fetch(vault_config),
+        program.account.shareInfo.fetch(shareInfoPda),
       ])
 
       return {
         nav: vaultAccount.nav,
         aum: vaultAccount.aum,
+        avgPrice: shareInfo.avgPrice,
         totalShares: mintInfo.supply,
         highestNav: vaultAccount.highestNav,
         managementFee: vaultConfigData.managementFee,
@@ -429,36 +446,37 @@ export class Web3Invest {
     }
   }
 
-  static getBuyShareFee(
+  static getManagementFee(
     amount: number,
-    currentTimestamp: number,
+    currentTimeStamp: number,
     nextTimeTakeManagementFee: number,
     managementFee: number,
   ) {
-    const period = nextTimeTakeManagementFee - currentTimestamp / 1000
-    const MAXIUM_DAYS_IN_MONTH = 60 * 60 * 24 * 31
-    const THIRDTY_DAYS_IN_MONTH = 60 * 60 * 24 * 30
-    const YEAR = 60 * 60 * 24 * 365
-    console.log({ period, managementFee, amount })
-    if (period < 0 || period > MAXIUM_DAYS_IN_MONTH) {
-      return (THIRDTY_DAYS_IN_MONTH * amount * managementFee) / 100 / YEAR
+    if (
+      nextTimeTakeManagementFee === 0 ||
+      currentTimeStamp > nextTimeTakeManagementFee
+    ) {
+      return (amount * 30 * managementFee) / 365 / 100
     }
-
-    return (period * amount * managementFee) / 100
+    return (
+      (amount *
+        managementFee *
+        (nextTimeTakeManagementFee - currentTimeStamp)) /
+      (365 * 60 * 60 * 24) /
+      100
+    )
   }
 
   static getPerformanceFee(
-    amountShare: number,
-    nav: number,
-    highestNav: number,
+    shareAmount: number,
+    avgPrice: number,
+    navPrice: number,
     performanceFee: number,
   ) {
-    console.log({ nav, highestNav })
-    if (highestNav === 0 || nav < highestNav) {
-      return amountShare
+    if (avgPrice >= navPrice) {
+      return 0
     }
-    return (
-      (amountShare * (performanceFee / 100) * (highestNav - nav)) / highestNav
-    )
+    const diff_nav = navPrice - avgPrice
+    return (shareAmount * diff_nav * performanceFee) / 100 / NAV_SCALE
   }
 }

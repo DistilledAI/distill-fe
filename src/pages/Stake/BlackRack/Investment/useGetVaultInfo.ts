@@ -10,6 +10,7 @@ export interface InfoVault {
   nav: number
   totalShares: number
   aum: number
+  avgPrice: number
   highestNav: number
   managementFee: number
   performanceFee: number
@@ -23,6 +24,7 @@ const useGetVaultInfo = () => {
     nav: 0,
     totalShares: 0,
     aum: 0,
+    avgPrice: 0,
     highestNav: 0,
     managementFee: 0,
     performanceFee: 0,
@@ -47,6 +49,7 @@ const useGetVaultInfo = () => {
           nav: dt.nav.toNumber(),
           aum: dt.aum.toNumber(),
           totalShares: toBN(Number(dt.totalShares)).toNumber(),
+          avgPrice: toBN(Number(dt.avgPrice)).toNumber(),
           highestNav: toBN(Number(dt.highestNav)).toNumber(),
           managementFee: toBN(Number(dt.managementFee)).toNumber(),
           performanceFee: toBN(Number(dt.performanceFee)).toNumber(),

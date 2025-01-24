@@ -5,7 +5,7 @@ const InvestInformation = () => {
   return (
     <div className="pb-10">
       <p className="text-[36px] font-semibold max-md:text-[22px]">
-        AI Fund I Vault
+        AI Agent Fund I
       </p>
       <div className="mt-10 flex flex-wrap gap-8 max-md:mt-6 max-md:flex-col-reverse">
         <div className="w-[calc(60%-16px)] max-md:w-full">
