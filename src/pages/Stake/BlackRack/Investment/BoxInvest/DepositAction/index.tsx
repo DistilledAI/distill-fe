@@ -52,7 +52,7 @@ const DepositAction: React.FC<{
     debounce((value: string) => {
       const resFee = Web3Invest.getManagementFee(
         toBN(value).toNumber(),
-        Date.now(),
+        Date.now() / 1000,
         info.nextTimeTakeManagementFee,
         info.managementFee,
       )
