@@ -7,6 +7,7 @@ import useConnectPhantom from "@pages/Stake/useConnectPhantom"
 import { shortenNumber } from "@utils/index"
 import { toBN } from "@utils/format"
 import { DECIMAL_SPL } from "@pages/BetingPage/constants"
+import { NAV_SCALE } from "../Investment/constants"
 
 const FundIICard: React.FC<{
   link: string
@@ -15,7 +16,9 @@ const FundIICard: React.FC<{
   const { isConnectWallet } = useConnectPhantom()
   const { total, info } = useGetVaultInfo()
   const nav = info.nav
-  const usdShare = shortenNumber(toBN(toBN(nav * total).toFixed(3)).toNumber())
+  const usdShare = shortenNumber(
+    toBN(toBN((nav / NAV_SCALE) * total).toFixed(3)).toNumber(),
+  )
   const aum = toBN(info.aum / 10 ** DECIMAL_SPL).toFixed(2)
 
   return (
