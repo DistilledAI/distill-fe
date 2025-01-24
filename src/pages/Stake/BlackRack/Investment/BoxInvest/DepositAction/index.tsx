@@ -42,8 +42,8 @@ const DepositAction: React.FC<{
         setToReward(0)
         return
       }
-      if (nav !== 0)
-        setToReward(toBN((toBN(value).toNumber() - fee) / nav).toNumber())
+
+      if (nav !== 0) setToReward(toBN(value).minus(fee).div(nav).toNumber())
     }, 300),
     [nav, fee],
   )
@@ -56,6 +56,7 @@ const DepositAction: React.FC<{
         info.nextTimeTakeManagementFee,
         info.managementFee,
       )
+      console.log({ resFee })
       setFee(resFee)
     }, 300),
     [info],

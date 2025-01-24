@@ -1,11 +1,11 @@
 export const INVEST_ADDRESS = {
-  vault: "WPmfvoFKKzx6CEYvTpYaBiH39nXvPQp1fvz7e6SZ4WS",
-  manager: "vafeqL4dT3pejF7NE9HSevf1b7i1HwuCMG3CUGvEoSm",
-  usdc: "v6ZegfKumXFEKzLAWiHouPe7KZsZq8kv6dq4Sc1Aqvq",
-  shareToken: "vaAYYQDHqVHvj3JexZykm9vQbeQvhiQv9U1Wfe9UAnW",
-  vault_config: "FWyomXM84eVGRQ3VqHwEM1wdVKcV5gMbrf9GYRZhFY5E",
+  vault: "21vCxhTX4NSJYWKnmfzz3P9VSPTkyBwuzkuZ8LVetXBf",
+  manager: "GnMZJBVNAmk8nwXyeAmu6y3ogqJzsMfrZkBTHtdAvixo",
+  usdc: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+  shareToken: "moWFLVCW6HUo2dpSwgq7GGEhnzXhpk9yGmaZrPPhd57",
+  vault_config: "BKJbENgj5nvNtVL3UjcL8SFkzvFSokrkuuewrR2y7ynS",
   authority: "8SWacfZ2AGRejg4sC7fkCAaiszKHwhz41KsfXM3eunvm",
-  whitelistDepositPda: "exD9H9JCaoLQ25Ky2F2EpsZrJfV2aR186AziSZ7EDQ1",
+  whitelistDepositPda: "9MWT5MXNWhkNXBGm3cYG21i1Gixcic2PYkBrYBx2Ft8s",
 }
 
 export function toUtfBytes(str: string): Uint8Array {
