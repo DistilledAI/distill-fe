@@ -5,7 +5,7 @@ import InvestTable from "./InvestTable"
 import useGetUnbondingList from "./InvestTable/useGetUnbondingList"
 // import InvestTable from "./InvestTable"
 import InvestShareUser from "./ShareUser"
-import TotalShare from "./TotalShare"
+// import TotalShare from "./TotalShare"
 import useGetVaultInfo from "./useGetVaultInfo"
 import { toBN } from "@utils/format"
 import { DECIMAL_SPL } from "@pages/BetingPage/constants"
@@ -19,13 +19,13 @@ const InvestmentVault = () => {
   const { total: totalShare, loading, info, getVaultInfo } = useGetVaultInfo()
 
   const nav = info.nav / NAV_SCALE
-  const totalShares = toBN(info.totalShares / 10 ** DECIMAL_SPL).toFixed(2)
-  const percentStaker =
-    info.totalShares === 0
-      ? "0"
-      : toBN(
-          (totalShare / toBN(totalShares.toString()).toNumber()) * 100,
-        ).toFixed(2)
+  // const totalShares = toBN(info.totalShares / 10 ** DECIMAL_SPL).toFixed(2)
+  // const percentStaker =
+  //   info.totalShares === 0
+  //     ? "0"
+  //     : toBN(
+  //         (totalShare / toBN(totalShares.toString()).toNumber()) * 100,
+  //       ).toFixed(2)
   const aum = toBN(info.aum / 10 ** DECIMAL_SPL).toFixed(2)
 
   return (
@@ -73,7 +73,7 @@ const InvestmentVault = () => {
           ) : (
             ""
           )}
-          <TotalShare percentStaker={percentStaker} totalShares={totalShares} />
+          {/* <TotalShare percentStaker={percentStaker} totalShares={totalShares} /> */}
         </div>
         <div className="w-[calc(40%-16px)] max-md:w-full">
           <AumInfo aum={aum} />

@@ -115,6 +115,8 @@ const InvestTable: React.FC<{
       .div(10 ** SPL_DECIMAL)
       .toNumber()
 
+    console.log("XX", totalAmount, item.amount)
+
     const duration = moment(item.unstakedAtTime * 1000).format("lll")
     const isCanWithdraw = Date.now() >= item.unstakedAtTime * 1000
 

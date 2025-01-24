@@ -1,7 +1,7 @@
 import { useWallet } from "@solana/wallet-adapter-react"
 import { useEffect, useState } from "react"
 import { Web3Invest } from "../web3Invest"
-import { NAV_SCALE } from "../constants"
+// import { NAV_SCALE } from "../constants"
 
 const web3Invest = new Web3Invest()
 
@@ -27,9 +27,8 @@ const useGetUnbondingList = () => {
           .map((dt) => ({
             id: dt.account.id.toNumber(),
             amount:
-              (dt.account.shareAmount.toNumber() *
-                dt.account.snapshotNav.toNumber()) /
-              NAV_SCALE,
+              dt.account.shareAmount.toNumber() *
+              dt.account.snapshotNav.toNumber(),
             unstakedAtTime: dt.account.withdrawTime.toNumber(),
           }))
         setList(data)
