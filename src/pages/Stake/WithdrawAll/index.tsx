@@ -10,6 +10,8 @@ const WithdrawAll: React.FC<{
     switch (tokenAddress as StakeTokenAddress) {
       case StakeTokenAddress.LeeQuid:
         return "60"
+      case StakeTokenAddress.BlackRack:
+        return "60"
 
       default:
         return "30"
