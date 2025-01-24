@@ -1,5 +1,3 @@
-import { ArrowLeftFilledIcon } from "@components/Icons/Arrow"
-import { useNavigate, useSearchParams } from "react-router-dom"
 import {
   blackrackAvartar2,
   gnrtAvatar,
@@ -7,11 +5,13 @@ import {
   racksAvatar,
   usdcLogo,
 } from "@assets/images"
+import { ArrowLeftFilledIcon } from "@components/Icons/Arrow"
+import { PATH_NAMES } from "@constants/index"
 import { CoinGeckoId } from "@hooks/useCoingecko"
 import { lazy, useEffect } from "react"
-import { PATH_NAMES } from "@constants/index"
+import { useNavigate, useSearchParams } from "react-router-dom"
 const SimpleStaking = lazy(() => import("./SimpleStaking"))
-const BlackRackVault = lazy(() => import("./BlackRack"))
+// const BlackRackVault = lazy(() => import("./BlackRack"))
 
 export const SOLANA_ENV = import.meta.env.VITE_APP_SOLANA_ENV || "mainnet-beta"
 
@@ -71,7 +71,7 @@ const Stake = () => {
       navigate(`${PATH_NAMES.STAKING}?token=${StakeTokenAddress.BlackRack}`)
   }, [])
 
-  const isBlackRack = tokenAddress === StakeTokenAddress.BlackRack
+  // const isBlackRack = tokenAddress === StakeTokenAddress.BlackRack
 
   return (
     <div className="mx-auto max-w-[1232px] px-4 max-md:py-[60px]">
@@ -82,7 +82,8 @@ const Stake = () => {
         <ArrowLeftFilledIcon color="#545454" />
         <p className="font-medium">Back</p>
       </div>
-      {isBlackRack ? <BlackRackVault /> : <SimpleStaking />}
+      {/* {isBlackRack ? <BlackRackVault /> : <SimpleStaking />} */}
+      <SimpleStaking />
     </div>
   )
 }
