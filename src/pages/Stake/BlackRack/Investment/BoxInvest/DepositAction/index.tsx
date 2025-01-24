@@ -38,19 +38,25 @@ const DepositAction: React.FC<{
 
   const debouncedFetchQuantity = useCallback(
     debounce((value: string) => {
-      if (nav !== 0) setToReward(toBN(toBN(value).toNumber() / nav).toNumber())
+      if (value === "0") {
+        setToReward(0)
+        return
+      }
+
+      if (nav !== 0) setToReward(toBN(value).minus(fee).div(nav).toNumber())
     }, 300),
-    [nav],
+    [nav, fee],
   )
 
   const debouncedGetFee = useCallback(
     debounce((value: string) => {
-      const resFee = Web3Invest.getBuyShareFee(
+      const resFee = Web3Invest.getManagementFee(
         toBN(value).toNumber(),
-        Date.now(),
+        Date.now() / 1000,
         info.nextTimeTakeManagementFee,
         info.managementFee,
       )
+      console.log({ resFee })
       setFee(resFee)
     }, 300),
     [info],
@@ -188,13 +194,13 @@ const DepositAction: React.FC<{
         <div className="flex items-center gap-1">
           <img className="h-5 w-5 rounded-full" src={aiFund2Ava} />
           <p className="font-semibold text-brown-600">
-            {formatNumberWithComma(toReward - fee)} Shares{" "}
+            {formatNumberWithComma(toReward)} Shares{" "}
             <span className="font-medium text-mercury-700">(AIFII)</span>
           </p>
         </div>
       </div>
       <p className="mt-1 text-right text-13 text-mercury-900">
-        Fee: {fee === 0 ? "0" : +(fee * nav).toFixed(6)} USDC
+        Fee: {fee === 0 ? "0" : +fee.toFixed(6)} USDC
       </p>
       {isConnectWallet ? (
         <Button

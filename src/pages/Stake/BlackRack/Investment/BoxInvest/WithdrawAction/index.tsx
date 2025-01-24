@@ -29,10 +29,15 @@ const WithdrawAction: React.FC<{
   const [fee, setFee] = useState(0)
   const { connectWallet, isConnectWallet } = useConnectPhantom()
   const wallet = useWallet()
+
   console.log("performance fee: ", fee)
 
   const debouncedFetchQuantity = useCallback(
     debounce((value: string) => {
+      if (value === "0") {
+        setToUsdc(0)
+        return
+      }
       setToUsdc(toBN(nav * toBN(value).toNumber()).toNumber())
     }, 300),
     [nav],
@@ -42,11 +47,10 @@ const WithdrawAction: React.FC<{
     debounce((value: string) => {
       const resFee = Web3Invest.getPerformanceFee(
         toBN(value).toNumber(),
+        info.avgPrice,
         info.nav,
-        info.highestNav,
-        info.managementFee,
+        info.performanceFee,
       )
-      console.log({ resFee })
       setFee(resFee)
     }, 300),
     [info],
@@ -182,13 +186,13 @@ const WithdrawAction: React.FC<{
         <div className="flex items-center gap-1">
           <img className="h-5 w-5 rounded-full" src={usdcLogo} />
           <p className="font-semibold text-brown-600">
-            {formatNumberWithComma(toUsdc)} USDC
+            {toUsdc === 0 ? "0" : formatNumberWithComma(toUsdc - fee)} USDC
           </p>
         </div>
       </div>
-      {/* <p className="mt-1 text-right text-13 text-mercury-900">
+      <p className="mt-1 text-right text-13 text-mercury-900">
         Fee: {fee === 0 ? "0" : +fee.toFixed(6)} USDC
-      </p> */}
+      </p>
       {isConnectWallet ? (
         <Button
           onClick={handleUnStake}

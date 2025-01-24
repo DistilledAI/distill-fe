@@ -11,7 +11,7 @@ import { CoinGeckoId } from "@hooks/useCoingecko"
 import { lazy, useEffect } from "react"
 import { useNavigate, useSearchParams } from "react-router-dom"
 const SimpleStaking = lazy(() => import("./SimpleStaking"))
-// const BlackRackVault = lazy(() => import("./BlackRack"))
+const BlackRackVault = lazy(() => import("./BlackRack"))
 
 export const SOLANA_ENV = import.meta.env.VITE_APP_SOLANA_ENV || "mainnet-beta"
 
@@ -71,7 +71,7 @@ const Stake = () => {
       navigate(`${PATH_NAMES.STAKING}?token=${StakeTokenAddress.BlackRack}`)
   }, [])
 
-  // const isBlackRack = tokenAddress === StakeTokenAddress.BlackRack
+  const isBlackRack = tokenAddress === StakeTokenAddress.BlackRack
 
   return (
     <div className="mx-auto max-w-[1232px] px-4 max-md:py-[60px]">
@@ -82,8 +82,7 @@ const Stake = () => {
         <ArrowLeftFilledIcon color="#545454" />
         <p className="font-medium">Back</p>
       </div>
-      {/* {isBlackRack ? <BlackRackVault /> : <SimpleStaking />} */}
-      <SimpleStaking />
+      {isBlackRack ? <BlackRackVault /> : <SimpleStaking />}
     </div>
   )
 }

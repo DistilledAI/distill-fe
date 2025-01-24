@@ -1,10 +1,14 @@
 import { aiFund1Ava, rackPattern } from "@assets/images"
 import React from "react"
 import { useNavigate } from "react-router-dom"
+import useFetchHistory from "../InvestInformation/useFetchHistory"
+import { shortenNumber } from "@utils/index"
 
 const FundICard: React.FC<{
   link: string
 }> = ({ link }) => {
+  const { data } = useFetchHistory(1)
+  const aum = data[0]?.aum || 0
   const navigate = useNavigate()
 
   return (
@@ -23,7 +27,7 @@ const FundICard: React.FC<{
           <img className="h-[48px] w-[48px] rounded-full" src={aiFund1Ava} />
           <div className="text-white">
             <p className="pr-10 text-20 font-bold italic max-md:text-18">
-              AI Fund I Vault
+              AI Agent Fund I
             </p>
           </div>
         </div>
@@ -46,7 +50,7 @@ const FundICard: React.FC<{
           <div>
             <p className="text-14 font-medium text-mercury-700">AUM</p>
             <p className="text-20 font-bold text-mercury-950 max-md:text-16">
-              $ --
+              ${aum === 0 ? "--" : shortenNumber(aum)}
             </p>
           </div>
         </div>
