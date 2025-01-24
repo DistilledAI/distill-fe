@@ -5,7 +5,7 @@
  * IDL can be found at `target/idl/racks_vault.json`.
  */
 export type RacksVault = {
-  address: "FRu5K51jQB6t4abD4XWyw5xbzi6QqNGdev5yj9RnAY5A"
+  address: "DnYwGy7zrppitfEP6ioEK5sv2Q287EFGCQzC78WsAqD5"
   metadata: {
     name: "racksVault"
     version: "0.1.0"
@@ -501,29 +501,13 @@ export type RacksVault = {
           }
         },
         {
-          name: "sellShareInfoPda"
+          name: "shareInfoPda"
           writable: true
           pda: {
             seeds: [
               {
                 kind: "const"
-                value: [
-                  115,
-                  101,
-                  108,
-                  108,
-                  95,
-                  115,
-                  104,
-                  97,
-                  114,
-                  101,
-                  95,
-                  105,
-                  110,
-                  102,
-                  111,
-                ]
+                value: [115, 104, 97, 114, 101, 95, 105, 110, 102, 111]
               },
               {
                 kind: "account"
@@ -832,28 +816,12 @@ export type RacksVault = {
           }
         },
         {
-          name: "sellShareInfoPda"
+          name: "shareInfoPda"
           pda: {
             seeds: [
               {
                 kind: "const"
-                value: [
-                  115,
-                  101,
-                  108,
-                  108,
-                  95,
-                  115,
-                  104,
-                  97,
-                  114,
-                  101,
-                  95,
-                  105,
-                  110,
-                  102,
-                  111,
-                ]
+                value: [115, 104, 97, 114, 101, 95, 105, 110, 102, 111]
               },
               {
                 kind: "account"
@@ -900,7 +868,7 @@ export type RacksVault = {
               },
               {
                 kind: "account"
-                path: "sellShareInfoPda"
+                path: "shareInfoPda"
               },
               {
                 kind: "arg"
@@ -1911,29 +1879,103 @@ export type RacksVault = {
           }
         },
         {
-          name: "sellShareInfoPda"
+          name: "managerTokenAccount"
+          writable: true
+          pda: {
+            seeds: [
+              {
+                kind: "account"
+                path: "manager"
+              },
+              {
+                kind: "const"
+                value: [
+                  6,
+                  221,
+                  246,
+                  225,
+                  215,
+                  101,
+                  161,
+                  147,
+                  217,
+                  203,
+                  225,
+                  70,
+                  206,
+                  235,
+                  121,
+                  172,
+                  28,
+                  180,
+                  133,
+                  237,
+                  95,
+                  91,
+                  55,
+                  145,
+                  58,
+                  140,
+                  245,
+                  133,
+                  126,
+                  255,
+                  0,
+                  169,
+                ]
+              },
+              {
+                kind: "account"
+                path: "depositToken"
+              },
+            ]
+            program: {
+              kind: "const"
+              value: [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89,
+              ]
+            }
+          }
+        },
+        {
+          name: "shareInfoPda"
           writable: true
           pda: {
             seeds: [
               {
                 kind: "const"
-                value: [
-                  115,
-                  101,
-                  108,
-                  108,
-                  95,
-                  115,
-                  104,
-                  97,
-                  114,
-                  101,
-                  95,
-                  105,
-                  110,
-                  102,
-                  111,
-                ]
+                value: [115, 104, 97, 114, 101, 95, 105, 110, 102, 111]
               },
               {
                 kind: "account"
@@ -1980,12 +2022,12 @@ export type RacksVault = {
               },
               {
                 kind: "account"
-                path: "sellShareInfoPda"
+                path: "shareInfoPda"
               },
               {
                 kind: "account"
-                path: "sell_share_info_pda.current_id"
-                account: "sellShareInfo"
+                path: "share_info_pda.sell_info_detail_id"
+                account: "shareInfo"
               },
             ]
           }
@@ -2253,12 +2295,12 @@ export type RacksVault = {
       discriminator: [36, 108, 254, 18, 167, 144, 27, 36]
     },
     {
-      name: "sellShareInfo"
-      discriminator: [148, 24, 117, 188, 89, 55, 151, 202]
-    },
-    {
       name: "sellShareInfoDetail"
       discriminator: [219, 238, 75, 22, 156, 7, 38, 116]
+    },
+    {
+      name: "shareInfo"
+      discriminator: [54, 180, 228, 162, 36, 122, 13, 57]
     },
     {
       name: "vault"
@@ -2459,25 +2501,6 @@ export type RacksVault = {
       }
     },
     {
-      name: "sellShareInfo"
-      type: {
-        kind: "struct"
-        fields: [
-          {
-            name: "bump"
-            docs: ["Bump seed used to generate the program address / authority"]
-            type: {
-              array: ["u8", 1]
-            }
-          },
-          {
-            name: "currentId"
-            type: "u64"
-          },
-        ]
-      }
-    },
-    {
       name: "sellShareInfoDetail"
       type: {
         kind: "struct"
@@ -2505,6 +2528,33 @@ export type RacksVault = {
           {
             name: "claimed"
             type: "bool"
+          },
+        ]
+      }
+    },
+    {
+      name: "shareInfo"
+      type: {
+        kind: "struct"
+        fields: [
+          {
+            name: "bump"
+            docs: ["Bump seed used to generate the program address / authority"]
+            type: {
+              array: ["u8", 1]
+            }
+          },
+          {
+            name: "user"
+            type: "pubkey"
+          },
+          {
+            name: "sellInfoDetailId"
+            type: "u64"
+          },
+          {
+            name: "avgPrice"
+            type: "u64"
           },
         ]
       }

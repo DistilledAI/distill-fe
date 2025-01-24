@@ -43,7 +43,7 @@ const FundIICard: React.FC<{
               }}
               className="pr-10 text-20 font-bold italic max-md:text-18"
             >
-              AI Fund II Vault
+              AI Agent Fund II
             </p>
             <p className="max-md:text-14">Deposit USDC</p>
           </div>
