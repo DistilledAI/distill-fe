@@ -29,7 +29,7 @@ const OrchestrationCard = ({ item, index }: Props) => {
   return (
     <div
       className={twMerge(
-        "flex w-full cursor-pointer flex-col gap-2 rounded-[22px] rounded-bl-none bg-mercury-800 p-3",
+        "flex h-[126px] w-full cursor-pointer flex-col gap-2 rounded-[22px] rounded-bl-none bg-mercury-800 p-3",
         item.conversationId !== Number(conversationId) &&
           !!conversationId &&
           "opacity-40",
@@ -54,7 +54,7 @@ const OrchestrationCard = ({ item, index }: Props) => {
         />
         <BroadcastIcon />
       </div>
-      <h5 className="min-h-[36px] text-13 font-bold leading-[140%] tracking-[-0.325px] text-mercury-100">
+      <h5 className="line-clamp-3 min-h-[36px] text-13 font-bold leading-[140%] tracking-[-0.325px] text-mercury-100">
         {item.topic}
       </h5>
     </div>

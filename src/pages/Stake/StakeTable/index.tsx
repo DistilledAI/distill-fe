@@ -179,87 +179,6 @@ const StakeTable: React.FC<{
     }
   }
 
-  // const thClassName = (key: string) => {
-  //   switch (key) {
-  //     case ColumnKey.MindShare:
-  //       return "flex h-full items-center"
-  //     default:
-  //       return ""
-  //   }
-  // }
-
-  // const renderItem = ({
-  //   ref,
-  //   key,
-  //   value,
-  //   onNext,
-  //   onPrevious,
-  //   setPage,
-  //   className,
-  // }: PaginationItemRenderProps) => {
-  //   if (value === PaginationItemType.NEXT) {
-  //     return (
-  //       <button
-  //         key={key}
-  //         className={cn(className, "h-8 w-8 min-w-8 -rotate-90 bg-mercury-70")}
-  //         onClick={onNext}
-  //       >
-  //         <ChevronDownIcon />
-  //       </button>
-  //     )
-  //   }
-
-  //   if (value === PaginationItemType.PREV) {
-  //     return (
-  //       <button
-  //         key={key}
-  //         className={cn(className, "h-8 w-8 min-w-8 rotate-90 bg-mercury-70")}
-  //         onClick={onPrevious}
-  //       >
-  //         <ChevronDownIcon />
-  //       </button>
-  //     )
-  //   }
-
-  //   if (value === PaginationItemType.DOTS) {
-  //     return (
-  //       <button key={key} className={className}>
-  //         ...
-  //       </button>
-  //     )
-  //   }
-
-  //   return (
-  //     <button
-  //       key={key}
-  //       ref={ref}
-  //       className={className}
-  //       onClick={() => setPage(value)}
-  //     >
-  //       {value}
-  //     </button>
-  //   )
-  // }
-
-  // const renderPagination = () => {
-  //   return trendingAgentList ? (
-  //     <Pagination
-  //       showControls
-  //       initialPage={1}
-  //       radius="full"
-  //       renderItem={renderItem}
-  //       total={totalPages}
-  //       variant="light"
-  //       classNames={{
-  //         base: "flex justify-center",
-  //         cursor: "bg-lgd-code-hot-ramp font-bold",
-  //       }}
-  //       onChange={onPageChange}
-  //       page={page}
-  //     />
-  //   ) : null
-  // }
-
   return (
     <Table
       isHeaderSticky
@@ -278,9 +197,6 @@ const StakeTable: React.FC<{
         emptyWrapper: "h-10",
         sortIcon: "ml-1 text-[#363636]",
       }}
-      // sortDescriptor={sortDescriptor}
-      // onSortChange={setSortDescriptor}
-      // bottomContent={renderPagination()}
       bottomContentPlacement="outside"
     >
       <TableHeader columns={columns}>

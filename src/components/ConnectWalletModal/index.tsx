@@ -33,7 +33,7 @@ const ConnectWalletModal = () => {
 
   const CONNECTORS = [
     {
-      id: "owallet",
+      id: "owallet-oraichain",
       name: "OWallet",
       icon: <OwalletIcon width={32} height={38} />,
       loading: loadingConnectOwalletOrai,
@@ -46,7 +46,7 @@ const ConnectWalletModal = () => {
       ),
     },
     {
-      id: "owallet",
+      id: "owallet-evm",
       name: "OWallet",
       icon: <OwalletIcon width={32} height={38} />,
       loading: loadingConnectOwalletEVM,

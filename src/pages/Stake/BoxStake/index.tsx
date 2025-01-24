@@ -17,10 +17,10 @@ const BoxStake: React.FC<{
             tab: "font-medium text-mercury-900",
           }}
         >
-          <Tab key="stake" title="Stake">
+          <Tab key="stake" title="Deposit">
             <StakeAction fetchTotalStaked={fetchTotal} />
           </Tab>
-          <Tab key="unstake" title="Unstake">
+          <Tab key="unstake" title="Withdraw">
             <UnStakeAction total={total} fetchTotal={fetchTotal} />
           </Tab>
         </Tabs>

@@ -14,11 +14,16 @@ import UploadFAQ from "../UploadFAQ"
 import UploadSocialLink from "../UploadSocialLink"
 import useActiveAgent from "../useActiveAgent"
 import AgentSetupStatus from "./AgentSetupStatus"
+import { AGENT_TYPE_KEY } from "./AgentType"
 
 const ConnectData = () => {
   const navigate = useNavigate()
   const { botId } = useParams()
-  const { isAgentActive, agentDataList, isAgentDataFetched } = useActiveAgent()
+  const { isAgentActive, agentDataList, isAgentDataFetched, currentAgent } =
+    useActiveAgent()
+  //@ts-ignore
+  const typeAgentData = currentAgent?.typeAgent
+  console.log("🚀 ~ ConnectData ~ isAgentActive:", isAgentActive)
 
   const onMoreCustomRequest = async (data: any) => {
     try {
@@ -66,20 +71,24 @@ const ConnectData = () => {
       <div className="mx-auto h-auto w-full max-w-[800px] overflow-y-auto px-4 md:h-full md:px-0">
         <AgentSetupStatus isAgentActive={isAgentActive} />
         <div className="mb-4 space-y-2 md:mb-6">
-          <AlertBox
-            isVisible={!isAgentActive}
-            messages={[
-              "Please join the whitelist to activate. You will receive an email from contact@distilled.ai once your Personal Agent has been approved.",
-            ]}
-            links={[
-              {
-                to: "https://forms.gle/qGWWAnt3nWWAkxeE9",
-                label: "Enter waitlist",
-                external: true,
-              },
-              { to: PATH_NAMES.MARKETPLACE, label: "Chat with other agents" },
-            ]}
-          />
+          {typeAgentData === AGENT_TYPE_KEY.DEFAULT ? (
+            <AlertBox
+              isVisible={!isAgentActive}
+              messages={[
+                "Please join the whitelist to activate. You will receive an email from contact@distilled.ai once your Personal Agent has been approved.",
+              ]}
+              links={[
+                {
+                  to: "https://forms.gle/qGWWAnt3nWWAkxeE9",
+                  label: "Enter waitlist",
+                  external: true,
+                },
+                { to: PATH_NAMES.MARKETPLACE, label: "Chat with other agents" },
+              ]}
+            />
+          ) : (
+            <div />
+          )}
 
           <AlertBox
             isVisible={!agentDataList.length && isAgentDataFetched}

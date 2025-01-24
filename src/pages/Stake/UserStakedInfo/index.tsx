@@ -63,7 +63,7 @@ const UserStakedInfo = ({ total }: { total: number }) => {
           </p>
         ) : (
           <p className="text-24 font-semibold text-brown-600 max-md:text-20">
-            --
+            $ --
           </p>
         )}
         {isGNRT ? (

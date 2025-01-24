@@ -64,7 +64,7 @@ const ChatClans = () => {
       >
         <span
           className={twMerge(
-            "text-14 text-[#11181c]",
+            "text-[14px] text-[#11181c]",
             sidebarCollapsed && "hidden",
           )}
         >

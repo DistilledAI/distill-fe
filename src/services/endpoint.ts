@@ -16,6 +16,8 @@ const endpoint = {
   GET_REFERRAL_CODE: withBaseURL("/user/referral/total-referral"),
   POST_REFERRAL_CODE: withBaseURL("/user/referral/add-referral"),
   KYC: withBaseURL("/user/kyc"),
+  CALL_AGENT: withBaseURL("/user/owner/call-agent"),
+  GET_USER_TOP_CHAT: withBaseURL("/info/user/top-chat"),
 
   //bot
   CREATE_BOT: withBaseURL("/bot/create-bot"),
@@ -37,6 +39,7 @@ const endpoint = {
     "/point/xDstl/user/claim-task-success",
   ),
   REPOST_X: withBaseURL("/point/xDstl/retweet-x"),
+  GET_PAYMENT_HISTORY: withBaseURL("/payment/history"),
 
   //chat
   GET_MY_CHAT_GROUP_LIST: withBaseURL("/chat/group/list"),

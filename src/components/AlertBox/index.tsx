@@ -13,6 +13,8 @@ interface AlertBoxProps {
     onClick?: (event: MouseEvent<any>) => void
   }[]
   className?: string
+  icon?: React.ReactNode
+  extendButton?: React.ReactNode
 }
 
 const AlertBox = ({
@@ -20,6 +22,8 @@ const AlertBox = ({
   messages,
   links,
   className = "",
+  icon,
+  extendButton,
 }: AlertBoxProps) => {
   if (!isVisible) return null
 
@@ -31,9 +35,7 @@ const AlertBox = ({
       )}
     >
       <div className="flex items-center gap-2">
-        <div>
-          <InfoCircleIcon color="#83664B" size={16} />
-        </div>
+        <div>{icon || <InfoCircleIcon color="#83664B" size={16} />}</div>
         <div>
           {messages.map((message, index) => (
             <div key={index} className="text-16 font-medium text-brown-600">
@@ -42,21 +44,23 @@ const AlertBox = ({
           ))}
         </div>
       </div>
-      {links && (
-        <div className="flex gap-4 max-md:ml-[22px]">
-          {links.map(({ to, label, external, onClick }) => (
-            <Link
-              key={label}
-              to={to}
-              target={external ? "_blank" : "_self"}
-              onClick={onClick}
-              className="whitespace-nowrap text-16 font-bold text-brown-600 hover:underline"
-            >
-              {label}
-            </Link>
-          ))}
-        </div>
-      )}
+
+      {extendButton ||
+        (links && (
+          <div className="flex gap-4 max-md:ml-[22px]">
+            {links.map(({ to, label, external, onClick }) => (
+              <Link
+                key={label}
+                to={to}
+                target={external ? "_blank" : "_self"}
+                onClick={onClick}
+                className="whitespace-nowrap text-16 font-bold text-brown-600 hover:underline"
+              >
+                {label}
+              </Link>
+            ))}
+          </div>
+        ))}
     </div>
   )
 }

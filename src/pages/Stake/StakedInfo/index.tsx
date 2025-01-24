@@ -12,7 +12,7 @@ const StakedInfo: React.FC<{
   const tokenInfo = getInfoTokenByAddress(tokenAddress as StakeTokenAddress)
 
   return (
-    <div className="mt-6">
+    <div className="mb-6">
       <div className="flex items-center justify-between rounded-[22px] border-1 border-mercury-100 bg-mercury-70 px-8 pb-6 pt-8">
         <div>
           <p className="text-14 font-medium text-mercury-700">
