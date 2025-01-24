@@ -12,6 +12,7 @@ import { useWallet } from "@solana/wallet-adapter-react"
 import { BN } from "@coral-xyz/anchor"
 import { formatNumberWithComma } from "@utils/index"
 import { debounce } from "lodash"
+import { InfoVault } from "../../useGetVaultInfo"
 
 const web3Invest = new Web3Invest()
 
@@ -19,13 +20,16 @@ const WithdrawAction: React.FC<{
   totalShare: number
   loadingTotalShare: boolean
   nav: number
+  info: InfoVault
   callback: () => void
-}> = ({ totalShare, loadingTotalShare, nav, callback }) => {
+}> = ({ totalShare, loadingTotalShare, nav, info, callback }) => {
   const [amountVal, setAmountVal] = useState<string>("")
   const [loadingSubmit, setLoadingSubmit] = useState(false)
   const [toUsdc, setToUsdc] = useState(0)
+  const [fee, setFee] = useState(0)
   const { connectWallet, isConnectWallet } = useConnectPhantom()
   const wallet = useWallet()
+  console.log("performance fee: ", fee)
 
   const debouncedFetchQuantity = useCallback(
     debounce((value: string) => {
@@ -34,13 +38,29 @@ const WithdrawAction: React.FC<{
     [nav],
   )
 
+  const debouncedGetFee = useCallback(
+    debounce((value: string) => {
+      const resFee = Web3Invest.getPerformanceFee(
+        toBN(value).toNumber(),
+        info.nav,
+        info.highestNav,
+        info.managementFee,
+      )
+      console.log({ resFee })
+      setFee(resFee)
+    }, 300),
+    [info],
+  )
+
   const handleInputChange = (value: number) => {
     if (value || value === 0) {
       setAmountVal(value.toString())
       debouncedFetchQuantity(value.toString())
+      debouncedGetFee(value.toString())
     } else {
       setAmountVal("")
       debouncedFetchQuantity("0")
+      debouncedGetFee("0")
     }
   }
 
@@ -166,6 +186,9 @@ const WithdrawAction: React.FC<{
           </p>
         </div>
       </div>
+      {/* <p className="mt-1 text-right text-13 text-mercury-900">
+        Fee: {fee === 0 ? "0" : +fee.toFixed(6)} USDC
+      </p> */}
       {isConnectWallet ? (
         <Button
           onClick={handleUnStake}

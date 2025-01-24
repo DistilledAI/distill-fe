@@ -439,7 +439,7 @@ export class Web3Invest {
     const MAXIUM_DAYS_IN_MONTH = 60 * 60 * 24 * 31
     const THIRDTY_DAYS_IN_MONTH = 60 * 60 * 24 * 30
     const YEAR = 60 * 60 * 24 * 365
-
+    console.log({ period, managementFee, amount })
     if (period < 0 || period > MAXIUM_DAYS_IN_MONTH) {
       return (THIRDTY_DAYS_IN_MONTH * amount * managementFee) / 100 / YEAR
     }
@@ -453,6 +453,7 @@ export class Web3Invest {
     highestNav: number,
     performanceFee: number,
   ) {
+    console.log({ nav, highestNav })
     if (highestNav === 0 || nav < highestNav) {
       return amountShare
     }

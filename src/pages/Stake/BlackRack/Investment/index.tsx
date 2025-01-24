@@ -10,6 +10,7 @@ import useGetVaultInfo from "./useGetVaultInfo"
 import { toBN } from "@utils/format"
 import { DECIMAL_SPL } from "@pages/BetingPage/constants"
 import { useState } from "react"
+import { NAV_SCALE } from "./constants"
 
 const InvestmentVault = () => {
   const { list, getListUnbonding } = useGetUnbondingList()
@@ -17,7 +18,7 @@ const InvestmentVault = () => {
   const [isFetchBalance, setIsFetchBalance] = useState(false)
   const { total: totalShare, loading, info, getVaultInfo } = useGetVaultInfo()
 
-  const nav = info.nav
+  const nav = info.nav / NAV_SCALE
   const totalShares = toBN(info.totalShares / 10 ** DECIMAL_SPL).toFixed(2)
   const percentStaker =
     info.totalShares === 0
