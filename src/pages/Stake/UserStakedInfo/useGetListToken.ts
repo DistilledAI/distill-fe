@@ -39,7 +39,9 @@ const useGetListTokenWithInfo = (rewardList: RewardByToken[]) => {
   }
 
   useEffect(() => {
-    if (rewardList.length === 0) return
+    if (rewardList.length === 0) {
+      return setTokens([])
+    }
     getListToken()
   }, [rewardList])
 

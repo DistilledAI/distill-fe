@@ -5,6 +5,8 @@ import axios from "axios"
 import { SOLANA_RPC, SOLANA_WS } from "program/utils/web3Utils"
 import { Metaplex } from "@metaplex-foundation/js"
 import { fetchRetry } from "@oraichain/oraidex-common"
+import { StakeTokenAddress } from ".."
+import { STAKING_VAULT_ADDRESS } from "./constants"
 
 const connection = new Connection(SOLANA_RPC, {
   wsEndpoint: SOLANA_WS,
@@ -84,5 +86,17 @@ export async function getProofForTokenClaim({
   } catch (error) {
     console.log("get proof for token claim error", error)
     return null
+  }
+}
+
+export const getVaultAddress = (tokenAddress: StakeTokenAddress) => {
+  switch (tokenAddress) {
+    case StakeTokenAddress.BlackRack:
+      return STAKING_VAULT_ADDRESS.RACKS
+    case StakeTokenAddress.Degenerator:
+      return STAKING_VAULT_ADDRESS.GNRT
+
+    default:
+      return null
   }
 }

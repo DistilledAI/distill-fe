@@ -1,18 +1,21 @@
 import { PublicKey } from "@solana/web3.js"
 import { useState } from "react"
-import { getProofForTokenClaim } from "./helpers"
+import { getProofForTokenClaim, getVaultAddress } from "./helpers"
 import { useWallet } from "@solana/wallet-adapter-react"
 import { toast } from "react-toastify"
 import { Web3Airdrop } from "./web3Airdrop"
 import { BN } from "@coral-xyz/anchor"
-import { GNRT_STAKING_VAULT } from "./constants"
+import { useSearchParams } from "react-router-dom"
+import { StakeTokenAddress } from ".."
 
 const web3Airdrop = new Web3Airdrop()
 
 const useClaim = () => {
+  const [searchParams] = useSearchParams()
+  const tokenAddress = searchParams.get("token")
   const [isLoading, setIsLoading] = useState(false)
   const wallet = useWallet()
-  const stakingVault = GNRT_STAKING_VAULT
+  const stakingVault = getVaultAddress(tokenAddress as StakeTokenAddress)
 
   const handleClaim = async ({
     rewardToken,
@@ -24,7 +27,7 @@ const useClaim = () => {
     callbackDone?: () => void
   }) => {
     try {
-      if (!wallet.publicKey) return
+      if (!wallet.publicKey || !stakingVault) return
       setIsLoading(true)
 
       const proofRes = await getProofForTokenClaim({
