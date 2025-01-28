@@ -16,6 +16,7 @@ import React from "react"
 import ItemWithdraw from "./ItemWithdraw"
 import { SPL_DECIMAL } from "@pages/Stake/config"
 import { usdcLogo } from "@assets/images"
+import { NAV_SCALE } from "../constants"
 
 enum ColumnKey {
   Amount = "amount",
@@ -113,9 +114,8 @@ const InvestTable: React.FC<{
   const renderCell = (item: Record<string, any>, columnKey: string) => {
     const totalAmount = toBN(item.amount)
       .div(10 ** SPL_DECIMAL)
+      .div(NAV_SCALE)
       .toNumber()
-
-    console.log("XX", totalAmount, item.amount)
 
     const duration = moment(item.unstakedAtTime * 1000).format("lll")
     const isCanWithdraw = Date.now() >= item.unstakedAtTime * 1000
