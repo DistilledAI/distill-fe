@@ -81,7 +81,6 @@ const useGetRewardStrongVault = (
           amountUsd: toUsd,
         }
       })
-      console.log({ next, rewards })
       if (next === null) setRewardList(rewards)
       else setRewardList((prevData) => [...prevData, ...rewards])
     } catch (error) {
