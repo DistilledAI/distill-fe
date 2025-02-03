@@ -11,7 +11,7 @@ import { QueryDataKeys } from "types/queryDataKeys"
 
 const ClanAgents = () => {
   const navigate = useNavigate()
-  const { data } = useFetchClan()
+  const { data } = useFetchClan({ limit: 100 })
   const queryClient = useQueryClient()
 
   const handleChatWithClan = async (clan: IGroupDetail) => {

@@ -25,10 +25,10 @@ const ChatClans = () => {
   const { data: isRefresh } = useQuery({
     queryKey: [QueryDataKeys.IS_REFRESH_CLANS],
   })
-  const { data, loading, getList } = useFetchClan(
-    false,
-    isLogin ? user.id : undefined,
-  )
+  const { data, loading, getList } = useFetchClan({
+    isFetchNow: false,
+    userId: isLogin ? user.id : undefined,
+  })
 
   const dataSorted = useMemo(() => {
     const dt = data.sort((a, b) => {
@@ -46,7 +46,9 @@ const ChatClans = () => {
   }, [data])
 
   useEffect(() => {
-    getList(false)
+    getList({
+      hasLoading: false,
+    })
   }, [user.id, isRefresh])
 
   const handleSlideChange = (s: any) => {
