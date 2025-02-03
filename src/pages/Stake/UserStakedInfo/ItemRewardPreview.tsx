@@ -4,12 +4,13 @@ import { twMerge } from "tailwind-merge"
 import { getTokenInfoFromContract } from "./helpers"
 import { PublicKey } from "@solana/web3.js"
 import { fetchJSONDataFromUrl } from "@utils/index"
+import { IMAGE_TOKENS } from "./constants"
 
 const ItemRewardPreview: React.FC<{
   item: TokenInfo
   index: number
 }> = ({ item, index }) => {
-  const [url, setUrl] = useState(null)
+  const [url, setUrl] = useState<string | null>(null)
 
   const handleGetUrl = async (link: string) => {
     const resUrl = await fetchJSONDataFromUrl(link)
@@ -19,6 +20,12 @@ const ItemRewardPreview: React.FC<{
   const getInfoFromContract = async () => {
     const res = await getTokenInfoFromContract(new PublicKey(item.rewardToken))
     if (res?.uri) handleGetUrl(res.uri)
+    else {
+      const img = IMAGE_TOKENS.find(
+        (token) => token.address === item.rewardToken,
+      )?.image
+      if (img) setUrl(img)
+    }
   }
 
   useEffect(() => {

@@ -9,6 +9,7 @@ import { getTokenInfoFromContract } from "./helpers"
 import { PublicKey } from "@solana/web3.js"
 import { fetchJSONDataFromUrl, formatNumberWithComma } from "@utils/index"
 import useClaim from "./useClaim"
+import { IMAGE_TOKENS } from "./constants"
 
 const ItemReward: React.FC<{
   className?: string
@@ -36,6 +37,12 @@ const ItemReward: React.FC<{
       )
       setTicket(res?.symbol || "-")
       if (res?.uri) handleGetUrl(res.uri)
+      else {
+        const img = IMAGE_TOKENS.find(
+          (token) => token.address === item.rewardToken,
+        )?.image
+        if (img) setUrl(img)
+      }
     } catch (error) {
       console.error(error)
     }
