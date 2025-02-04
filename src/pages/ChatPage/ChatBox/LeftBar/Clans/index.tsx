@@ -47,7 +47,7 @@ const ChatClans = () => {
 
   useEffect(() => {
     getList({
-      hasLoading: false,
+      hasLoading: true,
     })
   }, [user.id, isRefresh])
 

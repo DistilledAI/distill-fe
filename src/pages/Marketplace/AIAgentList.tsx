@@ -12,6 +12,7 @@ import { ConfigBotType } from "@types"
 import { useNavigate } from "react-router-dom"
 import { searchUsers } from "services/chat"
 import { QueryDataKeys } from "types/queryDataKeys"
+import AgentSkeleton from "./AgentSkeleton"
 
 const AIAgentList = () => {
   const navigate = useNavigate()
@@ -43,7 +44,11 @@ const AIAgentList = () => {
     return res?.data?.items as IUser[]
   }
 
-  const { data: agents = [], error } = useQuery({
+  const {
+    data: agents = [],
+    error,
+    isFetching,
+  } = useQuery({
     queryKey: [QueryDataKeys.PRIVATE_AGENTS_MKL],
     queryFn: fetchPrivateAgents,
     staleTime: 5 * 60 * 1000,
@@ -53,6 +58,18 @@ const AIAgentList = () => {
   if (error) {
     console.log({ error })
   }
+
+  if (isFetching)
+    return (
+      <>
+        <AgentSkeleton />
+        <AgentSkeleton />
+        <AgentSkeleton />
+        <AgentSkeleton />
+        <AgentSkeleton />
+        <AgentSkeleton />
+      </>
+    )
 
   return agents.map((agent, index) => (
     <div

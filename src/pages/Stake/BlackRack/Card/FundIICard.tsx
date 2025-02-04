@@ -14,7 +14,7 @@ const FundIICard: React.FC<{
 }> = ({ link }) => {
   const navigate = useNavigate()
   const { isConnectWallet } = useConnectPhantom()
-  const { total, info } = useGetVaultInfo()
+  const { total, info, loading } = useGetVaultInfo()
   const nav = info.nav
   const usdShare = shortenNumber(
     toBN(toBN((nav / NAV_SCALE) * total).toFixed(3)).toNumber(),
@@ -77,7 +77,7 @@ const FundIICard: React.FC<{
             </div>
             <p className="text-14 font-medium text-mercury-700">AUM</p>
             <p className="text-20 font-bold uppercase text-mercury-950 max-md:text-16">
-              ${shortenNumber(Number(aum))}
+              ${loading ? "--" : shortenNumber(Number(aum))}
             </p>
           </div>
           <div className="flex flex-col justify-end">
@@ -86,7 +86,7 @@ const FundIICard: React.FC<{
             </div>
             <p className="text-14 font-medium text-mercury-700">Your Shares</p>
             <p className="text-20 font-bold uppercase text-mercury-950 max-md:text-16">
-              ${!isConnectWallet ? "--" : usdShare}
+              ${!isConnectWallet || loading ? "--" : usdShare}
             </p>
           </div>
         </div>

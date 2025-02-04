@@ -7,7 +7,7 @@ import { shortenNumber } from "@utils/index"
 const FundICard: React.FC<{
   link: string
 }> = ({ link }) => {
-  const { data } = useFetchHistory(1)
+  const { data, loading } = useFetchHistory(1)
   const aum = data[0]?.aum || 0
   const navigate = useNavigate()
 
@@ -50,7 +50,7 @@ const FundICard: React.FC<{
           <div>
             <p className="text-14 font-medium text-mercury-700">AUM</p>
             <p className="text-20 font-bold text-mercury-950 max-md:text-16">
-              ${aum === 0 ? "--" : shortenNumber(aum)}
+              ${loading ? "--" : shortenNumber(aum)}
             </p>
           </div>
         </div>

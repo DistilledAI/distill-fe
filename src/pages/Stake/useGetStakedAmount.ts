@@ -10,6 +10,8 @@ const web3Locking = new Web3SolanaLockingToken()
 const useGetStakedAmount = () => {
   const wallet = useWallet()
   const [total, setTotal] = useState(0)
+  const [loadingUserStake, setLoadingUserStake] = useState(false)
+  const [loadingStakeAll, setLoadingStakeAll] = useState(false)
   const [totalStakeAll, setTotalStakeAll] = useState(0)
   const [searchParams] = useSearchParams()
   const tokenAddress = searchParams.get("token")
@@ -20,7 +22,9 @@ const useGetStakedAmount = () => {
       return
     }
     if (!tokenAddress) return
+    setLoadingUserStake(true)
     const info = await web3Locking.getStakerInfo(wallet, tokenAddress)
+    setLoadingUserStake(false)
     setTotal(
       toBN(info?.totalStake as any)
         .div(10 ** SPL_DECIMAL)
@@ -30,7 +34,9 @@ const useGetStakedAmount = () => {
 
   const getTotalStakeAll = async () => {
     if (!tokenAddress) return
+    setLoadingStakeAll(true)
     const res = await web3Locking.getVaultInfo(tokenAddress, wallet)
+    setLoadingStakeAll(false)
     if (res?.totalStaked)
       setTotalStakeAll(
         toBN(res.totalStaked as any)
@@ -47,7 +53,14 @@ const useGetStakedAmount = () => {
     getStakedAmount()
   }, [wallet.publicKey, tokenAddress])
 
-  return { total, getStakedAmount, totalStakeAll, getTotalStakeAll }
+  return {
+    total,
+    getStakedAmount,
+    totalStakeAll,
+    getTotalStakeAll,
+    loadingUserStake,
+    loadingStakeAll,
+  }
 }
 
 export default useGetStakedAmount
