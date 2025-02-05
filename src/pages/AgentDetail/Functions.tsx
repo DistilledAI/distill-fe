@@ -16,7 +16,7 @@ import {
   SelectItem,
   Switch,
 } from "@nextui-org/react"
-import { isArray } from "lodash"
+import { isArray, uniqBy } from "lodash"
 import { useState } from "react"
 import { Controller, useFormContext } from "react-hook-form"
 import { IAgentData } from "types/user"
@@ -159,12 +159,17 @@ const Functions: React.FC<{
                   className="h-[30px] rounded-full border border-mercury-50 bg-mercury-950 max-sm:h-[38px]"
                   onPress={() => {
                     if (!inputValue) return
+                    const newXUserNames = [
+                      ...xUserNameValues,
+                      { user_name: inputValue },
+                    ]
+                    const uniqueNewXUserNames = uniqBy(
+                      newXUserNames,
+                      "user_name",
+                    )
                     setValue(
                       "x_user_names",
-                      JSON.stringify([
-                        ...xUserNameValues,
-                        { user_name: inputValue },
-                      ]),
+                      JSON.stringify(uniqueNewXUserNames),
                     )
                     setInputValue("")
                     toggleShowInput()
