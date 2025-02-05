@@ -34,14 +34,17 @@ const TopChatAnnounce = () => {
     ;(async () => {
       if (user?.id && !isAnonymous && topChatAnnounce !== "dontShowAgain") {
         // const res = await getUserTopChat()
-        if (USER_ID_LIST.includes(Number(user?.id))) {
+        if (
+          USER_ID_LIST.includes(Number(user?.id)) ||
+          (user?.totalMax && user?.totalMax >= 5000)
+        ) {
           dispatch(updateTopChatAnnounce("open"))
         } else {
           dispatch(updateTopChatAnnounce("close"))
         }
       }
     })()
-  }, [user?.id, isAnonymous, topChatAnnounce, USER_ID_LIST])
+  }, [user?.id, isAnonymous, topChatAnnounce, USER_ID_LIST, user?.totalMax])
 
   if (topChatAnnounce === "close" || topChatAnnounce === "dontShowAgain")
     return null
