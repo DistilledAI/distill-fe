@@ -84,7 +84,7 @@ const Functions: React.FC<{
   const dataSources = DATA_SOURCES_BY_CATEGORY[category]
   const [isShowInput, setIsShowInput] = useState<boolean>(false)
   const [inputValue, setInputValue] = useState<string>("")
-  const userNameValues = JSON.parse(watch("x_user_names") || "[]")
+  const xUserNameValues = JSON.parse(watch("x_user_names") || "[]")
 
   const toggleShowInput = () => {
     setIsShowInput(!isShowInput)
@@ -95,8 +95,8 @@ const Functions: React.FC<{
   }
 
   const removeUserFollow = (userName: string) => {
-    const newUserNameValues = userNameValues.filter(
-      (item: string) => item !== userName,
+    const newUserNameValues = xUserNameValues.filter(
+      (item: any) => item?.user_name !== userName,
     )
     setValue("x_user_names", JSON.stringify(newUserNameValues))
   }
@@ -123,8 +123,9 @@ const Functions: React.FC<{
         </span>
         <div className="mt-4">
           <div className="flex items-center gap-1">
-            {isArray(userNameValues) &&
-              userNameValues.map((userName: string) => {
+            {isArray(xUserNameValues) &&
+              xUserNameValues.map((item: any) => {
+                const userName = item?.user_name
                 return (
                   <div
                     className="flex items-center gap-1 rounded-lg border-[2px] border-brown-500 p-1"
@@ -160,7 +161,10 @@ const Functions: React.FC<{
                     if (!inputValue) return
                     setValue(
                       "x_user_names",
-                      JSON.stringify([...userNameValues, inputValue]),
+                      JSON.stringify([
+                        ...xUserNameValues,
+                        { user_name: inputValue },
+                      ]),
                     )
                     setInputValue("")
                     toggleShowInput()
