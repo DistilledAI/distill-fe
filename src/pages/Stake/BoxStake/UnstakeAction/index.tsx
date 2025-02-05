@@ -14,6 +14,7 @@ import { SPL_DECIMAL } from "@pages/Stake/config"
 import React, { useState } from "react"
 import { toast } from "react-toastify"
 import NumberFormat from "react-number-format"
+import { twMerge } from "tailwind-merge"
 
 const web3Locking = new Web3SolanaLockingToken()
 
@@ -28,6 +29,7 @@ const UnStakeAction: React.FC<{
   const { connectWallet, isConnectWallet } = useConnectPhantom()
   const tokenInfo = getInfoTokenByAddress(tokenAddress as StakeTokenAddress)
   const wallet = useWallet()
+  const isGuardToken = tokenAddress === StakeTokenAddress.Guard
 
   const AMOUNT_LIST = [
     {
@@ -58,6 +60,7 @@ const UnStakeAction: React.FC<{
 
   const handleUnStake = async () => {
     try {
+      if (isGuardToken) return
       if (!tokenAddress) {
         return toast.warning("Token address not found!")
       }
@@ -97,7 +100,7 @@ const UnStakeAction: React.FC<{
   }
 
   return (
-    <div className="mt-3">
+    <div className={twMerge("mt-3", isGuardToken && "pointer-events-none")}>
       <div className="rounded-lg border-1 border-mercury-400 bg-white px-4 py-3">
         <div className="flex items-center justify-between gap-1">
           <div>
@@ -147,6 +150,7 @@ const UnStakeAction: React.FC<{
             QUICK UNSTAKE
           </Button> */}
           <Button
+            isDisabled={isGuardToken}
             isLoading={loadingSubmit}
             onClick={handleUnStake}
             className="mt-7 h-[48px] w-full rounded-full bg-mercury-950 text-white"

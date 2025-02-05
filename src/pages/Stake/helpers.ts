@@ -12,6 +12,7 @@ export const getDurationByAddress = (
 ) => {
   switch (address) {
     case StakeTokenAddress.LeeQuid:
+    case StakeTokenAddress.BlackRack:
       return ALL_CONFIGS.DURATION_STAKE * 2
 
     default:
