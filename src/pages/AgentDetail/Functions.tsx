@@ -19,6 +19,7 @@ import {
 import { isArray, uniqBy } from "lodash"
 import { useState } from "react"
 import { Controller, useFormContext } from "react-hook-form"
+import { toast } from "react-toastify"
 import { IAgentData } from "types/user"
 import BindYourAccount from "./BindYourAccount"
 import BindYourBot from "./BindYourBot"
@@ -122,7 +123,7 @@ const Functions: React.FC<{
           X account:
         </span>
         <div className="mt-4">
-          <div className="flex items-center gap-1">
+          <div className="flex flex-wrap items-center gap-1">
             {isArray(xUserNameValues) &&
               xUserNameValues.map((item: any) => {
                 const userName = item?.user_name
@@ -167,6 +168,10 @@ const Functions: React.FC<{
                       newXUserNames,
                       "user_name",
                     )
+                    if (uniqueNewXUserNames.length > 10)
+                      return toast.warning(
+                        "You have reached the limit for following X accounts",
+                      )
                     setValue(
                       "x_user_names",
                       JSON.stringify(uniqueNewXUserNames),
@@ -195,7 +200,7 @@ const Functions: React.FC<{
             >
               <TablerPlusIcon color="#A2845E" size={20} />
               <span className="text-base-md text-brown-10">
-                Add account (Max. 50)
+                Add account (Max. 10)
               </span>
             </div>
           )}
