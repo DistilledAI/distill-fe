@@ -13,7 +13,6 @@ import React, { lazy, Suspense, useEffect, useState } from "react"
 import { useSearchParams } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
 import { QueryDataKeys } from "types/queryDataKeys"
-import AgentDescription from "./AgentDescription"
 import AgentSocials from "./AgentSocials"
 import ContractDisplay from "./ContractDisplay"
 import SkeletonInfo, { SkeletonDesc } from "./SkeletonInfo"
@@ -23,6 +22,7 @@ import VaultButton from "./VaultButton"
 
 const VideoCustom = lazy(() => import("@components/VideoCustom"))
 const BetModal = lazy(() => import("@components/BetModal"))
+const AgentDescription = lazy(() => import("./AgentDescription"))
 
 const LeftContent: React.FC<{
   groupDetail: UserGroup | null

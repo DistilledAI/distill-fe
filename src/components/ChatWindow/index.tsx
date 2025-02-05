@@ -79,7 +79,6 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
           virtuosoRef.current?.scrollToIndex({
             index: newMessagesIndex,
             behavior: "auto",
-            align: "end",
           })
         }
       }
@@ -93,7 +92,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
 
   const memoizedItemContent = useCallback(
     (index: number, message: IMessageBox) => (
-      <article className={twMerge("px-3 pb-3", msgBoxClassName)}>
+      <article className={twMerge("p-3 md:px-4", msgBoxClassName)}>
         {itemContent(index, message)}
       </article>
     ),
@@ -142,7 +141,6 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
           initialTopMostItemIndex={messages.length - 1}
           increaseViewportBy={increaseViewportBy}
           onScroll={messages.length >= DEFAULT_LIMIT ? handleScroll : undefined}
-          computeItemKey={(index) => messages[index]?.id || index}
           components={{
             Header: headerComponent,
             EmptyPlaceholder: emptyStateComponent,
@@ -151,7 +149,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
           alignToBottom={true}
           atBottomThreshold={DEFAULT_AT_BOTTOM_THRESHOLD}
           itemContent={memoizedItemContent}
-          style={{ height: "100%" }}
+          height={"100%"}
         />
       )}
 
