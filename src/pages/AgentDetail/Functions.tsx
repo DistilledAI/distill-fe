@@ -4,9 +4,19 @@ import {
   PhototBoltIcon,
   RepeatIcon,
 } from "@components/Icons/AgentDetailIcon"
+import { CloseFilledIcon } from "@components/Icons/DefiLens"
 import { TelegramOutlineIcon } from "@components/Icons/SocialLinkIcon"
+import { TablerPlusIcon } from "@components/Icons/TablerPlusIcon"
 import { TwitterIcon } from "@components/Icons/Twitter"
-import { Button, Divider, Select, SelectItem, Switch } from "@nextui-org/react"
+import {
+  Button,
+  Divider,
+  Input,
+  Select,
+  SelectItem,
+  Switch,
+} from "@nextui-org/react"
+import { isArray } from "lodash"
 import { useState } from "react"
 import { Controller, useFormContext } from "react-hook-form"
 import { IAgentData } from "types/user"
@@ -68,13 +78,121 @@ const Functions: React.FC<{
   agentConfigs: AgentConfig[]
   refetch: any
 }> = ({ agentData, agentConfigs, refetch }) => {
-  const { control } = useFormContext()
+  const { watch, control, setValue } = useFormContext()
   const [category, setCategory] = useState<string>("crypto")
   const botWebhooks = agentData?.botWebhooks
   const dataSources = DATA_SOURCES_BY_CATEGORY[category]
+  const [isShowInput, setIsShowInput] = useState<boolean>(false)
+  const [inputValue, setInputValue] = useState<string>("")
+  const userNameValues = JSON.parse(watch("user_names") || "[]")
+
+  const toggleShowInput = () => {
+    setIsShowInput(!isShowInput)
+  }
 
   const onSelectCategory = (value: string) => {
     setCategory(value)
+  }
+
+  const removeUserFollow = (userName: string) => {
+    const newUserNameValues = userNameValues.filter(
+      (item: string) => item !== userName,
+    )
+    setValue("user_names", JSON.stringify(newUserNameValues))
+  }
+
+  const getUserName = (url: string) => {
+    if (!url) return ""
+
+    const match = url.match(/x\.com\/([^/]+)/)
+
+    if (match && match[1] !== "home") {
+      return match[1]
+    }
+
+    return url
+  }
+
+  const renderKolList = () => {
+    return (
+      <div className="mt-6">
+        <span className="text-mercury-700">
+          <span className="text-base-sb text-mercury-950">Following list </span>
+          Your agent will subscribe to the information source from the following
+          X account:
+        </span>
+        <div className="mt-4">
+          <div className="flex items-center gap-1">
+            {isArray(userNameValues) &&
+              userNameValues.map((userName: string) => {
+                return (
+                  <div
+                    className="flex items-center gap-1 rounded-lg border-[2px] border-brown-500 p-1"
+                    key={userName}
+                  >
+                    <span className="text-base-b text-mercury-900">
+                      @{userName}
+                    </span>
+                    <div
+                      className="cursor-pointer"
+                      onClick={() => removeUserFollow(userName)}
+                    >
+                      <CloseFilledIcon size={20} color="#A2845E" />
+                    </div>
+                  </div>
+                )
+              })}
+          </div>
+
+          {isShowInput && (
+            <Input
+              type="text"
+              placeholder="Enter X (Twitter) profile link or username"
+              className="w-1/2"
+              classNames={{
+                mainWrapper: "border border-mercury-400 rounded-lg mt-4",
+                inputWrapper: " bg-mercury-70",
+              }}
+              endContent={
+                <Button
+                  className="h-[30px] rounded-full border border-mercury-50 bg-mercury-950 max-sm:h-[38px]"
+                  onPress={() => {
+                    if (!inputValue) return
+                    setValue(
+                      "user_names",
+                      JSON.stringify([...userNameValues, inputValue]),
+                    )
+                    setInputValue("")
+                    toggleShowInput()
+                  }}
+                >
+                  <span className="text-base text-mercury-30 max-sm:text-[14px]">
+                    Save
+                  </span>
+                </Button>
+              }
+              onChange={(e) => {
+                const value = e.target.value
+                const newValue = getUserName(value)
+                setInputValue(newValue)
+              }}
+            />
+          )}
+
+          {!isShowInput && (
+            <div
+              onClick={() => toggleShowInput()}
+              className="mt-3 flex cursor-pointer items-center gap-1"
+            >
+              <TablerPlusIcon color="#A2845E" size={20} />
+              <span className="text-base-md text-brown-10">
+                Add account (Max. 50)
+              </span>
+            </div>
+          )}
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -232,6 +350,7 @@ const Functions: React.FC<{
           </div>
         </div>
       </div>
+      {renderKolList()}
     </div>
   )
 }
