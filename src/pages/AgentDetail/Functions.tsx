@@ -84,7 +84,7 @@ const Functions: React.FC<{
   const dataSources = DATA_SOURCES_BY_CATEGORY[category]
   const [isShowInput, setIsShowInput] = useState<boolean>(false)
   const [inputValue, setInputValue] = useState<string>("")
-  const userNameValues = JSON.parse(watch("user_names") || "[]")
+  const userNameValues = JSON.parse(watch("x_user_names") || "[]")
 
   const toggleShowInput = () => {
     setIsShowInput(!isShowInput)
@@ -98,7 +98,7 @@ const Functions: React.FC<{
     const newUserNameValues = userNameValues.filter(
       (item: string) => item !== userName,
     )
-    setValue("user_names", JSON.stringify(newUserNameValues))
+    setValue("x_user_names", JSON.stringify(newUserNameValues))
   }
 
   const getUserName = (url: string) => {
@@ -159,7 +159,7 @@ const Functions: React.FC<{
                   onPress={() => {
                     if (!inputValue) return
                     setValue(
-                      "user_names",
+                      "x_user_names",
                       JSON.stringify([...userNameValues, inputValue]),
                     )
                     setInputValue("")
