@@ -15,12 +15,14 @@ import { useWallet } from "@solana/wallet-adapter-react"
 import NumberFormat from "react-number-format"
 import { SPL_DECIMAL } from "@pages/Stake/config"
 import { toast } from "react-toastify"
+import moment from "moment"
 
 const web3Locking = new Web3SolanaLockingToken()
 
 const StakeAction: React.FC<{
   fetchTotalStaked: () => void
-}> = ({ fetchTotalStaked }) => {
+  endDate: number | null
+}> = ({ fetchTotalStaked, endDate }) => {
   const [searchParams] = useSearchParams()
   const [amountVal, setAmountVal] = useState<string>("")
   const [loadingSubmit, setLoadingSubmit] = useState(false)
@@ -29,6 +31,9 @@ const StakeAction: React.FC<{
   const { connectWallet, isConnectWallet } = useConnectPhantom()
   const { balance, loading, getBalance } = useGetBalance(tokenAddress)
   const tokenInfo = getInfoTokenByAddress(tokenAddress as StakeTokenAddress)
+
+  const isNoPeriod = tokenAddress === StakeTokenAddress.Guard
+  const isExpired = endDate ? Date.now() > endDate : false
 
   const AMOUNT_LIST = [
     {
@@ -59,6 +64,7 @@ const StakeAction: React.FC<{
 
   const handleStake = async () => {
     try {
+      if (isExpired) return
       if (!tokenAddress) {
         return toast.warning("Token address not found!")
       }
@@ -83,6 +89,7 @@ const StakeAction: React.FC<{
         amount,
         wallet,
         tokenAddress,
+        isNoPeriod,
       )
       if (res) {
         toast.success("Staked successfully!")
@@ -146,8 +153,14 @@ const StakeAction: React.FC<{
           </div>
         ))}
       </div>
+      {endDate && (
+        <div className="mt-4 text-14 font-medium text-brown-500">
+          Expiration Date (UTC): {moment(endDate).utc().format("lll")}
+        </div>
+      )}
       {isConnectWallet ? (
         <Button
+          isDisabled={isExpired}
           isLoading={loadingSubmit}
           onClick={handleStake}
           className="mt-7 h-[48px] w-full rounded-full bg-mercury-950 text-white"
