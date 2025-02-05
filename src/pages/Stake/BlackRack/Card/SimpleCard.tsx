@@ -18,7 +18,8 @@ const SimpleCard: React.FC<{
   const [searchParams] = useSearchParams()
   const { isConnectWallet } = useConnectPhantom()
   const tokenAddress = searchParams.get("token")
-  const { total, totalStakeAll } = useGetStakedAmount()
+  const { total, totalStakeAll, loadingStakeAll, loadingUserStake } =
+    useGetStakedAmount()
   const infoToken = getInfoTokenByAddress(tokenAddress as StakeTokenAddress)
 
   return (
@@ -68,7 +69,7 @@ const SimpleCard: React.FC<{
             </div>
             <p className="text-14 font-medium text-mercury-700">Total Staked</p>
             <p className="text-20 font-bold text-mercury-950 max-md:text-16">
-              {shortenNumber(totalStakeAll)} RACKS
+              {loadingStakeAll ? "--" : shortenNumber(totalStakeAll)} RACKS
             </p>
           </div>
           <div className="flex flex-col justify-end">
@@ -77,7 +78,10 @@ const SimpleCard: React.FC<{
             </div>
             <p className="text-14 font-medium text-mercury-700">Your Staked</p>
             <p className="text-20 font-bold text-mercury-950 max-md:text-16">
-              {!isConnectWallet ? "--" : shortenNumber(total)} RACKS
+              {!isConnectWallet || loadingUserStake
+                ? "--"
+                : shortenNumber(total)}{" "}
+              RACKS
             </p>
           </div>
         </div>

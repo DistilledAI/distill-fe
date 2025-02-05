@@ -20,6 +20,7 @@ export interface InfoVault {
 const useGetVaultInfo = () => {
   const wallet = useWallet()
   const [total, setTotal] = useState(0)
+  const [loading, setLoading] = useState(false)
   const [info, setInfo] = useState<InfoVault>({
     nav: 0,
     totalShares: 0,
@@ -36,8 +37,10 @@ const useGetVaultInfo = () => {
       if (!wallet.publicKey) {
         setTotal(0)
       }
+      setLoading(true)
       const amount = await web3Invest.getStakerShare(wallet)
       const dt = await web3Invest.getVault(wallet)
+      setLoading(false)
       if (amount) {
         const amountDisplay = toBN(amount as any)
           .div(10 ** SPL_DECIMAL)
@@ -67,7 +70,7 @@ const useGetVaultInfo = () => {
     getVaultInfo()
   }, [wallet.publicKey])
 
-  return { total, loading: false, info, getVaultInfo }
+  return { total, loading, info, getVaultInfo }
 }
 
 export default useGetVaultInfo

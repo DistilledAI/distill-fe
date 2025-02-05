@@ -4,15 +4,20 @@ import { Web3SolanaLockingToken } from "./web3Locking"
 import { toBN } from "@utils/format"
 import { SPL_DECIMAL } from "./config"
 import { useSearchParams } from "react-router-dom"
+import { StakeTokenAddress } from "."
 
 const web3Locking = new Web3SolanaLockingToken()
 
 const useGetStakedAmount = () => {
   const wallet = useWallet()
   const [total, setTotal] = useState(0)
+  const [loadingUserStake, setLoadingUserStake] = useState(false)
+  const [loadingStakeAll, setLoadingStakeAll] = useState(false)
   const [totalStakeAll, setTotalStakeAll] = useState(0)
+  const [endDate, setEndDate] = useState<null | number>(null)
   const [searchParams] = useSearchParams()
   const tokenAddress = searchParams.get("token")
+  const isNoPeriod = tokenAddress === StakeTokenAddress.Guard
 
   const getStakedAmount = async () => {
     if (!wallet.publicKey) {
@@ -20,7 +25,14 @@ const useGetStakedAmount = () => {
       return
     }
     if (!tokenAddress) return
-    const info = await web3Locking.getStakerInfo(wallet, tokenAddress)
+    setLoadingUserStake(true)
+    const info = await web3Locking.getStakerInfo(
+      wallet,
+      tokenAddress,
+      isNoPeriod,
+    )
+
+    setLoadingUserStake(false)
     setTotal(
       toBN(info?.totalStake as any)
         .div(10 ** SPL_DECIMAL)
@@ -30,13 +42,16 @@ const useGetStakedAmount = () => {
 
   const getTotalStakeAll = async () => {
     if (!tokenAddress) return
-    const res = await web3Locking.getVaultInfo(tokenAddress, wallet)
+    setLoadingStakeAll(true)
+    const res = await web3Locking.getVaultInfo(tokenAddress, wallet, isNoPeriod)
+    setLoadingStakeAll(false)
     if (res?.totalStaked)
       setTotalStakeAll(
         toBN(res.totalStaked as any)
           .div(10 ** SPL_DECIMAL)
           .toNumber(),
       )
+    if (res?.endDate) setEndDate(res.endDate)
   }
 
   useEffect(() => {
@@ -47,7 +62,15 @@ const useGetStakedAmount = () => {
     getStakedAmount()
   }, [wallet.publicKey, tokenAddress])
 
-  return { total, getStakedAmount, totalStakeAll, getTotalStakeAll }
+  return {
+    total,
+    getStakedAmount,
+    totalStakeAll,
+    getTotalStakeAll,
+    loadingUserStake,
+    loadingStakeAll,
+    endDate,
+  }
 }
 
 export default useGetStakedAmount

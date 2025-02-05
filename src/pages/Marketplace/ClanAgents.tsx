@@ -8,10 +8,11 @@ import { IGroupDetail } from "types/group"
 import useFetchClan from "./useFetchClan"
 import { useQueryClient } from "@tanstack/react-query"
 import { QueryDataKeys } from "types/queryDataKeys"
+import AgentSkeleton from "./AgentSkeleton"
 
 const ClanAgents = () => {
   const navigate = useNavigate()
-  const { data } = useFetchClan({ limit: 100 })
+  const { data, loading } = useFetchClan({ limit: 40 })
   const queryClient = useQueryClient()
 
   const handleChatWithClan = async (clan: IGroupDetail) => {
@@ -24,6 +25,18 @@ const ClanAgents = () => {
       )
     }, 500)
   }
+
+  if (loading)
+    return (
+      <>
+        <AgentSkeleton />
+        <AgentSkeleton />
+        <AgentSkeleton />
+        <AgentSkeleton />
+        <AgentSkeleton />
+        <AgentSkeleton />
+      </>
+    )
 
   return data.map((clan: IGroupDetail, index: number) => (
     <div

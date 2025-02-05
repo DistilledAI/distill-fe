@@ -12,14 +12,18 @@ import {
   PublicKey,
   Transaction,
 } from "@solana/web3.js"
-import { FungStakingVault } from "./staking_vault.ts"
-import idl from "./staking_vault.json"
+import { FungStakingVault } from "./idl/staking_vault.ts"
+import idl from "./idl/staking_vault.json"
+import guardIdl from "./idl/guard_staking_vault.json"
 import { handleTransaction } from "./utils"
 import { SOLANA_RPC, SOLANA_WS } from "program/utils/web3Utils.ts"
 import { getDurationByAddress } from "./helpers.ts"
 
 export const vaultProgramId = new PublicKey(idl.address)
+export const guardVaultProgramId = new PublicKey(guardIdl.address)
+
 export const vaultInterface = JSON.parse(JSON.stringify(idl))
+export const guardVaultInterface = JSON.parse(JSON.stringify(guardIdl))
 
 export class Web3SolanaLockingToken {
   constructor(
@@ -34,6 +38,7 @@ export class Web3SolanaLockingToken {
     amount: number,
     wallet: WalletContextState,
     stakeCurrencyMint: string,
+    isNoPeriod = false,
   ) {
     let provider
     try {
@@ -47,9 +52,9 @@ export class Web3SolanaLockingToken {
         return
       }
       const program = new Program(
-        vaultInterface,
+        isNoPeriod ? guardVaultInterface : vaultInterface,
         provider,
-      ) as Program<FungStakingVault>
+      ) as Program
 
       const transaction = new Transaction()
       const cpIx = ComputeBudgetProgram.setComputeUnitPrice({
@@ -57,14 +62,21 @@ export class Web3SolanaLockingToken {
       })
       const cuIx = ComputeBudgetProgram.setComputeUnitLimit({ units: 200_000 })
 
-      const stakeIx = await program.methods
-        .stake(new BN(unbondingPeriod), new BN(amount))
-        .accounts({
-          signer: wallet.publicKey,
-          stakeCurrencyMint,
-        })
-
-        .instruction()
+      const stakeIx = isNoPeriod
+        ? await program.methods
+            .stake(new BN(amount))
+            .accounts({
+              signer: wallet.publicKey,
+              stakeCurrencyMint,
+            })
+            .instruction()
+        : await program.methods
+            .stake(new BN(unbondingPeriod), new BN(amount))
+            .accounts({
+              signer: wallet.publicKey,
+              stakeCurrencyMint,
+            })
+            .instruction()
 
       transaction.add(stakeIx)
       transaction.add(cpIx, cuIx)
@@ -112,7 +124,11 @@ export class Web3SolanaLockingToken {
     }
   }
 
-  async getStakerInfo(wallet: WalletContextState, stakeCurrencyMint: string) {
+  async getStakerInfo(
+    wallet: WalletContextState,
+    stakeCurrencyMint: string,
+    isNoPeriod = false,
+  ) {
     let provider
     try {
       provider = new anchor.AnchorProvider(this.connection, wallet as any, {
@@ -125,16 +141,21 @@ export class Web3SolanaLockingToken {
         return
       }
       const program = new Program(
-        vaultInterface,
+        isNoPeriod ? guardVaultInterface : vaultInterface,
         provider,
       ) as Program<FungStakingVault>
 
       const [vaultPda] = PublicKey.findProgramAddressSync(
-        [
-          Buffer.from(STAKING_VAULT_SEED),
-          new PublicKey(stakeCurrencyMint).toBytes(),
-          new BN(getDurationByAddress(stakeCurrencyMint)).toBuffer("le", 8),
-        ],
+        isNoPeriod
+          ? [
+              Buffer.from(STAKING_VAULT_SEED),
+              new PublicKey(stakeCurrencyMint).toBytes(),
+            ]
+          : [
+              Buffer.from(STAKING_VAULT_SEED),
+              new PublicKey(stakeCurrencyMint).toBytes(),
+              new BN(getDurationByAddress(stakeCurrencyMint)).toBuffer("le", 8),
+            ],
         program.programId,
       )
 
@@ -160,7 +181,11 @@ export class Web3SolanaLockingToken {
     }
   }
 
-  async getVaultInfo(stakeCurrencyMint: string, wallet: WalletContextState) {
+  async getVaultInfo(
+    stakeCurrencyMint: string,
+    wallet: WalletContextState,
+    isNoPeriod = false,
+  ) {
     try {
       let provider
       provider = new anchor.AnchorProvider(this.connection, wallet as any, {
@@ -169,28 +194,41 @@ export class Web3SolanaLockingToken {
       anchor.setProvider(provider)
       provider = anchor.getProvider()
       const program = new Program(
-        vaultInterface,
+        isNoPeriod ? guardVaultInterface : vaultInterface,
         provider,
       ) as Program<FungStakingVault>
       const [vaultPda] = PublicKey.findProgramAddressSync(
-        [
-          Buffer.from(STAKING_VAULT_SEED),
-          new PublicKey(stakeCurrencyMint).toBytes(),
-          new BN(getDurationByAddress(stakeCurrencyMint)).toBuffer("le", 8),
-        ],
+        isNoPeriod
+          ? [
+              Buffer.from(STAKING_VAULT_SEED),
+              new PublicKey(stakeCurrencyMint).toBytes(),
+            ]
+          : [
+              Buffer.from(STAKING_VAULT_SEED),
+              new PublicKey(stakeCurrencyMint).toBytes(),
+              new BN(getDurationByAddress(stakeCurrencyMint)).toBuffer("le", 8),
+            ],
         program.programId,
       )
 
-      const vaultData = await program.account.vault.fetch(vaultPda)
+      const vaultData: any = await program.account.vault.fetch(vaultPda)
+
       return {
         totalStaked: vaultData.totalStaked,
+        endDate: vaultData.endDate
+          ? new BN(vaultData.endDate).toNumber() * 1000
+          : null,
       }
     } catch (error) {
       console.error(error)
     }
   }
 
-  async isWhiteList(stakeCurrencyMint: string, wallet: WalletContextState) {
+  async isWhiteList(
+    stakeCurrencyMint: string,
+    wallet: WalletContextState,
+    isNoPeriod = false,
+  ) {
     try {
       let provider
       provider = new anchor.AnchorProvider(this.connection, wallet as any, {
@@ -199,15 +237,20 @@ export class Web3SolanaLockingToken {
       anchor.setProvider(provider)
       provider = anchor.getProvider()
       const program = new Program(
-        vaultInterface,
+        isNoPeriod ? guardVaultInterface : vaultInterface,
         provider,
       ) as Program<FungStakingVault>
       const [vaultPda] = PublicKey.findProgramAddressSync(
-        [
-          Buffer.from(STAKING_VAULT_SEED),
-          new PublicKey(stakeCurrencyMint).toBytes(),
-          new BN(getDurationByAddress(stakeCurrencyMint)).toBuffer("le", 8),
-        ],
+        isNoPeriod
+          ? [
+              Buffer.from(STAKING_VAULT_SEED),
+              new PublicKey(stakeCurrencyMint).toBytes(),
+            ]
+          : [
+              Buffer.from(STAKING_VAULT_SEED),
+              new PublicKey(stakeCurrencyMint).toBytes(),
+              new BN(getDurationByAddress(stakeCurrencyMint)).toBuffer("le", 8),
+            ],
         program.programId,
       )
 
@@ -223,82 +266,6 @@ export class Web3SolanaLockingToken {
       return false
     }
   }
-
-  // async getListLockedOfUser(lockPeriod: number, wallet: WalletContextState) {
-  //   let vaultInfo = { totalStaked: new BN("0") }
-  //   try {
-  //     const provider = anchor.getProvider()
-  //     if (!provider.connection) {
-  //       console.log("Warning: Wallet not connected")
-  //       return
-  //     }
-  //     const program = new Program(vaultInterface, provider) as Program<Vault>
-
-  //     const [configPda] = PublicKey.findProgramAddressSync(
-  //       [
-  //         Buffer.from(STRONG_BOX_STAKE_CONFIG_SEED),
-  //         new PublicKey(stakeCurrencyMint).toBytes(),
-  //       ],
-  //       program.programId,
-  //     )
-  //     const [vaultPda] = PublicKey.findProgramAddressSync(
-  //       [
-  //         Buffer.from(STRONG_BOX_VAULT_SEED),
-  //         configPda.toBytes(),
-  //         new BN(lockPeriod).toBuffer("le", 8),
-  //       ],
-  //       program.programId,
-  //     )
-
-  //     vaultInfo = (await program.account.vault.fetch(vaultPda)) || {
-  //       totalStaked: new BN("0"),
-  //     }
-
-  //     if (!wallet.publicKey) {
-  //       return { listLockedItems: [], vaultInfo }
-  //     }
-
-  //     const [stakerInfoPda] = PublicKey.findProgramAddressSync(
-  //       [
-  //         Buffer.from(STAKER_INFO_SEED),
-  //         vaultPda.toBytes(),
-  //         wallet.publicKey.toBytes(),
-  //       ],
-  //       program.programId,
-  //     )
-
-  //     let currentId = 0
-  //     try {
-  //       const stakerInfo = await program.account.stakerInfo.fetch(stakerInfoPda)
-  //       currentId = stakerInfo.currentId.toNumber()
-
-  //       const listLockedItems = await Promise.all(
-  //         [...new Array(currentId)].map(async (_item, key) => {
-  //           const [userStakeDetailPda] = PublicKey.findProgramAddressSync(
-  //             [
-  //               Buffer.from(STAKE_DETAIL_SEED),
-  //               stakerInfoPda.toBytes(),
-  //               new BN(key + 1).toBuffer("le", 8),
-  //             ],
-  //             program.programId,
-  //           )
-
-  //           const info =
-  //             await program.account.stakeDetail.fetch(userStakeDetailPda)
-
-  //           return { ...(info || {}), lockPeriod }
-  //         }),
-  //       )
-
-  //       return { listLockedItems, vaultInfo }
-  //     } catch (error) {
-  //       throw error
-  //     }
-  //   } catch (error) {
-  //     console.log("get list error", error)
-  //     return { listLockedItems: [], vaultInfo }
-  //   }
-  // }
 
   async unStake(
     unbondingPeriod: number,
