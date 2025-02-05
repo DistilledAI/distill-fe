@@ -16,6 +16,7 @@ import {
   SelectItem,
   Switch,
 } from "@nextui-org/react"
+import { isArray } from "lodash"
 import { useState } from "react"
 import { Controller, useFormContext } from "react-hook-form"
 import { IAgentData } from "types/user"
@@ -83,7 +84,7 @@ const Functions: React.FC<{
   const dataSources = DATA_SOURCES_BY_CATEGORY[category]
   const [isShowInput, setIsShowInput] = useState<boolean>(false)
   const [inputValue, setInputValue] = useState<string>("")
-  const userNameValues = watch("user_names") || []
+  const userNameValues = JSON.parse(watch("user_names") || "[]")
 
   const toggleShowInput = () => {
     setIsShowInput(!isShowInput)
@@ -97,7 +98,7 @@ const Functions: React.FC<{
     const newUserNameValues = userNameValues.filter(
       (item: string) => item !== userName,
     )
-    setValue("user_names", newUserNameValues)
+    setValue("user_names", JSON.stringify(newUserNameValues))
   }
 
   const getUserName = (url: string) => {
@@ -122,24 +123,25 @@ const Functions: React.FC<{
         </span>
         <div className="mt-4">
           <div className="flex items-center gap-1">
-            {userNameValues.map((userName: string) => {
-              return (
-                <div
-                  className="flex items-center gap-1 rounded-lg border-[2px] border-brown-500 p-1"
-                  key={userName}
-                >
-                  <span className="text-base-b text-mercury-900">
-                    @{userName}
-                  </span>
+            {isArray(userNameValues) &&
+              userNameValues.map((userName: string) => {
+                return (
                   <div
-                    className="cursor-pointer"
-                    onClick={() => removeUserFollow(userName)}
+                    className="flex items-center gap-1 rounded-lg border-[2px] border-brown-500 p-1"
+                    key={userName}
                   >
-                    <CloseFilledIcon size={20} color="#A2845E" />
+                    <span className="text-base-b text-mercury-900">
+                      @{userName}
+                    </span>
+                    <div
+                      className="cursor-pointer"
+                      onClick={() => removeUserFollow(userName)}
+                    >
+                      <CloseFilledIcon size={20} color="#A2845E" />
+                    </div>
                   </div>
-                </div>
-              )
-            })}
+                )
+              })}
           </div>
 
           {isShowInput && (
@@ -156,7 +158,10 @@ const Functions: React.FC<{
                   className="h-[30px] rounded-full border border-mercury-50 bg-mercury-950 max-sm:h-[38px]"
                   onPress={() => {
                     if (!inputValue) return
-                    setValue("user_names", [...userNameValues, inputValue])
+                    setValue(
+                      "user_names",
+                      JSON.stringify([...userNameValues, inputValue]),
+                    )
                     setInputValue("")
                     toggleShowInput()
                   }}
