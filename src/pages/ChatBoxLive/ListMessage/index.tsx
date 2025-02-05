@@ -55,13 +55,13 @@ const ListMessage: React.FC<{
       onLoadPrevMessages={onLoadPrevMessages}
       chatId={chatId}
       isChatActions={false}
-      msgBoxClassName="p-0 px-4 pb-4"
+      msgBoxClassName="p-0 px-4 pb-4 h-full w-full"
       className={twMerge(
         "md:max-h-[calc(100%-80px)]",
         isClan && "md:max-h-[calc(100%-130px)]",
       )}
       scrollBottomClassName="max-md:!bottom-[200px] max-md:bg-none"
-      increaseViewportBy={800}
+      increaseViewportBy={1000}
     />
   )
 }

@@ -1,6 +1,5 @@
 import { useAppSelector } from "@hooks/useAppRedux"
 import useWindowSize from "@hooks/useWindowSize"
-// import ClanShortInfo from "@pages/AgentClan/ClanShortInfo"
 import { IMessageBox } from "@pages/ChatPage/ChatBox/ChatMessages/helpers"
 import {
   GroupConfig,

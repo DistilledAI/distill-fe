@@ -24,8 +24,8 @@ interface ChatWindowProps {
   increaseViewportBy?: number
 }
 
-const LIMIT = 20
-const AT_BOTTOM_THRESHOLD = 200
+const DEFAULT_LIMIT = 20
+const DEFAULT_AT_BOTTOM_THRESHOLD = 200
 
 const ChatWindow: React.FC<ChatWindowProps> = ({
   messages,
@@ -45,13 +45,13 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
   increaseViewportBy = 100,
 }) => {
   const virtuosoRef = useRef<VirtuosoHandle>(null)
-  const [isScrollBottom, setIsScrollBottom] = useState<boolean>(false)
+  const [isScrollBottom, setIsScrollBottom] = useState(false)
   const lastMessageLength = messages?.[messages.length - 1]?.content?.length
 
   const scrollToBottom = useCallback(() => {
     virtuosoRef.current?.scrollToIndex({
-      index: messages.length - 1,
-      behavior: "auto",
+      index: messages.length,
+      behavior: "smooth",
       align: style?.paddingBottom === "0px" ? "end" : "center",
     })
   }, [messages.length, style?.paddingBottom])
@@ -68,50 +68,60 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
     }
   }, [scrollToBottom, isScrollBottom, lastMessageLength])
 
-  const onScroll = useCallback(
+  const handleScroll = useCallback(
     async (e: React.UIEvent<HTMLDivElement>) => {
       const { scrollTop, scrollHeight, clientHeight } = e.currentTarget
-      if (scrollTop === 0 && hasPreviousMore) {
-        const messagesIndex = await onLoadPrevMessages()
-        if (messagesIndex) {
+      const shouldLoadMore = scrollTop === 0 && hasPreviousMore
+
+      if (shouldLoadMore) {
+        const newMessagesIndex = await onLoadPrevMessages()
+        if (newMessagesIndex) {
           virtuosoRef.current?.scrollToIndex({
-            index: messagesIndex,
+            index: newMessagesIndex,
             behavior: "auto",
             align: "end",
           })
         }
       }
 
-      const scrollPosition = scrollHeight - clientHeight - scrollTop
-      setIsScrollBottom(scrollPosition > AT_BOTTOM_THRESHOLD)
+      setIsScrollBottom(
+        scrollHeight - clientHeight - scrollTop > DEFAULT_AT_BOTTOM_THRESHOLD,
+      )
     },
-    [hasPreviousMore, onLoadPrevMessages],
+    [hasPreviousMore, onLoadPrevMessages, DEFAULT_AT_BOTTOM_THRESHOLD],
   )
 
-  const renderHeader = useMemo(() => {
-    if (isFetchingPreviousPage && messages.length >= LIMIT) {
+  const memoizedItemContent = useCallback(
+    (index: number, message: IMessageBox) => (
+      <article className={twMerge("px-3 pb-3", msgBoxClassName)}>
+        {itemContent(index, message)}
+      </article>
+    ),
+    [itemContent, msgBoxClassName],
+  )
+
+  const headerComponent = useMemo(() => {
+    if (isFetchingPreviousPage && messages.length >= DEFAULT_LIMIT) {
       return () => (
         <div className="flex h-full items-center justify-center pt-1">
           <DotLoading />
         </div>
       )
     }
-    if (Header) {
-      return () => <div className="pb-4">{Header}</div>
-    }
-    return undefined
-  }, [isFetchingPreviousPage, messages.length, Header])
+    return Header ? () => <div className="pb-4">{Header}</div> : undefined
+  }, [isFetchingPreviousPage, messages.length, Header, DEFAULT_LIMIT])
 
-  const renderEmptyPlaceholder = useMemo(() => {
-    if (isFetched && !messages.length) {
-      return () => (
-        <div className="flex h-full items-center justify-center">
-          NO MESSAGE
-        </div>
-      )
-    }
-    return undefined
-  }, [isFetched, messages.length])
+  const emptyStateComponent = useMemo(
+    () =>
+      isFetched && !messages.length
+        ? () => (
+            <div className="flex h-full items-center justify-center">
+              NO MESSAGE
+            </div>
+          )
+        : undefined,
+    [isFetched, messages.length],
+  )
 
   return (
     <div
@@ -123,33 +133,28 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
       style={style}
     >
       {!isFetched && <MessagesSkeleton />}
-      {!isLoading && messages.length ? (
+
+      {!isLoading && messages.length > 0 && (
         <Virtuoso
           ref={virtuosoRef}
           data={messages}
           totalCount={messages.length}
           initialTopMostItemIndex={messages.length - 1}
           increaseViewportBy={increaseViewportBy}
-          onScroll={messages.length >= LIMIT ? onScroll : undefined}
+          onScroll={messages.length >= DEFAULT_LIMIT ? handleScroll : undefined}
+          computeItemKey={(index) => messages[index]?.id || index}
           components={{
-            Header: renderHeader,
-            EmptyPlaceholder: renderEmptyPlaceholder,
+            Header: headerComponent,
+            EmptyPlaceholder: emptyStateComponent,
           }}
           followOutput={!isScrollBottom ? "auto" : false}
-          atBottomThreshold={AT_BOTTOM_THRESHOLD}
-          itemContent={(index: number, message: IMessageBox) => {
-            return (
-              <article
-                className={twMerge("px-3 pb-3", msgBoxClassName)}
-                key={message?.id}
-              >
-                {itemContent(index, message)}
-              </article>
-            )
-          }}
+          alignToBottom={true}
+          atBottomThreshold={DEFAULT_AT_BOTTOM_THRESHOLD}
+          itemContent={memoizedItemContent}
           style={{ height: "100%" }}
         />
-      ) : null}
+      )}
+
       <ScrollBottomChat
         scrollBottomClassName={scrollBottomClassName}
         isScrollBottom={isScrollBottom}
