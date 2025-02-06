@@ -18,6 +18,9 @@ const endpoint = {
   KYC: withBaseURL("/user/kyc"),
   CALL_AGENT: withBaseURL("/user/owner/call-agent"),
   GET_USER_TOP_CHAT: withBaseURL("/info/user/top-chat"),
+  GET_VALIDATE_USER_JOIN_CREATOR_GROUP: withBaseURL(
+    "/user/validate-join-creator-group",
+  ),
 
   //bot
   CREATE_BOT: withBaseURL("/bot/create-bot"),

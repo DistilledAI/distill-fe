@@ -134,7 +134,7 @@ const GeneralInfo: React.FC<{
           }}
         />
 
-        <div className="mt-4 flex gap-4">
+        <div className="mt-4 flex gap-4 max-md:flex-wrap">
           <Controller
             name="website_link"
             control={control}

@@ -25,12 +25,7 @@ const ListMessage: React.FC<{
       const isLastMessage = index === messages.length - 1
 
       return (
-        <div
-          className={twMerge(
-            index === 0 && "pt-4",
-            isLastMessage && "pb-56 md:pb-0",
-          )}
-        >
+        <div className={twMerge(isLastMessage && "pb-56 md:pb-0")}>
           <MessageLive
             message={message}
             onReply={() => onReply(message)}
@@ -55,13 +50,12 @@ const ListMessage: React.FC<{
       onLoadPrevMessages={onLoadPrevMessages}
       chatId={chatId}
       isChatActions={false}
-      msgBoxClassName="p-0 px-4 pb-4"
       className={twMerge(
         "md:max-h-[calc(100%-80px)]",
         isClan && "md:max-h-[calc(100%-130px)]",
       )}
       scrollBottomClassName="max-md:!bottom-[200px] max-md:bg-none"
-      increaseViewportBy={800}
+      increaseViewportBy={1000}
     />
   )
 }

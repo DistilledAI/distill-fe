@@ -1,14 +1,26 @@
+import ComingSoon from "@components/ComingSoon"
 import { BoltOutlineIcon } from "@components/Icons"
 import {
   PencilBoltIcon,
   PhototBoltIcon,
   RepeatIcon,
 } from "@components/Icons/AgentDetailIcon"
+import { CloseFilledIcon } from "@components/Icons/DefiLens"
 import { TelegramOutlineIcon } from "@components/Icons/SocialLinkIcon"
+import { TablerPlusIcon } from "@components/Icons/TablerPlusIcon"
 import { TwitterIcon } from "@components/Icons/Twitter"
-import { Button, Divider, Select, SelectItem, Switch } from "@nextui-org/react"
+import {
+  Button,
+  Divider,
+  Input,
+  Select,
+  SelectItem,
+  Switch,
+} from "@nextui-org/react"
+import { isArray, uniqBy } from "lodash"
 import { useState } from "react"
 import { Controller, useFormContext } from "react-hook-form"
+import { toast } from "react-toastify"
 import { IAgentData } from "types/user"
 import BindYourAccount from "./BindYourAccount"
 import BindYourBot from "./BindYourBot"
@@ -68,13 +80,140 @@ const Functions: React.FC<{
   agentConfigs: AgentConfig[]
   refetch: any
 }> = ({ agentData, agentConfigs, refetch }) => {
-  const { control } = useFormContext()
+  const { watch, control, setValue } = useFormContext()
   const [category, setCategory] = useState<string>("crypto")
   const botWebhooks = agentData?.botWebhooks
   const dataSources = DATA_SOURCES_BY_CATEGORY[category]
+  const [isShowInput, setIsShowInput] = useState<boolean>(false)
+  const [inputValue, setInputValue] = useState<string>("")
+  const xUserNameValues = JSON.parse(watch("x_user_names") || "[]")
+
+  const xBotData = agentConfigs?.find(
+    (agent: any) => agent.key === "bindTwitterKey",
+  )
+  const bindTwitterValue = xBotData?.value ? JSON.parse(xBotData.value) : null
+  const twitterUsername = bindTwitterValue?.info?.data?.username
+
+  const toggleShowInput = () => {
+    setIsShowInput(!isShowInput)
+  }
 
   const onSelectCategory = (value: string) => {
     setCategory(value)
+  }
+
+  const removeUserFollow = (userName: string) => {
+    const newUserNameValues = xUserNameValues.filter(
+      (item: any) => item?.user_name !== userName,
+    )
+    setValue("x_user_names", JSON.stringify(newUserNameValues))
+  }
+
+  const getUserName = (url: string) => {
+    if (!url) return ""
+
+    const match = url.match(/x\.com\/([^/]+)/)
+
+    if (match && match[1] !== "home") {
+      return match[1]
+    }
+
+    return url
+  }
+
+  const renderKolList = () => {
+    return (
+      <div className="mt-6">
+        <span className="text-mercury-700">
+          <span className="text-base-sb text-mercury-950">Following list </span>
+          Your agent will subscribe to the information source from the following
+          X account:
+        </span>
+        <div className="mt-4">
+          <div className="flex flex-wrap items-center gap-1">
+            {isArray(xUserNameValues) &&
+              xUserNameValues.map((item: any) => {
+                const userName = item?.user_name
+                return (
+                  <div
+                    className="flex items-center gap-1 rounded-lg border-[2px] border-brown-500 p-1"
+                    key={userName}
+                  >
+                    <span className="text-base-b text-mercury-900">
+                      @{userName}
+                    </span>
+                    <div
+                      className="cursor-pointer"
+                      onClick={() => removeUserFollow(userName)}
+                    >
+                      <CloseFilledIcon size={20} color="#A2845E" />
+                    </div>
+                  </div>
+                )
+              })}
+          </div>
+
+          {isShowInput && (
+            <Input
+              type="text"
+              placeholder="Enter X (Twitter) profile link or username"
+              className="w-1/2"
+              classNames={{
+                mainWrapper: "border border-mercury-400 rounded-lg mt-4",
+                inputWrapper: " bg-mercury-70",
+              }}
+              endContent={
+                <Button
+                  className="h-[30px] rounded-full border border-mercury-50 bg-mercury-950 max-sm:h-[38px]"
+                  onPress={() => {
+                    if (!inputValue) return
+                    const newXUserNames = [
+                      ...xUserNameValues,
+                      { user_name: inputValue },
+                    ]
+                    const uniqueNewXUserNames = uniqBy(
+                      newXUserNames,
+                      "user_name",
+                    )
+                    if (uniqueNewXUserNames.length > 10)
+                      return toast.warning(
+                        "You have reached the limit for following X accounts",
+                      )
+                    setValue(
+                      "x_user_names",
+                      JSON.stringify(uniqueNewXUserNames),
+                    )
+                    setInputValue("")
+                    toggleShowInput()
+                  }}
+                >
+                  <span className="text-base text-mercury-30 max-sm:text-[14px]">
+                    Save
+                  </span>
+                </Button>
+              }
+              onChange={(e) => {
+                const value = e.target.value
+                const newValue = getUserName(value)
+                setInputValue(newValue)
+              }}
+            />
+          )}
+
+          {!isShowInput && (
+            <div
+              onClick={() => toggleShowInput()}
+              className="mt-3 flex cursor-pointer items-center gap-1"
+            >
+              <TablerPlusIcon color="#A2845E" size={20} />
+              <span className="text-base-md text-brown-10">
+                Add account (Max. 10)
+              </span>
+            </div>
+          )}
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -122,116 +261,130 @@ const Functions: React.FC<{
         }
       />
 
-      <div className="mt-4 flex w-full gap-4">
-        <div className="flex w-[40%] flex-col justify-between rounded-[22px] border-1 border-white bg-mercury-30 p-4">
-          <div>
-            <span className="text-base-sb text-mercury-950">
-              Post Interval:
-            </span>
-            <br />
+      <ComingSoon
+        childrenClassName={!!twitterUsername ? "" : "opacity-50"}
+        content="You need to bind an X account to use this feature"
+        isOffComing={!!twitterUsername}
+      >
+        <div>
+          <div className="mt-4 flex w-full gap-4 max-md:flex-wrap">
+            <div className="flex w-[40%] flex-col justify-between rounded-[22px] border-1 border-white bg-mercury-30 p-4 max-md:w-full">
+              <div>
+                <span className="text-base-sb text-mercury-950">
+                  Post Interval:
+                </span>
+                <br />
+                <span className="text-mercury-700">
+                  Choose how often to post tweets.
+                </span>
+              </div>
+
+              <Controller
+                name="post_interval"
+                control={control}
+                render={({ field: { value, onChange } }: any) => {
+                  return (
+                    <div className="flex items-center gap-3">
+                      <Select
+                        className="max-w-[50%]"
+                        radius="full"
+                        classNames={{
+                          trigger: "!bg-mercury-100",
+                        }}
+                        onChange={(e) => onChange(e.target.value)}
+                        selectedKeys={value ? [value] : ""}
+                      >
+                        {POST_INTERVAL.map((record) => (
+                          <SelectItem key={record.value}>
+                            {record.label}
+                          </SelectItem>
+                        ))}
+                      </Select>
+                    </div>
+                  )
+                }}
+              />
+            </div>
+
+            <div className="pointer-events-none w-[60%] rounded-[22px] bg-mercury-30 p-4 opacity-50 max-md:w-full">
+              <span className="text-base-sb text-mercury-950">Functions</span>
+              <div className="mt-4 flex flex-wrap justify-between gap-y-6">
+                {TWITTER_FEATURE.map((item, index) => {
+                  return (
+                    <div
+                      className="flex min-w-[190px] items-center justify-between max-sm:w-full"
+                      key={index}
+                    >
+                      <div className="flex items-center gap-1">
+                        {item.icon}
+                        <span className="text-base-md max-sm:text-15">
+                          {item.label}
+                        </span>
+                      </div>
+                      <Switch
+                        isSelected={item.enabled}
+                        aria-label="Automatic updates"
+                      />
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+          </div>
+          <div className="mt-6">
             <span className="text-mercury-700">
-              Choose how often to post tweets.
+              <span className="text-base-sb text-mercury-950">
+                X Categories{" "}
+              </span>
+              Your agent will post, follow, quote, and more with the following
+              data sources.
             </span>
+
+            <div className="mt-4 flex items-center justify-between gap-2 max-md:flex-wrap">
+              <Controller
+                name="category"
+                control={control}
+                render={({ field: { value, onChange } }: any) => {
+                  return (
+                    <Select
+                      className="max-w-[20%] max-md:max-w-full"
+                      radius="full"
+                      classNames={{
+                        trigger: "!bg-mercury-100",
+                      }}
+                      onChange={(e) => {
+                        onChange(e.target.value)
+                        onSelectCategory(e.target.value)
+                      }}
+                      selectedKeys={value ? [value] : ""}
+                    >
+                      {CATEGORIES.map((value) => (
+                        <SelectItem key={`${value}`}>{value}</SelectItem>
+                      ))}
+                    </Select>
+                  )
+                }}
+              />
+
+              <div className="flex w-full flex-wrap items-center gap-1 rounded-lg border border-mercury-400 bg-mercury-70 p-2">
+                {dataSources.map((item: string) => {
+                  return (
+                    <div
+                      className="rounded-lg border-[2px] border-brown-500 p-1"
+                      key={item}
+                    >
+                      <span className="text-base-b text-mercury-900">
+                        {item}
+                      </span>
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
           </div>
-
-          <Controller
-            name="post_interval"
-            control={control}
-            render={({ field: { value, onChange } }: any) => {
-              return (
-                <div className="flex items-center gap-3">
-                  <Select
-                    className="max-w-[50%]"
-                    radius="full"
-                    classNames={{
-                      trigger: "!bg-mercury-100",
-                    }}
-                    onChange={(e) => onChange(e.target.value)}
-                    selectedKeys={value ? [value] : ""}
-                  >
-                    {POST_INTERVAL.map((record) => (
-                      <SelectItem key={record.value}>{record.label}</SelectItem>
-                    ))}
-                  </Select>
-                </div>
-              )
-            }}
-          />
+          {renderKolList()}
         </div>
-
-        <div className="pointer-events-none w-[60%] rounded-[22px] bg-mercury-30 p-4 opacity-50">
-          <span className="text-base-sb text-mercury-950">Functions</span>
-          <div className="mt-4 flex flex-wrap justify-between gap-y-6">
-            {TWITTER_FEATURE.map((item, index) => {
-              return (
-                <div
-                  className="flex min-w-[190px] items-center justify-between max-sm:w-full"
-                  key={index}
-                >
-                  <div className="flex items-center gap-1">
-                    {item.icon}
-                    <span className="text-base-md max-sm:text-15">
-                      {item.label}
-                    </span>
-                  </div>
-                  <Switch
-                    isSelected={item.enabled}
-                    aria-label="Automatic updates"
-                  />
-                </div>
-              )
-            })}
-          </div>
-        </div>
-      </div>
-
-      <div className="mt-6">
-        <span className="text-mercury-700">
-          <span className="text-base-sb text-mercury-950">X Categories </span>
-          Your agent will post, follow, quote, and more with the following data
-          sources.
-        </span>
-
-        <div className="mt-4 flex items-center justify-between gap-2">
-          <Controller
-            name="category"
-            control={control}
-            render={({ field: { value, onChange } }: any) => {
-              return (
-                <Select
-                  className="max-w-[20%]"
-                  radius="full"
-                  classNames={{
-                    trigger: "!bg-mercury-100",
-                  }}
-                  onChange={(e) => {
-                    onChange(e.target.value)
-                    onSelectCategory(e.target.value)
-                  }}
-                  selectedKeys={value ? [value] : ""}
-                >
-                  {CATEGORIES.map((value) => (
-                    <SelectItem key={`${value}`}>{value}</SelectItem>
-                  ))}
-                </Select>
-              )
-            }}
-          />
-
-          <div className="flex w-full items-center gap-1 rounded-lg border border-mercury-400 bg-mercury-70 p-2">
-            {dataSources.map((item: string) => {
-              return (
-                <div
-                  className="rounded-lg border-[2px] border-brown-500 p-1"
-                  key={item}
-                >
-                  <span className="text-base-b text-mercury-900">{item}</span>
-                </div>
-              )
-            })}
-          </div>
-        </div>
-      </div>
+      </ComingSoon>
     </div>
   )
 }

@@ -3,6 +3,7 @@ import { CircleCheckFilled, WarningIcon } from "@components/Icons"
 import { PATH_NAMES } from "@constants/index"
 import useAuthState from "@hooks/useAuthState"
 import { Button } from "@nextui-org/react"
+import { numberWithCommas } from "@utils/format"
 import { useNavigate } from "react-router-dom"
 
 const MyPoints = () => {
@@ -22,7 +23,7 @@ const MyPoints = () => {
         <div className="flex items-center gap-2">
           <img src={xDSTL} width={24} height={24} />
           <span className="text-[32px] font-bold text-white">
-            {totalxDstlPoint?.toFixed(2)}
+            {numberWithCommas(totalxDstlPoint)}
           </span>
         </div>
       </div>
@@ -31,7 +32,7 @@ const MyPoints = () => {
           <div className="mb-6 flex items-center justify-between leading-none">
             <span className="font-medium text-mercury-600">Balance:</span>
             <span className="font-medium text-mercury-600">
-              {totalxDstlPoint} xDSTL ($-)
+              {numberWithCommas(totalxDstlPoint)} xDSTL ($-)
             </span>
           </div>
 

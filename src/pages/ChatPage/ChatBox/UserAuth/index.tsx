@@ -14,6 +14,7 @@ import { getActiveColorRandomById } from "@utils/index"
 import { useLocation, useNavigate } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
 import LoginPhantom from "./LoginPhantom"
+import { numberWithCommas } from "@utils/format"
 
 interface UserAuthProps {
   connectWallet: any
@@ -72,7 +73,9 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
           >
             <img src={xDSTL} width={24} height={24} />
             <span className="text-base text-mercury-900">
-              <span className="font-bold">{totalxDstlPoint?.toFixed(2)}</span>{" "}
+              <span className="font-bold">
+                {numberWithCommas(totalxDstlPoint)}
+              </span>{" "}
               xDSTL
             </span>
             <div className="absolute -right-2 -top-2 h-3 w-3 rounded-full bg-[#FF3B30] max-md:hidden" />

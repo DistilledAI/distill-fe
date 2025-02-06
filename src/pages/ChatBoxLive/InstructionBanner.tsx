@@ -33,6 +33,7 @@ const InstructionBanner = () => {
         <img
           src={bannerConnectWallet}
           className="h-[145px] w-[258px] rounded-lg border border-mercury-300"
+          loading="lazy"
         />
       </div>
     </div>

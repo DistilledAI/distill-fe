@@ -7,12 +7,14 @@ const ComingSoon: React.FC<{
   position?: "right" | "top"
   wrapperClassName?: string
   isOffComing?: boolean
+  childrenClassName?: string
 }> = ({
   children,
   content = "Coming Soon",
   position = "top",
   wrapperClassName,
   isOffComing,
+  childrenClassName,
 }) => {
   return (
     <div className={twMerge("group relative z-[1] w-full", wrapperClassName)}>
@@ -35,7 +37,12 @@ const ComingSoon: React.FC<{
           {content}
         </div>
       )}
-      <div className={twMerge(isOffComing ? "" : "pointer-events-none")}>
+      <div
+        className={twMerge(
+          isOffComing ? "" : "pointer-events-none",
+          childrenClassName,
+        )}
+      >
         {children}
       </div>
     </div>
