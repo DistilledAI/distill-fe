@@ -25,6 +25,7 @@ export interface IUser {
   kycTwitter?: string
   kycEmail?: string
   walletActive?: number
+  totalMax?: number
 }
 
 interface LoginSuccessPayload {

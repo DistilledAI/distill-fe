@@ -7,6 +7,7 @@ import {
 } from "@reducers/userTopChatAnnounceSlice"
 import { useEffect } from "react"
 import { Link } from "react-router-dom"
+import { getUserPaidCreateAgent } from "services/user"
 import { twMerge } from "tailwind-merge"
 
 const USER_ID_LIST = [
@@ -22,7 +23,7 @@ const USER_ID_LIST = [
   67139, 67226, 1698, 1519, 98345,
 ]
 
-const TopChatAnnounce = () => {
+const JoinCreatorGroupAnnounce = () => {
   const dispatch = useAppDispatch()
   const topChatAnnounce: TopChatAnnounceState = useAppSelector(
     (state) => state.topChatAnnounce,
@@ -31,16 +32,22 @@ const TopChatAnnounce = () => {
   const { user, isAnonymous } = useAuthState()
 
   useEffect(() => {
-    ;(async () => {
-      if (user?.id && !isAnonymous && topChatAnnounce !== "dontShowAgain") {
-        // const res = await getUserTopChat()
-        if (USER_ID_LIST.includes(Number(user?.id))) {
-          dispatch(updateTopChatAnnounce("open"))
-        } else {
-          dispatch(updateTopChatAnnounce("close"))
+    let timeout: any = null
+    timeout = setTimeout(() => {
+      ;(async () => {
+        if (user?.id && !isAnonymous && topChatAnnounce !== "dontShowAgain") {
+          const res = await getUserPaidCreateAgent()
+
+          if (USER_ID_LIST.includes(Number(user?.id)) || res?.data?.result) {
+            dispatch(updateTopChatAnnounce("open"))
+          } else {
+            dispatch(updateTopChatAnnounce("close"))
+          }
         }
-      }
-    })()
+      })()
+    }, 2000)
+
+    return () => clearTimeout(timeout)
   }, [user?.id, isAnonymous, topChatAnnounce, USER_ID_LIST])
 
   if (topChatAnnounce === "close" || topChatAnnounce === "dontShowAgain")
@@ -97,4 +104,4 @@ const TopChatAnnounce = () => {
   )
 }
 
-export default TopChatAnnounce
+export default JoinCreatorGroupAnnounce

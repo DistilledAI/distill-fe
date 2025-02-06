@@ -1,6 +1,5 @@
 import { useAppSelector } from "@hooks/useAppRedux"
 import useWindowSize from "@hooks/useWindowSize"
-// import ClanShortInfo from "@pages/AgentClan/ClanShortInfo"
 import { IMessageBox } from "@pages/ChatPage/ChatBox/ChatMessages/helpers"
 import {
   GroupConfig,
@@ -11,12 +10,12 @@ import { useQuery } from "@tanstack/react-query"
 import React, { lazy, useState } from "react"
 import { twMerge } from "tailwind-merge"
 import { QueryDataKeys } from "types/queryDataKeys"
-import InstructionBanner from "./InstructionBanner"
 import ListMessage from "./ListMessage"
 import SendMessage from "./SendMessage"
 
 const ClanShortInfo = lazy(() => import("@pages/AgentClan/ClanShortInfo"))
 const ToggleActionsMobile = lazy(() => import("./ToggleActionsMobile"))
+const InstructionBanner = lazy(() => import("./InstructionBanner"))
 
 const RightContent: React.FC<{
   isClan?: boolean
@@ -24,6 +23,7 @@ const RightContent: React.FC<{
 }> = ({ isClan = false, groupDetail }) => {
   const { isMobile } = useWindowSize()
   const sidebarCollapsed = useAppSelector((state) => state.sidebarCollapsed)
+  const instructBanner = useAppSelector((state) => state.instructBanner)
   const { chatId } = useGetChatId()
   const [replyUsername, setReplyUsername] = useState<string>("")
   const [replyId, setReplyId] = useState<number>(NaN)
@@ -54,7 +54,7 @@ const RightContent: React.FC<{
         isCloseLiveChat && "h-[113px] flex-none md:flex-1",
       )}
     >
-      {isMobile ? <ToggleActionsMobile /> : null}
+      {isMobile && <ToggleActionsMobile />}
       {!isMobile && isClan && <ClanShortInfo />}
       <ListMessage
         onReply={(message: IMessageBox) => {
@@ -69,7 +69,6 @@ const RightContent: React.FC<{
         isClan={isClan}
         isCloseLiveChat={isCloseLiveChat}
       />
-
       <SendMessage
         sidebarCollapsed={sidebarCollapsed}
         tradeLink={groupConfig?.tradeLink as string}
@@ -82,8 +81,7 @@ const RightContent: React.FC<{
         hasFocus={hasFocus}
         setHasFocus={setHasFocus}
       />
-
-      <InstructionBanner />
+      {instructBanner && <InstructionBanner />}
     </div>
   )
 }

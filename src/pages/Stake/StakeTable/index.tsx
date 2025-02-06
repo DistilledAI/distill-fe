@@ -63,12 +63,17 @@ const StakeTable: React.FC<{
   const [isWhiteList, setIsWhiteList] = useState(false)
   const [searchParams] = useSearchParams()
   const tokenAddress = searchParams.get("token")
+  const isNoPeriod = tokenAddress === StakeTokenAddress.Guard
   const wallet = useWallet()
 
   const checkIsWhiteList = async () => {
     if (!tokenAddress || !wallet) return
     const web3Locking = new Web3SolanaLockingToken()
-    const resWhiteList = await web3Locking.isWhiteList(tokenAddress, wallet)
+    const resWhiteList = await web3Locking.isWhiteList(
+      tokenAddress,
+      wallet,
+      isNoPeriod,
+    )
     setIsWhiteList(resWhiteList)
   }
 

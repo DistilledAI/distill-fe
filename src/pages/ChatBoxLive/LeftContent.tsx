@@ -1,27 +1,28 @@
 import { bgBtcPrediction, bitmaxAva, btcIconRote } from "@assets/images"
 import { solanaCircleIcon } from "@assets/svg"
 import AudioClanCustom from "@components/AudioClanCustom"
-import BetModal from "@components/BetModal"
 import { AgentDotLandIcon } from "@components/Icons/FilledSquareCircleIcon"
-import VideoCustom from "@components/VideoCustom"
 import { PATH_NAMES } from "@constants/index"
-import { Image, Skeleton, useDisclosure } from "@nextui-org/react"
+import { Skeleton, useDisclosure } from "@nextui-org/react"
 import {
   GroupConfig,
   UserGroup,
 } from "@pages/ChatPage/ChatBox/LeftBar/useFetchGroups"
 import { useQueries, useQueryClient } from "@tanstack/react-query"
-import React, { useEffect, useState } from "react"
+import React, { lazy, Suspense, useEffect, useState } from "react"
 import { useSearchParams } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
 import { QueryDataKeys } from "types/queryDataKeys"
-import AgentDescription from "./AgentDescription"
 import AgentSocials from "./AgentSocials"
 import ContractDisplay from "./ContractDisplay"
 import SkeletonInfo, { SkeletonDesc } from "./SkeletonInfo"
 import TradeTokenButton from "./TradeTokenButton"
 import { StakeTokenAddress } from "@pages/Stake"
 import VaultButton from "./VaultButton"
+
+const VideoCustom = lazy(() => import("@components/VideoCustom"))
+const BetModal = lazy(() => import("@components/BetModal"))
+const AgentDescription = lazy(() => import("./AgentDescription"))
 
 const LeftContent: React.FC<{
   groupDetail: UserGroup | null
@@ -86,26 +87,29 @@ const LeftContent: React.FC<{
           <Skeleton className="h-[300px] rounded-[32px] md:h-[400px]"></Skeleton>
         ) : groupConfig?.videoLive ? (
           <div className="relative">
-            <VideoCustom
-              videoSrc={groupConfig.videoLive}
-              classNames={{
-                video: twMerge(
-                  "h-full min-h-[350px] w-full rounded-[32px] object-cover max-h-[350px] md:max-h-[400px] md:h-auto",
-                ),
-              }}
-              skeletonPreview={
-                <Skeleton className="h-[300px] rounded-[32px] md:h-[400px]"></Skeleton>
-              }
-              imgPreview={groupConfig.imageLive}
-              isVolumeIcon
-              onMuteToggle={(muted) =>
-                queryClient.setQueryData<boolean>(
-                  [QueryDataKeys.AGENT_LIVE_VOLUME],
-                  () => muted,
-                )
-              }
-              muted={isMuted}
-            />
+            <Suspense fallback={null}>
+              <VideoCustom
+                videoSrc={groupConfig.videoLive}
+                classNames={{
+                  video: twMerge(
+                    "h-full min-h-[350px] w-full rounded-[32px] object-cover max-h-[350px] md:max-h-[400px] md:h-auto",
+                  ),
+                }}
+                skeletonPreview={
+                  <Skeleton className="h-[300px] rounded-[32px] md:h-[400px]"></Skeleton>
+                }
+                imgPreview={groupConfig.imageLive}
+                isVolumeIcon
+                onMuteToggle={(muted) =>
+                  queryClient.setQueryData<boolean>(
+                    [QueryDataKeys.AGENT_LIVE_VOLUME],
+                    () => muted,
+                  )
+                }
+                muted={isMuted}
+              />
+            </Suspense>
+
             {groupConfig.isPrediction && (
               <div
                 onClick={onOpen}
@@ -128,15 +132,13 @@ const LeftContent: React.FC<{
                   className="flex h-[50px] items-center gap-2 rounded-full px-3"
                 >
                   <div className="relative">
-                    <Image
+                    <img
                       className="h-8 w-8 rounded-full"
                       src={bitmaxAva}
                       loading="lazy"
                     />
-                    <Image
-                      classNames={{
-                        wrapper: "w-4 h-4 absolute bottom-[-2px] right-[-2px]",
-                      }}
+                    <img
+                      className="absolute bottom-[-2px] right-[-2px] h-4 w-4"
                       src={btcIconRote}
                       loading="lazy"
                     />
@@ -149,9 +151,7 @@ const LeftContent: React.FC<{
             )}
           </div>
         ) : (
-          <div className="relative">
-            <ImageLive groupConfig={groupConfig} />
-          </div>
+          <ImageLive groupConfig={groupConfig} />
         )}
 
         {isFetched && groupDetail !== null ? (
@@ -197,7 +197,11 @@ const LeftContent: React.FC<{
         )}
       </div>
 
-      {isOpen && <BetModal onOpenChange={onOpenChange} isOpen={isOpen} />}
+      {isOpen && (
+        <Suspense fallback={null}>
+          <BetModal onOpenChange={onOpenChange} isOpen={isOpen} />
+        </Suspense>
+      )}
     </div>
   )
 }
@@ -208,15 +212,12 @@ const ImageLive = ({ groupConfig }: { groupConfig: GroupConfig | null }) => {
 
   return (
     <div className="relative h-[300px] min-h-[300px] w-full overflow-hidden rounded-[32px] bg-mercury-70 md:h-[400px]">
-      <Image
-        classNames={{
-          wrapper: twMerge("w-full h-full !max-w-full", !isLoaded && "hidden"),
-        }}
-        className="h-full w-full object-cover"
+      <img
+        className={twMerge("h-full w-full object-cover", !isLoaded && "hidden")}
         src={groupConfig?.imageLive}
-        alt="clan"
-        disableAnimation
+        alt="agent avatar clan"
         onLoad={() => setIsLoaded(true)}
+        loading="lazy"
       />
       {!isLoaded && (
         <Skeleton className="h-[300px] rounded-[32px] md:h-[400px]" />
