@@ -123,3 +123,10 @@ export const getUserTopChat = async () => {
     url: endpoint.GET_USER_TOP_CHAT,
   })
 }
+
+export const getUserPaidCreateAgent = async () => {
+  return fetchApiAuth({
+    method: "GET",
+    url: endpoint.GET_VALIDATE_USER_JOIN_CREATOR_GROUP,
+  })
+}

@@ -119,6 +119,7 @@ const VideoCustom = ({
   return (
     <div className={twMerge("relative", classNames?.wrapper)}>
       <video
+        preload="auto"
         ref={videoRef}
         muted={muted}
         autoPlay
@@ -136,7 +137,12 @@ const VideoCustom = ({
         <track kind="captions" />
       </video>
       {!!imgPreview && !isLoaded && (
-        <img className={classNames?.video} src={imgPreview} alt="preview" />
+        <img
+          className={classNames?.video}
+          src={imgPreview}
+          alt="preview"
+          loading="lazy"
+        />
       )}
       {!imgPreview && !isLoaded && skeletonPreview}
       <div></div>
