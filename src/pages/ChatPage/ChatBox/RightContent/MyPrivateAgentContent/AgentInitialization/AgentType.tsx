@@ -109,7 +109,7 @@ const AgentType: React.FC<{ isDisabled?: boolean }> = ({ isDisabled }) => {
   return (
     <div>
       <CategoryLabel text="Agent Type" icon={<UserHexagonIcon />} />
-      <div className="mb-2 mt-4 flex items-center gap-3">
+      <div className="mb-2 mt-4 flex items-center gap-3 max-md:flex-wrap">
         {AGENT_TYPE_OPTIONS.map((item: any) => {
           const isDefaiType = item.key === AGENT_TYPE_KEY.DEFAI
 
@@ -121,7 +121,7 @@ const AgentType: React.FC<{ isDisabled?: boolean }> = ({ isDisabled }) => {
                 const isSelected = value === item.key
                 return (
                   <div
-                    className="flex h-[200px] items-start justify-between gap-3 rounded-[14px] border-[2px] border-transparent bg-mercury-30 p-4 hover:cursor-pointer aria-checked:opacity-60 aria-selected:border-brown-500"
+                    className="flex h-[200px] items-start justify-between gap-3 rounded-[14px] border-[2px] border-transparent bg-mercury-30 p-4 hover:cursor-pointer aria-checked:opacity-60 aria-selected:border-brown-500 max-md:h-auto"
                     key={item.key}
                     aria-selected={isSelected}
                     aria-checked={isDisabled}

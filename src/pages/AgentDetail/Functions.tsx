@@ -122,8 +122,8 @@ const Functions: React.FC<{
         }
       />
 
-      <div className="mt-4 flex w-full gap-4">
-        <div className="flex w-[40%] flex-col justify-between rounded-[22px] border-1 border-white bg-mercury-30 p-4">
+      <div className="mt-4 flex w-full gap-4 max-md:flex-wrap">
+        <div className="flex w-[40%] flex-col justify-between rounded-[22px] border-1 border-white bg-mercury-30 p-4 max-md:w-full">
           <div>
             <span className="text-base-sb text-mercury-950">
               Post Interval:
@@ -159,7 +159,7 @@ const Functions: React.FC<{
           />
         </div>
 
-        <div className="pointer-events-none w-[60%] rounded-[22px] bg-mercury-30 p-4 opacity-50">
+        <div className="pointer-events-none w-[60%] rounded-[22px] bg-mercury-30 p-4 opacity-50 max-md:w-full">
           <span className="text-base-sb text-mercury-950">Functions</span>
           <div className="mt-4 flex flex-wrap justify-between gap-y-6">
             {TWITTER_FEATURE.map((item, index) => {
@@ -192,14 +192,14 @@ const Functions: React.FC<{
           sources.
         </span>
 
-        <div className="mt-4 flex items-center justify-between gap-2">
+        <div className="mt-4 flex items-center justify-between gap-2 max-md:flex-wrap">
           <Controller
             name="category"
             control={control}
             render={({ field: { value, onChange } }: any) => {
               return (
                 <Select
-                  className="max-w-[20%]"
+                  className="max-w-[20%] max-md:max-w-full"
                   radius="full"
                   classNames={{
                     trigger: "!bg-mercury-100",
@@ -218,7 +218,7 @@ const Functions: React.FC<{
             }}
           />
 
-          <div className="flex w-full items-center gap-1 rounded-lg border border-mercury-400 bg-mercury-70 p-2">
+          <div className="flex w-full flex-wrap items-center gap-1 rounded-lg border border-mercury-400 bg-mercury-70 p-2">
             {dataSources.map((item: string) => {
               return (
                 <div
