@@ -60,7 +60,7 @@ const ChatWindowV2: React.FC<ChatWindowProps> = ({
     count: itemCount,
     getScrollElement: () => parentRef.current,
     estimateSize: () => 72,
-    overscan: 5,
+    overscan: 10,
     getItemKey: useCallback(
       (index: number) => {
         if (showHeader && index === 0) return "header"
@@ -80,17 +80,15 @@ const ChatWindowV2: React.FC<ChatWindowProps> = ({
         scrollHeight - clientHeight - scrollTop <= DEFAULT_AT_BOTTOM_THRESHOLD
       setIsScrollBottom(!isNearBottom)
 
-      requestAnimationFrame(async () => {
-        if (scrollTop === 0 && hasPreviousMore) {
-          const newMessagesIndex = await onLoadPrevMessages()
-          if (newMessagesIndex) {
-            virtualizer.scrollToIndex(newMessagesIndex, {
-              align: "end",
-              behavior: "smooth",
-            })
-          }
+      if (scrollTop === 0 && hasPreviousMore) {
+        const newMessagesIndex = await onLoadPrevMessages()
+        if (newMessagesIndex) {
+          virtualizer.scrollToIndex(newMessagesIndex, {
+            align: "end",
+            behavior: "auto",
+          })
         }
-      })
+      }
     },
     [hasPreviousMore, onLoadPrevMessages, virtualizer],
   )
@@ -181,7 +179,7 @@ const ChatWindowV2: React.FC<ChatWindowProps> = ({
         "relative h-full overflow-y-auto md:max-h-[calc(100%-100px)]",
         isChatActions && "max-h-[calc(100%-56px)] md:max-h-[calc(100%-152px)]",
         className,
-        !isScrollBottom && "scroll-smooth",
+        !isScrollBottom && "md:scroll-smooth",
       )}
       style={style}
       ref={parentRef}
@@ -210,6 +208,10 @@ const ChatWindowV2: React.FC<ChatWindowProps> = ({
             align: "end",
             behavior: "auto",
           })
+
+          if (parentRef.current) {
+            parentRef.current.scrollTop = parentRef.current.scrollHeight
+          }
         }}
       />
     </div>
