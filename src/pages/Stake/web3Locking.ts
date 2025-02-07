@@ -3,59 +3,32 @@ import {
   STAKING_VAULT_SEED,
   STAKING_UNBONDING_INFO_SEED,
 } from "./config"
-import * as anchor from "@coral-xyz/anchor"
 import { BN, Program } from "@coral-xyz/anchor"
 import { WalletContextState } from "@solana/wallet-adapter-react"
-import {
-  ComputeBudgetProgram,
-  Connection,
-  PublicKey,
-  Transaction,
-} from "@solana/web3.js"
+import { PublicKey } from "@solana/web3.js"
 import { FungStakingVault } from "./idl/staking_vault.ts"
 import idl from "./idl/staking_vault.json"
 import guardIdl from "./idl/guard_staking_vault.json"
-import { handleTransaction } from "./utils"
-import { SOLANA_RPC, SOLANA_WS } from "program/utils/web3Utils.ts"
 import { getDurationByAddress } from "./helpers.ts"
+import { Web3StakeBase } from "./web3StakeBase.ts"
 
-export const vaultProgramId = new PublicKey(idl.address)
-export const guardVaultProgramId = new PublicKey(guardIdl.address)
+const vaultInterface = JSON.parse(JSON.stringify(idl))
+const guardVaultInterface = JSON.parse(JSON.stringify(guardIdl))
 
-export const vaultInterface = JSON.parse(JSON.stringify(idl))
-export const guardVaultInterface = JSON.parse(JSON.stringify(guardIdl))
+export class Web3SolanaLockingToken extends Web3StakeBase {
+  private hasPeriod: boolean
 
-export class Web3SolanaLockingToken {
-  private connection: Connection
-
-  constructor() {
-    this.connection = new Connection(SOLANA_RPC, {
-      commitment: "confirmed",
-      wsEndpoint: SOLANA_WS,
-    })
+  constructor(hasPeriod = true) {
+    super()
+    this.hasPeriod = hasPeriod
   }
 
-  private _getProvider(wallet: WalletContextState): anchor.AnchorProvider {
-    return new anchor.AnchorProvider(this.connection, wallet as any, {
-      preflightCommitment: "confirmed",
-    })
-  }
-
-  private _getProgram(
-    isNoPeriod: boolean,
-    provider: anchor.AnchorProvider,
-  ): Program<FungStakingVault> {
-    const idl = isNoPeriod ? guardVaultInterface : vaultInterface
-    return new Program(idl, provider) as Program<FungStakingVault>
-  }
-
-  private _getVaultPda(
+  private getVaultPda(
     stakeCurrencyMint: string,
-    isNoPeriod: boolean,
     program: Program<FungStakingVault>,
   ): PublicKey {
     const mintKey = new PublicKey(stakeCurrencyMint)
-    const seeds = isNoPeriod
+    const seeds = !this.hasPeriod
       ? [Buffer.from(STAKING_VAULT_SEED), mintKey.toBytes()]
       : [
           Buffer.from(STAKING_VAULT_SEED),
@@ -69,7 +42,7 @@ export class Web3SolanaLockingToken {
     return vaultPda
   }
 
-  private _getVaultPdaWithUnbondingPeriod(
+  private getVaultPdaWithUnbondingPeriod(
     stakeCurrencyMint: string,
     unbondingPeriod: number,
     program: Program<FungStakingVault>,
@@ -87,7 +60,7 @@ export class Web3SolanaLockingToken {
     return vaultPda
   }
 
-  private _getUserStakePda(
+  private getUserStakePda(
     vaultPda: PublicKey,
     wallet: WalletContextState,
     program: Program<FungStakingVault>,
@@ -104,7 +77,7 @@ export class Web3SolanaLockingToken {
     return userStakePda
   }
 
-  private _getUnbondingInfoPda(
+  private getUnbondingInfoPda(
     userStakePda: PublicKey,
     currentId: number,
     program: Program<FungStakingVault>,
@@ -121,61 +94,24 @@ export class Web3SolanaLockingToken {
     return unbondingInfoPda
   }
 
-  private async _sendTransaction(
-    provider: anchor.AnchorProvider,
-    wallet: WalletContextState,
-    instructions: anchor.web3.TransactionInstruction[],
-  ): Promise<any> {
-    const transaction = new Transaction()
-    const cpIx = ComputeBudgetProgram.setComputeUnitPrice({
-      microLamports: 1_000_000,
-    })
-    const cuIx = ComputeBudgetProgram.setComputeUnitLimit({ units: 200_000 })
-
-    transaction.add(cpIx, cuIx)
-    transaction.add(...instructions)
-
-    transaction.feePayer = wallet.publicKey!
-    transaction.recentBlockhash = (
-      await provider.connection.getLatestBlockhash()
-    ).blockhash
-
-    const signedTx = await wallet.signTransaction!(transaction)
-    const serializedTx = signedTx.serialize()
-
-    const signature = await provider.connection.sendRawTransaction(
-      serializedTx,
-      {
-        preflightCommitment: "confirmed",
-        skipPreflight: false,
-      },
-    )
-
-    const result = await provider.connection.confirmTransaction(
-      {
-        signature,
-        ...(await provider.connection.getLatestBlockhash()),
-      },
-      "confirmed",
-    )
-
-    console.log("Transaction successful. Signature:", signature)
-    return result
-  }
-
   async stake(
     unbondingPeriod: number,
     amount: number,
     wallet: WalletContextState,
     stakeCurrencyMint: string,
-    isNoPeriod = false,
   ) {
     try {
-      const provider = this._getProvider(wallet)
-      const program = this._getProgram(isNoPeriod, provider)
-      if (!wallet.publicKey) throw new Error("Wallet not connected")
+      const provider = this.getProvider(wallet)
+      const program = this.getProgram(
+        provider,
+        !this.hasPeriod ? guardVaultInterface : vaultInterface,
+      )
+      if (!wallet.publicKey) {
+        console.error("Wallet not connected")
+        return
+      }
 
-      const stakeIx = isNoPeriod
+      const stakeIx = !this.hasPeriod
         ? await program.methods
             //@ts-ignore
             .stake(new BN(amount))
@@ -192,32 +128,26 @@ export class Web3SolanaLockingToken {
             })
             .instruction()
 
-      return await this._sendTransaction(provider, wallet, [stakeIx])
+      return await this.sendTransaction(provider, wallet, [stakeIx])
     } catch (error: any) {
       console.error("Staking error:", error)
-      const { transaction = "", result } =
-        (await handleTransaction({
-          error,
-          connection: this.connection,
-        })) || {}
-      if (result?.value?.confirmationStatus) {
-        return { transaction, result }
-      }
+      return this.handleTransactionError(error)
     }
   }
 
-  async getStakerInfo(
-    wallet: WalletContextState,
-    stakeCurrencyMint: string,
-    isNoPeriod = false,
-  ) {
+  async getStakerInfo(wallet: WalletContextState, stakeCurrencyMint: string) {
     try {
-      const provider = this._getProvider(wallet)
-      const program = this._getProgram(isNoPeriod, provider)
-      if (!wallet.publicKey) throw new Error("Wallet not connected")
-
-      const vaultPda = this._getVaultPda(stakeCurrencyMint, isNoPeriod, program)
-      const userStakePda = this._getUserStakePda(vaultPda, wallet, program)
+      const provider = this.getProvider(wallet)
+      const program = this.getProgram<FungStakingVault>(
+        provider,
+        !this.hasPeriod ? guardVaultInterface : vaultInterface,
+      )
+      if (!wallet.publicKey) {
+        console.error("Wallet not connected")
+        return
+      }
+      const vaultPda = this.getVaultPda(stakeCurrencyMint, program)
+      const userStakePda = this.getUserStakePda(vaultPda, wallet, program)
 
       const userData = await program.account.stakerInfo.fetch(userStakePda)
       return { totalStake: userData.totalStake }
@@ -227,16 +157,15 @@ export class Web3SolanaLockingToken {
     }
   }
 
-  async getVaultInfo(
-    stakeCurrencyMint: string,
-    wallet: WalletContextState,
-    isNoPeriod = false,
-  ) {
+  async getVaultInfo(stakeCurrencyMint: string, wallet: WalletContextState) {
     try {
-      const provider = this._getProvider(wallet)
-      const program = this._getProgram(isNoPeriod, provider)
+      const provider = this.getProvider(wallet)
+      const program = this.getProgram<FungStakingVault>(
+        provider,
+        !this.hasPeriod ? guardVaultInterface : vaultInterface,
+      )
 
-      const vaultPda = this._getVaultPda(stakeCurrencyMint, isNoPeriod, program)
+      const vaultPda = this.getVaultPda(stakeCurrencyMint, program)
       const vaultData: any = await program.account.vault.fetch(vaultPda)
 
       return {
@@ -249,16 +178,15 @@ export class Web3SolanaLockingToken {
     }
   }
 
-  async isWhiteList(
-    stakeCurrencyMint: string,
-    wallet: WalletContextState,
-    isNoPeriod = false,
-  ) {
+  async isWhiteList(stakeCurrencyMint: string, wallet: WalletContextState) {
     try {
-      const provider = this._getProvider(wallet)
-      const program = this._getProgram(isNoPeriod, provider)
+      const provider = this.getProvider(wallet)
+      const program = this.getProgram<FungStakingVault>(
+        provider,
+        vaultInterface,
+      )
 
-      const vaultPda = this._getVaultPda(stakeCurrencyMint, isNoPeriod, program)
+      const vaultPda = this.getVaultPda(stakeCurrencyMint, program)
       const [whitelistPda] = PublicKey.findProgramAddressSync(
         [Buffer.from("whitelist"), vaultPda.toBytes()],
         program.programId,
@@ -279,19 +207,25 @@ export class Web3SolanaLockingToken {
     stakeCurrencyMint: string,
   ) {
     try {
-      const provider = this._getProvider(wallet)
-      const program = this._getProgram(false, provider)
-      if (!wallet.publicKey) throw new Error("Wallet not connected")
+      const provider = this.getProvider(wallet)
+      const program = this.getProgram<FungStakingVault>(
+        provider,
+        vaultInterface,
+      )
+      if (!wallet.publicKey) {
+        console.error("Wallet not connected")
+        return
+      }
 
-      const vaultPda = this._getVaultPdaWithUnbondingPeriod(
+      const vaultPda = this.getVaultPdaWithUnbondingPeriod(
         stakeCurrencyMint,
         unbondingPeriod,
         program,
       )
-      const userStakePda = this._getUserStakePda(vaultPda, wallet, program)
+      const userStakePda = this.getUserStakePda(vaultPda, wallet, program)
       const userStakeInfo = await program.account.stakerInfo.fetch(userStakePda)
 
-      const unbondingInfoPda = this._getUnbondingInfoPda(
+      const unbondingInfoPda = this.getUnbondingInfoPda(
         userStakePda,
         userStakeInfo.currentId.toNumber() + 1,
         program,
@@ -306,17 +240,10 @@ export class Web3SolanaLockingToken {
         })
         .instruction()
 
-      return await this._sendTransaction(provider, wallet, [unStakeIx])
+      return await this.sendTransaction(provider, wallet, [unStakeIx])
     } catch (error: any) {
       console.error("Unstaking error:", error)
-      const { transaction = "", result } =
-        (await handleTransaction({
-          error,
-          connection: this.connection,
-        })) || {}
-      if (result?.value?.confirmationStatus) {
-        return { transaction, result }
-      }
+      return this.handleTransactionError(error)
     }
   }
 
@@ -325,9 +252,12 @@ export class Web3SolanaLockingToken {
     stakeCurrencyMint: string,
   ) {
     try {
-      const provider = this._getProvider(wallet)
-      const program = this._getProgram(false, provider)
-      if (!wallet.publicKey) throw new Error("Wallet not connected")
+      const provider = this.getProvider(wallet)
+      const program = this.getProgram(provider, vaultInterface)
+      if (!wallet.publicKey) {
+        console.error("Wallet not connected")
+        return
+      }
 
       const accounts = await this.connection.getParsedProgramAccounts(
         program.programId,
@@ -379,9 +309,12 @@ export class Web3SolanaLockingToken {
     stakeCurrencyMint: string,
   ) {
     try {
-      const provider = this._getProvider(wallet)
-      const program = this._getProgram(false, provider)
-      if (!wallet.publicKey) throw new Error("Wallet not connected")
+      const provider = this.getProvider(wallet)
+      const program = this.getProgram(provider, vaultInterface)
+      if (!wallet.publicKey) {
+        console.error("Wallet not connected")
+        return
+      }
 
       const withdrawIx = await program.methods
         .claimDeStake(new BN(id), new BN(unbondingPeriod))
@@ -391,17 +324,10 @@ export class Web3SolanaLockingToken {
         })
         .instruction()
 
-      return await this._sendTransaction(provider, wallet, [withdrawIx])
+      return await this.sendTransaction(provider, wallet, [withdrawIx])
     } catch (error: any) {
       console.error("Withdrawal error:", error)
-      const { transaction = "", result } =
-        (await handleTransaction({
-          error,
-          connection: this.connection,
-        })) || {}
-      if (result?.value?.confirmationStatus) {
-        return { transaction, result }
-      }
+      return this.handleTransactionError(error)
     }
   }
 }

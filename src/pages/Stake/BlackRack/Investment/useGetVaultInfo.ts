@@ -42,7 +42,7 @@ const useGetVaultInfo = () => {
       const dt = await web3Invest.getVault(wallet)
       setLoading(false)
       if (amount) {
-        const amountDisplay = toBN(amount as any)
+        const amountDisplay = toBN(amount)
           .div(10 ** SPL_DECIMAL)
           .toNumber()
         setTotal(amountDisplay)
