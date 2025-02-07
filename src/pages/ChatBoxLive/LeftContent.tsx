@@ -9,7 +9,7 @@ import {
   UserGroup,
 } from "@pages/ChatPage/ChatBox/LeftBar/useFetchGroups"
 import { useQueries, useQueryClient } from "@tanstack/react-query"
-import React, { lazy, Suspense, useEffect, useState } from "react"
+import React, { lazy, useEffect, useState } from "react"
 import { useSearchParams } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
 import { QueryDataKeys } from "types/queryDataKeys"
@@ -19,10 +19,10 @@ import SkeletonInfo, { SkeletonDesc } from "./SkeletonInfo"
 import TradeTokenButton from "./TradeTokenButton"
 import { StakeTokenAddress } from "@pages/Stake"
 import VaultButton from "./VaultButton"
+import AgentDescription from "./AgentDescription"
+import VideoCustom from "@components/VideoCustom"
 
-const VideoCustom = lazy(() => import("@components/VideoCustom"))
 const BetModal = lazy(() => import("@components/BetModal"))
-const AgentDescription = lazy(() => import("./AgentDescription"))
 
 const LeftContent: React.FC<{
   groupDetail: UserGroup | null
@@ -82,33 +82,31 @@ const LeftContent: React.FC<{
         </div>
       )}
 
-      <div className="mt-5 flex h-full flex-col md:h-fit">
+      <div className="flex h-full flex-col md:h-fit">
         {!isFetched || groupDetail === null ? (
           <Skeleton className="h-[300px] rounded-[32px] md:h-[400px]"></Skeleton>
         ) : groupConfig?.videoLive ? (
           <div className="relative">
-            <Suspense fallback={null}>
-              <VideoCustom
-                videoSrc={groupConfig.videoLive}
-                classNames={{
-                  video: twMerge(
-                    "h-full min-h-[350px] w-full rounded-[32px] object-cover max-h-[350px] md:max-h-[400px] md:h-auto",
-                  ),
-                }}
-                skeletonPreview={
-                  <Skeleton className="h-[300px] rounded-[32px] md:h-[400px]"></Skeleton>
-                }
-                imgPreview={groupConfig.imageLive}
-                isVolumeIcon
-                onMuteToggle={(muted) =>
-                  queryClient.setQueryData<boolean>(
-                    [QueryDataKeys.AGENT_LIVE_VOLUME],
-                    () => muted,
-                  )
-                }
-                muted={isMuted}
-              />
-            </Suspense>
+            <VideoCustom
+              videoSrc={groupConfig.videoLive}
+              classNames={{
+                video: twMerge(
+                  "h-full min-h-[350px] w-full rounded-[32px] object-cover max-h-[350px] md:max-h-[400px] md:h-auto",
+                ),
+              }}
+              skeletonPreview={
+                <Skeleton className="h-[300px] rounded-[32px] md:h-[400px]"></Skeleton>
+              }
+              imgPreview={groupConfig.imageLive}
+              isVolumeIcon
+              onMuteToggle={(muted) =>
+                queryClient.setQueryData<boolean>(
+                  [QueryDataKeys.AGENT_LIVE_VOLUME],
+                  () => muted,
+                )
+              }
+              muted={isMuted}
+            />
 
             {groupConfig.isPrediction && (
               <div
@@ -197,11 +195,7 @@ const LeftContent: React.FC<{
         )}
       </div>
 
-      {isOpen && (
-        <Suspense fallback={null}>
-          <BetModal onOpenChange={onOpenChange} isOpen={isOpen} />
-        </Suspense>
-      )}
+      {isOpen && <BetModal onOpenChange={onOpenChange} isOpen={isOpen} />}
     </div>
   )
 }
