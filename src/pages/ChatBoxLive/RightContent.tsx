@@ -43,6 +43,10 @@ const RightContent: React.FC<{
     queryKey: [QueryDataKeys.CLOSE_LIVE_CHAT],
     staleTime: 0,
   })
+  const { data: isExpandLiveChat } = useQuery<boolean>({
+    queryKey: [QueryDataKeys.EXPAND_LIVE_CHAT],
+    staleTime: 0,
+  })
 
   return (
     <div
@@ -51,7 +55,9 @@ const RightContent: React.FC<{
         "z-[11] bg-white max-md:rounded-[14px] max-md:border-t max-md:border-t-white max-md:shadow-7",
         "md:px-5",
         "max-2xl:px-0",
-        isCloseLiveChat && "h-[113px] flex-none md:flex-1",
+        !isExpandLiveChat ? "max-md:h-[27%]" : "max-md:h-[89%]",
+        isCloseLiveChat &&
+          "w-full flex-none max-md:absolute max-md:bottom-0 max-md:h-[115px] md:flex-1",
       )}
     >
       {isMobile && <ToggleActionsMobile />}
