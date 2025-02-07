@@ -5,6 +5,7 @@ import React, {
   useState,
   useMemo,
   UIEvent,
+  useLayoutEffect,
 } from "react"
 import { useVirtualizer } from "@tanstack/react-virtual"
 import { twMerge } from "tailwind-merge"
@@ -75,12 +76,11 @@ const ChatWindowV2: React.FC<ChatWindowProps> = ({
   const handleScroll = useCallback(
     async (e: UIEvent<HTMLDivElement>) => {
       const { scrollTop, scrollHeight, clientHeight } = e.currentTarget
+      const isNearBottom =
+        scrollHeight - clientHeight - scrollTop <= DEFAULT_AT_BOTTOM_THRESHOLD
+      setIsScrollBottom(!isNearBottom)
 
       requestAnimationFrame(async () => {
-        const isNearBottom =
-          scrollHeight - clientHeight - scrollTop <= DEFAULT_AT_BOTTOM_THRESHOLD
-        setIsScrollBottom(!isNearBottom)
-
         if (scrollTop === 0 && hasPreviousMore) {
           const newMessagesIndex = await onLoadPrevMessages()
           if (newMessagesIndex) {
@@ -104,12 +104,11 @@ const ChatWindowV2: React.FC<ChatWindowProps> = ({
     }
   }, [lastMessageLength, isScrollBottom, messages.length, virtualizer])
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (chatId) {
       setIsScrollBottom(false)
-      virtualizer.scrollToIndex(0)
     }
-  }, [chatId, virtualizer])
+  }, [chatId])
 
   useEffect(() => {
     if (previousMessagesLength.current < messages.length) {
@@ -156,7 +155,7 @@ const ChatWindowV2: React.FC<ChatWindowProps> = ({
             top: virtualItem.start,
             left: 0,
             width: "100%",
-            minHeight: virtualItem.size,
+            minHeight: 72,
           }}
         >
           {itemContent(messageIndex, message)}
@@ -182,6 +181,7 @@ const ChatWindowV2: React.FC<ChatWindowProps> = ({
         "relative h-full overflow-y-auto md:max-h-[calc(100%-100px)]",
         isChatActions && "max-h-[calc(100%-56px)] md:max-h-[calc(100%-152px)]",
         className,
+        !isScrollBottom && "scroll-smooth",
       )}
       style={style}
       ref={parentRef}
