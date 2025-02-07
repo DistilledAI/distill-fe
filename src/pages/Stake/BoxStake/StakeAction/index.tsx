@@ -17,8 +17,6 @@ import { SPL_DECIMAL } from "@pages/Stake/config"
 import { toast } from "react-toastify"
 import moment from "moment"
 
-const web3Locking = new Web3SolanaLockingToken()
-
 const StakeAction: React.FC<{
   fetchTotalStaked: () => void
   endDate: number | null
@@ -32,8 +30,10 @@ const StakeAction: React.FC<{
   const { balance, loading, getBalance } = useGetBalance(tokenAddress)
   const tokenInfo = getInfoTokenByAddress(tokenAddress as StakeTokenAddress)
 
-  const isNoPeriod = tokenAddress === StakeTokenAddress.Guard
+  const hasPeriod = tokenAddress !== StakeTokenAddress.Guard
   const isExpired = endDate ? Date.now() > endDate : false
+
+  const web3Locking = new Web3SolanaLockingToken(hasPeriod)
 
   const AMOUNT_LIST = [
     {
@@ -89,7 +89,6 @@ const StakeAction: React.FC<{
         amount,
         wallet,
         tokenAddress,
-        isNoPeriod,
       )
       if (res) {
         toast.success("Staked successfully!")
