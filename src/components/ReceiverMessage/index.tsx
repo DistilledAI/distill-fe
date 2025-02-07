@@ -9,6 +9,7 @@ interface ReceiverMsgProps {
   baseClassName?: string
   contentClassName?: string
   isTyping?: boolean
+  isDeepThink?: boolean
 }
 
 const ReceiverMessage = ({
@@ -17,6 +18,7 @@ const ReceiverMessage = ({
   baseClassName,
   contentClassName,
   isTyping,
+  isDeepThink,
 }: ReceiverMsgProps) => {
   return (
     <div className={twMerge("flex gap-4", baseClassName)}>
@@ -27,7 +29,7 @@ const ReceiverMessage = ({
         {isTyping ? (
           <DotLoading className="mt-2" />
         ) : (
-          <MarkdownMessage msg={content} />
+          <MarkdownMessage msg={content} isDeepThink={isDeepThink} />
         )}
       </div>
     </div>

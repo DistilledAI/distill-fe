@@ -10,6 +10,7 @@ import {
   PATH_NAMES,
   STATUS_AGENT,
 } from "@constants/index"
+import { useAppSelector } from "@hooks/useAppRedux"
 import useSubmitChat from "@hooks/useSubmitChat"
 import useFetchMyData from "@pages/MyData/useFetch"
 import { useQuery } from "@tanstack/react-query"
@@ -23,7 +24,6 @@ import ChatInput from "../../ChatInput"
 import ChatActions from "../../ChatMessages/ChatActions"
 import { IMessageBox, RoleChat } from "../../ChatMessages/helpers"
 import useFetchMessages from "../../ChatMessages/useFetchMessages"
-import { useAppSelector } from "@hooks/useAppRedux"
 
 const PrivateAgentChatContent: React.FC<{
   hasInputChat?: boolean
@@ -77,6 +77,7 @@ const PrivateAgentChatContent: React.FC<{
             }}
             content={message.content}
             isTyping={message.isTyping}
+            isDeepThink={true}
           />
         ) : null}
         {message.role === RoleChat.OWNER ? (

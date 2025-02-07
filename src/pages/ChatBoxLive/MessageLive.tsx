@@ -1,5 +1,5 @@
-import React, { useMemo, memo } from "react"
 import AvatarCustom from "@components/AvatarCustom"
+import DotLoading from "@components/DotLoading"
 import EmojiReactions from "@components/EmojiReactions"
 import { ImageIcon } from "@components/Icons"
 import { ArrowsRelyIcon } from "@components/Icons/Arrow"
@@ -8,11 +8,11 @@ import { RoleUser } from "@constants/index"
 import useAuthState from "@hooks/useAuthState"
 import { IMessageBox } from "@pages/ChatPage/ChatBox/ChatMessages/helpers"
 import { isMarkdownImage } from "@utils/index"
+import React, { memo, useMemo } from "react"
 import { twMerge } from "tailwind-merge"
 import { emojiReactionsMap, replaceAtBrackets } from "./helpers"
 import useEmojiReactions from "./hooks/useEmojiReactions"
 import ReactedEmojisList from "./ReactedEmojisList"
-import DotLoading from "@components/DotLoading"
 
 interface MessageLiveProps {
   message: IMessageBox
@@ -100,7 +100,7 @@ const MessageLive: React.FC<MessageLiveProps> = ({
           {message?.isTyping ? (
             <DotLoading className="mt-1" />
           ) : (
-            <MarkdownMessage msg={message?.content} />
+            <MarkdownMessage msg={message?.content} isDeepThink={isBot} />
           )}
           <ReactedEmojisList
             emojiReactions={emojiReactions}

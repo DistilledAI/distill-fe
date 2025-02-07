@@ -9,7 +9,13 @@ import { useParams } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
 import { QueryDataKeys } from "types/queryDataKeys"
 
-const MarkdownMessage = ({ msg }: { msg: string }) => {
+const MarkdownMessage = ({
+  msg,
+  isDeepThink = false,
+}: {
+  msg: string
+  isDeepThink?: boolean
+}) => {
   const { chatId } = useParams()
   const { textColor } = getActiveColorRandomById(chatId)
   const queryClient = useQueryClient()
@@ -115,11 +121,11 @@ const MarkdownMessage = ({ msg }: { msg: string }) => {
     },
   }
 
-  const processedMessage = breakLine(enhancedMessage(msg))
+  let processedMessage = breakLine(enhancedMessage(msg))
   const regex = /<think>\s*([\s\S]*?)(?:<\/think>\s*(.*))?$/
   const match = processedMessage.match(regex)
 
-  if (match) {
+  if (isDeepThink) {
     const thinkContent = match ? match[1].trim() : "",
       processedMessage = match && match[2] ? match[2].trim() : ""
 
