@@ -115,9 +115,8 @@ const MarkdownMessage = ({ msg }: { msg: string }) => {
     },
   }
 
-  let processedMessage = breakLine(enhancedMessage(msg))
-
-  const regex = /<think>([\s\S]*?)(?:<\/think>\s*(.*)|$)/
+  const processedMessage = breakLine(enhancedMessage(msg))
+  const regex = /<think>\s*([\s\S]*?)(?:<\/think>\s*(.*))?$/
   const match = processedMessage.match(regex)
 
   if (match) {
