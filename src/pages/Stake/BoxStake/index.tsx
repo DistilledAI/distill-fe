@@ -4,6 +4,7 @@ import UnStakeAction from "./UnstakeAction"
 import React from "react"
 import { StakeTokenAddress } from ".."
 import { useSearchParams } from "react-router-dom"
+import { checkHasPeriodForUI } from "../helpers"
 
 const BoxStake: React.FC<{
   total: number
@@ -12,7 +13,7 @@ const BoxStake: React.FC<{
 }> = ({ total, fetchTotal, endDate }) => {
   const [searchParams] = useSearchParams()
   const tokenAddress = searchParams.get("token")
-  const isGuardToken = tokenAddress === StakeTokenAddress.Guard
+  const hasPeriod = checkHasPeriodForUI(tokenAddress as StakeTokenAddress)
 
   return (
     <div>
@@ -27,7 +28,7 @@ const BoxStake: React.FC<{
           <Tab key="stake" title="Deposit">
             <StakeAction endDate={endDate} fetchTotalStaked={fetchTotal} />
           </Tab>
-          <Tab isDisabled={isGuardToken} key="unstake" title="Withdraw">
+          <Tab isDisabled={!hasPeriod} key="unstake" title="Withdraw">
             <UnStakeAction total={total} fetchTotal={fetchTotal} />
           </Tab>
         </Tabs>

@@ -7,14 +7,28 @@ export const getInfoTokenByAddress = (address: StakeTokenAddress | null) => {
     : null
 }
 
+const MAX_DURATION_STAKE = "18446744073709551615"
+
 export const getDurationByAddress = (
   address: StakeTokenAddress | null | string,
 ) => {
   switch (address) {
     case StakeTokenAddress.LeeQuid:
-      return ALL_CONFIGS.DURATION_STAKE * 2
+      return 30 * 24 * 60 * 60 * 2
+    case StakeTokenAddress.Banker:
+      return MAX_DURATION_STAKE as string
 
     default:
       return ALL_CONFIGS.DURATION_STAKE
   }
+}
+
+const noPeriodTokens = [StakeTokenAddress.Guard]
+const noPeriodTokensForUI = [StakeTokenAddress.Guard, StakeTokenAddress.Banker]
+
+export const checkHasPeriod = (tokenAddress: StakeTokenAddress) => {
+  return !noPeriodTokens.includes(tokenAddress)
+}
+export const checkHasPeriodForUI = (tokenAddress: StakeTokenAddress) => {
+  return !noPeriodTokensForUI.includes(tokenAddress)
 }

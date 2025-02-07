@@ -312,6 +312,10 @@
         {
           "name": "unbonding_period",
           "type": "u64"
+        },
+        {
+          "name": "end_date",
+          "type": "i64"
         }
       ]
     },
@@ -730,6 +734,67 @@
       ]
     },
     {
+      "name": "realloc_vault_size",
+      "discriminator": [145, 229, 232, 87, 182, 18, 210, 164],
+      "accounts": [
+        {
+          "name": "admin",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "authority",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [97, 117, 116, 104, 111, 114, 105, 116, 121]
+              }
+            ]
+          }
+        },
+        {
+          "name": "vault",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  115, 116, 97, 107, 105, 110, 103, 95, 118, 97, 117, 108, 116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "stake_currency_mint"
+              },
+              {
+                "kind": "arg",
+                "path": "unbonding_period"
+              }
+            ]
+          }
+        },
+        {
+          "name": "stake_currency_mint"
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "unbonding_period",
+          "type": "u64"
+        }
+      ]
+    },
+    {
       "name": "stake",
       "discriminator": [206, 176, 202, 18, 200, 209, 179, 108],
       "accounts": [
@@ -902,6 +967,71 @@
         {
           "name": "amount",
           "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "update_vault",
+      "discriminator": [67, 229, 185, 188, 226, 11, 210, 60],
+      "accounts": [
+        {
+          "name": "admin",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "authority",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [97, 117, 116, 104, 111, 114, 105, 116, 121]
+              }
+            ]
+          }
+        },
+        {
+          "name": "vault",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  115, 116, 97, 107, 105, 110, 103, 95, 118, 97, 117, 108, 116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "stake_currency_mint"
+              },
+              {
+                "kind": "arg",
+                "path": "unbonding_period"
+              }
+            ]
+          }
+        },
+        {
+          "name": "stake_currency_mint"
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        }
+      ],
+      "args": [
+        {
+          "name": "unbonding_period",
+          "type": "u64"
+        },
+        {
+          "name": "new_unbonding_period",
+          "type": "u64"
+        },
+        {
+          "name": "end_date",
+          "type": "i64"
         }
       ]
     },
@@ -1104,6 +1234,16 @@
       "code": 6013,
       "name": "Paused",
       "msg": "Paused"
+    },
+    {
+      "code": 6014,
+      "name": "CannotUnstake",
+      "msg": "Cannot unstake"
+    },
+    {
+      "code": 6015,
+      "name": "StakingEnded",
+      "msg": "Stake end"
     }
   ],
   "types": [
@@ -1447,6 +1587,10 @@
           {
             "name": "unbonding_period",
             "type": "u64"
+          },
+          {
+            "name": "end_date",
+            "type": "i64"
           }
         ]
       }

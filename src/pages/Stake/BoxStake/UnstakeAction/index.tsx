@@ -1,6 +1,7 @@
 import { Button } from "@nextui-org/react"
 import { StakeTokenAddress } from "@pages/Stake"
 import {
+  checkHasPeriodForUI,
   getDurationByAddress,
   getInfoTokenByAddress,
 } from "@pages/Stake/helpers"
@@ -29,7 +30,7 @@ const UnStakeAction: React.FC<{
   const { connectWallet, isConnectWallet } = useConnectPhantom()
   const tokenInfo = getInfoTokenByAddress(tokenAddress as StakeTokenAddress)
   const wallet = useWallet()
-  const isGuardToken = tokenAddress === StakeTokenAddress.Guard
+  const hasPeriod = checkHasPeriodForUI(tokenAddress as StakeTokenAddress)
 
   const AMOUNT_LIST = [
     {
@@ -60,7 +61,7 @@ const UnStakeAction: React.FC<{
 
   const handleUnStake = async () => {
     try {
-      if (isGuardToken) return
+      if (!hasPeriod) return
       if (!tokenAddress) {
         return toast.warning("Token address not found!")
       }
@@ -100,7 +101,7 @@ const UnStakeAction: React.FC<{
   }
 
   return (
-    <div className={twMerge("mt-3", isGuardToken && "pointer-events-none")}>
+    <div className={twMerge("mt-3", !hasPeriod && "pointer-events-none")}>
       <div className="rounded-lg border-1 border-mercury-400 bg-white px-4 py-3">
         <div className="flex items-center justify-between gap-1">
           <div>
@@ -150,7 +151,7 @@ const UnStakeAction: React.FC<{
             QUICK UNSTAKE
           </Button> */}
           <Button
-            isDisabled={isGuardToken}
+            isDisabled={!hasPeriod}
             isLoading={loadingSubmit}
             onClick={handleUnStake}
             className="mt-7 h-[48px] w-full rounded-full bg-mercury-950 text-white"
