@@ -5,8 +5,7 @@ import { toBN } from "@utils/format"
 import { SPL_DECIMAL } from "./config"
 import { useSearchParams } from "react-router-dom"
 import { StakeTokenAddress } from "."
-
-const web3Locking = new Web3SolanaLockingToken()
+import { checkHasPeriod } from "./helpers"
 
 const useGetStakedAmount = () => {
   const wallet = useWallet()
@@ -17,7 +16,9 @@ const useGetStakedAmount = () => {
   const [endDate, setEndDate] = useState<null | number>(null)
   const [searchParams] = useSearchParams()
   const tokenAddress = searchParams.get("token")
-  const isNoPeriod = tokenAddress === StakeTokenAddress.Guard
+  const hasPeriod = checkHasPeriod(tokenAddress as StakeTokenAddress)
+
+  const web3Locking = new Web3SolanaLockingToken(hasPeriod)
 
   const getStakedAmount = async () => {
     if (!wallet.publicKey) {
@@ -26,11 +27,7 @@ const useGetStakedAmount = () => {
     }
     if (!tokenAddress) return
     setLoadingUserStake(true)
-    const info = await web3Locking.getStakerInfo(
-      wallet,
-      tokenAddress,
-      isNoPeriod,
-    )
+    const info = await web3Locking.getStakerInfo(wallet, tokenAddress)
 
     setLoadingUserStake(false)
     setTotal(
@@ -43,7 +40,7 @@ const useGetStakedAmount = () => {
   const getTotalStakeAll = async () => {
     if (!tokenAddress) return
     setLoadingStakeAll(true)
-    const res = await web3Locking.getVaultInfo(tokenAddress, wallet, isNoPeriod)
+    const res = await web3Locking.getVaultInfo(tokenAddress, wallet)
     setLoadingStakeAll(false)
     if (res?.totalStaked)
       setTotalStakeAll(

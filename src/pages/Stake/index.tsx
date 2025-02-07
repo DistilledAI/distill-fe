@@ -1,4 +1,5 @@
 import {
+  bankerLogo,
   blackrackAvartar2,
   gnrtAvatar,
   guardLogo,
@@ -22,6 +23,7 @@ export enum StakeTokenAddress {
   Usdc = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
   LeeQuid = "oraix39mVDGnusyjag97Tz5H8GvGriSZmhVvkvXRoc4",
   Guard = "oraiUNrTQmeuc13JoMFSyNcJCnXYpqErfp9v5diy64b",
+  Banker = "oraiBbhuMd7MeVxyBjtnK8sggprf2NpHkeJaeHzpBFK",
 }
 
 export const LIST_TOKEN_STAKE = [
@@ -69,6 +71,15 @@ export const LIST_TOKEN_STAKE = [
     decimals: 6,
     tokenName: "GUARD",
     avatar: guardLogo,
+    coinGeckoId: null,
+  },
+  {
+    id: 6,
+    address: StakeTokenAddress.Banker,
+    label: "BANKER",
+    decimals: 6,
+    tokenName: "BANKER",
+    avatar: bankerLogo,
     coinGeckoId: null,
   },
 ]

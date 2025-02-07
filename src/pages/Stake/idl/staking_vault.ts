@@ -534,6 +534,10 @@ export type FungStakingVault = {
           name: "unbondingPeriod"
           type: "u64"
         },
+        {
+          name: "endDate"
+          type: "i64"
+        },
       ]
     },
     {
@@ -1181,6 +1185,79 @@ export type FungStakingVault = {
       ]
     },
     {
+      name: "reallocVaultSize"
+      discriminator: [145, 229, 232, 87, 182, 18, 210, 164]
+      accounts: [
+        {
+          name: "admin"
+          writable: true
+          signer: true
+        },
+        {
+          name: "authority"
+          pda: {
+            seeds: [
+              {
+                kind: "const"
+                value: [97, 117, 116, 104, 111, 114, 105, 116, 121]
+              },
+            ]
+          }
+        },
+        {
+          name: "vault"
+          writable: true
+          pda: {
+            seeds: [
+              {
+                kind: "const"
+                value: [
+                  115,
+                  116,
+                  97,
+                  107,
+                  105,
+                  110,
+                  103,
+                  95,
+                  118,
+                  97,
+                  117,
+                  108,
+                  116,
+                ]
+              },
+              {
+                kind: "account"
+                path: "stakeCurrencyMint"
+              },
+              {
+                kind: "arg"
+                path: "unbondingPeriod"
+              },
+            ]
+          }
+        },
+        {
+          name: "stakeCurrencyMint"
+        },
+        {
+          name: "tokenProgram"
+          address: "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          name: "systemProgram"
+          address: "11111111111111111111111111111111"
+        },
+      ]
+      args: [
+        {
+          name: "unbondingPeriod"
+          type: "u64"
+        },
+      ]
+    },
+    {
       name: "stake"
       discriminator: [206, 176, 202, 18, 200, 209, 179, 108]
       accounts: [
@@ -1501,6 +1578,83 @@ export type FungStakingVault = {
       ]
     },
     {
+      name: "updateVault"
+      discriminator: [67, 229, 185, 188, 226, 11, 210, 60]
+      accounts: [
+        {
+          name: "admin"
+          writable: true
+          signer: true
+        },
+        {
+          name: "authority"
+          pda: {
+            seeds: [
+              {
+                kind: "const"
+                value: [97, 117, 116, 104, 111, 114, 105, 116, 121]
+              },
+            ]
+          }
+        },
+        {
+          name: "vault"
+          writable: true
+          pda: {
+            seeds: [
+              {
+                kind: "const"
+                value: [
+                  115,
+                  116,
+                  97,
+                  107,
+                  105,
+                  110,
+                  103,
+                  95,
+                  118,
+                  97,
+                  117,
+                  108,
+                  116,
+                ]
+              },
+              {
+                kind: "account"
+                path: "stakeCurrencyMint"
+              },
+              {
+                kind: "arg"
+                path: "unbondingPeriod"
+              },
+            ]
+          }
+        },
+        {
+          name: "stakeCurrencyMint"
+        },
+        {
+          name: "tokenProgram"
+          address: "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+      ]
+      args: [
+        {
+          name: "unbondingPeriod"
+          type: "u64"
+        },
+        {
+          name: "newUnbondingPeriod"
+          type: "u64"
+        },
+        {
+          name: "endDate"
+          type: "i64"
+        },
+      ]
+    },
+    {
       name: "whitelist"
       discriminator: [0, 143, 193, 93, 69, 29, 183, 140]
       accounts: [
@@ -1711,6 +1865,16 @@ export type FungStakingVault = {
       code: 6013
       name: "paused"
       msg: "paused"
+    },
+    {
+      code: 6014
+      name: "cannotUnstake"
+      msg: "Cannot unstake"
+    },
+    {
+      code: 6015
+      name: "stakingEnded"
+      msg: "Stake end"
     },
   ]
   types: [
@@ -2048,6 +2212,10 @@ export type FungStakingVault = {
           {
             name: "unbondingPeriod"
             type: "u64"
+          },
+          {
+            name: "endDate"
+            type: "i64"
           },
         ]
       }
