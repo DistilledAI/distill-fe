@@ -16,6 +16,7 @@ const MarkdownMessage = ({
   msg: string
   isDeepThink?: boolean
 }) => {
+  console.log("isDeepThink", isDeepThink)
   const { chatId } = useParams()
   const { textColor } = getActiveColorRandomById(chatId)
   const queryClient = useQueryClient()
@@ -125,7 +126,7 @@ const MarkdownMessage = ({
   const regex = /<think>\s*([\s\S]*?)(?:<\/think>\s*(.*))?$/
   const match = processedMessage.match(regex)
 
-  if (isDeepThink) {
+  if (match) {
     const thinkContent = match ? match[1].trim() : "",
       processedMessage = match && match[2] ? match[2].trim() : ""
 
