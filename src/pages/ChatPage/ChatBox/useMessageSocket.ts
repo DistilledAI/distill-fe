@@ -4,7 +4,7 @@ import { IUser } from "@reducers/userSlice"
 import { useQueryClient } from "@tanstack/react-query"
 import { makeId } from "@utils/index"
 import { useSocket } from "providers/SocketProvider"
-import { useEffect, useRef } from "react"
+import { useEffect } from "react"
 import { useLocation, useParams } from "react-router-dom"
 import { getVoiceToText } from "services/chat"
 import { QueryDataKeys } from "types/queryDataKeys"
@@ -52,7 +52,6 @@ const useMessageSocket = () => {
   const { chatId } = useGetChatId()
   const { socket } = useSocket()
   const { user } = useAuthState()
-  const indexResRef = useRef(-1)
   const queryClient = useQueryClient()
   const groupId = chatId || privateChatId
   const { pathname } = useLocation()
@@ -66,28 +65,19 @@ const useMessageSocket = () => {
 
   const isPassRuleMessage = (e: IDataListen) => {
     if (e?.user?.id === user?.id) return false
-
     return true
-  }
-
-  const isReloadWhenResponse = (index: number) => {
-    if (index === 1) indexResRef.current = 1
-    if (indexResRef.current !== 1 && index !== 1) return true
-
-    return false
   }
 
   const isPassRuleNotification = (e: IDataListen) => {
     if (e?.user?.id === user?.id) return false
     if (Number(groupId) === e.group) return false
-
     return true
   }
 
   const addNewMsg = (newMsg: IMessageBox, e: IDataListen) => {
-    const groupId = e.group.toString()
+    const groupIdStr = e.group.toString()
     queryClient.setQueryData(
-      chatMessagesKey(groupId),
+      chatMessagesKey(groupIdStr),
       (cachedData: ICachedMessageData) => {
         if (!cachedData)
           return {
@@ -99,9 +89,7 @@ const useMessageSocket = () => {
               },
             ],
           }
-
         const lastPage = cachedData.pages[cachedData.pages.length - 1]
-
         return {
           ...cachedData,
           pages: [
@@ -117,9 +105,9 @@ const useMessageSocket = () => {
   }
 
   const updateNewMsg = (e: IDataListen, isPlusMsg: boolean = true) => {
-    const groupId = e.group.toString()
+    const groupIdStr = e.group.toString()
     queryClient.setQueryData(
-      chatMessagesKey(groupId),
+      chatMessagesKey(groupIdStr),
       (cachedData: ICachedMessageData) => {
         if (!cachedData)
           return {
@@ -131,7 +119,6 @@ const useMessageSocket = () => {
               },
             ],
           }
-
         const lastPage = cachedData.pages[cachedData.pages.length - 1]
         const isBotLive = e.user.configBot === "live"
 
@@ -200,9 +187,7 @@ const useMessageSocket = () => {
   }
 
   const handleWithTyping = (e: IDataListen) => {
-    // const isBotLive = e.user.configBot === "live"
-    // if (isBotLive) return
-    const newMsg = {
+    const newMsg: IMessageBox = {
       id: e.msgId,
       role: RoleChat.CUSTOMER,
       content: "...",
@@ -217,8 +202,6 @@ const useMessageSocket = () => {
   }
 
   const handleWithUpdate = (e: IDataListen) => {
-    if (isReloadWhenResponse(e.index))
-      return setQueryIsChatting(e.group.toString(), true)
     const isBotVoice = e.user.typeBot === TYPE_BOT.VOICE
     const isBotLive = e.user.configBot === "live"
     const isStop = isBotLive || isBotVoice
@@ -285,7 +268,6 @@ const useMessageSocket = () => {
           ) {
             return setQueryIsChatting(e.group.toString(), true)
           }
-
           setQueryIsChatting(e.group.toString(), false)
         }
 

@@ -49,7 +49,7 @@ const ChatWindowV2: React.FC<ChatWindowProps> = ({
   scrollBottomClassName,
 }) => {
   const parentRef = useRef<HTMLDivElement>(null)
-  const [isScrollBottom, setIsScrollBottom] = useState(false)
+  const [isScrollBottom, setIsScrollBottom] = useState(true)
   const lastMessageLength = messages?.[messages.length - 1]?.content?.length
   const previousMessagesLength = useRef(messages.length)
 
