@@ -34,6 +34,10 @@ const SimpleStaking = () => {
       case StakeTokenAddress.Banker:
         return (
           <div className="mb-6 mt-6">
+            <p className="mb-4 font-semibold text-red-600">
+              Early stakers within the first week (until Feb 14, 2025 15:00 UTC)
+              will receive a 10% capital bonus on the fund distribution date.
+            </p>
             <div className="flex items-center gap-2 text-[22px] font-semibold max-md:text-[18px]">
               <GiftIcon color="#A2845E" size={24} /> What Are The Incentives for
               Staking?
