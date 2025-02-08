@@ -1,3 +1,4 @@
+import ComingSoon from "@components/ComingSoon"
 import { BoltOutlineIcon } from "@components/Icons"
 import {
   PencilBoltIcon,
@@ -86,6 +87,12 @@ const Functions: React.FC<{
   const [isShowInput, setIsShowInput] = useState<boolean>(false)
   const [inputValue, setInputValue] = useState<string>("")
   const xUserNameValues = JSON.parse(watch("x_user_names") || "[]")
+
+  const xBotData = agentConfigs?.find(
+    (agent: any) => agent.key === "bindTwitterKey",
+  )
+  const bindTwitterValue = xBotData?.value ? JSON.parse(xBotData.value) : null
+  const twitterUsername = bindTwitterValue?.info?.data?.username
 
   const toggleShowInput = () => {
     setIsShowInput(!isShowInput)
@@ -254,117 +261,130 @@ const Functions: React.FC<{
         }
       />
 
-      <div className="mt-4 flex w-full gap-4 max-md:flex-wrap">
-        <div className="flex w-[40%] flex-col justify-between rounded-[22px] border-1 border-white bg-mercury-30 p-4 max-md:w-full">
-          <div>
-            <span className="text-base-sb text-mercury-950">
-              Post Interval:
-            </span>
-            <br />
+      <ComingSoon
+        childrenClassName={!!twitterUsername ? "" : "opacity-50"}
+        content="You need to bind an X account to use this feature"
+        isOffComing={!!twitterUsername}
+      >
+        <div>
+          <div className="mt-4 flex w-full gap-4 max-md:flex-wrap">
+            <div className="flex w-[40%] flex-col justify-between rounded-[22px] border-1 border-white bg-mercury-30 p-4 max-md:w-full">
+              <div>
+                <span className="text-base-sb text-mercury-950">
+                  Post Interval:
+                </span>
+                <br />
+                <span className="text-mercury-700">
+                  Choose how often to post tweets.
+                </span>
+              </div>
+
+              <Controller
+                name="post_interval"
+                control={control}
+                render={({ field: { value, onChange } }: any) => {
+                  return (
+                    <div className="flex items-center gap-3">
+                      <Select
+                        className="max-w-[50%]"
+                        radius="full"
+                        classNames={{
+                          trigger: "!bg-mercury-100",
+                        }}
+                        onChange={(e) => onChange(e.target.value)}
+                        selectedKeys={value ? [value] : ""}
+                      >
+                        {POST_INTERVAL.map((record) => (
+                          <SelectItem key={record.value}>
+                            {record.label}
+                          </SelectItem>
+                        ))}
+                      </Select>
+                    </div>
+                  )
+                }}
+              />
+            </div>
+
+            <div className="pointer-events-none w-[60%] rounded-[22px] bg-mercury-30 p-4 opacity-50 max-md:w-full">
+              <span className="text-base-sb text-mercury-950">Functions</span>
+              <div className="mt-4 flex flex-wrap justify-between gap-y-6">
+                {TWITTER_FEATURE.map((item, index) => {
+                  return (
+                    <div
+                      className="flex min-w-[190px] items-center justify-between max-sm:w-full"
+                      key={index}
+                    >
+                      <div className="flex items-center gap-1">
+                        {item.icon}
+                        <span className="text-base-md max-sm:text-15">
+                          {item.label}
+                        </span>
+                      </div>
+                      <Switch
+                        isSelected={item.enabled}
+                        aria-label="Automatic updates"
+                      />
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+          </div>
+          <div className="mt-6">
             <span className="text-mercury-700">
-              Choose how often to post tweets.
+              <span className="text-base-sb text-mercury-950">
+                X Categories{" "}
+              </span>
+              Your agent will post, follow, quote, and more with the following
+              data sources.
             </span>
+
+            <div className="mt-4 flex items-center justify-between gap-2 max-md:flex-wrap">
+              <Controller
+                name="category"
+                control={control}
+                render={({ field: { value, onChange } }: any) => {
+                  return (
+                    <Select
+                      className="max-w-[20%] max-md:max-w-full"
+                      radius="full"
+                      classNames={{
+                        trigger: "!bg-mercury-100",
+                      }}
+                      onChange={(e) => {
+                        onChange(e.target.value)
+                        onSelectCategory(e.target.value)
+                      }}
+                      selectedKeys={value ? [value] : ""}
+                    >
+                      {CATEGORIES.map((value) => (
+                        <SelectItem key={`${value}`}>{value}</SelectItem>
+                      ))}
+                    </Select>
+                  )
+                }}
+              />
+
+              <div className="flex w-full flex-wrap items-center gap-1 rounded-lg border border-mercury-400 bg-mercury-70 p-2">
+                {dataSources.map((item: string) => {
+                  return (
+                    <div
+                      className="rounded-lg border-[2px] border-brown-500 p-1"
+                      key={item}
+                    >
+                      <span className="text-base-b text-mercury-900">
+                        {item}
+                      </span>
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
           </div>
-
-          <Controller
-            name="post_interval"
-            control={control}
-            render={({ field: { value, onChange } }: any) => {
-              return (
-                <div className="flex items-center gap-3">
-                  <Select
-                    className="max-w-[50%]"
-                    radius="full"
-                    classNames={{
-                      trigger: "!bg-mercury-100",
-                    }}
-                    onChange={(e) => onChange(e.target.value)}
-                    selectedKeys={value ? [value] : ""}
-                  >
-                    {POST_INTERVAL.map((record) => (
-                      <SelectItem key={record.value}>{record.label}</SelectItem>
-                    ))}
-                  </Select>
-                </div>
-              )
-            }}
-          />
+          {renderKolList()}
         </div>
-
-        <div className="pointer-events-none w-[60%] rounded-[22px] bg-mercury-30 p-4 opacity-50 max-md:w-full">
-          <span className="text-base-sb text-mercury-950">Functions</span>
-          <div className="mt-4 flex flex-wrap justify-between gap-y-6">
-            {TWITTER_FEATURE.map((item, index) => {
-              return (
-                <div
-                  className="flex min-w-[190px] items-center justify-between max-sm:w-full"
-                  key={index}
-                >
-                  <div className="flex items-center gap-1">
-                    {item.icon}
-                    <span className="text-base-md max-sm:text-15">
-                      {item.label}
-                    </span>
-                  </div>
-                  <Switch
-                    isSelected={item.enabled}
-                    aria-label="Automatic updates"
-                  />
-                </div>
-              )
-            })}
-          </div>
-        </div>
-      </div>
-
-      <div className="mt-6">
-        <span className="text-mercury-700">
-          <span className="text-base-sb text-mercury-950">X Categories </span>
-          Your agent will post, follow, quote, and more with the following data
-          sources.
-        </span>
-
-        <div className="mt-4 flex items-center justify-between gap-2 max-md:flex-wrap">
-          <Controller
-            name="category"
-            control={control}
-            render={({ field: { value, onChange } }: any) => {
-              return (
-                <Select
-                  className="max-w-[20%] max-md:max-w-full"
-                  radius="full"
-                  classNames={{
-                    trigger: "!bg-mercury-100",
-                  }}
-                  onChange={(e) => {
-                    onChange(e.target.value)
-                    onSelectCategory(e.target.value)
-                  }}
-                  selectedKeys={value ? [value] : ""}
-                >
-                  {CATEGORIES.map((value) => (
-                    <SelectItem key={`${value}`}>{value}</SelectItem>
-                  ))}
-                </Select>
-              )
-            }}
-          />
-
-          <div className="flex w-full flex-wrap items-center gap-1 rounded-lg border border-mercury-400 bg-mercury-70 p-2">
-            {dataSources.map((item: string) => {
-              return (
-                <div
-                  className="rounded-lg border-[2px] border-brown-500 p-1"
-                  key={item}
-                >
-                  <span className="text-base-b text-mercury-900">{item}</span>
-                </div>
-              )
-            })}
-          </div>
-        </div>
-      </div>
-      {renderKolList()}
+      </ComingSoon>
     </div>
   )
 }
