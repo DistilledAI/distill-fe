@@ -34,9 +34,11 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
     user && user.publicAddress && user.role !== RoleUser.ANONYMOUS
   const totalxDstlPoint = user?.xDstlPoint || 0
 
-  const isStakePage = pathname.startsWith(PATH_NAMES.STAKING)
+  const isActionWeb3 =
+    pathname.startsWith(PATH_NAMES.STAKING) ||
+    pathname.startsWith(PATH_NAMES.DAO)
 
-  if (isStakePage) return <LoginPhantom />
+  if (isActionWeb3) return <LoginPhantom />
 
   return (
     <div className="flex items-center justify-between">

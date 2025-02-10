@@ -1,7 +1,6 @@
 import LoadingFallback from "@components/LoadingFallback"
 import { PATH_NAMES } from "@constants/index"
 import useWindowSize from "@hooks/useWindowSize"
-import Dao from "@pages/Dao"
 import { Suspense, lazy } from "react"
 import { Route, Routes } from "react-router-dom"
 
@@ -36,8 +35,12 @@ const MyData = lazy(() => import("@pages/MyData"))
 const Orchestration = lazy(() => import("@pages/Orchestration"))
 const RewardsPage = lazy(() => import("@pages/Rewards"))
 const StakePage = lazy(() => import("@pages/Stake"))
+const CreateProposal = lazy(() => import("@pages/Dao/CreateProposal"))
+const DaoPage = lazy(() => import("@pages/Dao"))
+const ProposalsDetailPage = lazy(
+  () => import("@pages/Dao/Proposals/ProposalsDetail"),
+)
 // const TrendingPage = lazy(() => import("@pages/Trending"))
-// const DaoPage = lazy(() => import("@pages/Dao"))
 
 const AppRouter = () => {
   const { isMobile } = useWindowSize()
@@ -84,7 +87,18 @@ const AppRouter = () => {
             path={`${PATH_NAMES.ORCHESTRATION}/:chatId`}
             element={<Orchestration />}
           />
-          <Route path={`${PATH_NAMES.DAO}/proposals`} element={<Dao />} />
+          <Route
+            path={`${PATH_NAMES.DAO}/:agentAddress/proposals`}
+            element={<DaoPage />}
+          />
+          <Route
+            path={`${PATH_NAMES.DAO}/:agentAddress/proposals/create`}
+            element={<CreateProposal />}
+          />
+          <Route
+            path={`${PATH_NAMES.DAO}/:agentAddress/proposals/:proposalId`}
+            element={<ProposalsDetailPage />}
+          />
           {isMobile && (
             <Route
               path={PATH_NAMES.PRIVATE_AGENT}
