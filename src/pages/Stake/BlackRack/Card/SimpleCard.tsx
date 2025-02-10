@@ -1,15 +1,15 @@
-import { useNavigate, useSearchParams } from "react-router-dom"
-import { StakeTokenAddress } from "../.."
 import {
   PercentageIcon,
   PercentageSmallIcon,
   SimpleStakeIcon,
 } from "@components/Icons"
-import React from "react"
-import { shortenNumber } from "@utils/index"
-import useConnectPhantom from "../../useConnectPhantom"
-import useGetStakedAmount from "@pages/Stake/useGetStakedAmount"
 import { getInfoTokenByAddress } from "@pages/Stake/helpers"
+import useGetStakedAmount from "@pages/Stake/useGetStakedAmount"
+import { shortenNumber } from "@utils/index"
+import React from "react"
+import { useNavigate, useSearchParams } from "react-router-dom"
+import { StakeTokenAddress } from "../.."
+import useConnectPhantom from "../../useConnectPhantom"
 
 const SimpleCard: React.FC<{
   link: string
@@ -24,7 +24,11 @@ const SimpleCard: React.FC<{
 
   return (
     <div
-      onClick={() => navigate(link)}
+      onClick={() =>
+        navigate(link, {
+          state: { isHistory: "true" },
+        })
+      }
       className="w-[350px] max-w-full cursor-pointer"
     >
       <div
