@@ -7,7 +7,11 @@ const ProposalItem = () => {
 
   return (
     <div
-      onClick={() => navigate(`${PATH_NAMES.DAO}/${agentAddress}/proposals/A1`)}
+      onClick={() =>
+        navigate(`${PATH_NAMES.DAO}/${agentAddress}/proposals/A1`, {
+          state: { isHistory: "true" },
+        })
+      }
       className="flex cursor-pointer items-center gap-4 rounded-full bg-mercury-70 px-4 py-3 hover:bg-mercury-100"
     >
       <span className="text-14 text-mercury-700">A-1</span>

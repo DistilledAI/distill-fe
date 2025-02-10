@@ -1,15 +1,9 @@
 import { IconSearch } from "@components/Icons/DefiLens"
 import { Input } from "@nextui-org/react"
 import ProposalItem from "./ProposalItem"
-<<<<<<< HEAD
 import { useNavigate, useParams } from "react-router-dom"
 import { PATH_NAMES } from "@constants/index"
 import ProposalsHistory from "./ProposalsHistory"
-=======
-import ProposalsHistory from "./History"
-import { useNavigate, useParams } from "react-router-dom"
-import { PATH_NAMES } from "@constants/index"
->>>>>>> a194fab (create proposal ui)
 
 const Proposals = () => {
   const navigate = useNavigate()
@@ -21,7 +15,9 @@ const Proposals = () => {
         <span className="text-18 font-semibold">Create a proposal</span>
         <button
           onClick={() =>
-            navigate(`${PATH_NAMES.DAO}/${agentAddress}/proposals/create`)
+            navigate(`${PATH_NAMES.DAO}/${agentAddress}/proposals/create`, {
+              state: { isHistory: "true" },
+            })
           }
           className="btn-primary flex items-center justify-center !bg-mercury-950 px-3 !text-white"
         >

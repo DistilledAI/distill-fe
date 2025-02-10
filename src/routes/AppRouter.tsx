@@ -37,12 +37,9 @@ const RewardsPage = lazy(() => import("@pages/Rewards"))
 const StakePage = lazy(() => import("@pages/Stake"))
 const CreateProposal = lazy(() => import("@pages/Dao/CreateProposal"))
 const DaoPage = lazy(() => import("@pages/Dao"))
-<<<<<<< HEAD
 const ProposalsDetailPage = lazy(
   () => import("@pages/Dao/Proposals/ProposalsDetail"),
 )
-=======
->>>>>>> a194fab (create proposal ui)
 // const TrendingPage = lazy(() => import("@pages/Trending"))
 
 const AppRouter = () => {
@@ -98,13 +95,10 @@ const AppRouter = () => {
             path={`${PATH_NAMES.DAO}/:agentAddress/proposals/create`}
             element={<CreateProposal />}
           />
-<<<<<<< HEAD
           <Route
             path={`${PATH_NAMES.DAO}/:agentAddress/proposals/:proposalId`}
             element={<ProposalsDetailPage />}
           />
-=======
->>>>>>> a194fab (create proposal ui)
           {isMobile && (
             <Route
               path={PATH_NAMES.PRIVATE_AGENT}
