@@ -1,6 +1,7 @@
 import LoadingFallback from "@components/LoadingFallback"
 import { PATH_NAMES } from "@constants/index"
 import useWindowSize from "@hooks/useWindowSize"
+import Dao from "@pages/Dao"
 import { Suspense, lazy } from "react"
 import { Route, Routes } from "react-router-dom"
 
@@ -36,6 +37,7 @@ const Orchestration = lazy(() => import("@pages/Orchestration"))
 const RewardsPage = lazy(() => import("@pages/Rewards"))
 const StakePage = lazy(() => import("@pages/Stake"))
 // const TrendingPage = lazy(() => import("@pages/Trending"))
+const DaoPage = lazy(() => import("@pages/Dao"))
 
 const AppRouter = () => {
   const { isMobile } = useWindowSize()
@@ -82,6 +84,7 @@ const AppRouter = () => {
             path={`${PATH_NAMES.ORCHESTRATION}/:chatId`}
             element={<Orchestration />}
           />
+          <Route path={`${PATH_NAMES.DAO}/proposals`} element={<Dao />} />
           {isMobile && (
             <Route
               path={PATH_NAMES.PRIVATE_AGENT}
