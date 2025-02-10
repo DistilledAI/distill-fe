@@ -1,50 +1,88 @@
-import { Button, Input, Tab, Tabs, Textarea } from "@nextui-org/react"
+import { Button, Input, Tab, Tabs, Textarea, Tooltip } from "@nextui-org/react"
 import React, { useState } from "react"
 import { PlusIcon } from "@components/Icons/Plus"
-import { CloseFilledIcon } from "@components/Icons/DefiLens"
+import { CheckFilledIcon, CloseFilledIcon } from "@components/Icons/DefiLens"
 import BackButton from "@pages/AuthorProfile/BackButton"
-
-const enum ProposalType {
-  YesNo = "yes_no",
-  Options = "options",
-}
+import useConnectPhantom from "@pages/Stake/useConnectPhantom"
+import useCreateProposal, { ProposalType } from "./useCreateProposal"
+import { toast } from "react-toastify"
+import { useParams } from "react-router-dom"
 
 const CreateProposal: React.FC = () => {
   const [tab, setTab] = useState<ProposalType>(ProposalType.YesNo)
+  const { agentAddress } = useParams()
+  const { isConnectWallet, address } = useConnectPhantom()
+  const { onSubmit, loading } = useCreateProposal()
   const [options, setOptions] = useState([""])
-  console.log(tab)
+  const [title, setTitle] = useState("")
+  const [description, setDescription] = useState("")
+  const MAX_OPTION = 8
+
+  const handleCreate = async () => {
+    if (!agentAddress || loading || !isConnectWallet) return
+    if (!title) return toast.warning("Please enter title!")
+    if (!description) return toast.warning("Please enter description!")
+    if (tab === ProposalType.Options && options.includes(""))
+      return toast.warning("Please enter title option!")
+
+    onSubmit({
+      title,
+      description,
+      creator: address,
+      agentAddress,
+      vote: {
+        type: tab,
+        data: tab === ProposalType.YesNo ? null : options,
+      },
+    })
+  }
 
   return (
-    <div className="mx-auto mb-5 max-w-[844px] px-4">
+    <div className="mx-auto mb-5 max-w-[844px] px-4 py-4 max-md:pb-10">
       <BackButton className="fixed left-0 top-0 h-[50px] max-md:h-[40px] max-md:w-full max-md:bg-white" />
       <div className="flex items-center justify-between">
-        <p className="text-24 font-semibold">New Proposal</p>
-        <Button className="rounded-full bg-primary !text-16 font-semibold text-white">
-          <PlusIcon color="white" size={16} /> Create
-        </Button>
+        <p className="text-24 font-semibold max-md:text-18">New Proposal</p>
+        <Tooltip isDisabled={isConnectWallet} content="Login to continue">
+          <div>
+            <Button
+              onPress={handleCreate}
+              isLoading={loading}
+              isDisabled={!isConnectWallet}
+              className="rounded-full bg-primary !text-16 font-semibold text-white max-md:h-[36px] max-md:!text-14"
+            >
+              <PlusIcon color="white" size={16} /> Create
+            </Button>
+          </div>
+        </Tooltip>
       </div>
-      <div className="mt-6 rounded-lg border-1 border-mercury-100 p-4">
+      <div className="mt-6">
         <div>
-          <p className="mb-1 font-semibold">
+          <p className="mb-2 text-18 font-semibold max-md:text-16">
             Title <span className="font-medium text-red-500">(*)</span>
           </p>
-          <Input placeholder="Give your proposal a title" />
+          <Input
+            onValueChange={setTitle}
+            value={title}
+            placeholder="Give your proposal a title"
+          />
         </div>
         <div className="mt-4">
-          <p className="mb-1 font-semibold">
+          <p className="mb-2 text-18 font-semibold max-md:text-16">
             Description <span className="font-medium text-red-500">(*)</span>
           </p>
           <Textarea
             rows={6}
             minRows={6}
             maxRows={6}
+            onValueChange={setDescription}
+            value={description}
             placeholder="Give your proposal a description (supports Markdown)..."
           />
         </div>
       </div>
-      <div className="mt-6">
+      <div className="mt-4">
         <div>
-          <p className="mb-2 text-18 font-semibold">Proposal type</p>
+          <p className="mb-2 text-18 font-semibold max-md:text-16">Vote type</p>
           <Tabs
             classNames={{
               tabList: "w-[250px] bg-mercury-200",
@@ -54,12 +92,14 @@ const CreateProposal: React.FC = () => {
             onSelectionChange={(key) => setTab(key as ProposalType)}
           >
             <Tab key={ProposalType.YesNo} title="Yes/No">
-              <div className="max-w-[200px]">
-                <div className="cursor-pointer rounded-md bg-mercury-70 px-2 py-1 text-14 font-medium">
+              <div className="max-w-[250px]">
+                <div className="flex items-center justify-between rounded-full bg-mercury-70 px-4 py-2 font-medium">
                   Yes
+                  <CheckFilledIcon />
                 </div>
-                <div className="mt-1 cursor-pointer rounded-md bg-mercury-70 px-2 py-1 text-14 font-medium">
+                <div className="mt-1 flex items-center justify-between rounded-full bg-mercury-70 px-4 py-2 font-medium">
                   No
+                  <CloseFilledIcon />
                 </div>
               </div>
             </Tab>
@@ -77,7 +117,9 @@ const CreateProposal: React.FC = () => {
                         )
                       }
                       value={item}
-                      classNames={{ inputWrapper: "min-h-[36px] h-[36px]" }}
+                      classNames={{
+                        inputWrapper: "min-h-[38px] rounded-full h-[38px]",
+                      }}
                       placeholder="Enter title"
                     />
                     {options.length !== 1 && (
@@ -94,7 +136,7 @@ const CreateProposal: React.FC = () => {
                     )}
                   </div>
                 ))}
-                {options.length < 8 ? (
+                {options.length < MAX_OPTION ? (
                   <Button
                     onPress={() => setOptions((prev) => [...prev, ""])}
                     className="mt-3 h-[36px] rounded-full bg-mercury-950 text-white"
