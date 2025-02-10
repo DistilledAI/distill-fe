@@ -11,7 +11,7 @@ import { ArrowLeftFilledIcon } from "@components/Icons/Arrow"
 import { PATH_NAMES } from "@constants/index"
 import { CoinGeckoId } from "@hooks/useCoingecko"
 import { lazy, useEffect } from "react"
-import { useNavigate, useSearchParams } from "react-router-dom"
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom"
 const SimpleStaking = lazy(() => import("./SimpleStaking"))
 const BlackRackVault = lazy(() => import("./BlackRack"))
 
@@ -95,15 +95,25 @@ const Stake = () => {
 
   const isBlackRack = tokenAddress === StakeTokenAddress.BlackRack
 
+  //detect history
+  const location = useLocation()
+  const isHistory = location.state?.isHistory
+
+  const onBack = () => {
+    if (isHistory) return navigate(-1)
+    return navigate(PATH_NAMES.HOME)
+  }
+
   return (
     <div className="mx-auto max-w-[1232px] px-4 max-md:py-[60px]">
       <div
-        onClick={() => navigate(-1)}
+        onClick={() => onBack()}
         className="fixed left-0 top-0 z-[21] inline-flex h-[50px] cursor-pointer items-center gap-2 px-4 max-md:h-[40px] max-md:w-full max-md:bg-white"
       >
         <ArrowLeftFilledIcon color="#545454" />
         <p className="font-medium">Back</p>
       </div>
+
       {isBlackRack ? <BlackRackVault /> : <SimpleStaking />}
     </div>
   )

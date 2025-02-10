@@ -1,8 +1,8 @@
 import { aiFund1Ava, rackPattern } from "@assets/images"
+import { shortenNumber } from "@utils/index"
 import React from "react"
 import { useNavigate } from "react-router-dom"
 import useFetchHistory from "../InvestInformation/useFetchHistory"
-import { shortenNumber } from "@utils/index"
 
 const FundICard: React.FC<{
   link: string
@@ -13,7 +13,11 @@ const FundICard: React.FC<{
 
   return (
     <div
-      onClick={() => navigate(link)}
+      onClick={() =>
+        navigate(link, {
+          state: { isHistory: "true" },
+        })
+      }
       className="w-[350px] max-w-full cursor-pointer"
     >
       <div

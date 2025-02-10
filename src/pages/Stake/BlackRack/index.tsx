@@ -1,10 +1,10 @@
-import { useSearchParams } from "react-router-dom"
+import { aiFund1Ava, aiFund2Ava } from "@assets/images"
 import { PATH_NAMES } from "@constants/index"
 import { lazy } from "react"
-import { aiFund1Ava, aiFund2Ava } from "@assets/images"
-import SimpleCard from "./Card/SimpleCard"
+import { useSearchParams } from "react-router-dom"
 import FundICard from "./Card/FundICard"
 import FundIICard from "./Card/FundIICard"
+import SimpleCard from "./Card/SimpleCard"
 const SimpleStaking = lazy(() => import("../SimpleStaking"))
 const InvestmentVault = lazy(() => import("./Investment"))
 const InvestInformation = lazy(() => import("./InvestInformation"))

@@ -1,13 +1,13 @@
 import { aiFund2Ava, rackPattern } from "@assets/images"
 import { AnalyticIcon, InvestStakeIcon } from "@components/Icons"
+import { DECIMAL_SPL } from "@pages/BetingPage/constants"
+import useConnectPhantom from "@pages/Stake/useConnectPhantom"
+import { toBN } from "@utils/format"
+import { shortenNumber } from "@utils/index"
 import React from "react"
 import { useNavigate } from "react-router-dom"
-import useGetVaultInfo from "../Investment/useGetVaultInfo"
-import useConnectPhantom from "@pages/Stake/useConnectPhantom"
-import { shortenNumber } from "@utils/index"
-import { toBN } from "@utils/format"
-import { DECIMAL_SPL } from "@pages/BetingPage/constants"
 import { NAV_SCALE } from "../Investment/constants"
+import useGetVaultInfo from "../Investment/useGetVaultInfo"
 
 const FundIICard: React.FC<{
   link: string
@@ -23,7 +23,11 @@ const FundIICard: React.FC<{
 
   return (
     <div
-      onClick={() => navigate(link)}
+      onClick={() =>
+        navigate(link, {
+          state: { isHistory: "true" },
+        })
+      }
       className="w-[350px] max-w-full cursor-pointer"
     >
       <div
