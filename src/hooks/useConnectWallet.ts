@@ -194,7 +194,6 @@ const useConnectWallet = () => {
       await provider.send("eth_requestAccounts", [])
 
       const signer = await provider.getSigner()
-      console.log("🚀 ~ connectOwalletEVM ~ signer:", signer)
       const publicAddress = await getPublicAddress(signer)
 
       const domain = {}
