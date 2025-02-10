@@ -2,13 +2,23 @@ import { IconSearch } from "@components/Icons/DefiLens"
 import { Input } from "@nextui-org/react"
 import ProposalItem from "./ProposalItem"
 import ProposalsHistory from "./History"
+import { useNavigate, useParams } from "react-router-dom"
+import { PATH_NAMES } from "@constants/index"
 
 const Proposals = () => {
+  const navigate = useNavigate()
+  const { agentAddress } = useParams()
+
   return (
     <>
       <div className="mb-4 flex items-center justify-between border-b border-b-mercury-100 pb-6">
         <span className="text-18 font-semibold">Create a proposal</span>
-        <button className="btn-primary flex items-center justify-center !bg-mercury-950 px-3 !text-white">
+        <button
+          onClick={() =>
+            navigate(`${PATH_NAMES.DAO}/${agentAddress}/proposals/create`)
+          }
+          className="btn-primary flex items-center justify-center !bg-mercury-950 px-3 !text-white"
+        >
           + New proposal
         </button>
       </div>
