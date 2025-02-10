@@ -211,7 +211,6 @@ const useConnectWallet = () => {
       }
 
       let signature = (await signer._signTypedData(domain, types, value)) as any
-      signature = isMobile ? signature : signature?.result
       const digest = ethers.utils._TypedDataEncoder.hash(domain, types, value)
       const publicKey = ethers.utils.recoverPublicKey(digest, signature)
 
