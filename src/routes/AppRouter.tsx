@@ -37,7 +37,7 @@ const Orchestration = lazy(() => import("@pages/Orchestration"))
 const RewardsPage = lazy(() => import("@pages/Rewards"))
 const StakePage = lazy(() => import("@pages/Stake"))
 // const TrendingPage = lazy(() => import("@pages/Trending"))
-const DaoPage = lazy(() => import("@pages/Dao"))
+// const DaoPage = lazy(() => import("@pages/Dao"))
 
 const AppRouter = () => {
   const { isMobile } = useWindowSize()
