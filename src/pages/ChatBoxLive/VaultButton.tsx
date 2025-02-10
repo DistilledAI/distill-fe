@@ -21,7 +21,7 @@ const VaultButton = ({ address }: Props) => {
 
   return (
     <button
-      onClick={() => navigate(vaultPath)}
+      onClick={() => navigate(vaultPath, { state: { isHistory: "true" } })}
       type="button"
       className="mt-3 flex cursor-pointer items-center justify-between rounded-full bg-[rgba(52,54,54,0.7)] backdrop-blur-[10px]"
     >
