@@ -1,9 +1,15 @@
 import { IconSearch } from "@components/Icons/DefiLens"
 import { Input } from "@nextui-org/react"
 import ProposalItem from "./ProposalItem"
+<<<<<<< HEAD
 import { useNavigate, useParams } from "react-router-dom"
 import { PATH_NAMES } from "@constants/index"
 import ProposalsHistory from "./ProposalsHistory"
+=======
+import ProposalsHistory from "./History"
+import { useNavigate, useParams } from "react-router-dom"
+import { PATH_NAMES } from "@constants/index"
+>>>>>>> a194fab (create proposal ui)
 
 const Proposals = () => {
   const navigate = useNavigate()
