@@ -1,6 +1,7 @@
 import { Button } from "@nextui-org/react"
 import { StakeTokenAddress } from "@pages/Stake"
 import {
+  checkHasPeriod,
   getDurationByAddress,
   getInfoTokenByAddress,
 } from "@pages/Stake/helpers"
@@ -30,7 +31,7 @@ const StakeAction: React.FC<{
   const { balance, loading, getBalance } = useGetBalance(tokenAddress)
   const tokenInfo = getInfoTokenByAddress(tokenAddress as StakeTokenAddress)
 
-  const hasPeriod = tokenAddress !== StakeTokenAddress.Guard
+  const hasPeriod = checkHasPeriod(tokenAddress as StakeTokenAddress)
   const isExpired = endDate ? Date.now() > endDate : false
 
   const web3Locking = new Web3SolanaLockingToken(hasPeriod)

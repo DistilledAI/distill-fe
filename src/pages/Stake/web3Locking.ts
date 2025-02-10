@@ -44,7 +44,7 @@ export class Web3SolanaLockingToken extends Web3StakeBase {
 
   private getVaultPdaWithUnbondingPeriod(
     stakeCurrencyMint: string,
-    unbondingPeriod: number,
+    unbondingPeriod: number | string,
     program: Program<FungStakingVault>,
   ): PublicKey {
     const mintKey = new PublicKey(stakeCurrencyMint)
@@ -95,7 +95,7 @@ export class Web3SolanaLockingToken extends Web3StakeBase {
   }
 
   async stake(
-    unbondingPeriod: number,
+    unbondingPeriod: number | string,
     amount: number,
     wallet: WalletContextState,
     stakeCurrencyMint: string,
@@ -201,7 +201,7 @@ export class Web3SolanaLockingToken extends Web3StakeBase {
   }
 
   async unStake(
-    unbondingPeriod: number,
+    unbondingPeriod: number | string,
     amount: number,
     wallet: WalletContextState,
     stakeCurrencyMint: string,
@@ -304,7 +304,7 @@ export class Web3SolanaLockingToken extends Web3StakeBase {
 
   async withdraw(
     id: number,
-    unbondingPeriod: number,
+    unbondingPeriod: number | string,
     wallet: WalletContextState,
     stakeCurrencyMint: string,
   ) {

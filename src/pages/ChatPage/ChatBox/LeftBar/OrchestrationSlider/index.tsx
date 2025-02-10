@@ -1,9 +1,4 @@
-import {
-  gnrtAvatar,
-  leeQuidAvatar,
-  maxAvatar,
-  racksAvatar,
-} from "@assets/images"
+import { gnrtAvatar, maxAvatar, racksAvatar } from "@assets/images"
 import { ChevronDownIcon } from "@components/Icons/ChevronDownIcon"
 import { PATH_NAMES } from "@constants/index"
 import { useRef } from "react"
@@ -66,30 +61,30 @@ export const ORCHESTRATION_LIST = [
     topic: "How will the new US government change the global economy?",
     conversationId: isStaging ? 641 : 23266,
   },
-  {
-    agent1: {
-      avatar: leeQuidAvatar,
-      name: "Lee Quid",
-      contractAddress: "oraix39mVDGnusyjag97Tz5H8GvGriSZmhVvkvXRoc4",
-      tradeLink:
-        "https://agents.land/trading/oraix39mVDGnusyjag97Tz5H8GvGriSZmhVvkvXRoc4",
-      telegram: "https://t.me/leequidclan",
-      x: "https://x.com/LeeQuid_AI",
-    },
-    agent2: {
-      avatar: racksAvatar,
-      name: "BlackRack",
-      contractAddress: "D7yP4ycfsRWUGYionGpi64sLF2ddZ2JXxuRAti2M7uck",
-      tradeLink:
-        "https://agents.land/trading/D7yP4ycfsRWUGYionGpi64sLF2ddZ2JXxuRAti2M7uck",
-      telegram: "https://t.me/BlackRack_AI",
-      x: "https://x.com/BlackRack_AI",
-    },
-    name: "Lee Quid & BlackRack",
-    tag: "Orchestration",
-    topic: "What will Trump Do to Promote the Crypto Market?",
-    conversationId: isStaging ? 624 : 23260,
-  },
+  // {
+  //   agent1: {
+  //     avatar: leeQuidAvatar,
+  //     name: "Lee Quid",
+  //     contractAddress: "oraix39mVDGnusyjag97Tz5H8GvGriSZmhVvkvXRoc4",
+  //     tradeLink:
+  //       "https://agents.land/trading/oraix39mVDGnusyjag97Tz5H8GvGriSZmhVvkvXRoc4",
+  //     telegram: "https://t.me/leequidclan",
+  //     x: "https://x.com/LeeQuid_AI",
+  //   },
+  //   agent2: {
+  //     avatar: racksAvatar,
+  //     name: "BlackRack",
+  //     contractAddress: "D7yP4ycfsRWUGYionGpi64sLF2ddZ2JXxuRAti2M7uck",
+  //     tradeLink:
+  //       "https://agents.land/trading/D7yP4ycfsRWUGYionGpi64sLF2ddZ2JXxuRAti2M7uck",
+  //     telegram: "https://t.me/BlackRack_AI",
+  //     x: "https://x.com/BlackRack_AI",
+  //   },
+  //   name: "Lee Quid & BlackRack",
+  //   tag: "Orchestration",
+  //   topic: "What will Trump Do to Promote the Crypto Market?",
+  //   conversationId: isStaging ? 624 : 23260,
+  // },
 ]
 
 const SlideButton = ({ direction }: { direction: "next" | "prev" }) => {
