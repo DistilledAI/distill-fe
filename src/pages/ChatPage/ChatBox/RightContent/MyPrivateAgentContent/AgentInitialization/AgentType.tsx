@@ -6,8 +6,8 @@ import {
 import { CheckFilledIcon } from "@components/Icons/DefiLens"
 import { UserHexagonIcon } from "@components/Icons/UserIcon"
 import useAuthState from "@hooks/useAuthState"
-import { Button, Checkbox } from "@nextui-org/react"
-import CategoryLabel from "@pages/AgentDetail/CategoryLabel"
+import { Button, Checkbox, Select, SelectItem } from "@nextui-org/react"
+import CategoryLabel, { FieldLabel } from "@pages/AgentDetail/CategoryLabel"
 import { findTokenByAddress } from "@pages/MyPrivateAgent/helpers"
 import { Network } from "@pages/MyPrivateAgent/interface"
 import useSend from "@pages/MyPrivateAgent/Send/useSend"
@@ -21,6 +21,11 @@ import useGetPaymentHistory from "./useGetPaymentHistory"
 export const AGENT_TYPE_KEY = {
   DEFAULT: 0,
   DEFAI: 1,
+}
+
+export const TYPE_LLM_MODEL = {
+  LLM_MODEL_BASIC: 1,
+  DEEPSEEK_MODEL: 2,
 }
 
 const AGENT_TYPE_OPTIONS = [
@@ -43,6 +48,17 @@ const AGENT_TYPE_OPTIONS = [
     ],
     icon: <DefaiAgentTypeIcon />,
     key: AGENT_TYPE_KEY.DEFAI,
+  },
+]
+
+const LLM_MODEL_OPTIONS = [
+  {
+    label: "Basic",
+    value: TYPE_LLM_MODEL.LLM_MODEL_BASIC,
+  },
+  {
+    label: "DeepSeek",
+    value: TYPE_LLM_MODEL.DEEPSEEK_MODEL,
   },
 ]
 
@@ -211,6 +227,31 @@ const AgentType: React.FC<{ isDisabled?: boolean }> = ({ isDisabled }) => {
           *Note: You can pay later to activate the DeFAI type.
         </span>
       </div>
+
+      <Controller
+        name="llmModel"
+        control={control}
+        render={({ field: { value, onChange } }: any) => {
+          return (
+            <div className="items-center gap-3">
+              <FieldLabel text="LLM model" />
+              <Select
+                className="max-w-[50%]"
+                radius="full"
+                classNames={{
+                  trigger: "!bg-mercury-100",
+                }}
+                onChange={(e) => onChange(Number(e.target.value))}
+                selectedKeys={value ? [value.toString()] : ""}
+              >
+                {LLM_MODEL_OPTIONS.map((record) => (
+                  <SelectItem key={record.value}>{record.label}</SelectItem>
+                ))}
+              </Select>
+            </div>
+          )
+        }}
+      />
     </div>
   )
 }
