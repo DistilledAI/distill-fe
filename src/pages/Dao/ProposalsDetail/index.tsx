@@ -1,0 +1,23 @@
+import { useParams } from "react-router-dom"
+import BackButton from "@pages/AuthorProfile/BackButton"
+import ProposalSidebar from "./ProposalSidebar"
+import ProposalContent from "./ProposalContent"
+
+const ProposalsDetail = () => {
+  const { proposalId } = useParams()
+
+  return (
+    <div className="mx-auto max-w-[1024px] p-6 pt-3">
+      <BackButton className="fixed left-0 top-0 h-[50px] max-md:h-[40px] max-md:w-full max-md:bg-white" />
+      <div className="grid grid-cols-[350px_1fr] gap-6">
+        <ProposalSidebar
+          proposalId={proposalId}
+          statusDescription="This proposal is closed for voting with a turnout of 19.25% and 100% of voters in favor. It was passed and executed."
+        />
+        <ProposalContent />
+      </div>
+    </div>
+  )
+}
+
+export default ProposalsDetail
