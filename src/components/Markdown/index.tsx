@@ -9,14 +9,7 @@ import { useParams } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
 import { QueryDataKeys } from "types/queryDataKeys"
 
-const MarkdownMessage = ({
-  msg,
-  isDeepThink = false,
-}: {
-  msg: string
-  isDeepThink?: boolean
-}) => {
-  console.log("isDeepThink", isDeepThink)
+const MarkdownMessage = ({ msg }: { msg: string }) => {
   const { chatId } = useParams()
   const { textColor } = getActiveColorRandomById(chatId)
   const queryClient = useQueryClient()
@@ -123,12 +116,12 @@ const MarkdownMessage = ({
   }
 
   let processedMessage = breakLine(enhancedMessage(msg))
-  const regex = /<think>\s*([\s\S]*?)(?:<\/think>\s*(.*))?$/
+  const regex = /<think>\s*([\s\S]*?)(?:\s*<\/think>\s*(.*)|$)/
   const match = processedMessage.match(regex)
 
   if (match) {
-    const thinkContent = match ? match[1].trim() : "",
-      processedMessage = match && match[2] ? match[2].trim() : ""
+    const insideThink = match ? match[1].trim() : null,
+      processedMessage = match && match[2] !== undefined ? match[2].trim() : ""
 
     return (
       <>
@@ -153,7 +146,7 @@ const MarkdownMessage = ({
           )}
           aria-expanded={isCollapsed}
         >
-          <p className="text-base-14 text-mercury-900">{thinkContent}</p>
+          <p className="text-base-14 text-mercury-900">{insideThink}</p>
         </div>
         <Markdown components={renderers}>{processedMessage}</Markdown>
       </>

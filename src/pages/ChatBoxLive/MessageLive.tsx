@@ -100,7 +100,7 @@ const MessageLive: React.FC<MessageLiveProps> = ({
           {message?.isTyping ? (
             <DotLoading className="mt-1" />
           ) : (
-            <MarkdownMessage msg={message?.content} isDeepThink={isBot} />
+            <MarkdownMessage msg={message?.content} />
           )}
           <ReactedEmojisList
             emojiReactions={emojiReactions}

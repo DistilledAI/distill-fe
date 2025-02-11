@@ -77,7 +77,6 @@ const PrivateAgentChatContent: React.FC<{
             }}
             content={message.content}
             isTyping={message.isTyping}
-            isDeepThink={true}
           />
         ) : null}
         {message.role === RoleChat.OWNER ? (
