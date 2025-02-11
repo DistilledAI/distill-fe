@@ -1,24 +1,51 @@
 import { ChartBarIcon } from "@components/Icons/Chart"
+import {
+  getPercentVotes,
+  getProposalStatus,
+  ProposalStatus,
+} from "@pages/Dao/Proposals/helper"
 import { IProposal } from "@pages/Dao/Proposals/useProposals"
 
 interface Props {
   proposalDetail: IProposal | null
 }
 
-const PropsalStatusContent = ({ proposalDetail }: Props) => (
-  <>
-    <div className="mt-2 flex items-center gap-2">
-      <ChartBarIcon />
-      <span className="text-16 text-mercury-950">Status</span>
-    </div>
-    <p className="mt-2 text-16 text-mercury-950">
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempora
-      voluptates amet totam neque, explicabo molestiae reiciendis ipsum optio
-      minima? Eligendi esse amet numquam similique, dolorem natus non molestiae
-      odio voluptate.
-    </p>
-    <div className="my-6 h-[1px] w-full bg-mercury-100" />
-  </>
-)
+const proposalStatusTemplates = {
+  [ProposalStatus.OPEN]: {
+    content: () =>
+      "If the current vote stands, this proposal will fail due to a lack of voter participation.",
+  },
+  [ProposalStatus.PASSED]: {
+    content: (turnout: number, ratio: number) =>
+      `This proposal is closed for voting with a turnout of ${turnout}% and ${ratio}% of voters in favor. It was passed and now needs to be executed.`,
+  },
+  [ProposalStatus.REJECTED]: {
+    content: (turnout: number, ratio: number) =>
+      `This proposal is closed for voting with a turnout of ${turnout}% and ${ratio}% of voters in favor. It was rejected and now needs to be closed.`,
+  },
+}
 
+const PropsalStatusContent = ({ proposalDetail }: Props) => {
+  const proposalStatus =
+    proposalDetail && getProposalStatus(proposalDetail, Date.now() / 1000)
+  const percents = getPercentVotes(proposalDetail?.voteCount)
+
+  return (
+    <>
+      <div className="mt-2 flex items-center gap-2">
+        <ChartBarIcon />
+        <span className="text-16 text-mercury-950">Status</span>
+      </div>
+      <p className="mt-2 text-16 text-mercury-950">
+        {proposalStatus
+          ? proposalStatusTemplates[proposalStatus].content(
+              0,
+              Math.max(...percents),
+            )
+          : "--"}
+      </p>
+      <div className="my-6 h-[1px] w-full bg-mercury-100" />
+    </>
+  )
+}
 export default PropsalStatusContent

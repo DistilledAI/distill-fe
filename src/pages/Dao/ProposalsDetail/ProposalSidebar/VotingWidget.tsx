@@ -39,8 +39,8 @@ const VoteOption = ({
       className,
     )}
   >
-    <span className="text-16 text-mercury-950">{label}</span>
-    {icon && icon}
+    <p className="line-clamp-1 text-16 text-mercury-950">{label}</p>
+    <div className="flex-shrink-0">{icon && icon}</div>
   </div>
 )
 

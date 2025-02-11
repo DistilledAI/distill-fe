@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { Web3Dao } from "../web3Dao"
 import { useWallet } from "@solana/wallet-adapter-react"
 
-const stakeCurrencyMint = "3Ff7yUkQsbMzViXu7aAxAYsgpy31wY8R8TteE39FDuw4"
+export const stakeCurrencyMint = "3Ff7yUkQsbMzViXu7aAxAYsgpy31wY8R8TteE39FDuw4"
 const unbondingPeriod = 300
 
 export interface IProposal {
