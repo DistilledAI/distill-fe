@@ -3,11 +3,15 @@ import { PhantomWalletName } from "@solana/wallet-adapter-wallets"
 
 const useConnectPhantom = () => {
   const wallet = useWallet()
-  const isConnectWallet = wallet.publicKey
+  const isConnectWallet = !!wallet.publicKey
 
   const connectWallet = async () => {
-    wallet.select(PhantomWalletName)
-    await wallet.connect()
+    try {
+      await wallet.select(PhantomWalletName)
+      await wallet.connect()
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   const disconnectWallet = async () => {

@@ -4,10 +4,14 @@ import {
   DefaultAgentTypeIcon,
 } from "@components/Icons/BrainAIIcon"
 import { CheckFilledIcon } from "@components/Icons/DefiLens"
+import {
+  DeepSeekIcon,
+  DistilledIconNoText,
+} from "@components/Icons/DistilledAIIcon"
 import { UserHexagonIcon } from "@components/Icons/UserIcon"
 import useAuthState from "@hooks/useAuthState"
 import { Button, Checkbox } from "@nextui-org/react"
-import CategoryLabel from "@pages/AgentDetail/CategoryLabel"
+import CategoryLabel, { FieldLabel } from "@pages/AgentDetail/CategoryLabel"
 import { findTokenByAddress } from "@pages/MyPrivateAgent/helpers"
 import { Network } from "@pages/MyPrivateAgent/interface"
 import useSend from "@pages/MyPrivateAgent/Send/useSend"
@@ -21,6 +25,11 @@ import useGetPaymentHistory from "./useGetPaymentHistory"
 export const AGENT_TYPE_KEY = {
   DEFAULT: 0,
   DEFAI: 1,
+}
+
+export const TYPE_LLM_MODEL = {
+  LLM_MODEL_BASIC: 1,
+  DEEPSEEK_MODEL: 2,
 }
 
 const AGENT_TYPE_OPTIONS = [
@@ -43,6 +52,28 @@ const AGENT_TYPE_OPTIONS = [
     ],
     icon: <DefaiAgentTypeIcon />,
     key: AGENT_TYPE_KEY.DEFAI,
+  },
+]
+
+const LLM_MODEL_OPTIONS = [
+  {
+    label: "Distilled",
+    value: TYPE_LLM_MODEL.LLM_MODEL_BASIC,
+    icon: (
+      <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-mercury-950">
+        <DistilledIconNoText color="#FFFFFF" width={25} height={13} />
+      </div>
+    ),
+  },
+  {
+    label: "DeepSeek",
+    value: TYPE_LLM_MODEL.DEEPSEEK_MODEL,
+    icon: (
+      <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#4D6BFE]">
+        <DeepSeekIcon />
+      </div>
+    ),
+    description: "Activate for Private Chat (not available for Clans)",
   },
 ]
 
@@ -187,7 +218,7 @@ const AgentType: React.FC<{ isDisabled?: boolean }> = ({ isDisabled }) => {
                               />
                               <span className="font-medium text-[#BCAA88]">
                                 <span className="font-bold">5,000 </span>
-                                Max
+                                MAX
                               </span>
                               <span className="text-14-base-b text-mercury-30">
                                 {" "}
@@ -197,7 +228,14 @@ const AgentType: React.FC<{ isDisabled?: boolean }> = ({ isDisabled }) => {
                           </Button>
                         ))}
                     </div>
-                    <Checkbox radius="full" isSelected={isSelected} />
+                    <Checkbox
+                      radius="full"
+                      isSelected={isSelected}
+                      onChange={() => {
+                        if (isDisabled) return
+                        onChange(item.key)
+                      }}
+                    />
                   </div>
                 )
               }}
@@ -210,6 +248,55 @@ const AgentType: React.FC<{ isDisabled?: boolean }> = ({ isDisabled }) => {
         <span className="text-[13px] italic text-mercury-700">
           *Note: You can pay later to activate the DeFAI type.
         </span>
+      </div>
+
+      <FieldLabel text="LLM Model" />
+      <div className="mt-2 flex w-full gap-3 max-md:flex-wrap">
+        {LLM_MODEL_OPTIONS.map((record) => {
+          return (
+            <Controller
+              name="llmModel"
+              control={control}
+              render={({ field: { value, onChange } }: any) => {
+                const isSelected = value == record.value
+                return (
+                  <div
+                    className="flex h-[100px] w-1/2 items-start justify-between gap-3 rounded-[14px] border-[2px] border-transparent bg-mercury-30 p-4 hover:cursor-pointer aria-checked:opacity-60 aria-selected:border-brown-500 max-md:h-auto max-md:w-full"
+                    key={record.value}
+                    aria-selected={isSelected}
+                    aria-checked={isDisabled}
+                    onClick={() => {
+                      if (isDisabled) return
+                      onChange(record.value)
+                    }}
+                  >
+                    <div className="flex gap-3">
+                      {record.icon}
+                      <div>
+                        <span className="text-base-b text-mercury-900">
+                          {record.label}
+                        </span>
+                        <div className="max-w-[250px]">
+                          <span className="text-[13px] font-medium text-[#F78500]">
+                            {record.description}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <Checkbox
+                      radius="full"
+                      isSelected={isSelected}
+                      onChange={() => {
+                        if (isDisabled) return
+                        onChange(record.value)
+                      }}
+                    />
+                  </div>
+                )
+              }}
+            />
+          )
+        })}
       </div>
     </div>
   )

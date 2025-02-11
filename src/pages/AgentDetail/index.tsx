@@ -7,7 +7,9 @@ import {
 } from "@components/Icons/UserIcon"
 import SmoothScrollTo from "@components/SmoothScrollTo"
 import { BEHAVIORS_AGENT, STATUS_AGENT } from "@constants/index"
-import AgentType from "@pages/ChatPage/ChatBox/RightContent/MyPrivateAgentContent/AgentInitialization/AgentType"
+import AgentType, {
+  TYPE_LLM_MODEL,
+} from "@pages/ChatPage/ChatBox/RightContent/MyPrivateAgentContent/AgentInitialization/AgentType"
 import { refreshFetchMyAgent } from "@reducers/agentSlice"
 import { useEffect, useState } from "react"
 import { FormProvider, useForm } from "react-hook-form"
@@ -51,6 +53,7 @@ const AgentDetail: React.FC = () => {
   const firstMsgData = agentData?.firstMsg
   const avatarData = agentData?.avatar
   const typeAgentData = agentData?.typeAgent
+  const llmModelData = agentData?.llmModel
 
   const methods = useForm<any>({
     defaultValues: {
@@ -71,6 +74,7 @@ const AgentDetail: React.FC = () => {
       post_interval: "30m",
       category: "crypto",
       typeAgent: 0,
+      llmModel: TYPE_LLM_MODEL.LLM_MODEL_BASIC,
     },
   })
 
@@ -111,6 +115,7 @@ const AgentDetail: React.FC = () => {
       firstMsg: firstMsgData,
       avatar: avatarData,
       typeAgent: typeAgentData,
+      llmModel: llmModelData,
       ...getConfigAgentValueByKeys(agentConfigs, LIST_AGENT_CONFIG_KEYS),
     }
     const selectedBehaviors = {

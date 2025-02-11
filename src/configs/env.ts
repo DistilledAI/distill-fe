@@ -17,4 +17,6 @@ export const envConfig = {
   stakingAirdropBackendUrl:
     import.meta.env.VITE_STAKING_AIRDROP_BACKEND_URL ||
     "https://airdrop-be-stag.agents.land",
+  pinataApiKey: import.meta.env.VITE_PINATA_API_KEY || "",
+  pinataSecretKey: import.meta.env.VITE_PINATA_SECRET_API_KEY || "",
 }

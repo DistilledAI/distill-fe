@@ -20,6 +20,7 @@ export const PATH_NAMES = {
   TRENDING: "/trending",
   ORCHESTRATION: "/orchestration",
   STAKING: "/staking",
+  DAO: "/dao",
 }
 
 export const MIX_PANEL_TRACK_EVENT = {

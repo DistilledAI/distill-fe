@@ -23,6 +23,7 @@ const MainLayoutDesktop = () => {
     return (
       pathname === PATH_NAMES.TRENDING ||
       pathname === PATH_NAMES.STAKING ||
+      pathname.startsWith(PATH_NAMES.DAO) ||
       pathname === `${PATH_NAMES.AGENT_DETAIL}/${agentId}`
     )
   }, [pathname, agentId])

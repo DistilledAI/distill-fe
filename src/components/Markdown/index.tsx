@@ -1,5 +1,9 @@
+import { distilledAIIcon } from "@assets/svg"
+import { CaretUpFilledIcon } from "@components/Icons/TrendingPage"
+import { Button, Image } from "@nextui-org/react"
 import { useQueryClient } from "@tanstack/react-query"
 import { getActiveColorRandomById, isImageUrl } from "@utils/index"
+import { useState } from "react"
 import Markdown from "react-markdown"
 import { useParams } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
@@ -9,6 +13,7 @@ const MarkdownMessage = ({ msg }: { msg: string }) => {
   const { chatId } = useParams()
   const { textColor } = getActiveColorRandomById(chatId)
   const queryClient = useQueryClient()
+  const [isCollapsed, setIsCollapsed] = useState(false)
 
   const checkTextBreak = (text: string) => {
     const tokenRegex = /[a-zA-Z0-9/]{40,}/
@@ -72,7 +77,7 @@ const MarkdownMessage = ({ msg }: { msg: string }) => {
         <img
           src={imageSrc}
           alt={alt}
-          className="m-auto max-h-[300px] min-h-[200px] cursor-pointer rounded-3xl border border-mercury-100 object-cover object-center shadow-1"
+          className="max-h-[300px] min-h-[200px] cursor-pointer rounded-3xl border border-mercury-100 object-cover object-center shadow-1"
           onClick={() =>
             queryClient.setQueryData<string>(
               [QueryDataKeys.MEDIA_PREVIEW],
@@ -100,9 +105,53 @@ const MarkdownMessage = ({ msg }: { msg: string }) => {
         </p>
       )
     },
+    h4: ({ children }: any) => {
+      const wordBreakStyle = checkTextBreak(children)
+      return (
+        <p className={twMerge(wordBreakStyle, "text-[16px] font-medium")}>
+          {children}
+        </p>
+      )
+    },
   }
 
-  const processedMessage = breakLine(enhancedMessage(msg))
+  let processedMessage = breakLine(enhancedMessage(msg))
+  const regex = /<think>\s*([\s\S]*?)(?:\s*<\/think>\s*(.*)|$)/
+  const match = processedMessage.match(regex)
+
+  if (match) {
+    const insideThink = match ? match[1].trim() : null,
+      processedMessage = match && match[2] !== undefined ? match[2].trim() : ""
+
+    return (
+      <>
+        <Button onPress={() => setIsCollapsed(!isCollapsed)} className="mb-2">
+          <Image src={distilledAIIcon} alt="distilled AI icon" />
+          <span className="font-medium text-mercury-950">
+            {!!processedMessage ? "Thought" : "Thinking..."}
+          </span>
+          {isCollapsed ? (
+            <div className="rotate-180">
+              <CaretUpFilledIcon color="#363636" />
+            </div>
+          ) : (
+            <CaretUpFilledIcon color="#363636" />
+          )}
+        </Button>
+        <div
+          className={twMerge(
+            `overflow-hidden transition-all duration-300 ease-in-out`,
+            isCollapsed ? "max-h-0 opacity-0" : "max-h-96 opacity-100",
+            "mb-2 border-l-2 border-mercury-100 px-3",
+          )}
+          aria-expanded={isCollapsed}
+        >
+          <p className="text-base-14 text-mercury-900">{insideThink}</p>
+        </div>
+        <Markdown components={renderers}>{processedMessage}</Markdown>
+      </>
+    )
+  }
 
   return <Markdown components={renderers}>{processedMessage}</Markdown>
 }

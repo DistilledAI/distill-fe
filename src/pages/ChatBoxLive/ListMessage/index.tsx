@@ -1,16 +1,23 @@
 import React, { useCallback } from "react"
 import { twMerge } from "tailwind-merge"
-import ChatWindow from "@components/ChatWindow"
 import { IMessageBox } from "@pages/ChatPage/ChatBox/ChatMessages/helpers"
 import useFetchMessages from "@pages/ChatPage/ChatBox/ChatMessages/useFetchMessages"
 import MessageLive from "../MessageLive"
+import ChatWindowV2 from "@components/ChatWindowV2"
 
-const ListMessage: React.FC<{
+interface ListMessageProps {
   chatId: string
   onReply: (message: IMessageBox) => void
   isCloseLiveChat: boolean
   isClan: boolean
-}> = ({ chatId, onReply, isCloseLiveChat, isClan }) => {
+}
+
+const ListMessage: React.FC<ListMessageProps> = ({
+  chatId,
+  onReply,
+  isCloseLiveChat,
+  isClan,
+}) => {
   const {
     isLoading,
     isFetched,
@@ -23,9 +30,8 @@ const ListMessage: React.FC<{
   const renderMessage = useCallback(
     (index: number, message: IMessageBox) => {
       const isLastMessage = index === messages.length - 1
-
       return (
-        <div className={twMerge(isLastMessage && "pb-56 md:pb-0")}>
+        <div className={twMerge(isLastMessage && "pb-48 md:pb-0")}>
           <MessageLive
             message={message}
             onReply={() => onReply(message)}
@@ -40,7 +46,7 @@ const ListMessage: React.FC<{
   if (isCloseLiveChat) return null
 
   return (
-    <ChatWindow
+    <ChatWindowV2
       messages={messages}
       itemContent={renderMessage}
       isLoading={isLoading}
@@ -54,8 +60,7 @@ const ListMessage: React.FC<{
         "md:max-h-[calc(100%-80px)]",
         isClan && "md:max-h-[calc(100%-130px)]",
       )}
-      scrollBottomClassName="max-md:!bottom-[200px] max-md:bg-none"
-      increaseViewportBy={1000}
+      scrollBottomClassName="max-md:!bottom-[190px] max-md:bg-none"
     />
   )
 }
