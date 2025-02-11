@@ -47,9 +47,14 @@ const VoteOption = ({
 interface Props {
   proposalDetail: IProposal | null
   proposalIpfs: IDataProposal | null
+  getProposalsDetail: () => void
 }
 
-const VotingWidget = ({ proposalDetail, proposalIpfs }: Props) => {
+const VotingWidget = ({
+  proposalDetail,
+  proposalIpfs,
+  getProposalsDetail,
+}: Props) => {
   const [option, setOption] = useState<number | null>(null)
   const { loading, handleVote } = useSubmitVote()
   const { isConnectWallet, connectWallet } = useConnectPhantom()
@@ -72,7 +77,10 @@ const VotingWidget = ({ proposalDetail, proposalIpfs }: Props) => {
     if (!isCanSubmitVote || !proposalDetail?.proposal) {
       return
     }
-    handleVote(proposalDetail.proposal, option, getUserVote)
+    handleVote(proposalDetail.proposal, option, () => {
+      getUserVote()
+      getProposalsDetail()
+    })
   }
 
   const handleSelectOption = (val: number) => {

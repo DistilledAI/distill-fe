@@ -5,7 +5,7 @@ import useProposalDetail from "./useProposalDetail"
 import useProposalIpfs from "../Proposals/useProposalIpfs"
 
 const ProposalsDetail = () => {
-  const { proposalDetail } = useProposalDetail()
+  const { proposalDetail, getProposalsDetail } = useProposalDetail()
   const { proposalIpfs } = useProposalIpfs({
     uri: proposalDetail?.uri,
   })
@@ -17,6 +17,7 @@ const ProposalsDetail = () => {
         <ProposalSidebar
           proposalIpfs={proposalIpfs}
           proposalDetail={proposalDetail}
+          getProposalsDetail={getProposalsDetail}
         />
         <ProposalContent
           proposalIpfs={proposalIpfs}

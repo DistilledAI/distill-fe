@@ -58,7 +58,7 @@ const CreateProposal: React.FC = () => {
             <Button
               onPress={handleCreate}
               isLoading={loading}
-              isDisabled={!isConnectWallet}
+              isDisabled={!isConnectWallet || !isCanCreate}
               className="rounded-full bg-primary !text-16 font-semibold text-white max-md:h-[36px] max-md:!text-14"
             >
               <PlusIcon color="white" size={16} /> Create
