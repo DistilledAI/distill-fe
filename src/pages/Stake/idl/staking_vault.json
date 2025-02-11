@@ -199,6 +199,193 @@
       ]
     },
     {
+      "name": "config_gov",
+      "discriminator": [233, 152, 214, 136, 68, 52, 63, 43],
+      "accounts": [
+        {
+          "name": "admin",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "authority",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [97, 117, 116, 104, 111, 114, 105, 116, 121]
+              }
+            ]
+          }
+        },
+        {
+          "name": "vault",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  115, 116, 97, 107, 105, 110, 103, 95, 118, 97, 117, 108, 116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "stake_currency_mint"
+              },
+              {
+                "kind": "arg",
+                "path": "unbonding_period"
+              }
+            ]
+          }
+        },
+        {
+          "name": "gov_config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [103, 111, 118, 95, 99, 111, 110, 102, 105, 103]
+              },
+              {
+                "kind": "account",
+                "path": "vault"
+              }
+            ]
+          }
+        },
+        {
+          "name": "stake_currency_mint"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "unbonding_period",
+          "type": "u64"
+        },
+        {
+          "name": "weight_to_create",
+          "type": "u64"
+        },
+        {
+          "name": "threshold",
+          "type": "f64"
+        },
+        {
+          "name": "quorum",
+          "type": "f64"
+        },
+        {
+          "name": "voting_period",
+          "type": "i64"
+        }
+      ]
+    },
+    {
+      "name": "create_proposal",
+      "discriminator": [132, 116, 68, 174, 216, 160, 198, 22],
+      "accounts": [
+        {
+          "name": "creator",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "gov_config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [103, 111, 118, 95, 99, 111, 110, 102, 105, 103]
+              },
+              {
+                "kind": "account",
+                "path": "vault"
+              }
+            ]
+          }
+        },
+        {
+          "name": "vault",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  115, 116, 97, 107, 105, 110, 103, 95, 118, 97, 117, 108, 116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "stake_currency_mint"
+              },
+              {
+                "kind": "arg",
+                "path": "unbonding_period"
+              }
+            ]
+          }
+        },
+        {
+          "name": "proposal",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "staker_detail_info_pda",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  115, 116, 97, 107, 101, 114, 95, 100, 101, 116, 97, 105, 108,
+                  95, 105, 110, 102, 111
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "vault"
+              },
+              {
+                "kind": "account",
+                "path": "creator"
+              }
+            ]
+          }
+        },
+        {
+          "name": "stake_currency_mint"
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "unbonding_period",
+          "type": "u64"
+        },
+        {
+          "name": "uri",
+          "type": "string"
+        },
+        {
+          "name": "options",
+          "type": "u8"
+        }
+      ]
+    },
+    {
       "name": "create_vault",
       "discriminator": [29, 237, 247, 208, 193, 82, 54, 135],
       "accounts": [
@@ -1036,6 +1223,101 @@
       ]
     },
     {
+      "name": "vote_proposal",
+      "discriminator": [247, 104, 114, 240, 237, 41, 200, 36],
+      "accounts": [
+        {
+          "name": "signer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "vault",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  115, 116, 97, 107, 105, 110, 103, 95, 118, 97, 117, 108, 116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "stake_currency_mint"
+              },
+              {
+                "kind": "arg",
+                "path": "unbonding_period"
+              }
+            ]
+          }
+        },
+        {
+          "name": "proposal",
+          "writable": true
+        },
+        {
+          "name": "staker_detail_info_pda",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  115, 116, 97, 107, 101, 114, 95, 100, 101, 116, 97, 105, 108,
+                  95, 105, 110, 102, 111
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "vault"
+              },
+              {
+                "kind": "account",
+                "path": "signer"
+              }
+            ]
+          }
+        },
+        {
+          "name": "stake_currency_mint"
+        },
+        {
+          "name": "voter",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [118, 111, 116, 101, 114]
+              },
+              {
+                "kind": "account",
+                "path": "proposal"
+              }
+            ]
+          }
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "unbonding_period",
+          "type": "u64"
+        },
+        {
+          "name": "option",
+          "type": "u8"
+        }
+      ]
+    },
+    {
       "name": "whitelist",
       "discriminator": [0, 143, 193, 93, 69, 29, 183, 140],
       "accounts": [
@@ -1122,8 +1404,16 @@
       "discriminator": [36, 108, 254, 18, 167, 144, 27, 36]
     },
     {
+      "name": "GovConfig",
+      "discriminator": [25, 158, 54, 41, 143, 227, 58, 104]
+    },
+    {
       "name": "Pause",
       "discriminator": [168, 183, 252, 225, 28, 17, 138, 174]
+    },
+    {
+      "name": "Proposal",
+      "discriminator": [26, 94, 189, 187, 116, 136, 53, 33]
     },
     {
       "name": "StakerDetailInfo",
@@ -1142,6 +1432,10 @@
       "discriminator": [211, 8, 232, 43, 2, 152, 117, 119]
     },
     {
+      "name": "Voter",
+      "discriminator": [241, 93, 35, 191, 254, 147, 17, 202]
+    },
+    {
       "name": "WhitelistVault",
       "discriminator": [179, 240, 242, 156, 206, 64, 241, 221]
     }
@@ -1150,6 +1444,10 @@
     {
       "name": "EventClaimUnstake",
       "discriminator": [99, 54, 74, 147, 119, 120, 100, 23]
+    },
+    {
+      "name": "EventCreateProposal",
+      "discriminator": [237, 63, 210, 183, 153, 19, 86, 63]
     },
     {
       "name": "EventNewVault",
@@ -1162,6 +1460,10 @@
     {
       "name": "EventUnstake",
       "discriminator": [7, 14, 248, 129, 43, 55, 41, 104]
+    },
+    {
+      "name": "EventVoteProposal",
+      "discriminator": [105, 232, 100, 114, 16, 6, 49, 58]
     }
   ],
   "errors": [
@@ -1244,6 +1546,26 @@
       "code": 6015,
       "name": "StakingEnded",
       "msg": "Stake end"
+    },
+    {
+      "code": 6016,
+      "name": "NotEnoughVotingPower",
+      "msg": "Not enough voting power"
+    },
+    {
+      "code": 6017,
+      "name": "NumOptionToLarge",
+      "msg": "Support max 8 options"
+    },
+    {
+      "code": 6018,
+      "name": "ProposalEnded",
+      "msg": "Proposal has been ended"
+    },
+    {
+      "code": 6019,
+      "name": "InvalidOption",
+      "msg": "Invalid option"
     }
   ],
   "types": [
@@ -1323,6 +1645,42 @@
           {
             "name": "claimed_at",
             "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "EventCreateProposal",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "proposal",
+            "type": "pubkey"
+          },
+          {
+            "name": "creator",
+            "type": "pubkey"
+          },
+          {
+            "name": "vault",
+            "type": "pubkey"
+          },
+          {
+            "name": "created_time",
+            "type": "i64"
+          },
+          {
+            "name": "expiration_time",
+            "type": "i64"
+          },
+          {
+            "name": "uri",
+            "type": "string"
+          },
+          {
+            "name": "options",
+            "type": "u8"
           }
         ]
       }
@@ -1456,6 +1814,58 @@
       }
     },
     {
+      "name": "EventVoteProposal",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "proposal",
+            "type": "pubkey"
+          },
+          {
+            "name": "voter",
+            "type": "pubkey"
+          },
+          {
+            "name": "voted_time",
+            "type": "i64"
+          },
+          {
+            "name": "option",
+            "type": "u8"
+          },
+          {
+            "name": "weight",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "GovConfig",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "weight_to_create",
+            "type": "u64"
+          },
+          {
+            "name": "threshold",
+            "type": "f64"
+          },
+          {
+            "name": "quorum",
+            "type": "f64"
+          },
+          {
+            "name": "voting_period",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
       "name": "Pause",
       "type": {
         "kind": "struct",
@@ -1463,6 +1873,48 @@
           {
             "name": "paused",
             "type": "bool"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Proposal",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "proposal",
+            "type": "pubkey"
+          },
+          {
+            "name": "creator",
+            "type": "pubkey"
+          },
+          {
+            "name": "vault",
+            "type": "pubkey"
+          },
+          {
+            "name": "created_time",
+            "type": "i64"
+          },
+          {
+            "name": "expiration_time",
+            "type": "i64"
+          },
+          {
+            "name": "uri",
+            "type": "string"
+          },
+          {
+            "name": "options",
+            "type": "u8"
+          },
+          {
+            "name": "vote_count",
+            "type": {
+              "vec": "u64"
+            }
           }
         ]
       }
@@ -1591,6 +2043,34 @@
           {
             "name": "end_date",
             "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Voter",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "proposal",
+            "type": "pubkey"
+          },
+          {
+            "name": "voter",
+            "type": "pubkey"
+          },
+          {
+            "name": "voted_time",
+            "type": "i64"
+          },
+          {
+            "name": "option",
+            "type": "u8"
+          },
+          {
+            "name": "weight",
+            "type": "u64"
           }
         ]
       }

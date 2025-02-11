@@ -3,7 +3,7 @@ import { WalletContextState } from "@solana/wallet-adapter-react"
 import { ComputeBudgetProgram, Connection, Transaction } from "@solana/web3.js"
 import { Program } from "@coral-xyz/anchor"
 import { SOLANA_RPC, SOLANA_WS } from "program/utils/web3Utils.ts"
-import { handleTransaction } from "./utils"
+import { handleTransaction } from "@utils/web3"
 
 export class Web3StakeBase {
   protected connection: Connection
@@ -32,6 +32,7 @@ export class Web3StakeBase {
     provider: anchor.AnchorProvider,
     wallet: WalletContextState,
     instructions: anchor.web3.TransactionInstruction[],
+    signers: anchor.web3.Signer[] = [],
   ): Promise<any> {
     const transaction = new Transaction()
     const cpIx = ComputeBudgetProgram.setComputeUnitPrice({
@@ -46,6 +47,10 @@ export class Web3StakeBase {
     transaction.recentBlockhash = (
       await provider.connection.getLatestBlockhash()
     ).blockhash
+
+    if (signers.length > 0) {
+      transaction.partialSign(...signers)
+    }
 
     const signedTx = await wallet.signTransaction!(transaction)
     const serializedTx = signedTx.serialize()
