@@ -2,6 +2,7 @@ import { ChartBarIcon } from "@components/Icons/Chart"
 import {
   getPercentVotes,
   getProposalStatus,
+  getTurnout,
   ProposalStatus,
 } from "@pages/Dao/Proposals/helper"
 import { IProposal } from "@pages/Dao/Proposals/useProposals"
@@ -30,6 +31,11 @@ const PropsalStatusContent = ({ proposalDetail }: Props) => {
     proposalDetail && getProposalStatus(proposalDetail, Date.now() / 1000)
   const percents = getPercentVotes(proposalDetail?.voteCount)
 
+  const totalVoteCount = proposalDetail?.voteCount
+    ? proposalDetail?.voteCount.reduce((total, current) => total + current, 0)
+    : 0
+  const totalStaked = proposalDetail?.totalStaked || 0
+
   return (
     <>
       <div className="mt-2 flex items-center gap-2">
@@ -39,7 +45,7 @@ const PropsalStatusContent = ({ proposalDetail }: Props) => {
       <p className="mt-2 text-16 text-mercury-950">
         {proposalStatus
           ? proposalStatusTemplates[proposalStatus].content(
-              0,
+              getTurnout(totalVoteCount, totalStaked),
               Math.max(...percents),
             )
           : "--"}

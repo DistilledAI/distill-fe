@@ -42,20 +42,6 @@ export const getColorProposalStatus = (status: string) => {
   }
 }
 
-export const getPercentVoteYesNo = (voteCount: number[] = [0, 0]) => {
-  const totalVotes = voteCount[0] + voteCount[1]
-
-  if (totalVotes === 0) {
-    return { yesPercent: 50, noPercent: 50 }
-  }
-
-  const yesPercent = Number(((voteCount[0] / totalVotes) * 100).toFixed(2))
-
-  const noPercent = Number((100 - yesPercent).toFixed(2))
-
-  return { yesPercent, noPercent }
-}
-
 export const getPercentVotes = (voteCounts: number[] = []) => {
   if (voteCounts.length === 0) return []
 
@@ -66,7 +52,10 @@ export const getPercentVotes = (voteCounts: number[] = []) => {
     const percentages = new Array(voteCounts.length).fill(equalPercentage)
     const sumSoFar = equalPercentage * voteCounts.length
     const diff = Number((100 - sumSoFar).toFixed(2))
-    percentages[percentages.length - 1] += diff
+
+    percentages[percentages.length - 1] = Number(
+      (percentages[percentages.length - 1] + diff).toFixed(2),
+    )
     return percentages
   }
 
@@ -83,4 +72,9 @@ export const getPercentVotes = (voteCounts: number[] = []) => {
   }
 
   return percentages
+}
+
+export const getTurnout = (totalVoteCount: number, totalStaked: number) => {
+  if (!totalVoteCount && !totalStaked) return 0
+  return Number(((totalVoteCount / totalStaked) * 100).toFixed(3))
 }

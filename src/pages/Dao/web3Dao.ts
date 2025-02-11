@@ -159,6 +159,7 @@ export class Web3Dao extends Web3StakeBase {
           voteCount: proposalDetail.voteCount.map((vote) => vote.toNumber()),
           quorum: proposalDetail.quorum,
           threshold: proposalDetail.threshold,
+          totalStaked: proposalDetail.totalStaked.toNumber(),
         }
       })
     } catch (error: any) {
@@ -193,6 +194,7 @@ export class Web3Dao extends Web3StakeBase {
         voteCount: proposalDetail.voteCount.map((vote) => vote.toNumber()),
         quorum: proposalDetail.quorum,
         threshold: proposalDetail.threshold,
+        totalStaked: proposalDetail.totalStaked.toNumber(),
       }
     } catch (error: any) {
       console.error("Staking error:", error)

@@ -15,6 +15,7 @@ export interface IProposal {
   voteCount: number[]
   quorum: number
   threshold: number
+  totalStaked: number
 }
 
 const useProposals = () => {

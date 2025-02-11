@@ -40,7 +40,11 @@ const Proposals = () => {
         />
         <div className="space-y-3">
           {proposals.map((item, index) => (
-            <ProposalItem proposal={item} order={proposals.length - index} />
+            <ProposalItem
+              key={index}
+              proposal={item}
+              order={proposals.length - index}
+            />
           ))}
         </div>
 
