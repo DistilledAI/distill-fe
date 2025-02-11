@@ -1981,6 +1981,10 @@ export type FungStakingVault = {
                 kind: "account"
                 path: "proposal"
               },
+              {
+                kind: "account"
+                path: "signer"
+              },
             ]
           }
         },

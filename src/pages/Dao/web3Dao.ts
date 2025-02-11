@@ -208,6 +208,9 @@ export class Web3Dao extends Web3StakeBase {
     proposalPublicKey: string
   }) {
     try {
+      if (!wallet.publicKey) {
+        return { option: null }
+      }
       const provider = this.getProvider(wallet)
       const program = this.getProgram<FungStakingVault>(
         provider,
@@ -215,7 +218,11 @@ export class Web3Dao extends Web3StakeBase {
       )
 
       const [VotePda] = PublicKey.findProgramAddressSync(
-        [Buffer.from(VOTER_SEED), new PublicKey(proposalPublicKey).toBytes()],
+        [
+          Buffer.from(VOTER_SEED),
+          new PublicKey(proposalPublicKey).toBytes(),
+          wallet.publicKey?.toBytes(),
+        ],
         program.programId,
       )
 
