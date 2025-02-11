@@ -9,23 +9,26 @@ const useProposalDetail = () => {
   const { proposalId } = useParams()
   const [proposalDetail, setProposalDetail] = useState<IProposal | null>(null)
 
-  useEffect(() => {
-    ;(async () => {
-      if (proposalId) {
-        const web3Dao = new Web3Dao()
-        const res = await web3Dao.getProposalsDetail({
-          wallet,
-          proposalPublicKey: proposalId,
-        })
-        if (res) {
-          setProposalDetail(res)
-        }
+  const getProposalsDetail = async () => {
+    if (proposalId) {
+      const web3Dao = new Web3Dao()
+      const res = await web3Dao.getProposalsDetail({
+        wallet,
+        proposalPublicKey: proposalId,
+      })
+      if (res) {
+        setProposalDetail(res)
       }
-    })()
+    }
+  }
+
+  useEffect(() => {
+    getProposalsDetail()
   }, [wallet, proposalId])
 
   return {
     proposalDetail,
+    getProposalsDetail,
   }
 }
 
