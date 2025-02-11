@@ -251,7 +251,7 @@ const AgentType: React.FC<{ isDisabled?: boolean }> = ({ isDisabled }) => {
       </div>
 
       <FieldLabel text="LLM Model" />
-      <div className="mt-2 flex w-full items-center gap-3 max-md:flex-wrap">
+      <div className="mt-2 flex w-full gap-3 max-md:flex-wrap">
         {LLM_MODEL_OPTIONS.map((record) => {
           return (
             <Controller
@@ -261,7 +261,7 @@ const AgentType: React.FC<{ isDisabled?: boolean }> = ({ isDisabled }) => {
                 const isSelected = value === record.value
                 return (
                   <div
-                    className="flex h-[100px] w-1/2 items-center justify-between gap-3 rounded-[14px] border-[2px] border-transparent bg-mercury-30 p-4 hover:cursor-pointer aria-checked:opacity-60 aria-selected:border-brown-500 max-md:h-auto max-md:w-full"
+                    className="flex h-[100px] w-1/2 items-start justify-between gap-3 rounded-[14px] border-[2px] border-transparent bg-mercury-30 p-4 hover:cursor-pointer aria-checked:opacity-60 aria-selected:border-brown-500 max-md:h-auto max-md:w-full"
                     key={record.value}
                     aria-selected={isSelected}
                     aria-checked={isDisabled}
@@ -270,7 +270,7 @@ const AgentType: React.FC<{ isDisabled?: boolean }> = ({ isDisabled }) => {
                       onChange(record.value)
                     }}
                   >
-                    <div className="flex items-center gap-3">
+                    <div className="flex gap-3">
                       {record.icon}
                       <div>
                         <span className="text-base-b text-mercury-900">
