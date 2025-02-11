@@ -41,11 +41,7 @@ const ProposalInfo = ({ proposalDetail }: Props) => {
       />
       <InfoRow
         label="Status"
-        value={
-          proposalDetail
-            ? getProposalStatus(proposalDetail, Date.now() / 1000)
-            : "--"
-        }
+        value={proposalStatus ? proposalStatus : "--"}
         valueClassName={
           proposalStatus ? getColorProposalStatus(proposalStatus).color : ""
         }

@@ -25,7 +25,7 @@ const CreateProposal: React.FC = () => {
   const vaultInfo = getInfoTokenByAddress(agentAddress as StakeTokenAddress)
 
   const handleCreate = async () => {
-    if (!agentAddress || loading || !isConnectWallet || !isCanCreate) return
+    if (!agentAddress || loading || !isConnectWallet) return
     if (!title) return toast.warning("Please enter title!")
     if (!description) return toast.warning("Please enter description!")
     if (tab === ProposalType.Options && options.includes(""))
@@ -58,7 +58,7 @@ const CreateProposal: React.FC = () => {
             <Button
               onPress={handleCreate}
               isLoading={loading}
-              isDisabled={!isConnectWallet || !isCanCreate}
+              isDisabled={!isConnectWallet}
               className="rounded-full bg-primary !text-16 font-semibold text-white max-md:h-[36px] max-md:!text-14"
             >
               <PlusIcon color="white" size={16} /> Create

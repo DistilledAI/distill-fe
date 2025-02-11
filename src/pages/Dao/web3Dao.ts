@@ -1,4 +1,4 @@
-import { STAKING_VAULT_SEED } from "./../Stake/config"
+import { STAKING_VAULT_SEED, VOTER_SEED } from "./../Stake/config"
 import { WalletContextState } from "@solana/wallet-adapter-react"
 import { Web3StakeBase } from "@pages/Stake/web3StakeBase"
 import { FungStakingVault } from "../Stake/idl/staking_vault.ts"
@@ -58,8 +58,47 @@ export class Web3Dao extends Web3StakeBase {
 
       return { result, proposal }
     } catch (error: any) {
-      console.error("Staking error:", error)
+      console.error("Create error:", error)
       return { result: null, proposal: null }
+    }
+  }
+
+  async voteProposal({
+    unbondingPeriod,
+    wallet,
+    stakeCurrencyMint,
+    proposalPublicKey,
+    option,
+  }: {
+    unbondingPeriod: number | string
+    wallet: WalletContextState
+    stakeCurrencyMint: string
+    proposalPublicKey: string
+    option: number
+  }) {
+    try {
+      const provider = this.getProvider(wallet)
+      const program = this.getProgram<FungStakingVault>(
+        provider,
+        vaultInterface,
+      )
+      if (!wallet.publicKey) {
+        console.error("Wallet not connected")
+        return
+      }
+
+      const voteIx = await program.methods
+        .voteProposal(new BN(unbondingPeriod), option)
+        .accounts({
+          stakeCurrencyMint,
+          proposal: proposalPublicKey,
+        })
+        .instruction()
+
+      return await this.sendTransaction(provider, wallet, [voteIx])
+    } catch (error) {
+      console.error(error)
+      return this.handleTransactionError(error)
     }
   }
 
@@ -158,6 +197,35 @@ export class Web3Dao extends Web3StakeBase {
     } catch (error: any) {
       console.error("Staking error:", error)
       return null
+    }
+  }
+
+  async getUserVote({
+    wallet,
+    proposalPublicKey,
+  }: {
+    wallet: WalletContextState
+    proposalPublicKey: string
+  }) {
+    try {
+      const provider = this.getProvider(wallet)
+      const program = this.getProgram<FungStakingVault>(
+        provider,
+        vaultInterface,
+      )
+
+      const [VotePda] = PublicKey.findProgramAddressSync(
+        [Buffer.from(VOTER_SEED), new PublicKey(proposalPublicKey).toBytes()],
+        program.programId,
+      )
+
+      const voteDetail = await program.account.voter.fetch(VotePda)
+
+      if (voteDetail) return { option: voteDetail.option }
+      return { option: null }
+    } catch (error: any) {
+      console.error(error)
+      return { option: null }
     }
   }
 }

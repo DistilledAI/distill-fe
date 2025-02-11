@@ -1,19 +1,16 @@
 import Markdown from "react-markdown"
 import VotingStats from "./VotingStats"
 import { IProposal } from "../Proposals/useProposals"
-import useProposalIpfs from "../Proposals/useProposalIpfs"
 import { centerTextEllipsis } from "@utils/index"
 import moment from "moment"
+import { IDataProposal } from "../CreateProposal/useCreateProposal"
 
 interface Props {
   proposalContent: IProposal | null
+  proposalIpfs: IDataProposal | null
 }
 
-const ProposalContent = ({ proposalContent }: Props) => {
-  const { proposalIpfs } = useProposalIpfs({
-    uri: proposalContent?.uri,
-  })
-
+const ProposalContent = ({ proposalContent, proposalIpfs }: Props) => {
   return (
     <div className="space-y-6">
       <h2 className="text-28 font-semibold">{proposalIpfs?.title}</h2>

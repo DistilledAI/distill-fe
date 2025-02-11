@@ -22,14 +22,14 @@ export interface IDataProposal {
   }
 }
 
+const stakeCurrencyMint = "3Ff7yUkQsbMzViXu7aAxAYsgpy31wY8R8TteE39FDuw4"
+const unbondingPeriod = 300
+
 const useCreateProposal = () => {
   const navigate = useNavigate()
   const wallet = useWallet()
   const { agentAddress } = useParams()
   const [loading, setLoading] = useState(false)
-
-  const stakeCurrencyMint = "3Ff7yUkQsbMzViXu7aAxAYsgpy31wY8R8TteE39FDuw4"
-  const unbondingPeriod = 300
 
   const onSubmit = async (data: IDataProposal) => {
     try {
