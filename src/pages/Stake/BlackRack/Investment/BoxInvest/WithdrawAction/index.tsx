@@ -1,18 +1,19 @@
 import { aiFund2Ava, usdcLogo } from "@assets/images"
 import { ArrowLeftFilledIcon } from "@components/Icons/Arrow"
+import { BN } from "@coral-xyz/anchor"
 import { Button } from "@nextui-org/react"
 import { SPL_DECIMAL } from "@pages/Stake/config"
 import useConnectPhantom from "@pages/Stake/useConnectPhantom"
+import { useWallet } from "@solana/wallet-adapter-react"
+import { useWalletModal } from "@solana/wallet-adapter-react-ui"
 import { toBN } from "@utils/format"
+import { formatNumberWithComma } from "@utils/index"
+import { debounce } from "lodash"
 import React, { useCallback, useState } from "react"
 import NumberFormat from "react-number-format"
 import { toast } from "react-toastify"
-import { Web3Invest } from "../../web3Invest"
-import { useWallet } from "@solana/wallet-adapter-react"
-import { BN } from "@coral-xyz/anchor"
-import { formatNumberWithComma } from "@utils/index"
-import { debounce } from "lodash"
 import { InfoVault } from "../../useGetVaultInfo"
+import { Web3Invest } from "../../web3Invest"
 
 const web3Invest = new Web3Invest()
 
@@ -27,8 +28,9 @@ const WithdrawAction: React.FC<{
   const [loadingSubmit, setLoadingSubmit] = useState(false)
   const [toUsdc, setToUsdc] = useState(0)
   const [fee, setFee] = useState(0)
-  const { connectWallet, isConnectWallet } = useConnectPhantom()
+  const { isConnectWallet } = useConnectPhantom()
   const wallet = useWallet()
+  const { setVisible } = useWalletModal()
 
   console.log("performance fee: ", fee)
 
@@ -203,10 +205,10 @@ const WithdrawAction: React.FC<{
         </Button>
       ) : (
         <Button
-          onClick={connectWallet}
+          onPress={() => setVisible(true)}
           className="mt-7 h-[48px] w-full rounded-full bg-mercury-950 text-white"
         >
-          CONNECT TO PHANTOM
+          CONNECT WALLET
         </Button>
       )}
     </div>

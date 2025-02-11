@@ -2,12 +2,11 @@ import { maxAvatar } from "@assets/images"
 import { loadingButtonIcon } from "@assets/svg"
 import { CloseFilledIcon } from "@components/Icons/DefiLens"
 import { useWallet } from "@solana/wallet-adapter-react"
-import { PhantomWalletName } from "@solana/wallet-adapter-wallets"
+import { useWalletModal } from "@solana/wallet-adapter-react-ui"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { numberWithCommas, toBN } from "@utils/format"
 import { MAX_ADDRESS_SOLANA } from "program/constants"
 import { ChangeEvent, useEffect, useState } from "react"
-import { toast } from "react-toastify"
 import { twMerge } from "tailwind-merge"
 import { Web3SolanaProgramInteraction } from "../../../program/utils/web3Utils"
 import { BET_TYPE } from "../CardContainer"
@@ -25,6 +24,7 @@ const ModalBet: React.FC<ModalProps> = ({ isOpen, closeModal }) => {
     queryKey: ["bet-type"],
     initialData: BET_TYPE.UP,
   })
+  const { setVisible } = useWalletModal()
   const [tokenBal, setTokenBal] = useState<number>(0)
   const [amountVal, setAmountVal] = useState<string>("")
   const [loading, setLoading] = useState<boolean>(false)
@@ -100,13 +100,6 @@ const ModalBet: React.FC<ModalProps> = ({ isOpen, closeModal }) => {
     await web3Solana.createOrder(wallet, betAmount, side)
     setLoading(false)
     closeModal()
-  }
-
-  const onConnectPhantomWallet = async () => {
-    wallet.select(PhantomWalletName)
-    await wallet.connect().catch(() => {
-      toast.error("Connect Wallet Failed")
-    })
   }
 
   const renderAmountOptions = () => {
@@ -205,10 +198,10 @@ const ModalBet: React.FC<ModalProps> = ({ isOpen, closeModal }) => {
             {!isConnectWallet ? (
               <button
                 className="mt-4 w-full cursor-pointer rounded border-[2px] border-solid border-[rgba(255,255,255,0.25)] p-1 uppercase transition-all duration-150 ease-in hover:border-[rgba(255,255,255)] disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-75 disabled:brightness-75"
-                onClick={() => onConnectPhantomWallet()}
+                onClick={() => setVisible(true)}
               >
                 <div className="flex items-center justify-center gap-2 rounded bg-white px-6 py-2 uppercase text-[#080A14]">
-                  "CONNECT TO PHANTOM"
+                  "CONNECT WALLET"
                 </div>
               </button>
             ) : (
