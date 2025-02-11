@@ -136,6 +136,7 @@ const AgentType: React.FC<{ isDisabled?: boolean }> = ({ isDisabled }) => {
       setIsLoading(false)
     }
   }
+  console.log("")
 
   return (
     <div>
