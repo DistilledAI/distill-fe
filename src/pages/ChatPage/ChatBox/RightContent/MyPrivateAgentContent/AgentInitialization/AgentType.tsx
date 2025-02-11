@@ -4,9 +4,13 @@ import {
   DefaultAgentTypeIcon,
 } from "@components/Icons/BrainAIIcon"
 import { CheckFilledIcon } from "@components/Icons/DefiLens"
+import {
+  DeepSeekIcon,
+  DistilledIconNoText,
+} from "@components/Icons/DistilledAIIcon"
 import { UserHexagonIcon } from "@components/Icons/UserIcon"
 import useAuthState from "@hooks/useAuthState"
-import { Button, Checkbox, Select, SelectItem } from "@nextui-org/react"
+import { Button, Checkbox } from "@nextui-org/react"
 import CategoryLabel, { FieldLabel } from "@pages/AgentDetail/CategoryLabel"
 import { findTokenByAddress } from "@pages/MyPrivateAgent/helpers"
 import { Network } from "@pages/MyPrivateAgent/interface"
@@ -55,10 +59,20 @@ const LLM_MODEL_OPTIONS = [
   {
     label: "Basic",
     value: TYPE_LLM_MODEL.LLM_MODEL_BASIC,
+    icon: (
+      <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-mercury-950">
+        <DistilledIconNoText color="#FFFFFF" width={25} height={13} />
+      </div>
+    ),
   },
   {
     label: "DeepSeek",
     value: TYPE_LLM_MODEL.DEEPSEEK_MODEL,
+    icon: (
+      <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#4D6BFE]">
+        <DeepSeekIcon />
+      </div>
+    ),
   },
 ]
 
@@ -213,7 +227,14 @@ const AgentType: React.FC<{ isDisabled?: boolean }> = ({ isDisabled }) => {
                           </Button>
                         ))}
                     </div>
-                    <Checkbox radius="full" isSelected={isSelected} />
+                    <Checkbox
+                      radius="full"
+                      isSelected={isSelected}
+                      onChange={() => {
+                        if (isDisabled) return
+                        onChange(item.key)
+                      }}
+                    />
                   </div>
                 )
               }}
@@ -228,30 +249,47 @@ const AgentType: React.FC<{ isDisabled?: boolean }> = ({ isDisabled }) => {
         </span>
       </div>
 
-      <Controller
-        name="llmModel"
-        control={control}
-        render={({ field: { value, onChange } }: any) => {
+      <FieldLabel text="LLM Model" />
+      <div className="mt-2 flex w-full items-center gap-3">
+        {LLM_MODEL_OPTIONS.map((record) => {
           return (
-            <div className="items-center gap-3">
-              <FieldLabel text="LLM model" />
-              <Select
-                className="max-w-[50%]"
-                radius="full"
-                classNames={{
-                  trigger: "!bg-mercury-100",
-                }}
-                onChange={(e) => onChange(Number(e.target.value))}
-                selectedKeys={value ? [value.toString()] : ""}
-              >
-                {LLM_MODEL_OPTIONS.map((record) => (
-                  <SelectItem key={record.value}>{record.label}</SelectItem>
-                ))}
-              </Select>
-            </div>
+            <Controller
+              name="llmModel"
+              control={control}
+              render={({ field: { value, onChange } }: any) => {
+                const isSelected = value === record.value
+                return (
+                  <div
+                    className="flex w-1/2 items-center justify-between gap-3 rounded-[14px] border-[2px] border-transparent bg-mercury-30 p-4 hover:cursor-pointer aria-checked:opacity-60 aria-selected:border-brown-500 max-md:h-auto"
+                    key={record.value}
+                    aria-selected={isSelected}
+                    aria-checked={isDisabled}
+                    onClick={() => {
+                      if (isDisabled) return
+                      onChange(record.value)
+                    }}
+                  >
+                    <div className="flex items-center gap-3">
+                      {record.icon}
+                      <span className="text-base-b text-mercury-900">
+                        {record.label}
+                      </span>
+                    </div>
+                    <Checkbox
+                      radius="full"
+                      isSelected={isSelected}
+                      onChange={() => {
+                        if (isDisabled) return
+                        onChange(record.value)
+                      }}
+                    />
+                  </div>
+                )
+              }}
+            />
           )
-        }}
-      />
+        })}
+      </div>
     </div>
   )
 }
