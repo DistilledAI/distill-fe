@@ -31,7 +31,10 @@ const ProposalContent = ({ proposalContent, proposalIpfs }: Props) => {
         </Markdown>
       </div>
 
-      <VotingStats />
+      <VotingStats
+        proposalDetail={proposalContent}
+        proposalIpfs={proposalIpfs}
+      />
     </div>
   )
 }
