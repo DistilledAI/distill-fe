@@ -57,7 +57,7 @@ const AGENT_TYPE_OPTIONS = [
 
 const LLM_MODEL_OPTIONS = [
   {
-    label: "Basic",
+    label: "Distilled",
     value: TYPE_LLM_MODEL.LLM_MODEL_BASIC,
     icon: (
       <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-mercury-950">
@@ -73,6 +73,7 @@ const LLM_MODEL_OPTIONS = [
         <DeepSeekIcon />
       </div>
     ),
+    description: "Activate for Private Chat (not available for Clans)",
   },
 ]
 
@@ -217,7 +218,7 @@ const AgentType: React.FC<{ isDisabled?: boolean }> = ({ isDisabled }) => {
                               />
                               <span className="font-medium text-[#BCAA88]">
                                 <span className="font-bold">5,000 </span>
-                                Max
+                                MAX
                               </span>
                               <span className="text-14-base-b text-mercury-30">
                                 {" "}
@@ -250,7 +251,7 @@ const AgentType: React.FC<{ isDisabled?: boolean }> = ({ isDisabled }) => {
       </div>
 
       <FieldLabel text="LLM Model" />
-      <div className="mt-2 flex w-full items-center gap-3">
+      <div className="mt-2 flex w-full items-center gap-3 max-md:flex-wrap">
         {LLM_MODEL_OPTIONS.map((record) => {
           return (
             <Controller
@@ -260,7 +261,7 @@ const AgentType: React.FC<{ isDisabled?: boolean }> = ({ isDisabled }) => {
                 const isSelected = value === record.value
                 return (
                   <div
-                    className="flex w-1/2 items-center justify-between gap-3 rounded-[14px] border-[2px] border-transparent bg-mercury-30 p-4 hover:cursor-pointer aria-checked:opacity-60 aria-selected:border-brown-500 max-md:h-auto"
+                    className="flex h-[100px] w-1/2 items-center justify-between gap-3 rounded-[14px] border-[2px] border-transparent bg-mercury-30 p-4 hover:cursor-pointer aria-checked:opacity-60 aria-selected:border-brown-500 max-md:h-auto max-md:w-full"
                     key={record.value}
                     aria-selected={isSelected}
                     aria-checked={isDisabled}
@@ -271,9 +272,16 @@ const AgentType: React.FC<{ isDisabled?: boolean }> = ({ isDisabled }) => {
                   >
                     <div className="flex items-center gap-3">
                       {record.icon}
-                      <span className="text-base-b text-mercury-900">
-                        {record.label}
-                      </span>
+                      <div>
+                        <span className="text-base-b text-mercury-900">
+                          {record.label}
+                        </span>
+                        <div className="max-w-[250px]">
+                          <span className="text-[13px] font-medium text-[#F78500]">
+                            {record.description}
+                          </span>
+                        </div>
+                      </div>
                     </div>
                     <Checkbox
                       radius="full"
