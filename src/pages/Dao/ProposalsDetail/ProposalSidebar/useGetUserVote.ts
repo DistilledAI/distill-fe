@@ -7,7 +7,10 @@ const useGetUserVote = (proposalPublicKey: string | undefined) => {
   const [option, setOption] = useState<number | null>(null)
 
   const getUserVote = async () => {
-    if (!wallet.publicKey || !proposalPublicKey) return
+    if (!wallet.publicKey || !proposalPublicKey) {
+      setOption(null)
+      return
+    }
     const web3Dao = new Web3Dao()
     const { option } = await web3Dao.getUserVote({ wallet, proposalPublicKey })
     setOption(option)

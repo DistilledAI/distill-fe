@@ -5,6 +5,7 @@ import { useWallet } from "@solana/wallet-adapter-react"
 import { toast } from "react-toastify"
 import { useNavigate, useParams } from "react-router-dom"
 import { PATH_NAMES } from "@constants/index"
+import { ALL_CONFIGS } from "@pages/Stake/config"
 
 export const enum ProposalType {
   YesNo = "yes_no",
@@ -22,9 +23,6 @@ export interface IDataProposal {
   }
 }
 
-const stakeCurrencyMint = "3Ff7yUkQsbMzViXu7aAxAYsgpy31wY8R8TteE39FDuw4"
-const unbondingPeriod = 300
-
 const useCreateProposal = () => {
   const navigate = useNavigate()
   const wallet = useWallet()
@@ -33,6 +31,7 @@ const useCreateProposal = () => {
 
   const onSubmit = async (data: IDataProposal) => {
     try {
+      if (!agentAddress) return
       setLoading(true)
       const numOptions =
         data.vote.type === ProposalType.YesNo ? 2 : data.vote.data?.length
@@ -43,11 +42,11 @@ const useCreateProposal = () => {
         const web3Dao = new Web3Dao()
 
         const resWeb3 = await web3Dao.createProposal({
-          unbondingPeriod,
+          unbondingPeriod: ALL_CONFIGS.VOTING_PROPOSAL_PERIOD,
           wallet,
           numOptions: numOptions || 1,
           uri,
-          stakeCurrencyMint,
+          stakeCurrencyMint: agentAddress,
         })
 
         if (resWeb3 && resWeb3.result && resWeb3.proposal) {

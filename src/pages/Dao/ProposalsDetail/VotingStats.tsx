@@ -1,7 +1,7 @@
 import { CheckFilledIcon, CloseFilledIcon } from "@components/Icons/DefiLens"
 import { InfoCircleOutlineIcon } from "@components/Icons/InfoCircleIcon"
 import { Tooltip } from "@nextui-org/react"
-import { IProposal, stakeCurrencyMint } from "../Proposals/useProposals"
+import { IProposal } from "../Proposals/useProposals"
 import { PlayIcon } from "@components/Icons/Voice"
 import {
   IDataProposal,
@@ -12,6 +12,7 @@ import { twMerge } from "tailwind-merge"
 import { Web3SolanaLockingToken } from "@pages/Stake/web3Locking"
 import { useWallet } from "@solana/wallet-adapter-react"
 import { useEffect, useState } from "react"
+import { useParams } from "react-router-dom"
 
 interface Props {
   proposalDetail: IProposal | null
@@ -20,14 +21,13 @@ interface Props {
 
 const VotingStats = ({ proposalDetail, proposalIpfs }: Props) => {
   const wallet = useWallet()
+  const { agentAddress } = useParams()
   const [turnout, setTurnout] = useState<number>(0)
 
   const getTurnout = async () => {
+    if (!agentAddress) return
     const web3SolanaLockingToken = new Web3SolanaLockingToken()
-    const res = await web3SolanaLockingToken.getVaultInfo(
-      stakeCurrencyMint,
-      wallet,
-    )
+    const res = await web3SolanaLockingToken.getVaultInfo(agentAddress, wallet)
     if (res?.totalStaked) {
       const totalStaked = res?.totalStaked?.toNumber()
       const totalVoteCount =
@@ -42,7 +42,7 @@ const VotingStats = ({ proposalDetail, proposalIpfs }: Props) => {
 
   useEffect(() => {
     getTurnout()
-  }, [wallet, proposalDetail?.voteCount])
+  }, [wallet, proposalDetail?.voteCount, agentAddress])
 
   return (
     <div className="overflow-hidden rounded-2xl border border-mercury-100 bg-mercury-70">
