@@ -1,10 +1,12 @@
+import { STAKING_VAULT_SEED } from "./../Stake/config"
 import { WalletContextState } from "@solana/wallet-adapter-react"
 import { Web3StakeBase } from "@pages/Stake/web3StakeBase"
 import { FungStakingVault } from "../Stake/idl/staking_vault.ts"
+import * as anchor from "@coral-xyz/anchor"
 
 import idl from "../Stake/idl/staking_vault.json"
 import { BN } from "@coral-xyz/anchor"
-import { Keypair } from "@solana/web3.js"
+import { Keypair, PublicKey } from "@solana/web3.js"
 const vaultInterface = JSON.parse(JSON.stringify(idl))
 
 export class Web3Dao extends Web3StakeBase {
@@ -58,6 +60,71 @@ export class Web3Dao extends Web3StakeBase {
     } catch (error: any) {
       console.error("Staking error:", error)
       return { result: null, proposal: null }
+    }
+  }
+
+  async getProposals({
+    unbondingPeriod,
+    wallet,
+    stakeCurrencyMint,
+  }: {
+    unbondingPeriod: number | string
+    wallet: WalletContextState
+    stakeCurrencyMint: string
+  }) {
+    try {
+      const provider = this.getProvider(wallet)
+      const program = this.getProgram<FungStakingVault>(
+        provider,
+        vaultInterface,
+      )
+
+      const [vaultPda] = PublicKey.findProgramAddressSync(
+        [
+          Buffer.from(STAKING_VAULT_SEED),
+          new PublicKey(stakeCurrencyMint).toBytes(),
+          new BN(unbondingPeriod).toBuffer("le", 8),
+        ],
+        program.programId,
+      )
+
+      const proposals = await this.connection.getParsedProgramAccounts(
+        program.programId,
+        {
+          commitment: "confirmed",
+          filters: [
+            { dataSize: 289 },
+            {
+              memcmp: {
+                offset: 72,
+                bytes: vaultPda.toBase58(),
+              },
+            },
+          ],
+        },
+      )
+
+      return proposals.map((proposal) => {
+        const proposalDetail = program.coder.accounts.decode<
+          anchor.IdlAccounts<FungStakingVault>["proposal"]
+        >("proposal", proposal.account.data as Buffer)
+
+        return {
+          proposal: proposalDetail.proposal.toBase58(),
+          creator: proposalDetail.creator.toBase58(),
+          vault: proposalDetail.vault.toBase58(),
+          createdTime: proposalDetail.createdTime.toNumber(),
+          expirationTime: proposalDetail.expirationTime.toNumber(),
+          uri: proposalDetail.uri,
+          options: proposalDetail.options,
+          voteCount: proposalDetail.voteCount.map((vote) => vote.toNumber()),
+          quorum: proposalDetail.quorum,
+          threshold: proposalDetail.threshold,
+        }
+      })
+    } catch (error: any) {
+      console.error("Staking error:", error)
+      return []
     }
   }
 }

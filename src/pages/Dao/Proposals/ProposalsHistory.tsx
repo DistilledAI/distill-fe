@@ -1,6 +1,6 @@
 import { ChevronDownIcon } from "@components/Icons/ChevronDownIcon"
 import { useState } from "react"
-import ProposalItem from "./ProposalItem"
+// import ProposalItem from "./ProposalItem"
 import { Accordion, AccordionItem } from "@nextui-org/react"
 import { twMerge } from "tailwind-merge"
 
@@ -40,9 +40,9 @@ const ProposalsHistory = () => {
           hideIndicator
           disableIndicatorAnimation
         >
-          {Array.from({ length: 10 }).map((_, index) => (
+          {/* {Array.from({ length: 10 }).map((_, index) => (
             <ProposalItem key={index} />
-          ))}
+          ))} */}
         </AccordionItem>
       </Accordion>
     </div>

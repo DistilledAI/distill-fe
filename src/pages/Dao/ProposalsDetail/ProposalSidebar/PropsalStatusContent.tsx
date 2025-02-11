@@ -1,6 +1,6 @@
 import { ChartBarIcon } from "@components/Icons/Chart"
 
-const ProposalStatus = ({ description }: { description: string }) => (
+const PropsalStatusContent = ({ description }: { description: string }) => (
   <>
     <div className="mt-2 flex items-center gap-2">
       <ChartBarIcon />
@@ -11,4 +11,4 @@ const ProposalStatus = ({ description }: { description: string }) => (
   </>
 )
 
-export default ProposalStatus
+export default PropsalStatusContent
