@@ -21,7 +21,7 @@ const CreateProposal: React.FC = () => {
   const [description, setDescription] = useState("")
   const MAX_OPTION = 8
 
-  const { isCanCreate } = useStakerInfo()
+  const { isCanAction } = useStakerInfo()
   const vaultInfo = getInfoTokenByAddress(agentAddress as StakeTokenAddress)
 
   const handleCreate = async () => {
@@ -46,7 +46,7 @@ const CreateProposal: React.FC = () => {
   return (
     <div className="mx-auto mb-5 max-w-[844px] px-4 py-4 max-md:pb-10">
       <BackButton className="fixed left-0 top-0 h-[50px] max-md:h-[40px] max-md:w-full max-md:bg-white" />
-      {isCanCreate !== null && isCanCreate === false && (
+      {isCanAction !== null && isCanAction === false && (
         <div className="mb-2 font-medium italic text-red-500">
           To create a proposal you need to stake ${vaultInfo?.tokenName} vault!
         </div>
@@ -58,7 +58,7 @@ const CreateProposal: React.FC = () => {
             <Button
               onPress={handleCreate}
               isLoading={loading}
-              isDisabled={!isConnectWallet || !isCanCreate}
+              isDisabled={!isConnectWallet || !isCanAction}
               className="rounded-full bg-primary !text-16 font-semibold text-white max-md:h-[36px] max-md:!text-14"
             >
               <PlusIcon color="white" size={16} /> Create

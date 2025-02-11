@@ -9,7 +9,7 @@ import { useParams } from "react-router-dom"
 
 const useStakerInfo = () => {
   const wallet = useWallet()
-  const [isCanCreate, setIsCanCreate] = useState<boolean | null>(null)
+  const [isCanAction, setIsCanAction] = useState<boolean | null>(null)
   const { agentAddress } = useParams()
   const hasPeriod = checkHasPeriod(agentAddress as StakeTokenAddress)
 
@@ -18,7 +18,7 @@ const useStakerInfo = () => {
   const getStakedAmount = async () => {
     try {
       if (!wallet.publicKey) {
-        setIsCanCreate(null)
+        setIsCanAction(null)
         return
       }
       if (!agentAddress) return
@@ -26,10 +26,11 @@ const useStakerInfo = () => {
       const amount = toBN(info?.totalStake as any)
         .div(10 ** SPL_DECIMAL)
         .toNumber()
-      if (amount > 0) setIsCanCreate(true)
-      else setIsCanCreate(false)
+      if (amount > 0) setIsCanAction(true)
+      else setIsCanAction(false)
     } catch (error) {
       console.error(error)
+      setIsCanAction(false)
     }
   }
 
@@ -37,7 +38,7 @@ const useStakerInfo = () => {
     getStakedAmount()
   }, [wallet.publicKey, agentAddress])
 
-  return { isCanCreate }
+  return { isCanAction }
 }
 
 export default useStakerInfo
