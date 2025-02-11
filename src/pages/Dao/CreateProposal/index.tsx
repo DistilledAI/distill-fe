@@ -25,7 +25,7 @@ const CreateProposal: React.FC = () => {
   const vaultInfo = getInfoTokenByAddress(agentAddress as StakeTokenAddress)
 
   const handleCreate = async () => {
-    if (!agentAddress || loading || !isConnectWallet || isCanCreate) return
+    if (!agentAddress || loading || !isConnectWallet || !isCanCreate) return
     if (!title) return toast.warning("Please enter title!")
     if (!description) return toast.warning("Please enter description!")
     if (tab === ProposalType.Options && options.includes(""))
