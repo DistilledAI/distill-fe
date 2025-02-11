@@ -1915,6 +1915,18 @@
             "type": {
               "vec": "u64"
             }
+          },
+          {
+            "name": "total_staked",
+            "type": "u64"
+          },
+          {
+            "name": "threshold",
+            "type": "f64"
+          },
+          {
+            "name": "quorum",
+            "type": "f64"
           }
         ]
       }

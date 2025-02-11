@@ -2615,6 +2615,18 @@ export type FungStakingVault = {
               vec: "u64"
             }
           },
+          {
+            name: "totalStaked"
+            type: "u64"
+          },
+          {
+            name: "threshold"
+            type: "f64"
+          },
+          {
+            name: "quorum"
+            type: "f64"
+          },
         ]
       }
     },
