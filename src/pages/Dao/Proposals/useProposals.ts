@@ -48,7 +48,7 @@ const useProposals = () => {
         setIsLoading(false)
       }
     })()
-  }, [])
+  }, [wallet])
 
   return {
     proposals,

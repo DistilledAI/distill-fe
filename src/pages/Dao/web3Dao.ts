@@ -127,4 +127,37 @@ export class Web3Dao extends Web3StakeBase {
       return []
     }
   }
+
+  async getProposalsDetail({
+    wallet,
+    proposalPublicKey,
+  }: {
+    wallet: WalletContextState
+    proposalPublicKey: string
+  }) {
+    try {
+      const provider = this.getProvider(wallet)
+      const program = this.getProgram<FungStakingVault>(
+        provider,
+        vaultInterface,
+      )
+      const proposalDetail =
+        await program.account.proposal.fetch(proposalPublicKey)
+      return {
+        proposal: proposalDetail.proposal.toBase58(),
+        creator: proposalDetail.creator.toBase58(),
+        vault: proposalDetail.vault.toBase58(),
+        createdTime: proposalDetail.createdTime.toNumber(),
+        expirationTime: proposalDetail.expirationTime.toNumber(),
+        uri: proposalDetail.uri,
+        options: proposalDetail.options,
+        voteCount: proposalDetail.voteCount.map((vote) => vote.toNumber()),
+        quorum: proposalDetail.quorum,
+        threshold: proposalDetail.threshold,
+      }
+    } catch (error: any) {
+      console.error("Staking error:", error)
+      return null
+    }
+  }
 }

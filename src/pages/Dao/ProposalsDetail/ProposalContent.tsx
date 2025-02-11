@@ -1,24 +1,42 @@
 import Markdown from "react-markdown"
 import VotingStats from "./VotingStats"
+import { IProposal } from "../Proposals/useProposals"
+import useProposalIpfs from "../Proposals/useProposalIpfs"
+import { centerTextEllipsis } from "@utils/index"
+import moment from "moment"
 
-const ProposalContent = () => (
-  <div className="space-y-6">
-    <h2 className="text-28 font-semibold">
-      Improvements on oraix staking interface to show revenue stats
-    </h2>
+interface Props {
+  proposalContent: IProposal | null
+}
 
-    <div>
-      <span className="text-14 text-mercury-700">XAM – February 5</span>
-      <Markdown className="text-16 text-mercury-950">
-        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Consequuntur
-        recusandae, beatae repellat nihil, assumenda hic dolorem perspiciatis
-        laudantium facere qui eum cupiditate maxime quia nesciunt obcaecati
-        voluptatibus in atque aspernatur?
-      </Markdown>
+const ProposalContent = ({ proposalContent }: Props) => {
+  const { proposalIpfs } = useProposalIpfs({
+    uri: proposalContent?.uri,
+  })
+
+  return (
+    <div className="space-y-6">
+      <h2 className="text-28 font-semibold">{proposalIpfs?.title}</h2>
+
+      <div>
+        <div className="flex items-center gap-1">
+          <span className="text-14 text-mercury-700 underline">
+            {centerTextEllipsis(proposalIpfs?.creator || "")}
+          </span>
+          {proposalContent?.createdTime && (
+            <span className="text-14 text-mercury-700">
+              – {moment(proposalContent?.createdTime * 1000).format("ll")}
+            </span>
+          )}
+        </div>
+        <Markdown className="text-16 text-mercury-950">
+          {proposalIpfs?.description}
+        </Markdown>
+      </div>
+
+      <VotingStats />
     </div>
-
-    <VotingStats />
-  </div>
-)
+  )
+}
 
 export default ProposalContent

@@ -24,3 +24,20 @@ export function getProposalStatus(proposal: IProposal, currentTime: number) {
 
   return ProposalStatus.REJECTED
 }
+
+export const getColorProposalStatus = (status: string) => {
+  switch (status) {
+    case ProposalStatus.PASSED:
+      return {
+        color: "text-green-500",
+      }
+    case ProposalStatus.REJECTED:
+      return {
+        color: "text-[#FF3B30]",
+      }
+    default:
+      return {
+        color: "text-mercury-950",
+      }
+  }
+}

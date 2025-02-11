@@ -1,5 +1,6 @@
 import { CheckFilledIcon, CloseFilledIcon } from "@components/Icons/DefiLens"
 import { Button } from "@nextui-org/react"
+import { IProposal } from "@pages/Dao/Proposals/useProposals"
 import React from "react"
 import { twMerge } from "tailwind-merge"
 
@@ -25,7 +26,12 @@ const VoteOption = ({
   </div>
 )
 
-const VotingWidget = () => {
+interface Props {
+  proposalDetail: IProposal | null
+}
+
+const VotingWidget = ({ proposalDetail }: Props) => {
+  console.log({ proposalDetail })
   return (
     <div className="mt-4 space-y-2">
       <div className="flex flex-col gap-1">

@@ -1,11 +1,11 @@
 import { PATH_NAMES } from "@constants/index"
 import { useNavigate, useParams } from "react-router-dom"
 import { IProposal } from "./useProposals"
-import { useEffect, useState } from "react"
-import { IDataProposal } from "../CreateProposal/useCreateProposal"
+
 import moment from "moment"
-import { getProposalStatus, ProposalStatus } from "./helper"
+import { getColorProposalStatus, getProposalStatus } from "./helper"
 import { twMerge } from "tailwind-merge"
+import useProposalIpfs from "./useProposalIpfs"
 
 interface Props {
   proposal: IProposal
@@ -15,22 +15,10 @@ interface Props {
 const ProposalItem = ({ proposal, order }: Props) => {
   const navigate = useNavigate()
   const { agentAddress } = useParams()
-  const [proposalIpfs, setProposalIpfs] = useState<IDataProposal | null>(null)
   const proposalStatus = getProposalStatus(proposal, Date.now() / 1000)
-
-  useEffect(() => {
-    if (proposal.uri) {
-      ;(async () => {
-        try {
-          const res = await fetch(proposal.uri)
-          const data = await res.json()
-          setProposalIpfs(data)
-        } catch (e) {
-          console.log({ e })
-        }
-      })()
-    }
-  }, [proposal.uri])
+  const { proposalIpfs } = useProposalIpfs({
+    uri: proposal.uri,
+  })
 
   return (
     <div
@@ -50,8 +38,7 @@ const ProposalItem = ({ proposal, order }: Props) => {
         <span
           className={twMerge(
             "text-[15px] text-mercury-950",
-            proposalStatus === ProposalStatus.PASSED && "text-green-500",
-            proposalStatus === ProposalStatus.REJECTED && "text-[#FF3B30]",
+            getColorProposalStatus(proposalStatus).color,
           )}
         >
           {proposalStatus}
