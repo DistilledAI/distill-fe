@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react"
 import { Web3Dao } from "../web3Dao"
 import { useWallet } from "@solana/wallet-adapter-react"
-
-export const stakeCurrencyMint = "3Ff7yUkQsbMzViXu7aAxAYsgpy31wY8R8TteE39FDuw4"
-const unbondingPeriod = 300
+import { useParams } from "react-router-dom"
+import { ALL_CONFIGS } from "@pages/Stake/config"
 
 export interface IProposal {
   proposal: string
@@ -20,18 +19,20 @@ export interface IProposal {
 
 const useProposals = () => {
   const wallet = useWallet()
+  const { agentAddress } = useParams()
   const [proposals, setProposals] = useState<Array<IProposal>>([])
   const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
     ;(async () => {
       try {
+        if (!agentAddress) return
         setIsLoading(true)
         const web3Dao = new Web3Dao()
         const res = await web3Dao.getProposals({
           wallet,
-          unbondingPeriod,
-          stakeCurrencyMint,
+          unbondingPeriod: ALL_CONFIGS.VOTING_PROPOSAL_PERIOD,
+          stakeCurrencyMint: agentAddress,
         })
         if (res) {
           setProposals(
@@ -48,7 +49,7 @@ const useProposals = () => {
         setIsLoading(false)
       }
     })()
-  }, [wallet])
+  }, [wallet, agentAddress])
 
   return {
     proposals,

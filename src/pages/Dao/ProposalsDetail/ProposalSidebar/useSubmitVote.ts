@@ -1,12 +1,12 @@
 import { Web3Dao } from "@pages/Dao/web3Dao"
+import { ALL_CONFIGS } from "@pages/Stake/config"
 import { useWallet } from "@solana/wallet-adapter-react"
 import { useState } from "react"
+import { useParams } from "react-router-dom"
 import { toast } from "react-toastify"
 
-const stakeCurrencyMint = "3Ff7yUkQsbMzViXu7aAxAYsgpy31wY8R8TteE39FDuw4"
-const unbondingPeriod = 300
-
 const useSubmitVote = () => {
+  const { agentAddress } = useParams()
   const [loading, setLoading] = useState(false)
   const wallet = useWallet()
 
@@ -16,13 +16,13 @@ const useSubmitVote = () => {
     callback?: () => void,
   ) => {
     try {
-      if (!wallet.publicKey) return
+      if (!wallet.publicKey || !agentAddress) return
       setLoading(true)
       const web3Dao = new Web3Dao()
       const res = await web3Dao.voteProposal({
         wallet,
-        unbondingPeriod,
-        stakeCurrencyMint,
+        unbondingPeriod: ALL_CONFIGS.VOTING_PROPOSAL_PERIOD,
+        stakeCurrencyMint: agentAddress,
         proposalPublicKey,
         option,
       })
