@@ -3,6 +3,7 @@ import {
   blackrackAvartar2,
   gnrtAvatar,
   guardLogo,
+  jpowLogo,
   leeQuidAvatar,
   racksAvatar,
   usdcLogo,
@@ -24,6 +25,7 @@ export enum StakeTokenAddress {
   LeeQuid = "oraix39mVDGnusyjag97Tz5H8GvGriSZmhVvkvXRoc4",
   Guard = "oraiUNrTQmeuc13JoMFSyNcJCnXYpqErfp9v5diy64b",
   Banker = "oraiBbhuMd7MeVxyBjtnK8sggprf2NpHkeJaeHzpBFK",
+  JPOW = "orairHM3Yw2PbTfCty1PXy7tEUx3uBMfjouNbm4KnRJ",
 }
 
 export const LIST_TOKEN_STAKE = [
@@ -81,6 +83,15 @@ export const LIST_TOKEN_STAKE = [
     tokenName: "BANKER",
     avatar: bankerLogo,
     coinGeckoId: null,
+  },
+  {
+    id: 7,
+    address: StakeTokenAddress.JPOW,
+    label: "JPOW",
+    decimals: 6,
+    tokenName: "JPOW",
+    avatar: jpowLogo,
+    coinGeckoId: CoinGeckoId["jpow-ai"],
   },
 ]
 

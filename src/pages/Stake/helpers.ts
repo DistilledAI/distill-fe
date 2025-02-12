@@ -14,7 +14,9 @@ export const getDurationByAddress = (
 ) => {
   switch (address) {
     case StakeTokenAddress.LeeQuid:
+    case StakeTokenAddress.JPOW:
       return 30 * 24 * 60 * 60 * 2
+
     case StakeTokenAddress.Banker:
     case StakeTokenAddress.Guard:
       return MAX_DURATION_STAKE
@@ -24,12 +26,7 @@ export const getDurationByAddress = (
   }
 }
 
-const noPeriodTokens = [StakeTokenAddress.Guard]
 const noPeriodTokensForUI = [StakeTokenAddress.Guard, StakeTokenAddress.Banker]
-
-export const checkHasPeriod = (tokenAddress: StakeTokenAddress) => {
-  return !noPeriodTokens.includes(tokenAddress)
-}
 export const checkHasPeriodForUI = (tokenAddress: StakeTokenAddress) => {
   return !noPeriodTokensForUI.includes(tokenAddress)
 }

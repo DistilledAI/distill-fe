@@ -14,8 +14,10 @@ import NumberFormat from "react-number-format"
 import { toast } from "react-toastify"
 import { InfoVault } from "../../useGetVaultInfo"
 import { Web3Invest } from "../../web3Invest"
+import axios from "axios"
 
 const web3Invest = new Web3Invest()
+const rackVaultBEUrl = import.meta.env.VITE_RACKS_VAULT_BACKEND_URL
 
 const WithdrawAction: React.FC<{
   totalShare: number
@@ -31,8 +33,6 @@ const WithdrawAction: React.FC<{
   const { isConnectWallet } = useConnectPhantom()
   const wallet = useWallet()
   const { setVisible } = useWalletModal()
-
-  console.log("performance fee: ", fee)
 
   const debouncedFetchQuantity = useCallback(
     debounce((value: string) => {
@@ -102,19 +102,54 @@ const WithdrawAction: React.FC<{
       }
       if (loadingSubmit) return
       setLoadingSubmit(true)
+      const proofsResponse = await axios.request({
+        url: `${rackVaultBEUrl}/vault/proof`,
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        params: {
+          user: wallet.publicKey?.toBase58(),
+          nextTimeTakeManagementFee: 1740023243,
+        },
+      })
+      const isHaveCredit =
+        proofsResponse.data && proofsResponse.data.proof.length > 0
       const amount = toBN(
         toBN(amountVal)
           .multipliedBy(10 ** SPL_DECIMAL)
           .toFixed(0, 1),
       ).toNumber()
-      const res = await web3Invest.unbound({
-        wallet,
-        amount: new BN(amount),
-      })
-      if (res) {
-        toast.success("Unbond Successfully!")
-        setAmountVal("")
-        callback()
+      if (!isHaveCredit) {
+        const res = await web3Invest.unbound({
+          wallet,
+          amount: new BN(amount),
+        })
+        if (res) {
+          toast.success("Unbond Successfully!")
+          setAmountVal("")
+          callback()
+        }
+      } else {
+        const data = proofsResponse.data
+        const index = data.userNode.index
+        const creditAmount = data.userNode.creditAmount
+        const proof = data.proof
+        const proofData = proof.map((p: any) =>
+          Array.from(Buffer.from(p.slice(2), "hex")),
+        )
+        const tx = await web3Invest.unbondWithCredit({
+          wallet,
+          amount: new BN(amount),
+          creditAmount,
+          index,
+          proof: proofData,
+        })
+        if (tx) {
+          toast.success("Unbond Successfully!")
+          setAmountVal("")
+          callback()
+        }
       }
     } catch (error) {
       console.error(error)
