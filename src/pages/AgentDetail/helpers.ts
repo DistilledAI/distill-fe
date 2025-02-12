@@ -35,6 +35,7 @@ export const LIST_AGENT_CONFIG_KEYS = [
   "telegram_link",
   "agent_describe",
   "x_user_names",
+  "x_keywords",
 ]
 
 export const getConfigAgentByDataForm = (data: any) => {
