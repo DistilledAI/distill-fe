@@ -6,6 +6,7 @@ export const INVEST_ADDRESS = {
   vault_config: "BKJbENgj5nvNtVL3UjcL8SFkzvFSokrkuuewrR2y7ynS",
   authority: "8SWacfZ2AGRejg4sC7fkCAaiszKHwhz41KsfXM3eunvm",
   whitelistDepositPda: "9MWT5MXNWhkNXBGm3cYG21i1Gixcic2PYkBrYBx2Ft8s",
+  lookupTable: "5Le3GJowpGX3nMo1dQ49zDZGC3UreVEidL9uHkUWfLqu"
 }
 
 export function toUtfBytes(str: string): Uint8Array {

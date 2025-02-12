@@ -906,6 +906,155 @@ export type RacksVault = {
       ]
     },
     {
+      name: "createMerkleCreditRoot"
+      discriminator: [237, 111, 104, 203, 215, 174, 58, 117]
+      accounts: [
+        {
+          name: "signer"
+          writable: true
+          signer: true
+        },
+        {
+          name: "authority"
+          pda: {
+            seeds: [
+              {
+                kind: "const"
+                value: [97, 117, 116, 104, 111, 114, 105, 116, 121]
+              },
+            ]
+          }
+        },
+        {
+          name: "vaultConfig"
+          pda: {
+            seeds: [
+              {
+                kind: "const"
+                value: [118, 97, 117, 108, 116, 95, 99, 111, 110, 102, 105, 103]
+              },
+              {
+                kind: "account"
+                path: "signer"
+              },
+            ]
+          }
+        },
+        {
+          name: "vault"
+          pda: {
+            seeds: [
+              {
+                kind: "const"
+                value: [118, 97, 117, 108, 116]
+              },
+              {
+                kind: "account"
+                path: "vaultConfig"
+              },
+              {
+                kind: "account"
+                path: "shareToken"
+              },
+            ]
+          }
+        },
+        {
+          name: "merkleSellCreditRoot"
+          writable: true
+          pda: {
+            seeds: [
+              {
+                kind: "const"
+                value: [
+                  115,
+                  101,
+                  101,
+                  100,
+                  95,
+                  109,
+                  101,
+                  114,
+                  107,
+                  108,
+                  101,
+                  95,
+                  115,
+                  101,
+                  108,
+                  108,
+                  95,
+                  99,
+                  114,
+                  101,
+                  100,
+                  105,
+                  116,
+                  95,
+                  114,
+                  111,
+                  111,
+                  116,
+                ]
+              },
+              {
+                kind: "account"
+                path: "vault.next_time_take_management_fee"
+                account: "vault"
+              },
+            ]
+          }
+        },
+        {
+          name: "minter"
+          writable: true
+          pda: {
+            seeds: [
+              {
+                kind: "const"
+                value: [
+                  115,
+                  104,
+                  97,
+                  114,
+                  101,
+                  95,
+                  109,
+                  105,
+                  110,
+                  116,
+                  101,
+                  114,
+                ]
+              },
+            ]
+          }
+        },
+        {
+          name: "shareToken"
+        },
+        {
+          name: "depositToken"
+        },
+        {
+          name: "systemProgram"
+          address: "11111111111111111111111111111111"
+        },
+      ]
+      args: [
+        {
+          name: "root"
+          type: {
+            array: ["u8", 32]
+          }
+        },
+        {
+          name: "maxNumNodes"
+          type: "u64"
+        },
+      ]
+    },
+    {
       name: "createVault"
       discriminator: [29, 237, 247, 208, 193, 82, 54, 135]
       accounts: [
@@ -1540,43 +1689,6 @@ export type RacksVault = {
           }
         },
         {
-          name: "whitelistDeposit"
-          pda: {
-            seeds: [
-              {
-                kind: "const"
-                value: [
-                  119,
-                  104,
-                  105,
-                  116,
-                  101,
-                  108,
-                  105,
-                  115,
-                  116,
-                  95,
-                  100,
-                  101,
-                  112,
-                  111,
-                  115,
-                  105,
-                  116,
-                ]
-              },
-              {
-                kind: "account"
-                path: "vault"
-              },
-              {
-                kind: "account"
-                path: "depositToken"
-              },
-            ]
-          }
-        },
-        {
           name: "minter"
           writable: true
           pda: {
@@ -2065,6 +2177,541 @@ export type RacksVault = {
       ]
     },
     {
+      name: "sellShareWithCredit"
+      discriminator: [121, 204, 187, 64, 231, 112, 73, 76]
+      accounts: [
+        {
+          name: "signer"
+          writable: true
+          signer: true
+        },
+        {
+          name: "authority"
+          pda: {
+            seeds: [
+              {
+                kind: "const"
+                value: [97, 117, 116, 104, 111, 114, 105, 116, 121]
+              },
+            ]
+          }
+        },
+        {
+          name: "manager"
+        },
+        {
+          name: "vaultConfig"
+          pda: {
+            seeds: [
+              {
+                kind: "const"
+                value: [118, 97, 117, 108, 116, 95, 99, 111, 110, 102, 105, 103]
+              },
+              {
+                kind: "account"
+                path: "manager"
+              },
+            ]
+          }
+        },
+        {
+          name: "vault"
+          writable: true
+          pda: {
+            seeds: [
+              {
+                kind: "const"
+                value: [118, 97, 117, 108, 116]
+              },
+              {
+                kind: "account"
+                path: "vaultConfig"
+              },
+              {
+                kind: "account"
+                path: "shareToken"
+              },
+            ]
+          }
+        },
+        {
+          name: "minter"
+          writable: true
+          pda: {
+            seeds: [
+              {
+                kind: "const"
+                value: [
+                  115,
+                  104,
+                  97,
+                  114,
+                  101,
+                  95,
+                  109,
+                  105,
+                  110,
+                  116,
+                  101,
+                  114,
+                ]
+              },
+            ]
+          }
+        },
+        {
+          name: "shareToken"
+          writable: true
+        },
+        {
+          name: "depositToken"
+        },
+        {
+          name: "sellerShareTokenAccount"
+          writable: true
+          pda: {
+            seeds: [
+              {
+                kind: "account"
+                path: "signer"
+              },
+              {
+                kind: "const"
+                value: [
+                  6,
+                  221,
+                  246,
+                  225,
+                  215,
+                  101,
+                  161,
+                  147,
+                  217,
+                  203,
+                  225,
+                  70,
+                  206,
+                  235,
+                  121,
+                  172,
+                  28,
+                  180,
+                  133,
+                  237,
+                  95,
+                  91,
+                  55,
+                  145,
+                  58,
+                  140,
+                  245,
+                  133,
+                  126,
+                  255,
+                  0,
+                  169,
+                ]
+              },
+              {
+                kind: "account"
+                path: "shareToken"
+              },
+            ]
+            program: {
+              kind: "const"
+              value: [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89,
+              ]
+            }
+          }
+        },
+        {
+          name: "vaultDepositTokenAccount"
+          writable: true
+          pda: {
+            seeds: [
+              {
+                kind: "account"
+                path: "vault"
+              },
+              {
+                kind: "const"
+                value: [
+                  6,
+                  221,
+                  246,
+                  225,
+                  215,
+                  101,
+                  161,
+                  147,
+                  217,
+                  203,
+                  225,
+                  70,
+                  206,
+                  235,
+                  121,
+                  172,
+                  28,
+                  180,
+                  133,
+                  237,
+                  95,
+                  91,
+                  55,
+                  145,
+                  58,
+                  140,
+                  245,
+                  133,
+                  126,
+                  255,
+                  0,
+                  169,
+                ]
+              },
+              {
+                kind: "account"
+                path: "depositToken"
+              },
+            ]
+            program: {
+              kind: "const"
+              value: [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89,
+              ]
+            }
+          }
+        },
+        {
+          name: "managerTokenAccount"
+          writable: true
+          pda: {
+            seeds: [
+              {
+                kind: "account"
+                path: "manager"
+              },
+              {
+                kind: "const"
+                value: [
+                  6,
+                  221,
+                  246,
+                  225,
+                  215,
+                  101,
+                  161,
+                  147,
+                  217,
+                  203,
+                  225,
+                  70,
+                  206,
+                  235,
+                  121,
+                  172,
+                  28,
+                  180,
+                  133,
+                  237,
+                  95,
+                  91,
+                  55,
+                  145,
+                  58,
+                  140,
+                  245,
+                  133,
+                  126,
+                  255,
+                  0,
+                  169,
+                ]
+              },
+              {
+                kind: "account"
+                path: "depositToken"
+              },
+            ]
+            program: {
+              kind: "const"
+              value: [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89,
+              ]
+            }
+          }
+        },
+        {
+          name: "shareInfoPda"
+          writable: true
+          pda: {
+            seeds: [
+              {
+                kind: "const"
+                value: [115, 104, 97, 114, 101, 95, 105, 110, 102, 111]
+              },
+              {
+                kind: "account"
+                path: "vault"
+              },
+              {
+                kind: "account"
+                path: "signer"
+              },
+            ]
+          }
+        },
+        {
+          name: "sellShareInfoDetailPda"
+          writable: true
+          pda: {
+            seeds: [
+              {
+                kind: "const"
+                value: [
+                  115,
+                  101,
+                  108,
+                  108,
+                  95,
+                  115,
+                  104,
+                  97,
+                  114,
+                  101,
+                  95,
+                  105,
+                  110,
+                  102,
+                  111,
+                  95,
+                  100,
+                  101,
+                  116,
+                  97,
+                  105,
+                  108,
+                ]
+              },
+              {
+                kind: "account"
+                path: "shareInfoPda"
+              },
+              {
+                kind: "account"
+                path: "share_info_pda.sell_info_detail_id"
+                account: "shareInfo"
+              },
+            ]
+          }
+        },
+        {
+          name: "merkleSellCreditRoot"
+          pda: {
+            seeds: [
+              {
+                kind: "const"
+                value: [
+                  115,
+                  101,
+                  101,
+                  100,
+                  95,
+                  109,
+                  101,
+                  114,
+                  107,
+                  108,
+                  101,
+                  95,
+                  115,
+                  101,
+                  108,
+                  108,
+                  95,
+                  99,
+                  114,
+                  101,
+                  100,
+                  105,
+                  116,
+                  95,
+                  114,
+                  111,
+                  111,
+                  116,
+                ]
+              },
+              {
+                kind: "account"
+                path: "vault.next_time_take_management_fee"
+                account: "vault"
+              },
+            ]
+          }
+        },
+        {
+          name: "sellCreditInfo"
+          writable: true
+          pda: {
+            seeds: [
+              {
+                kind: "const"
+                value: [
+                  115,
+                  101,
+                  108,
+                  108,
+                  95,
+                  99,
+                  114,
+                  101,
+                  100,
+                  105,
+                  116,
+                  95,
+                  105,
+                  110,
+                  102,
+                  111,
+                ]
+              },
+              {
+                kind: "account"
+                path: "vault.next_time_take_management_fee"
+                account: "vault"
+              },
+              {
+                kind: "account"
+                path: "signer"
+              },
+            ]
+          }
+        },
+        {
+          name: "systemProgram"
+          address: "11111111111111111111111111111111"
+        },
+        {
+          name: "tokenProgram"
+          address: "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          name: "rent"
+          address: "SysvarRent111111111111111111111111111111111"
+        },
+        {
+          name: "associatedTokenProgram"
+          address: "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
+        },
+      ]
+      args: [
+        {
+          name: "args"
+          type: {
+            defined: {
+              name: "sellShareWithCreditArgs"
+            }
+          }
+        },
+      ]
+    },
+    {
       name: "whitelistDeposit"
       discriminator: [143, 172, 171, 182, 132, 5, 52, 70]
       accounts: [
@@ -2295,6 +2942,14 @@ export type RacksVault = {
       discriminator: [36, 108, 254, 18, 167, 144, 27, 36]
     },
     {
+      name: "merkleSellCreditRoot"
+      discriminator: [63, 207, 209, 111, 80, 179, 254, 52]
+    },
+    {
+      name: "sellCreditInfo"
+      discriminator: [203, 115, 144, 77, 6, 42, 152, 1]
+    },
+    {
       name: "sellShareInfoDetail"
       discriminator: [219, 238, 75, 22, 156, 7, 38, 116]
     },
@@ -2315,74 +2970,97 @@ export type RacksVault = {
       discriminator: [171, 115, 105, 245, 84, 115, 170, 159]
     },
   ]
+  events: [
+    {
+      name: "claimEvent"
+      discriminator: [93, 15, 70, 170, 48, 140, 212, 219]
+    },
+    {
+      name: "createMerkleCreditRootEvent"
+      discriminator: [97, 155, 137, 43, 135, 209, 88, 27]
+    },
+    {
+      name: "sellShareCreditEvent"
+      discriminator: [142, 156, 30, 63, 208, 225, 33, 141]
+    },
+    {
+      name: "sellShareEvent"
+      discriminator: [235, 123, 162, 237, 254, 198, 5, 249]
+    },
+  ]
   errors: [
     {
       code: 6000
+      name: "invalidProof"
+      msg: "Invalid Merkle proof."
+    },
+    {
+      code: 6001
       name: "isStaked"
       msg: "Tokens are already staked"
     },
     {
-      code: 6001
+      code: 6002
       name: "notStaked"
       msg: "Tokens not staked"
     },
     {
-      code: 6002
+      code: 6003
       name: "noTokens"
       msg: "No Tokens to stake"
     },
     {
-      code: 6003
+      code: 6004
       name: "invalidAmount"
       msg: "Invalid amount"
     },
     {
-      code: 6004
+      code: 6005
       name: "vaultEnded"
       msg: "Vault has been ended"
     },
     {
-      code: 6005
+      code: 6006
       name: "vaultNotStarted"
       msg: "Vault not started"
     },
     {
-      code: 6006
+      code: 6007
       name: "withdrawTimeNotOverYet"
       msg: "The withdraw time is not over yet"
     },
     {
-      code: 6007
+      code: 6008
       name: "tgeNotYetReached"
       msg: "Soft cap reached, but need to wait til TGE. Cannot unstake!"
     },
     {
-      code: 6008
+      code: 6009
       name: "overflowError"
       msg: "overflow"
     },
     {
-      code: 6009
+      code: 6010
       name: "alreadyClaimed"
       msg: "Already claimed"
     },
     {
-      code: 6010
+      code: 6011
       name: "incorrectAuthority"
       msg: "incorrectAuthority"
     },
     {
-      code: 6011
+      code: 6012
       name: "incorrectStakeDetailId"
       msg: "Incorrect Stake detail ID. It must be current stake info id"
     },
     {
-      code: 6012
+      code: 6013
       name: "incorrectLockPeriod"
       msg: "Incorrect Lock Period"
     },
     {
-      code: 6013
+      code: 6014
       name: "paused"
       msg: "paused"
     },
@@ -2412,6 +3090,42 @@ export type RacksVault = {
           {
             name: "amount"
             type: "u64"
+          },
+        ]
+      }
+    },
+    {
+      name: "claimEvent"
+      type: {
+        kind: "struct"
+        fields: [
+          {
+            name: "id"
+            type: "u64"
+          },
+          {
+            name: "user"
+            type: "pubkey"
+          },
+          {
+            name: "claimAmount"
+            type: "u64"
+          },
+        ]
+      }
+    },
+    {
+      name: "createMerkleCreditRootEvent"
+      type: {
+        kind: "struct"
+        fields: [
+          {
+            name: "maxNumNodes"
+            type: "u64"
+          },
+          {
+            name: "nextTimeTakeManagementFee"
+            type: "i64"
           },
         ]
       }
@@ -2489,6 +3203,55 @@ export type RacksVault = {
       }
     },
     {
+      name: "merkleSellCreditRoot"
+      docs: ["State for the account which distributes tokens."]
+      type: {
+        kind: "struct"
+        fields: [
+          {
+            name: "snapshotId"
+            type: "i64"
+          },
+          {
+            name: "root"
+            docs: ["The 256-bit merkle root."]
+            type: {
+              array: ["u8", 32]
+            }
+          },
+          {
+            name: "maxNumNodes"
+            docs: [
+              "Maximum number of nodes that can ever be claimed from this [MerkleDistributor].",
+            ]
+            type: "u64"
+          },
+        ]
+      }
+    },
+    {
+      name: "sellCreditInfo"
+      type: {
+        kind: "struct"
+        fields: [
+          {
+            name: "bump"
+            type: {
+              array: ["u8", 1]
+            }
+          },
+          {
+            name: "snapshotId"
+            type: "i64"
+          },
+          {
+            name: "accumulatedCredit"
+            type: "u64"
+          },
+        ]
+      }
+    },
+    {
       name: "sellShareArgs"
       type: {
         kind: "struct"
@@ -2496,6 +3259,78 @@ export type RacksVault = {
           {
             name: "shareAmount"
             type: "u64"
+          },
+        ]
+      }
+    },
+    {
+      name: "sellShareCreditEvent"
+      type: {
+        kind: "struct"
+        fields: [
+          {
+            name: "id"
+            type: "u64"
+          },
+          {
+            name: "user"
+            type: "pubkey"
+          },
+          {
+            name: "snapshotId"
+            type: "i64"
+          },
+          {
+            name: "accumulatedCredit"
+            type: "u64"
+          },
+          {
+            name: "shareAmount"
+            type: "u64"
+          },
+          {
+            name: "snapshotNav"
+            type: "u64"
+          },
+          {
+            name: "withdrawTime"
+            type: "i64"
+          },
+          {
+            name: "creationTime"
+            type: "i64"
+          },
+        ]
+      }
+    },
+    {
+      name: "sellShareEvent"
+      type: {
+        kind: "struct"
+        fields: [
+          {
+            name: "id"
+            type: "u64"
+          },
+          {
+            name: "user"
+            type: "pubkey"
+          },
+          {
+            name: "shareAmount"
+            type: "u64"
+          },
+          {
+            name: "snapshotNav"
+            type: "u64"
+          },
+          {
+            name: "withdrawTime"
+            type: "i64"
+          },
+          {
+            name: "creationTime"
+            type: "i64"
           },
         ]
       }
@@ -2528,6 +3363,34 @@ export type RacksVault = {
           {
             name: "claimed"
             type: "bool"
+          },
+        ]
+      }
+    },
+    {
+      name: "sellShareWithCreditArgs"
+      type: {
+        kind: "struct"
+        fields: [
+          {
+            name: "shareAmount"
+            type: "u64"
+          },
+          {
+            name: "index"
+            type: "u64"
+          },
+          {
+            name: "creditAmount"
+            type: "u64"
+          },
+          {
+            name: "proof"
+            type: {
+              vec: {
+                array: ["u8", 32]
+              }
+            }
           },
         ]
       }
