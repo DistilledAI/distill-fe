@@ -41,7 +41,6 @@ const ProposalInfo = ({ proposalDetail, proposalIpfs }: Props) => {
       <InfoRow
         label="Creator"
         value={centerTextEllipsis(proposalDetail?.creator || "")}
-        valueClassName="underline"
       />
       <InfoRow
         label="Status"

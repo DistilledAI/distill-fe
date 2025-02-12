@@ -11,9 +11,9 @@ const ProposalsDetail = () => {
   })
 
   return (
-    <div className="mx-auto max-w-[1024px] p-6 pt-3">
+    <div className="mx-auto max-w-[1024px] p-4 pb-20 pt-3 md:p-6">
       <BackButton className="fixed left-0 top-0 h-[50px] max-md:h-[40px] max-md:w-full max-md:bg-white" />
-      <div className="grid grid-cols-[350px_1fr] gap-10">
+      <div className="grid grid-cols-1 gap-5 md:grid-cols-[350px_1fr] md:gap-10">
         <ProposalSidebar
           proposalIpfs={proposalIpfs}
           proposalDetail={proposalDetail}
