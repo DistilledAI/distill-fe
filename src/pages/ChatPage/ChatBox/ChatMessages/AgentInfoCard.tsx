@@ -45,14 +45,14 @@ const AgentInfoCard = ({ messages, groupId }: AgentInfoCardProps) => {
 
   if (!agentInfo) {
     return (
-      <div className="p-4">
-        <Skeleton className="mx-auto min-h-[111px] max-w-[768px] rounded-2xl" />
+      <div className="md:p-4">
+        <Skeleton className="mx-auto min-h-[111px] max-w-[768px] md:rounded-[14px]" />
       </div>
     )
   }
 
   return (
-    <div className="px-4">
+    <div className="md:px-4">
       <div className="mx-auto min-h-[111px] max-w-[768px] border border-mercury-100 bg-mercury-50 p-2 max-md:border-x-0 md:rounded-[14px]">
         <div className="flex gap-x-3 md:gap-x-4">
           <AvatarCustom

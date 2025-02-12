@@ -22,7 +22,6 @@ import { QueryDataKeys } from "types/queryDataKeys"
 import useAuthState from "@hooks/useAuthState"
 import { useCallback, useMemo } from "react"
 import ChatWindowV2 from "@components/ChatWindowV2"
-import { useAppSelector } from "@hooks/useAppRedux"
 // import MessageActions from "./MessageActions"
 
 const ChatMessages = () => {
@@ -43,7 +42,6 @@ const ChatMessages = () => {
       queryKey: [QueryDataKeys.GROUP_DETAIL, groupId?.toString()],
       enabled: !!groupId && isLogin,
     })
-  const sidebarCollapsed = useAppSelector((state) => state.sidebarCollapsed)
   const userBId = groupDetailData?.data?.group?.userBId
   const isOwner = useMemo(() => {
     return !isGroupDetailFetched && isLogin ? true : userBId === user?.id
@@ -131,12 +129,8 @@ const ChatMessages = () => {
         isFetchingPreviousPage={isFetchingPreviousPage}
         onLoadPrevMessages={onLoadPrevMessages}
         chatId={groupId}
-        className="md:max-h-[calc(100%-232px)]"
+        className="max-h-[calc(100%-192px)] md:max-h-[calc(100%-232px)]"
         msgBoxClassName="p-0 md:px-4 "
-        scrollBottomClassName={twMerge(
-          "fixed bottom-[150px] w-[calc(100%-329px)] right-0",
-          sidebarCollapsed && "w-[calc(100%-104px)]",
-        )}
         style={{
           paddingBottom: `${spacing}px`,
         }}
@@ -145,7 +139,7 @@ const ChatMessages = () => {
       <ChatActions
         isClearContextBtn={!isOwner}
         isDelegateBtn={isOwner}
-        className="md:bottom-[64px]"
+        className="bottom-14 md:bottom-[64px]"
       />
     </>
   )
