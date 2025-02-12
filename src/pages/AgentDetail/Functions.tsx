@@ -249,7 +249,7 @@ const Functions: React.FC<{
           {isShowKeywordInput && (
             <Input
               type="text"
-              placeholder="Enter keywords  (Use a comma to separate multiple sources)"
+              placeholder="Enter keywords"
               className="w-[65%] max-md:w-full"
               classNames={{
                 mainWrapper: "border border-mercury-400 rounded-lg",
@@ -293,6 +293,12 @@ const Functions: React.FC<{
               </span>
             </div>
           )}
+        </div>
+
+        <div className="flex justify-end">
+          <span className="text-[13px] italic text-mercury-700">
+            Note: The agent will reply to all posts if no keywords are included.
+          </span>
         </div>
       </div>
     )
