@@ -48,6 +48,8 @@ jobs:
           VITE_SOLANA_RPC: https://devnet.helius-rpc.com/?api-key=3b28a0fc-0ef6-48ef-b55c-c55ae74cb6a6
           VITE_SOLANA_WS: wss://devnet.helius-rpc.com/?api-key=3b28a0fc-0ef6-48ef-b55c-c55ae74cb6a6
           VITE_RACKS_VAULT_BACKEND_URL: https://racks-vault-be.distilled.ai
+          VITE_PINATA_API_KEY: 18c8760c1c77f588edc9
+          VITE_PINATA_SECRET_API_KEY: 9f5816e37598a4094a1c8077cc83ccc438c47a3a01107bf36c70d762a49024b7
           VITE_GIT_COMMIT_ID: ${{ github.sha }}
 
       - name: Import Firebase service account credentials
