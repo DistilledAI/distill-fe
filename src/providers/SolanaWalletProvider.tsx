@@ -1,16 +1,18 @@
+import { WalletAdapterNetwork } from "@solana/wallet-adapter-base"
 import {
   ConnectionProvider,
   WalletProvider,
 } from "@solana/wallet-adapter-react"
-import { ReactNode, useMemo } from "react"
+import { WalletModalProvider } from "@solana/wallet-adapter-react-ui"
+import "@solana/wallet-adapter-react-ui/styles.css"
 import {
   LedgerWalletAdapter,
   PhantomWalletAdapter,
   SolflareWalletAdapter,
   TorusWalletAdapter,
 } from "@solana/wallet-adapter-wallets"
-import { WalletAdapterNetwork } from "@solana/wallet-adapter-base"
 import { clusterApiUrl } from "@solana/web3.js"
+import { ReactNode, useMemo } from "react"
 
 export const SolanaWalletProvider = ({ children }: { children: ReactNode }) => {
   // const network = WalletAdapterNetwork.Mainnet;
@@ -37,7 +39,7 @@ export const SolanaWalletProvider = ({ children }: { children: ReactNode }) => {
   return (
     <ConnectionProvider endpoint={endpoint}>
       <WalletProvider wallets={wallets} autoConnect>
-        {children}
+        <WalletModalProvider>{children}</WalletModalProvider>
       </WalletProvider>
     </ConnectionProvider>
   )
