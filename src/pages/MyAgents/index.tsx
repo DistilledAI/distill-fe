@@ -1,9 +1,12 @@
 import { maxAvatar } from "@assets/images"
 import AlertBox from "@components/AlertBox"
 import HeaderMobileBack from "@components/HeaderMobileBack"
-import { DefaiAgentTypeIcon } from "@components/Icons/BrainAIIcon"
+import {
+  DefaiAgentTypeIcon,
+  DefaultAgentTypeIcon,
+} from "@components/Icons/BrainAIIcon"
 import { CheckFilledIcon } from "@components/Icons/DefiLens"
-import { PATH_NAMES, STATUS_AGENT } from "@constants/index"
+import { STATUS_AGENT } from "@constants/index"
 import { useAppSelector } from "@hooks/useAppRedux"
 import useAuthState from "@hooks/useAuthState"
 import { Button } from "@nextui-org/react"
@@ -32,7 +35,7 @@ const MyAgentPage = () => {
   const { handleSend } = useSend()
   const [isLoading, setIsLoading] = useState(false)
   const { user } = useAuthState()
-  const amountMAX = isStaging ? 1 : 5000
+  const amountMAX = isStaging ? 1 : 1000
   const maxTokenAddress = "oraim8c9d1nkfuQk9EzGYEUGxqL3MHQYndRw1huVo5h"
   const ADDRESS_PAYMENT_NETWORK_SOL = isStaging
     ? "H65QnPNMWj1EGgwDD5RH3oHQBbwmuBbAzXgW8no6gKwQ"
@@ -96,72 +99,82 @@ const MyAgentPage = () => {
             isAgentActive={isAgentActive}
           />
 
-          {!isAgentActive && typeAgentData === AGENT_TYPE_KEY.DEFAI ? (
-            <AlertBox
-              isVisible={!isAgentActive}
-              messages={[
-                "Please ignore this if you have already made a payment.",
-                `Please make a payment to activate the DeFAI Agent type.`,
-                `Your agent will automatically activate once your payment is verified (within 24 working hours).`,
-              ]}
-              icon={<DefaiAgentTypeIcon />}
-              extendButton={
-                isPaid ? (
-                  <Button className="mt-2 h-8 rounded-full bg-[#DEFAE5]">
-                    <div className="flex items-center gap-1">
-                      <CheckFilledIcon color="#20993F" />
-                      <span className="text-14 font-bold text-[#20993F]">
-                        Payment Successful
-                      </span>
-                    </div>
-                  </Button>
-                ) : (
-                  <Button
-                    className="h-8 min-w-[165px] rounded-full bg-mercury-950"
-                    onPress={() => {
-                      handleSubmit({
-                        tokenAddress: maxTokenAddress,
-                        toAccountAddress: ADDRESS_PAYMENT_NETWORK_SOL,
-                        amount: amountMAX.toString(),
-                      })
-                    }}
-                    isLoading={isLoading}
-                  >
-                    <div className="flex items-center gap-1">
-                      <img
-                        src={maxAvatar}
-                        width={14}
-                        className="rounded-full"
-                      />
-                      <span className="text-14 font-medium text-[#BCAA88]">
-                        <span className="font-bold">5,000 </span>
-                        Max
-                      </span>
-                      <span className="text-13 font-bold text-mercury-30">
-                        {" "}
-                        Pay Now
-                      </span>
-                    </div>
-                  </Button>
-                )
-              }
-            />
-          ) : (
-            <AlertBox
-              isVisible={!isAgentActive}
-              messages={[
-                "Please join the whitelist to activate. You will receive an email from contact@distilled.ai once your Personal Agent has been approved.",
-              ]}
-              links={[
-                {
-                  to: "https://forms.gle/qGWWAnt3nWWAkxeE9",
-                  label: "Enter waitlist",
-                  external: true,
-                },
-                { to: PATH_NAMES.MARKETPLACE, label: "Chat with other agents" },
-              ]}
-            />
-          )}
+          {
+            !isAgentActive && (
+              <AlertBox
+                isVisible={!isAgentActive}
+                messages={[
+                  "Please ignore this if you have already made a payment.",
+                  `Please make a payment to activate the agent type.`,
+                  `Your agent will automatically activate once your payment is verified (within 24 working hours).`,
+                ]}
+                icon={
+                  typeAgentData == AGENT_TYPE_KEY.DEFAI ? (
+                    <DefaiAgentTypeIcon />
+                  ) : (
+                    <DefaultAgentTypeIcon />
+                  )
+                }
+                extendButton={
+                  isPaid ? (
+                    <Button className="mt-2 h-8 rounded-full bg-[#DEFAE5]">
+                      <div className="flex items-center gap-1">
+                        <CheckFilledIcon color="#20993F" />
+                        <span className="text-14 font-bold text-[#20993F]">
+                          Payment Successful
+                        </span>
+                      </div>
+                    </Button>
+                  ) : (
+                    <Button
+                      className="h-8 min-w-[165px] rounded-full bg-mercury-950"
+                      onPress={() => {
+                        handleSubmit({
+                          tokenAddress: maxTokenAddress,
+                          toAccountAddress: ADDRESS_PAYMENT_NETWORK_SOL,
+                          amount: amountMAX.toString(),
+                        })
+                      }}
+                      isLoading={isLoading}
+                    >
+                      <div className="flex items-center gap-1">
+                        <img
+                          src={maxAvatar}
+                          width={14}
+                          className="rounded-full"
+                        />
+                        <span className="text-14 font-medium text-[#BCAA88]">
+                          <span className="font-bold">5,000 </span>
+                          Max
+                        </span>
+                        <span className="text-13 font-bold text-mercury-30">
+                          {" "}
+                          Pay Now
+                        </span>
+                      </div>
+                    </Button>
+                  )
+                }
+              />
+            )
+
+            // : (
+            //   <AlertBox
+            //     isVisible={!isAgentActive}
+            //     messages={[
+            //       "Please join the whitelist to activate. You will receive an email from contact@distilled.ai once your Personal Agent has been approved.",
+            //     ]}
+            //     links={[
+            //       {
+            //         to: "https://forms.gle/qGWWAnt3nWWAkxeE9",
+            //         label: "Enter waitlist",
+            //         external: true,
+            //       },
+            //       { to: PATH_NAMES.MARKETPLACE, label: "Chat with other agents" },
+            //     ]}
+            //   />
+            // )
+          }
         </>
       )}
       <MyAgents agents={agents} />
