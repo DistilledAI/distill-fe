@@ -3,13 +3,14 @@ import { PATH_NAMES } from "@constants/index"
 import { Button } from "@nextui-org/react"
 import { StakeTokenAddress } from "@pages/Stake"
 import { getInfoTokenByAddress } from "@pages/Stake/helpers"
-import { Link } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 
 interface Props {
   address: StakeTokenAddress | null
 }
 
 const DaoButton = ({ address }: Props) => {
+  const navigate = useNavigate()
   if (!address) return null
 
   const tokenInfo = getInfoTokenByAddress(address)
@@ -17,8 +18,11 @@ const DaoButton = ({ address }: Props) => {
 
   return (
     <Button
-      as={Link}
-      to={`${PATH_NAMES.DAO}/${tokenInfo.address}/proposals`}
+      onPress={() =>
+        navigate(`${PATH_NAMES.DAO}/${tokenInfo.address}/proposals`, {
+          state: { isHistory: "true" },
+        })
+      }
       className="h-11 w-full rounded-full bg-mercury-70 text-mercury-950"
     >
       <div>
