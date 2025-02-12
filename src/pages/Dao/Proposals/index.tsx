@@ -3,7 +3,7 @@ import { Input } from "@nextui-org/react"
 import ProposalItem from "./ProposalItem"
 import { useNavigate, useParams } from "react-router-dom"
 import { PATH_NAMES } from "@constants/index"
-// import ProposalsHistory from "./ProposalsHistory"
+import ProposalsHistory from "./ProposalsHistory"
 import useProposals from "./useProposals"
 
 const Proposals = () => {
@@ -39,16 +39,18 @@ const Proposals = () => {
           placeholder="Search proposals..."
         />
         <div className="space-y-3">
-          {proposals.map((item, index) => (
-            <ProposalItem
-              key={index}
-              proposal={item}
-              order={proposals.length - index}
-            />
-          ))}
+          {proposals
+            .filter((item) => Date.now() / 1000 <= item.expirationTime)
+            .map((item, index) => (
+              <ProposalItem
+                key={index}
+                proposal={item}
+                order={proposals.length - index}
+              />
+            ))}
         </div>
 
-        {/* <ProposalsHistory /> */}
+        <ProposalsHistory proposals={proposals} />
       </div>
     </>
   )
