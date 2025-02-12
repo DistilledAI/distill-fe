@@ -144,7 +144,7 @@ const MyAgentPage = () => {
                           className="rounded-full"
                         />
                         <span className="text-14 font-medium text-[#BCAA88]">
-                          <span className="font-bold">5,000 </span>
+                          <span className="font-bold">1,000 </span>
                           Max
                         </span>
                         <span className="text-13 font-bold text-mercury-30">
