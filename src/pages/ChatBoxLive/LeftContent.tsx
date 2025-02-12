@@ -2,25 +2,27 @@ import { bgBtcPrediction, bitmaxAva, btcIconRote } from "@assets/images"
 import { solanaCircleIcon } from "@assets/svg"
 import AudioClanCustom from "@components/AudioClanCustom"
 import { AgentDotLandIcon } from "@components/Icons/FilledSquareCircleIcon"
+import VideoCustom from "@components/VideoCustom"
 import { PATH_NAMES } from "@constants/index"
-import { Skeleton, useDisclosure } from "@nextui-org/react"
+import { Skeleton } from "@nextui-org/react"
 import {
   GroupConfig,
   UserGroup,
 } from "@pages/ChatPage/ChatBox/LeftBar/useFetchGroups"
+import { StakeTokenAddress } from "@pages/Stake"
+import { getInfoTokenByAddress } from "@pages/Stake/helpers"
 import { useQueries, useQueryClient } from "@tanstack/react-query"
 import React, { lazy, useEffect, useState } from "react"
 import { useSearchParams } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
 import { QueryDataKeys } from "types/queryDataKeys"
+import AgentDescription from "./AgentDescription"
 import AgentSocials from "./AgentSocials"
 import ContractDisplay from "./ContractDisplay"
+import DaoButton from "./DaoButton"
 import SkeletonInfo, { SkeletonDesc } from "./SkeletonInfo"
 import TradeTokenButton from "./TradeTokenButton"
-import { StakeTokenAddress } from "@pages/Stake"
 import VaultButton from "./VaultButton"
-import AgentDescription from "./AgentDescription"
-import VideoCustom from "@components/VideoCustom"
 
 const BetModal = lazy(() => import("@components/BetModal"))
 
@@ -31,7 +33,15 @@ const LeftContent: React.FC<{
   const queryClient = useQueryClient()
   const [searchParams] = useSearchParams()
   const prediction = searchParams.get("prediction")
-  const { isOpen, onOpenChange, onOpen } = useDisclosure()
+  const [isOpenModal, setOpenModal] = useState<boolean>(false)
+
+  const onOpenChange = () => {
+    setOpenModal(!isOpenModal)
+  }
+
+  const onOpen = () => {
+    setOpenModal(true)
+  }
 
   const groupConfig: GroupConfig | null = groupDetail?.group?.config
     ? JSON.parse(groupDetail.group.config)
@@ -171,8 +181,22 @@ const LeftContent: React.FC<{
               key={groupConfig?.contractAddress}
               address={groupConfig?.contractAddress as StakeTokenAddress}
             />
-            <div className="mt-3 hidden md:block">
-              <TradeTokenButton tradeLink={groupConfig?.tradeLink} />
+            <div
+              className={twMerge(
+                "mt-3 hidden md:block",
+                groupConfig?.contractAddress &&
+                  getInfoTokenByAddress(
+                    groupConfig?.contractAddress as StakeTokenAddress,
+                  ) &&
+                  "!grid grid-cols-2 gap-2 max-md:grid-cols-1",
+              )}
+            >
+              <DaoButton
+                address={groupConfig?.contractAddress as StakeTokenAddress}
+              />
+              <div className="max-md:hidden">
+                <TradeTokenButton tradeLink={groupConfig?.tradeLink} />
+              </div>
             </div>
             <ContractDisplay
               classNames={{
@@ -195,7 +219,9 @@ const LeftContent: React.FC<{
         )}
       </div>
 
-      {isOpen && <BetModal onOpenChange={onOpenChange} isOpen={isOpen} />}
+      {isOpenModal && (
+        <BetModal onOpenChange={onOpenChange} isOpen={isOpenModal} />
+      )}
     </div>
   )
 }

@@ -9,8 +9,8 @@ import {
 } from "@solana/web3.js"
 import { MerkleAirdrop } from "./idl/merkle_airdrop.ts"
 import idl from "./idl/merkle_airdrop.json"
-import { handleTransaction } from "../utils.ts"
 import { SOLANA_RPC, SOLANA_WS } from "program/utils/web3Utils.ts"
+import { handleTransaction } from "@utils/web3.ts"
 
 export const vaultProgramId = new PublicKey(idl.address)
 export const vaultInterface = JSON.parse(JSON.stringify(idl))

@@ -1,20 +1,21 @@
 import { aiFund2Ava, usdcLogo } from "@assets/images"
 import { ArrowLeftFilledIcon } from "@components/Icons/Arrow"
+import { BN } from "@coral-xyz/anchor"
 import { Button } from "@nextui-org/react"
 import { StakeTokenAddress } from "@pages/Stake"
 import { SPL_DECIMAL } from "@pages/Stake/config"
 import useConnectPhantom from "@pages/Stake/useConnectPhantom"
 import useGetBalance from "@pages/Stake/useGetBalance"
+import { useWallet } from "@solana/wallet-adapter-react"
+import { useWalletModal } from "@solana/wallet-adapter-react-ui"
 import { numberWithCommas, toBN } from "@utils/format"
+import { formatNumberWithComma } from "@utils/index"
 import { debounce } from "lodash"
 import React, { useCallback, useEffect, useMemo, useState } from "react"
 import NumberFormat from "react-number-format"
 import { toast } from "react-toastify"
-import { Web3Invest } from "../../web3Invest"
-import { BN } from "@coral-xyz/anchor"
-import { useWallet } from "@solana/wallet-adapter-react"
-import { formatNumberWithComma } from "@utils/index"
 import { InfoVault } from "../../useGetVaultInfo"
+import { Web3Invest } from "../../web3Invest"
 
 const web3Invest = new Web3Invest()
 
@@ -29,8 +30,9 @@ const DepositAction: React.FC<{
   const [fee, setFee] = useState(0)
   const [toReward, setToReward] = useState(0)
   const wallet = useWallet()
-  const { connectWallet, isConnectWallet } = useConnectPhantom()
+  const { isConnectWallet } = useConnectPhantom()
   const { balance, loading, getBalance } = useGetBalance(StakeTokenAddress.Usdc)
+  const { setVisible } = useWalletModal()
 
   useEffect(() => {
     if (isFetchBalance) getBalance()
@@ -212,10 +214,10 @@ const DepositAction: React.FC<{
         </Button>
       ) : (
         <Button
-          onClick={connectWallet}
+          onPress={() => setVisible(true)}
           className="mt-7 h-[48px] w-full rounded-full bg-mercury-950 text-white"
         >
-          CONNECT TO PHANTOM
+          CONNECT WALLET
         </Button>
       )}
     </div>

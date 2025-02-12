@@ -1,21 +1,22 @@
 import { Button } from "@nextui-org/react"
 import { StakeTokenAddress } from "@pages/Stake"
+import { SPL_DECIMAL } from "@pages/Stake/config"
 import {
   getDurationByAddress,
   getInfoTokenByAddress,
 } from "@pages/Stake/helpers"
 import useConnectPhantom from "@pages/Stake/useConnectPhantom"
 import useGetBalance from "@pages/Stake/useGetBalance"
-import { numberWithCommas, toBN } from "@utils/format"
-import React, { useState } from "react"
-import { useSearchParams } from "react-router-dom"
-import SelectToken from "../SelectToken"
 import { Web3SolanaLockingToken } from "@pages/Stake/web3Locking"
 import { useWallet } from "@solana/wallet-adapter-react"
-import NumberFormat from "react-number-format"
-import { SPL_DECIMAL } from "@pages/Stake/config"
-import { toast } from "react-toastify"
+import { useWalletModal } from "@solana/wallet-adapter-react-ui"
+import { numberWithCommas, toBN } from "@utils/format"
 import moment from "moment"
+import React, { useState } from "react"
+import NumberFormat from "react-number-format"
+import { useSearchParams } from "react-router-dom"
+import { toast } from "react-toastify"
+import SelectToken from "../SelectToken"
 
 const StakeAction: React.FC<{
   fetchTotalStaked: () => void
@@ -26,7 +27,8 @@ const StakeAction: React.FC<{
   const [loadingSubmit, setLoadingSubmit] = useState(false)
   const tokenAddress = searchParams.get("token")
   const wallet = useWallet()
-  const { connectWallet, isConnectWallet } = useConnectPhantom()
+  const { isConnectWallet } = useConnectPhantom()
+  const { setVisible } = useWalletModal()
   const { balance, loading, getBalance } = useGetBalance(tokenAddress)
   const tokenInfo = getInfoTokenByAddress(tokenAddress as StakeTokenAddress)
 
@@ -167,10 +169,10 @@ const StakeAction: React.FC<{
         </Button>
       ) : (
         <Button
-          onClick={connectWallet}
+          onPress={() => setVisible(true)}
           className="mt-7 h-[48px] w-full rounded-full bg-mercury-950 text-white"
         >
-          CONNECT TO PHANTOM
+          CONNECT WALLET
         </Button>
       )}
     </div>

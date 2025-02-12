@@ -3,11 +3,13 @@ import { CopyIcon } from "@components/Icons/Copy"
 import { LogoutIcon } from "@components/Icons/OutputIcon"
 import { Button, Image } from "@nextui-org/react"
 import useConnectPhantom from "@pages/Stake/useConnectPhantom"
+import { useWalletModal } from "@solana/wallet-adapter-react-ui"
 import { centerTextEllipsis, copyClipboard } from "@utils/index"
 
 const LoginPhantom = () => {
-  const { isConnectWallet, connectWallet, address, disconnectWallet } =
-    useConnectPhantom()
+  const { isConnectWallet, address, disconnectWallet } = useConnectPhantom()
+  const { setVisible } = useWalletModal()
+
   return (
     <>
       {isConnectWallet ? (
@@ -29,10 +31,10 @@ const LoginPhantom = () => {
         </div>
       ) : (
         <Button
-          onClick={connectWallet}
+          onPress={() => setVisible(true)}
           className="rounded-full bg-mercury-950 font-medium text-white"
         >
-          Connect To Phantom
+          Connect Wallet
         </Button>
       )}
     </>

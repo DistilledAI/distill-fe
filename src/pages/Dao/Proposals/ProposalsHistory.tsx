@@ -1,11 +1,20 @@
 import { ChevronDownIcon } from "@components/Icons/ChevronDownIcon"
 import { useState } from "react"
-import ProposalItem from "./ProposalItem"
 import { Accordion, AccordionItem } from "@nextui-org/react"
 import { twMerge } from "tailwind-merge"
+import { IProposal } from "./useProposals"
+import ProposalItem from "./ProposalItem"
 
-const ProposalsHistory = () => {
+interface Props {
+  proposals: IProposal[]
+  searchValue?: string
+}
+
+const ProposalsHistory = ({ proposals, searchValue }: Props) => {
   const [selectedKey, setSelectedKey] = useState<string>("1")
+  const newProposals = proposals?.filter(
+    (item) => Date.now() / 1000 > item.expirationTime,
+  )
 
   return (
     <div className="-mx-2 space-y-6">
@@ -28,7 +37,7 @@ const ProposalsHistory = () => {
                 <ChevronDownIcon color="#7B7B7B" size={18} />
               </div>
               <span className="text-14 text-mercury-800 group-hover:text-mercury-950">
-                History • 10 proposals
+                History • {newProposals.length} proposals
               </span>
             </div>
           }
@@ -40,8 +49,13 @@ const ProposalsHistory = () => {
           hideIndicator
           disableIndicatorAnimation
         >
-          {Array.from({ length: 10 }).map((_, index) => (
-            <ProposalItem key={index} />
+          {newProposals?.map((item, index) => (
+            <ProposalItem
+              key={index}
+              proposal={item}
+              order={newProposals.length - index}
+              searchValue={searchValue}
+            />
           ))}
         </AccordionItem>
       </Accordion>

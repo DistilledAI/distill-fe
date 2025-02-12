@@ -1,19 +1,20 @@
 import { aiFund2Ava, usdcLogo } from "@assets/images"
 import { ArrowLeftFilledIcon } from "@components/Icons/Arrow"
+import { BN } from "@coral-xyz/anchor"
 import { Button } from "@nextui-org/react"
 import { SPL_DECIMAL } from "@pages/Stake/config"
 import useConnectPhantom from "@pages/Stake/useConnectPhantom"
+import { useWallet } from "@solana/wallet-adapter-react"
+import { useWalletModal } from "@solana/wallet-adapter-react-ui"
 import { toBN } from "@utils/format"
+import { formatNumberWithComma } from "@utils/index"
+import axios from "axios"
+import { debounce } from "lodash"
 import React, { useCallback, useState } from "react"
 import NumberFormat from "react-number-format"
 import { toast } from "react-toastify"
-import { Web3Invest } from "../../web3Invest"
-import { useWallet } from "@solana/wallet-adapter-react"
-import { BN } from "@coral-xyz/anchor"
-import { formatNumberWithComma } from "@utils/index"
-import { debounce } from "lodash"
 import { InfoVault } from "../../useGetVaultInfo"
-import axios from "axios"
+import { Web3Invest } from "../../web3Invest"
 
 const web3Invest = new Web3Invest()
 const rackVaultBEUrl = import.meta.env.VITE_RACKS_VAULT_BACKEND_URL
@@ -29,8 +30,9 @@ const WithdrawAction: React.FC<{
   const [loadingSubmit, setLoadingSubmit] = useState(false)
   const [toUsdc, setToUsdc] = useState(0)
   const [fee, setFee] = useState(0)
-  const { connectWallet, isConnectWallet } = useConnectPhantom()
+  const { isConnectWallet } = useConnectPhantom()
   const wallet = useWallet()
+  const { setVisible } = useWalletModal()
 
   const debouncedFetchQuantity = useCallback(
     debounce((value: string) => {
@@ -108,10 +110,11 @@ const WithdrawAction: React.FC<{
         },
         params: {
           user: wallet.publicKey?.toBase58(),
-          nextTimeTakeManagementFee: 1740023243
-        }
+          nextTimeTakeManagementFee: 1740023243,
+        },
       })
-      const isHaveCredit = proofsResponse.data && proofsResponse.data.proof.length > 0;
+      const isHaveCredit =
+        proofsResponse.data && proofsResponse.data.proof.length > 0
       const amount = toBN(
         toBN(amountVal)
           .multipliedBy(10 ** SPL_DECIMAL)
@@ -128,12 +131,20 @@ const WithdrawAction: React.FC<{
           callback()
         }
       } else {
-        const data = proofsResponse.data;
-        const index = data.userNode.index;
-        const creditAmount = data.userNode.creditAmount;
-        const proof = data.proof;
-        const proofData = proof.map((p: any) => Array.from(Buffer.from(p.slice(2), 'hex')));
-        const tx = await web3Invest.unbondWithCredit({ wallet, amount: new BN(amount), creditAmount, index, proof: proofData })
+        const data = proofsResponse.data
+        const index = data.userNode.index
+        const creditAmount = data.userNode.creditAmount
+        const proof = data.proof
+        const proofData = proof.map((p: any) =>
+          Array.from(Buffer.from(p.slice(2), "hex")),
+        )
+        const tx = await web3Invest.unbondWithCredit({
+          wallet,
+          amount: new BN(amount),
+          creditAmount,
+          index,
+          proof: proofData,
+        })
         if (tx) {
           toast.success("Unbond Successfully!")
           setAmountVal("")
@@ -160,7 +171,7 @@ const WithdrawAction: React.FC<{
               decimalScale={SPL_DECIMAL}
               type="text"
               value={amountVal}
-              onChange={() => { }}
+              onChange={() => {}}
               isAllowed={(values) => {
                 const { floatValue } = values
                 return !floatValue || (floatValue >= 0 && floatValue <= 1e14)
@@ -229,10 +240,10 @@ const WithdrawAction: React.FC<{
         </Button>
       ) : (
         <Button
-          onClick={connectWallet}
+          onPress={() => setVisible(true)}
           className="mt-7 h-[48px] w-full rounded-full bg-mercury-950 text-white"
         >
-          CONNECT TO PHANTOM
+          CONNECT WALLET
         </Button>
       )}
     </div>
