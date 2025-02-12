@@ -7,9 +7,10 @@ import ProposalItem from "./ProposalItem"
 
 interface Props {
   proposals: IProposal[]
+  searchValue?: string
 }
 
-const ProposalsHistory = ({ proposals }: Props) => {
+const ProposalsHistory = ({ proposals, searchValue }: Props) => {
   const [selectedKey, setSelectedKey] = useState<string>("1")
   const newProposals = proposals?.filter(
     (item) => Date.now() / 1000 > item.expirationTime,
@@ -53,6 +54,7 @@ const ProposalsHistory = ({ proposals }: Props) => {
               key={index}
               proposal={item}
               order={newProposals.length - index}
+              searchValue={searchValue}
             />
           ))}
         </AccordionItem>

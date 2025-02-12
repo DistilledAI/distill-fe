@@ -10,9 +10,10 @@ import useProposalIpfs from "./useProposalIpfs"
 interface Props {
   proposal: IProposal
   order: number
+  searchValue?: string
 }
 
-const ProposalItem = ({ proposal, order }: Props) => {
+const ProposalItem = ({ proposal, order, searchValue }: Props) => {
   const navigate = useNavigate()
   const { agentAddress } = useParams()
   const { proposalIpfs } = useProposalIpfs({
@@ -24,6 +25,12 @@ const ProposalItem = ({ proposal, order }: Props) => {
     Date.now() / 1000,
     voteType,
   )
+
+  if (
+    searchValue &&
+    !proposalIpfs?.title?.toLowerCase().includes(searchValue.toLowerCase())
+  )
+    return null
 
   return (
     <div

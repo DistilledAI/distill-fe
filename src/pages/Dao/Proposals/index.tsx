@@ -5,11 +5,17 @@ import { useNavigate, useParams } from "react-router-dom"
 import { PATH_NAMES } from "@constants/index"
 import ProposalsHistory from "./ProposalsHistory"
 import useProposals from "./useProposals"
+import { useState } from "react"
 
 const Proposals = () => {
   const navigate = useNavigate()
   const { agentAddress } = useParams()
   const { proposals } = useProposals()
+  const [searchValue, setSearchValue] = useState("")
+
+  const onSearchValueChange = (value: string) => {
+    setSearchValue(value)
+  }
 
   return (
     <>
@@ -37,6 +43,7 @@ const Proposals = () => {
             input: "placeholder:text-mercury-700 text-[16px]",
           }}
           placeholder="Search proposals..."
+          onValueChange={onSearchValueChange}
         />
         <div className="space-y-3">
           {proposals
@@ -46,11 +53,12 @@ const Proposals = () => {
                 key={index}
                 proposal={item}
                 order={proposals.length - index}
+                searchValue={searchValue}
               />
             ))}
         </div>
 
-        <ProposalsHistory proposals={proposals} />
+        <ProposalsHistory proposals={proposals} searchValue={searchValue} />
       </div>
     </>
   )
