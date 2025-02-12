@@ -9,8 +9,8 @@ const WithdrawAll: React.FC<{
   const getPeriod = () => {
     switch (tokenAddress as StakeTokenAddress) {
       case StakeTokenAddress.LeeQuid:
-        return "60"
       case StakeTokenAddress.BlackRack:
+      case StakeTokenAddress.JPOW:
         return "60"
 
       default:

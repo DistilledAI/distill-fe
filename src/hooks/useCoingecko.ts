@@ -10,6 +10,7 @@ export enum CoinGeckoId {
   "blackrack" = "blackrack",
   "degenerator-project" = "degenerator-project",
   "lee-quid" = "lee-quid",
+  "jpow-ai" = "jpow-ai",
 }
 export const CONFIG_TOKEN_PRICE_CGK = Object.values(CoinGeckoId)
 
