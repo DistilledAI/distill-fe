@@ -1,10 +1,5 @@
 import ComingSoon from "@components/ComingSoon"
 import { BoltOutlineIcon, SettingIcon } from "@components/Icons"
-import {
-  PencilBoltIcon,
-  PhototBoltIcon,
-  RepeatIcon,
-} from "@components/Icons/AgentDetailIcon"
 import { CloseFilledIcon } from "@components/Icons/DefiLens"
 import { TelegramOutlineIcon } from "@components/Icons/SocialLinkIcon"
 import { TablerPlusIcon } from "@components/Icons/TablerPlusIcon"
@@ -20,23 +15,23 @@ import BindYourBot from "./BindYourBot"
 import CategoryLabel, { FieldLabel } from "./CategoryLabel"
 import { AgentConfig } from "./useFetchAgentConfig"
 
-const TWITTER_FEATURE = [
-  {
-    label: "Auto-Reply",
-    icon: <PencilBoltIcon />,
-    enabled: true,
-  },
-  {
-    label: "Auto-Follow",
-    icon: <PhototBoltIcon />,
-    enabled: false,
-  },
-  {
-    label: "Auto-Quote",
-    icon: <RepeatIcon />,
-    enabled: false,
-  },
-]
+// const TWITTER_FEATURE = [
+//   {
+//     label: "Auto-Reply",
+//     icon: <PencilBoltIcon />,
+//     enabled: true,
+//   },
+//   {
+//     label: "Auto-Follow",
+//     icon: <PhototBoltIcon />,
+//     enabled: false,
+//   },
+//   {
+//     label: "Auto-Quote",
+//     icon: <RepeatIcon />,
+//     enabled: false,
+//   },
+// ]
 
 const POST_INTERVAL = [
   { value: "30m", label: "30 minutes" },
