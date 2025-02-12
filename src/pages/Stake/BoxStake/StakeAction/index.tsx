@@ -33,6 +33,7 @@ const StakeAction: React.FC<{
 
   const hasPeriod = checkHasPeriod(tokenAddress as StakeTokenAddress)
   const isExpired = endDate ? Date.now() > endDate : false
+  const isMaintenance = tokenAddress === StakeTokenAddress.Guard
 
   const web3Locking = new Web3SolanaLockingToken(hasPeriod)
 
@@ -65,6 +66,7 @@ const StakeAction: React.FC<{
 
   const handleStake = async () => {
     try {
+      if (isMaintenance) return
       if (isExpired) return
       if (!tokenAddress) {
         return toast.warning("Token address not found!")
@@ -160,12 +162,12 @@ const StakeAction: React.FC<{
       )}
       {isConnectWallet ? (
         <Button
-          isDisabled={isExpired}
+          isDisabled={isExpired || isMaintenance}
           isLoading={loadingSubmit}
           onClick={handleStake}
           className="mt-7 h-[48px] w-full rounded-full bg-mercury-950 text-white"
         >
-          Deposit
+          {isMaintenance ? "This vault is under maintenance" : "Deposit"}
         </Button>
       ) : (
         <Button
