@@ -1,7 +1,8 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
 
-const BASE_API_RACKS_VAULT = "https://racks-vault-be.distilled.ai"
+const BASE_API_RACKS_VAULT = import.meta.env.VITE_RACKS_VAULT_BACKEND_URL
+console.log(BASE_API_RACKS_VAULT);
 const LIMIT = 5
 
 export interface IDataHistory {
