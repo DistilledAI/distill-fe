@@ -189,7 +189,7 @@ const AgentType: React.FC<{ isDisabled?: boolean }> = ({ isDisabled }) => {
                         })}
                       </div>
 
-                      {isPaymentSuccess || isPaid ? (
+                      {(isPaymentSuccess || isPaid) && isSelected ? (
                         <Button className="mt-2 h-8 rounded-full bg-[#DEFAE5]">
                           <div className="flex items-center gap-1">
                             <CheckFilledIcon color="#20993F" />
