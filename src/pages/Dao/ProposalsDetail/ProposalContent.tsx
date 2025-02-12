@@ -12,12 +12,12 @@ interface Props {
 
 const ProposalContent = ({ proposalContent, proposalIpfs }: Props) => {
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 max-md:order-1">
       <h2 className="text-28 font-semibold">{proposalIpfs?.title}</h2>
 
       <div>
-        <div className="flex items-center gap-1">
-          <span className="text-14 text-mercury-700 underline">
+        <div className="mb-1 flex items-center gap-1">
+          <span className="text-14 text-mercury-700">
             {centerTextEllipsis(proposalIpfs?.creator || "")}
           </span>
           {proposalContent?.createdTime && (

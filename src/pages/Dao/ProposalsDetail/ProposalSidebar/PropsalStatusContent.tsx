@@ -44,7 +44,9 @@ const PropsalStatusContent = ({ proposalDetail }: Props) => {
       </div>
       <p className="mt-2 text-16 text-mercury-950">
         {proposalStatus
-          ? proposalStatusTemplates[proposalStatus].content(
+          ? proposalStatusTemplates[
+              proposalStatus as keyof typeof proposalStatusTemplates
+            ].content(
               getTurnout(totalVoteCount, totalStaked),
               Math.max(...percents),
             )
