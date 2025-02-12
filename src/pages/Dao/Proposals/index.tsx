@@ -6,11 +6,12 @@ import { PATH_NAMES } from "@constants/index"
 import ProposalsHistory from "./ProposalsHistory"
 import useProposals from "./useProposals"
 import { useState } from "react"
+import ProposalsSkeleton from "./ProposalsSkeleton"
 
 const Proposals = () => {
   const navigate = useNavigate()
   const { agentAddress } = useParams()
-  const { proposals } = useProposals()
+  const { proposals, isLoading } = useProposals()
   const [searchValue, setSearchValue] = useState("")
 
   const onSearchValueChange = (value: string) => {
@@ -45,20 +46,26 @@ const Proposals = () => {
           placeholder="Search proposals..."
           onValueChange={onSearchValueChange}
         />
-        <div className="space-y-3">
-          {proposals
-            .filter((item) => Date.now() / 1000 <= item.expirationTime)
-            .map((item, index) => (
-              <ProposalItem
-                key={index}
-                proposal={item}
-                order={proposals.length - index}
-                searchValue={searchValue}
-              />
-            ))}
-        </div>
+        {isLoading ? (
+          <ProposalsSkeleton />
+        ) : (
+          <>
+            <div className="space-y-3">
+              {proposals
+                .filter((item) => Date.now() / 1000 <= item.expirationTime)
+                .map((item, index) => (
+                  <ProposalItem
+                    key={index}
+                    proposal={item}
+                    order={proposals.length - index}
+                    searchValue={searchValue}
+                  />
+                ))}
+            </div>
 
-        <ProposalsHistory proposals={proposals} searchValue={searchValue} />
+            <ProposalsHistory proposals={proposals} searchValue={searchValue} />
+          </>
+        )}
       </div>
     </>
   )
