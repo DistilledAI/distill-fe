@@ -1,7 +1,7 @@
 import * as anchor from "@coral-xyz/anchor"
 import { BN } from "@coral-xyz/anchor"
 import { WalletContextState } from "@solana/wallet-adapter-react"
-import { PublicKey } from "@solana/web3.js"
+import { PublicKey, VersionedTransaction } from "@solana/web3.js"
 import { RacksVault } from "./idl/invest_vault"
 import idl from "./idl/invest_vault.json"
 import {
@@ -17,6 +17,7 @@ import {
   getMint,
 } from "@solana/spl-token"
 import { Web3StakeBase } from "@pages/Stake/web3StakeBase"
+import { createVersionCompiledTransaction } from "./utils"
 
 const vaultInterface = JSON.parse(JSON.stringify(idl))
 
@@ -140,7 +141,7 @@ export class Web3Invest extends Web3StakeBase {
   }) {
     let provider: anchor.AnchorProvider | null = null
     try {
-      provider = await this.getProvider(wallet)
+      provider = this.getProvider(wallet)
       if (!provider || !wallet.publicKey) {
         console.log("Wallet not connected")
         return
@@ -164,9 +165,49 @@ export class Web3Invest extends Web3StakeBase {
     }
   }
 
+  async unbondWithCredit({
+    wallet,
+    amount,
+    creditAmount,
+    index,
+    proof
+  }: {
+    wallet: WalletContextState
+    amount: BN,
+    creditAmount: BN,
+    index: number,
+    proof: number[][]
+  }) {
+    const provider = this.getProvider(wallet);
+    const program = this.getProgram<RacksVault>(provider, vaultInterface)
+    if (wallet.publicKey === null || !wallet.signTransaction) {
+      throw new Error("Wallet not connected")
+    }
+
+    const instructions = await program.methods
+      .sellShareWithCredit({
+        shareAmount: amount,
+        index: new BN(index),
+        creditAmount: new BN(creditAmount),
+        proof
+      })
+      .accounts({
+        signer: wallet.publicKey,
+        manager: INVEST_ADDRESS.manager,
+        depositToken: INVEST_ADDRESS.usdc,
+        shareToken: INVEST_ADDRESS.shareToken,
+      })
+      .instruction();
+    const createVersionTransaction = await createVersionCompiledTransaction(provider.connection, [instructions], new PublicKey(INVEST_ADDRESS.lookupTable), wallet.publicKey);
+
+    const signedTx = await wallet.signTransaction<VersionedTransaction>(createVersionTransaction);
+
+    return await provider.connection.sendTransaction(signedTx);
+  }
+
   async getUnbondingList(wallet: WalletContextState) {
     try {
-      const provider = await this.getProvider(wallet)
+      const provider = this.getProvider(wallet)
       if (!provider || !wallet.publicKey) {
         console.log("Wallet not connected")
         return

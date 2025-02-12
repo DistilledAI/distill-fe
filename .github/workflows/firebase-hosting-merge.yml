@@ -47,6 +47,7 @@ jobs:
           VITE_STAKING_AIRDROP_BACKEND_URL: https://airdrop-backend.agents.land
           VITE_SOLANA_RPC: https://solana-woker.distilled.ai
           VITE_SOLANA_WS: wss://solana-woker.distilled.ai
+          VITE_RACKS_VAULT_BACKEND_URL: https://racks-vault-be.distilled.ai
           VITE_GIT_COMMIT_ID: ${{ github.sha }}
 
       - name: Import Firebase service account credentials
