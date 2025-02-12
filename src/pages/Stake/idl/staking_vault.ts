@@ -350,6 +350,233 @@ export type FungStakingVault = {
       ]
     },
     {
+      name: "configGov"
+      discriminator: [233, 152, 214, 136, 68, 52, 63, 43]
+      accounts: [
+        {
+          name: "admin"
+          writable: true
+          signer: true
+        },
+        {
+          name: "authority"
+          pda: {
+            seeds: [
+              {
+                kind: "const"
+                value: [97, 117, 116, 104, 111, 114, 105, 116, 121]
+              },
+            ]
+          }
+        },
+        {
+          name: "vault"
+          pda: {
+            seeds: [
+              {
+                kind: "const"
+                value: [
+                  115,
+                  116,
+                  97,
+                  107,
+                  105,
+                  110,
+                  103,
+                  95,
+                  118,
+                  97,
+                  117,
+                  108,
+                  116,
+                ]
+              },
+              {
+                kind: "account"
+                path: "stakeCurrencyMint"
+              },
+              {
+                kind: "arg"
+                path: "unbondingPeriod"
+              },
+            ]
+          }
+        },
+        {
+          name: "govConfig"
+          writable: true
+          pda: {
+            seeds: [
+              {
+                kind: "const"
+                value: [103, 111, 118, 95, 99, 111, 110, 102, 105, 103]
+              },
+              {
+                kind: "account"
+                path: "vault"
+              },
+            ]
+          }
+        },
+        {
+          name: "stakeCurrencyMint"
+        },
+        {
+          name: "systemProgram"
+          address: "11111111111111111111111111111111"
+        },
+      ]
+      args: [
+        {
+          name: "unbondingPeriod"
+          type: "u64"
+        },
+        {
+          name: "weightToCreate"
+          type: "u64"
+        },
+        {
+          name: "threshold"
+          type: "f64"
+        },
+        {
+          name: "quorum"
+          type: "f64"
+        },
+        {
+          name: "votingPeriod"
+          type: "i64"
+        },
+      ]
+    },
+    {
+      name: "createProposal"
+      discriminator: [132, 116, 68, 174, 216, 160, 198, 22]
+      accounts: [
+        {
+          name: "creator"
+          writable: true
+          signer: true
+        },
+        {
+          name: "govConfig"
+          pda: {
+            seeds: [
+              {
+                kind: "const"
+                value: [103, 111, 118, 95, 99, 111, 110, 102, 105, 103]
+              },
+              {
+                kind: "account"
+                path: "vault"
+              },
+            ]
+          }
+        },
+        {
+          name: "vault"
+          pda: {
+            seeds: [
+              {
+                kind: "const"
+                value: [
+                  115,
+                  116,
+                  97,
+                  107,
+                  105,
+                  110,
+                  103,
+                  95,
+                  118,
+                  97,
+                  117,
+                  108,
+                  116,
+                ]
+              },
+              {
+                kind: "account"
+                path: "stakeCurrencyMint"
+              },
+              {
+                kind: "arg"
+                path: "unbondingPeriod"
+              },
+            ]
+          }
+        },
+        {
+          name: "proposal"
+          writable: true
+          signer: true
+        },
+        {
+          name: "stakerDetailInfoPda"
+          pda: {
+            seeds: [
+              {
+                kind: "const"
+                value: [
+                  115,
+                  116,
+                  97,
+                  107,
+                  101,
+                  114,
+                  95,
+                  100,
+                  101,
+                  116,
+                  97,
+                  105,
+                  108,
+                  95,
+                  105,
+                  110,
+                  102,
+                  111,
+                ]
+              },
+              {
+                kind: "account"
+                path: "vault"
+              },
+              {
+                kind: "account"
+                path: "creator"
+              },
+            ]
+          }
+        },
+        {
+          name: "stakeCurrencyMint"
+        },
+        {
+          name: "tokenProgram"
+          address: "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          name: "systemProgram"
+          address: "11111111111111111111111111111111"
+        },
+      ]
+      args: [
+        {
+          name: "unbondingPeriod"
+          type: "u64"
+        },
+        {
+          name: "uri"
+          type: "string"
+        },
+        {
+          name: "options"
+          type: "u8"
+        },
+      ]
+    },
+    {
       name: "createVault"
       discriminator: [29, 237, 247, 208, 193, 82, 54, 135]
       accounts: [
@@ -1655,6 +1882,133 @@ export type FungStakingVault = {
       ]
     },
     {
+      name: "voteProposal"
+      discriminator: [247, 104, 114, 240, 237, 41, 200, 36]
+      accounts: [
+        {
+          name: "signer"
+          writable: true
+          signer: true
+        },
+        {
+          name: "vault"
+          pda: {
+            seeds: [
+              {
+                kind: "const"
+                value: [
+                  115,
+                  116,
+                  97,
+                  107,
+                  105,
+                  110,
+                  103,
+                  95,
+                  118,
+                  97,
+                  117,
+                  108,
+                  116,
+                ]
+              },
+              {
+                kind: "account"
+                path: "stakeCurrencyMint"
+              },
+              {
+                kind: "arg"
+                path: "unbondingPeriod"
+              },
+            ]
+          }
+        },
+        {
+          name: "proposal"
+          writable: true
+        },
+        {
+          name: "stakerDetailInfoPda"
+          pda: {
+            seeds: [
+              {
+                kind: "const"
+                value: [
+                  115,
+                  116,
+                  97,
+                  107,
+                  101,
+                  114,
+                  95,
+                  100,
+                  101,
+                  116,
+                  97,
+                  105,
+                  108,
+                  95,
+                  105,
+                  110,
+                  102,
+                  111,
+                ]
+              },
+              {
+                kind: "account"
+                path: "vault"
+              },
+              {
+                kind: "account"
+                path: "signer"
+              },
+            ]
+          }
+        },
+        {
+          name: "stakeCurrencyMint"
+        },
+        {
+          name: "voter"
+          writable: true
+          pda: {
+            seeds: [
+              {
+                kind: "const"
+                value: [118, 111, 116, 101, 114]
+              },
+              {
+                kind: "account"
+                path: "proposal"
+              },
+              {
+                kind: "account"
+                path: "signer"
+              },
+            ]
+          }
+        },
+        {
+          name: "tokenProgram"
+          address: "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          name: "systemProgram"
+          address: "11111111111111111111111111111111"
+        },
+      ]
+      args: [
+        {
+          name: "unbondingPeriod"
+          type: "u64"
+        },
+        {
+          name: "option"
+          type: "u8"
+        },
+      ]
+    },
+    {
       name: "whitelist"
       discriminator: [0, 143, 193, 93, 69, 29, 183, 140]
       accounts: [
@@ -1753,8 +2107,16 @@ export type FungStakingVault = {
       discriminator: [36, 108, 254, 18, 167, 144, 27, 36]
     },
     {
+      name: "govConfig"
+      discriminator: [25, 158, 54, 41, 143, 227, 58, 104]
+    },
+    {
       name: "pause"
       discriminator: [168, 183, 252, 225, 28, 17, 138, 174]
+    },
+    {
+      name: "proposal"
+      discriminator: [26, 94, 189, 187, 116, 136, 53, 33]
     },
     {
       name: "stakerDetailInfo"
@@ -1773,6 +2135,10 @@ export type FungStakingVault = {
       discriminator: [211, 8, 232, 43, 2, 152, 117, 119]
     },
     {
+      name: "voter"
+      discriminator: [241, 93, 35, 191, 254, 147, 17, 202]
+    },
+    {
       name: "whitelistVault"
       discriminator: [179, 240, 242, 156, 206, 64, 241, 221]
     },
@@ -1781,6 +2147,10 @@ export type FungStakingVault = {
     {
       name: "eventClaimUnstake"
       discriminator: [99, 54, 74, 147, 119, 120, 100, 23]
+    },
+    {
+      name: "eventCreateProposal"
+      discriminator: [237, 63, 210, 183, 153, 19, 86, 63]
     },
     {
       name: "eventNewVault"
@@ -1793,6 +2163,10 @@ export type FungStakingVault = {
     {
       name: "eventUnstake"
       discriminator: [7, 14, 248, 129, 43, 55, 41, 104]
+    },
+    {
+      name: "eventVoteProposal"
+      discriminator: [105, 232, 100, 114, 16, 6, 49, 58]
     },
   ]
   errors: [
@@ -1876,6 +2250,26 @@ export type FungStakingVault = {
       name: "stakingEnded"
       msg: "Stake end"
     },
+    {
+      code: 6016
+      name: "notEnoughVotingPower"
+      msg: "Not enough voting power"
+    },
+    {
+      code: 6017
+      name: "numOptionToLarge"
+      msg: "Support max 8 options"
+    },
+    {
+      code: 6018
+      name: "proposalEnded"
+      msg: "Proposal has been ended"
+    },
+    {
+      code: 6019
+      name: "invalidOption"
+      msg: "Invalid option"
+    },
   ]
   types: [
     {
@@ -1954,6 +2348,42 @@ export type FungStakingVault = {
           {
             name: "claimedAt"
             type: "i64"
+          },
+        ]
+      }
+    },
+    {
+      name: "eventCreateProposal"
+      type: {
+        kind: "struct"
+        fields: [
+          {
+            name: "proposal"
+            type: "pubkey"
+          },
+          {
+            name: "creator"
+            type: "pubkey"
+          },
+          {
+            name: "vault"
+            type: "pubkey"
+          },
+          {
+            name: "createdTime"
+            type: "i64"
+          },
+          {
+            name: "expirationTime"
+            type: "i64"
+          },
+          {
+            name: "uri"
+            type: "string"
+          },
+          {
+            name: "options"
+            type: "u8"
           },
         ]
       }
@@ -2087,6 +2517,58 @@ export type FungStakingVault = {
       }
     },
     {
+      name: "eventVoteProposal"
+      type: {
+        kind: "struct"
+        fields: [
+          {
+            name: "proposal"
+            type: "pubkey"
+          },
+          {
+            name: "voter"
+            type: "pubkey"
+          },
+          {
+            name: "votedTime"
+            type: "i64"
+          },
+          {
+            name: "option"
+            type: "u8"
+          },
+          {
+            name: "weight"
+            type: "u64"
+          },
+        ]
+      }
+    },
+    {
+      name: "govConfig"
+      type: {
+        kind: "struct"
+        fields: [
+          {
+            name: "weightToCreate"
+            type: "u64"
+          },
+          {
+            name: "threshold"
+            type: "f64"
+          },
+          {
+            name: "quorum"
+            type: "f64"
+          },
+          {
+            name: "votingPeriod"
+            type: "i64"
+          },
+        ]
+      }
+    },
+    {
       name: "pause"
       type: {
         kind: "struct"
@@ -2094,6 +2576,60 @@ export type FungStakingVault = {
           {
             name: "paused"
             type: "bool"
+          },
+        ]
+      }
+    },
+    {
+      name: "proposal"
+      type: {
+        kind: "struct"
+        fields: [
+          {
+            name: "proposal"
+            type: "pubkey"
+          },
+          {
+            name: "creator"
+            type: "pubkey"
+          },
+          {
+            name: "vault"
+            type: "pubkey"
+          },
+          {
+            name: "createdTime"
+            type: "i64"
+          },
+          {
+            name: "expirationTime"
+            type: "i64"
+          },
+          {
+            name: "uri"
+            type: "string"
+          },
+          {
+            name: "options"
+            type: "u8"
+          },
+          {
+            name: "voteCount"
+            type: {
+              vec: "u64"
+            }
+          },
+          {
+            name: "totalStaked"
+            type: "u64"
+          },
+          {
+            name: "threshold"
+            type: "f64"
+          },
+          {
+            name: "quorum"
+            type: "f64"
           },
         ]
       }
@@ -2216,6 +2752,34 @@ export type FungStakingVault = {
           {
             name: "endDate"
             type: "i64"
+          },
+        ]
+      }
+    },
+    {
+      name: "voter"
+      type: {
+        kind: "struct"
+        fields: [
+          {
+            name: "proposal"
+            type: "pubkey"
+          },
+          {
+            name: "voter"
+            type: "pubkey"
+          },
+          {
+            name: "votedTime"
+            type: "i64"
+          },
+          {
+            name: "option"
+            type: "u8"
+          },
+          {
+            name: "weight"
+            type: "u64"
           },
         ]
       }

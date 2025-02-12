@@ -33,6 +33,7 @@ export const TX_FEE = 0.25
  * STAKING VAULTS
  */
 export const STAKING_VAULT_SEED = "staking_vault"
+export const VOTER_SEED = "voter"
 export const STAKING_STAKER_INFO_SEED = "staker_info"
 export const STAKING_UNBONDING_INFO_SEED = "unbonding_info_seed"
 /**
@@ -105,6 +106,7 @@ export const CONFIGS: Record<
     STAKE_SOFT_CAP: number
     STAKING_PROGRAM_ID: string
     DURATION_STAKE: number
+    VOTING_PROPOSAL_PERIOD: number
   }
 > = {
   // localnet keys are in cli/local-scripts/
@@ -127,6 +129,7 @@ export const CONFIGS: Record<
       DAY_TO_SECONDS: 24 * 60 * 60,
     },
     DURATION_STAKE: 300,
+    VOTING_PROPOSAL_PERIOD: 300,
     SHOW_DECIMALS_PRICE: 9,
     OFFICIAL_TIME: 1735059600000,
     LOCK_FUNGIBLE_STAKE: 300,
@@ -152,6 +155,7 @@ export const CONFIGS: Record<
       DAY_TO_SECONDS: 24 * 60 * 60,
     },
     DURATION_STAKE: 300,
+    VOTING_PROPOSAL_PERIOD: 300,
     SHOW_DECIMALS_PRICE: 9,
     OFFICIAL_TIME: 1735059600000,
     LOCK_FUNGIBLE_STAKE: 300,
@@ -177,6 +181,7 @@ export const CONFIGS: Record<
       DAY_TO_SECONDS: 24 * 60 * 60,
     },
     DURATION_STAKE: 30 * 24 * 60 * 60,
+    VOTING_PROPOSAL_PERIOD: 300,
     SHOW_DECIMALS_PRICE: 9,
     OFFICIAL_TIME: 1735059600000,
     LOCK_FUNGIBLE_STAKE: 14 * 86400,
@@ -202,6 +207,7 @@ export const CONFIGS: Record<
       DAY_TO_SECONDS: 5 * 60,
     },
     DURATION_STAKE: 30 * 24 * 60 * 60,
+    VOTING_PROPOSAL_PERIOD: 300,
     SHOW_DECIMALS_PRICE: 12,
     OFFICIAL_TIME: 1735059600000,
     LOCK_FUNGIBLE_STAKE: 86400 * 14,

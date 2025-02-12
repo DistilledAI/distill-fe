@@ -21,6 +21,8 @@ import { StakeTokenAddress } from "@pages/Stake"
 import VaultButton from "./VaultButton"
 import AgentDescription from "./AgentDescription"
 import VideoCustom from "@components/VideoCustom"
+import DaoButton from "./DaoButton"
+import { getInfoTokenByAddress } from "@pages/Stake/helpers"
 
 const BetModal = lazy(() => import("@components/BetModal"))
 
@@ -171,8 +173,22 @@ const LeftContent: React.FC<{
               key={groupConfig?.contractAddress}
               address={groupConfig?.contractAddress as StakeTokenAddress}
             />
-            <div className="mt-3 hidden md:block">
-              <TradeTokenButton tradeLink={groupConfig?.tradeLink} />
+            <div
+              className={twMerge(
+                "mt-3 hidden md:block",
+                groupConfig?.contractAddress &&
+                  getInfoTokenByAddress(
+                    groupConfig?.contractAddress as StakeTokenAddress,
+                  ) &&
+                  "!grid grid-cols-2 gap-2 max-md:grid-cols-1",
+              )}
+            >
+              <DaoButton
+                address={groupConfig?.contractAddress as StakeTokenAddress}
+              />
+              <div className="max-md:hidden">
+                <TradeTokenButton tradeLink={groupConfig?.tradeLink} />
+              </div>
             </div>
             <ContractDisplay
               classNames={{

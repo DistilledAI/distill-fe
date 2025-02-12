@@ -37,9 +37,7 @@ const RewardsPage = lazy(() => import("@pages/Rewards"))
 const StakePage = lazy(() => import("@pages/Stake"))
 const CreateProposal = lazy(() => import("@pages/Dao/CreateProposal"))
 const DaoPage = lazy(() => import("@pages/Dao"))
-const ProposalsDetailPage = lazy(
-  () => import("@pages/Dao/Proposals/ProposalsDetail"),
-)
+const ProposalsDetailPage = lazy(() => import("@pages/Dao/ProposalsDetail"))
 // const TrendingPage = lazy(() => import("@pages/Trending"))
 
 const AppRouter = () => {
