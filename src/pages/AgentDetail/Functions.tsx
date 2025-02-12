@@ -124,6 +124,8 @@ const Functions: React.FC<{
   }
 
   const renderFollowXAccount = () => {
+    const isUsernameData =
+      isArray(xUserNameValues) && xUserNameValues?.length > 0
     return (
       <div className="mt-6">
         <span className="text-base-sb text-mercury-950">
@@ -134,7 +136,7 @@ const Functions: React.FC<{
           account:
         </span>
         <div className="my-2 rounded-lg bg-mercury-70 p-2">
-          {isArray(xUserNameValues) && xUserNameValues?.length > 0 && (
+          {isUsernameData && (
             <div className="mb-2 flex flex-wrap items-center gap-1">
               {xUserNameValues.map((item: any) => {
                 const userName = item?.user_name
@@ -215,90 +217,6 @@ const Functions: React.FC<{
               </span>
             </div>
           )}
-        </div>
-
-        {/* keywords */}
-        <span className="text-mercury-700">
-          Your agent will reply to posts containing these keywords:
-        </span>
-
-        <div className="my-2 rounded-lg bg-mercury-70 p-2">
-          {isArray(xKeywordsValues) && xKeywordsValues?.length > 0 && (
-            <div className="mb-2 flex flex-wrap items-center gap-1">
-              {xKeywordsValues.map((keyword: string) => {
-                return (
-                  <div
-                    className="flex items-center gap-1 rounded-lg border-[2px] border-[#4986C9] p-1"
-                    key={keyword}
-                  >
-                    <span className="text-base-b text-mercury-900">
-                      {keyword}
-                    </span>
-                    <div
-                      className="cursor-pointer"
-                      onClick={() => removeKeyword(keyword)}
-                    >
-                      <CloseFilledIcon size={20} color="#4986C9" />
-                    </div>
-                  </div>
-                )
-              })}
-            </div>
-          )}
-
-          {isShowKeywordInput && (
-            <Input
-              type="text"
-              placeholder="Enter keywords"
-              className="w-[65%] max-md:w-full"
-              classNames={{
-                mainWrapper: "border border-mercury-400 rounded-lg",
-                inputWrapper: " bg-mercury-70",
-              }}
-              endContent={
-                <Button
-                  className="h-[30px] rounded-full border border-mercury-50 bg-mercury-950 max-sm:h-[38px]"
-                  onPress={() => {
-                    if (!inputValue) return
-                    const newXKeywords = [...xKeywordsValues, inputValue]
-                    const uniqueNewXKeywords = uniq(newXKeywords)
-                    if (uniqueNewXKeywords.length > 10)
-                      return toast.warning(
-                        "You have reached the limit for keywords",
-                      )
-                    setValue("x_keywords", JSON.stringify(uniqueNewXKeywords))
-                    setInputValue("")
-                    toggleShowKeywordInput()
-                  }}
-                >
-                  <span className="text-base text-mercury-30 max-sm:text-[14px]">
-                    Save
-                  </span>
-                </Button>
-              }
-              onChange={(e) => {
-                const value = e.target.value
-                setInputValue(value)
-              }}
-            />
-          )}
-          {!isShowKeywordInput && (
-            <div
-              onClick={() => toggleShowKeywordInput()}
-              className="flex cursor-pointer items-center gap-1"
-            >
-              <SettingIcon />
-              <span className="text-base-md text-brown-10">
-                Add Following keywords (Max. 10)
-              </span>
-            </div>
-          )}
-        </div>
-
-        <div className="flex justify-end">
-          <span className="text-[13px] italic text-mercury-700">
-            Note: The agent will reply to all posts if no keywords are included.
-          </span>
         </div>
       </div>
     )
@@ -473,6 +391,103 @@ const Functions: React.FC<{
           {renderFollowXAccount()}
         </div>
       </ComingSoon>
+
+      {/* keywords */}
+
+      <ComingSoon
+        childrenClassName={
+          !!isArray(xUserNameValues) && xUserNameValues?.length > 0
+            ? ""
+            : "opacity-50"
+        }
+        content="You need to follow an X account to use this feature"
+        isOffComing={!!isArray(xUserNameValues) && xUserNameValues?.length > 0}
+      >
+        <>
+          <span className="text-mercury-700">
+            Your agent will reply to posts containing these keywords:
+          </span>
+
+          <div className="my-2 rounded-lg bg-mercury-70 p-2">
+            {isArray(xKeywordsValues) && xKeywordsValues?.length > 0 && (
+              <div className="mb-2 flex flex-wrap items-center gap-1">
+                {xKeywordsValues.map((keyword: string) => {
+                  return (
+                    <div
+                      className="flex items-center gap-1 rounded-lg border-[2px] border-[#4986C9] p-1"
+                      key={keyword}
+                    >
+                      <span className="text-base-b text-mercury-900">
+                        {keyword}
+                      </span>
+                      <div
+                        className="cursor-pointer"
+                        onClick={() => removeKeyword(keyword)}
+                      >
+                        <CloseFilledIcon size={20} color="#4986C9" />
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
+            )}
+
+            {isShowKeywordInput && (
+              <Input
+                type="text"
+                placeholder="Enter keywords"
+                className="w-[65%] max-md:w-full"
+                classNames={{
+                  mainWrapper: "border border-mercury-400 rounded-lg",
+                  inputWrapper: " bg-mercury-70",
+                }}
+                endContent={
+                  <Button
+                    className="h-[30px] rounded-full border border-mercury-50 bg-mercury-950 max-sm:h-[38px]"
+                    onPress={() => {
+                      if (!inputValue) return
+                      const newXKeywords = [...xKeywordsValues, inputValue]
+                      const uniqueNewXKeywords = uniq(newXKeywords)
+                      if (uniqueNewXKeywords.length > 10)
+                        return toast.warning(
+                          "You have reached the limit for keywords",
+                        )
+                      setValue("x_keywords", JSON.stringify(uniqueNewXKeywords))
+                      setInputValue("")
+                      toggleShowKeywordInput()
+                    }}
+                  >
+                    <span className="text-base text-mercury-30 max-sm:text-[14px]">
+                      Save
+                    </span>
+                  </Button>
+                }
+                onChange={(e) => {
+                  const value = e.target.value
+                  setInputValue(value)
+                }}
+              />
+            )}
+            {!isShowKeywordInput && (
+              <div
+                onClick={() => toggleShowKeywordInput()}
+                className="flex cursor-pointer items-center gap-1"
+              >
+                <SettingIcon />
+                <span className="text-base-md text-brown-10">
+                  Add Following keywords (Max. 10)
+                </span>
+              </div>
+            )}
+          </div>
+        </>
+      </ComingSoon>
+
+      <div className="flex justify-end">
+        <span className="text-[13px] italic text-mercury-700">
+          Note: The agent will reply to all posts if no keywords are included.
+        </span>
+      </div>
     </div>
   )
 }
