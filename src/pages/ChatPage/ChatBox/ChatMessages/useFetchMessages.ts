@@ -87,6 +87,7 @@ const useFetchMessages = () => {
       id: Number(groupId),
       offset: pageParam,
     })
+
     return {
       messages: convertDataFetchToMessage(res.data.items, user?.id || 0),
       nextOffset:

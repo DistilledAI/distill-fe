@@ -1,4 +1,3 @@
-import ChatWindow from "@components/ChatWindow"
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { FilledUserIcon } from "@components/Icons/UserIcon"
 import ReceiverMessage from "@components/ReceiverMessage"
@@ -22,6 +21,8 @@ import { useQuery } from "@tanstack/react-query"
 import { QueryDataKeys } from "types/queryDataKeys"
 import useAuthState from "@hooks/useAuthState"
 import { useCallback, useMemo } from "react"
+import ChatWindowV2 from "@components/ChatWindowV2"
+import { useAppSelector } from "@hooks/useAppRedux"
 // import MessageActions from "./MessageActions"
 
 const ChatMessages = () => {
@@ -42,7 +43,7 @@ const ChatMessages = () => {
       queryKey: [QueryDataKeys.GROUP_DETAIL, groupId?.toString()],
       enabled: !!groupId && isLogin,
     })
-
+  const sidebarCollapsed = useAppSelector((state) => state.sidebarCollapsed)
   const userBId = groupDetailData?.data?.group?.userBId
   const isOwner = useMemo(() => {
     return !isGroupDetailFetched && isLogin ? true : userBId === user?.id
@@ -120,8 +121,8 @@ const ChatMessages = () => {
 
   return (
     <>
-      <ChatWindow
-        Header={<AgentInfoCard messages={messages} groupId={groupId} />}
+      <AgentInfoCard messages={messages} groupId={groupId} />
+      <ChatWindowV2
         messages={messages}
         itemContent={renderMessage}
         isLoading={isLoading}
@@ -130,13 +131,22 @@ const ChatMessages = () => {
         isFetchingPreviousPage={isFetchingPreviousPage}
         onLoadPrevMessages={onLoadPrevMessages}
         chatId={groupId}
-        msgBoxClassName="p-0 md:px-4"
+        className="md:max-h-[calc(100%-232px)]"
+        msgBoxClassName="p-0 md:px-4 "
+        scrollBottomClassName={twMerge(
+          "fixed bottom-[150px] w-[calc(100%-329px)] right-0",
+          sidebarCollapsed && "w-[calc(100%-104px)]",
+        )}
         style={{
           paddingBottom: `${spacing}px`,
         }}
         isChatActions={true}
       />
-      <ChatActions isClearContextBtn={!isOwner} isDelegateBtn={isOwner} />
+      <ChatActions
+        isClearContextBtn={!isOwner}
+        isDelegateBtn={isOwner}
+        className="md:bottom-[64px]"
+      />
     </>
   )
 }
