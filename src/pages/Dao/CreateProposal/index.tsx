@@ -48,7 +48,7 @@ const CreateProposal: React.FC = () => {
       <BackButton className="fixed left-0 top-0 h-[50px] max-md:h-[40px] max-md:w-full max-md:bg-white" />
       {isCanAction !== null && isCanAction === false && (
         <div className="mb-2 font-medium italic text-red-500">
-          To create a proposal you need to stake ${vaultInfo?.tokenName} vault!
+          You must stake ${vaultInfo?.tokenName} to cast your vote!
         </div>
       )}
       <div className="flex items-center justify-between">

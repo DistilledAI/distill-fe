@@ -3,6 +3,7 @@ import ProposalInfo from "./ProposalInfo"
 import PropsalStatusContent from "./PropsalStatusContent"
 import VotingWidget from "./VotingWidget"
 import { IDataProposal } from "@pages/Dao/CreateProposal/useCreateProposal"
+import VotePower from "./VotePower"
 
 interface Props {
   proposalDetail: IProposal | null
@@ -25,6 +26,7 @@ const ProposalSidebar = ({
         proposalIpfs={proposalIpfs}
         proposalDetail={proposalDetail}
       />
+      <VotePower />
     </div>
   </div>
 )
