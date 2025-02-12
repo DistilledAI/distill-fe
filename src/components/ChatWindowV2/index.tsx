@@ -60,7 +60,7 @@ const ChatWindowV2: React.FC<ChatWindowProps> = ({
     count: itemCount,
     getScrollElement: () => parentRef.current,
     estimateSize: () => 72,
-    overscan: 10,
+    overscan: 5,
     getItemKey: useCallback(
       (index: number) => {
         if (showHeader && index === 0) return "header"
@@ -183,7 +183,7 @@ const ChatWindowV2: React.FC<ChatWindowProps> = ({
       )}
       style={style}
       ref={parentRef}
-      onScroll={handleScroll}
+      onScroll={messages.length >= DEFAULT_LIMIT ? handleScroll : undefined}
     >
       {!isFetched && <MessagesSkeleton />}
 
@@ -212,6 +212,7 @@ const ChatWindowV2: React.FC<ChatWindowProps> = ({
           if (parentRef.current) {
             parentRef.current.scrollTop = parentRef.current.scrollHeight
           }
+          setIsScrollBottom(false)
         }}
       />
     </div>

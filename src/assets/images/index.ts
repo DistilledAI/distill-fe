@@ -15,6 +15,7 @@ export { default as createPrivateAgentPopup } from "./create-private-agent-popup
 export { default as creditBg } from "./credit-bg.png"
 export { default as usdcLogo } from "./usdc-icon.png"
 export { default as guardLogo } from "./guardLogo.gif"
+export { default as jpowLogo } from "./jpowLogo.jpeg"
 export { default as bankerLogo } from "./bankerLogo.jpeg"
 export { default as desktopPrivateAgent } from "./desktop-private-agent.png"
 export { default as distilledAIPurpleBg } from "./distilled-ai-purple-bg.png"

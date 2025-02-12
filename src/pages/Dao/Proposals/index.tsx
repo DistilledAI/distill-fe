@@ -4,10 +4,19 @@ import ProposalItem from "./ProposalItem"
 import { useNavigate, useParams } from "react-router-dom"
 import { PATH_NAMES } from "@constants/index"
 import ProposalsHistory from "./ProposalsHistory"
+import useProposals from "./useProposals"
+import { useState } from "react"
+import ProposalsSkeleton from "./ProposalsSkeleton"
 
 const Proposals = () => {
   const navigate = useNavigate()
   const { agentAddress } = useParams()
+  const { proposals, isLoading } = useProposals()
+  const [searchValue, setSearchValue] = useState("")
+
+  const onSearchValueChange = (value: string) => {
+    setSearchValue(value)
+  }
 
   return (
     <>
@@ -35,10 +44,28 @@ const Proposals = () => {
             input: "placeholder:text-mercury-700 text-[16px]",
           }}
           placeholder="Search proposals..."
+          onValueChange={onSearchValueChange}
         />
-        <ProposalItem />
+        {isLoading ? (
+          <ProposalsSkeleton />
+        ) : (
+          <>
+            <div className="space-y-3">
+              {proposals
+                .filter((item) => Date.now() / 1000 <= item.expirationTime)
+                .map((item, index) => (
+                  <ProposalItem
+                    key={index}
+                    proposal={item}
+                    order={proposals.length - index}
+                    searchValue={searchValue}
+                  />
+                ))}
+            </div>
 
-        <ProposalsHistory />
+            <ProposalsHistory proposals={proposals} searchValue={searchValue} />
+          </>
+        )}
       </div>
     </>
   )

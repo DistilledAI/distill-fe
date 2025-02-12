@@ -1,24 +1,23 @@
 import { maxAvatar } from "@assets/images"
 import { solanaCircleIcon } from "@assets/svg"
 import { CopyIcon } from "@components/Icons/Copy"
-import { PhantomIcon } from "@components/Icons/MetamaskIcon"
 import { Button, Image } from "@nextui-org/react"
 import { useWallet } from "@solana/wallet-adapter-react"
-import { PhantomWalletName } from "@solana/wallet-adapter-wallets"
+import { useWalletModal } from "@solana/wallet-adapter-react-ui"
 import { numberWithCommas } from "@utils/format"
 import { centerTextEllipsis, copyClipboard } from "@utils/index"
 import { MAX_ADDRESS_SOLANA } from "program/constants"
 import { Web3SolanaProgramInteraction } from "program/utils/web3Utils"
 import { useEffect, useState } from "react"
-import { toast } from "react-toastify"
 import { twMerge } from "tailwind-merge"
 import Histories from "../Histories"
 
 const web3Solana = new Web3SolanaProgramInteraction()
 
 const HeaderWallet = () => {
-  const { publicKey, select, connect } = useWallet()
+  const { publicKey } = useWallet()
   const [tokenBal, setTokenBal] = useState<number>(0)
+  const { setVisible: setVisibleWalletModal } = useWalletModal()
   const address = publicKey?.toBase58() || ""
   const getBalance = async () => {
     if (!publicKey) {
@@ -40,13 +39,6 @@ const HeaderWallet = () => {
   useEffect(() => {
     getBalance()
   }, [publicKey])
-
-  const connectPhantom = async () => {
-    select(PhantomWalletName)
-    await connect().catch(() => {
-      toast.error("Connect Wallet Failed!")
-    })
-  }
 
   return publicKey ? (
     <div>
@@ -82,13 +74,10 @@ const HeaderWallet = () => {
     </div>
   ) : (
     <Button
-      onPress={connectPhantom}
+      onPress={() => setVisibleWalletModal(true)}
       className="rounded bg-white font-medium max-md:w-full"
     >
-      <div className="-ml-[5px] scale-75">
-        <PhantomIcon />
-      </div>{" "}
-      Connect to Phantom
+      Connect Wallet
     </Button>
   )
 }

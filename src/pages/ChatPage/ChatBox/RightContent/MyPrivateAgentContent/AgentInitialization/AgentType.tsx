@@ -86,7 +86,7 @@ const AgentType: React.FC<{ isDisabled?: boolean }> = ({ isDisabled }) => {
   const { handleSend } = useSend()
   const [isLoading, setIsLoading] = useState(false)
   const { user } = useAuthState()
-  const amountMAX = isStaging ? 1 : 5000
+  const amountMAX = isStaging ? 1 : 1000
   const maxTokenAddress = "oraim8c9d1nkfuQk9EzGYEUGxqL3MHQYndRw1huVo5h"
   const ADDRESS_PAYMENT_NETWORK_SOL = isStaging
     ? "H65QnPNMWj1EGgwDD5RH3oHQBbwmuBbAzXgW8no6gKwQ"
@@ -137,6 +137,12 @@ const AgentType: React.FC<{ isDisabled?: boolean }> = ({ isDisabled }) => {
     }
   }
 
+  const onChangeAgentType = (onChange: any) => {
+    if (isDisabled) return
+    onChange()
+    setIsLoading(false)
+  }
+
   return (
     <div>
       <CategoryLabel text="Agent Type" icon={<UserHexagonIcon />} />
@@ -156,10 +162,7 @@ const AgentType: React.FC<{ isDisabled?: boolean }> = ({ isDisabled }) => {
                     key={item.key}
                     aria-selected={isSelected}
                     aria-checked={isDisabled}
-                    onClick={() => {
-                      if (isDisabled) return
-                      onChange(item.key)
-                    }}
+                    onClick={() => onChangeAgentType(onChange(item.key))}
                   >
                     {item.icon}
                     <div>
@@ -186,55 +189,51 @@ const AgentType: React.FC<{ isDisabled?: boolean }> = ({ isDisabled }) => {
                         })}
                       </div>
 
-                      {isDefaiType &&
-                        (isPaymentSuccess || isPaid ? (
-                          <Button className="mt-2 h-8 rounded-full bg-[#DEFAE5]">
-                            <div className="flex items-center gap-1">
-                              <CheckFilledIcon color="#20993F" />
-                              <span className="text-14 font-bold text-[#20993F]">
-                                Payment Successful
-                              </span>
-                            </div>
-                          </Button>
-                        ) : (
-                          <Button
-                            className="mt-2 h-8 rounded-full bg-mercury-950"
-                            onPress={() => {
-                              if (isDisabled) return
-                              handleSubmit({
-                                tokenAddress: maxTokenAddress,
-                                toAccountAddress: ADDRESS_PAYMENT_NETWORK_SOL,
-                                amount: amountMAX.toString(),
-                              })
-                            }}
-                            isLoading={isLoading}
-                            isDisabled={!isSelected}
-                          >
-                            <div className="flex items-center gap-1">
-                              <img
-                                src={maxAvatar}
-                                width={16}
-                                className="rounded-full"
-                              />
-                              <span className="font-medium text-[#BCAA88]">
-                                <span className="font-bold">5,000 </span>
-                                MAX
-                              </span>
-                              <span className="text-14-base-b text-mercury-30">
-                                {" "}
-                                Pay Now*
-                              </span>
-                            </div>
-                          </Button>
-                        ))}
+                      {(isPaymentSuccess || isPaid) && isSelected ? (
+                        <Button className="mt-2 h-8 rounded-full bg-[#DEFAE5]">
+                          <div className="flex items-center gap-1">
+                            <CheckFilledIcon color="#20993F" />
+                            <span className="text-14 font-bold text-[#20993F]">
+                              Payment Successful
+                            </span>
+                          </div>
+                        </Button>
+                      ) : (
+                        <Button
+                          className="mt-2 h-8 rounded-full bg-mercury-950"
+                          onPress={() => {
+                            if (isDisabled) return
+                            handleSubmit({
+                              tokenAddress: maxTokenAddress,
+                              toAccountAddress: ADDRESS_PAYMENT_NETWORK_SOL,
+                              amount: amountMAX.toString(),
+                            })
+                          }}
+                          isLoading={isSelected && isLoading}
+                          isDisabled={!isSelected}
+                        >
+                          <div className="flex items-center gap-1">
+                            <img
+                              src={maxAvatar}
+                              width={16}
+                              className="rounded-full"
+                            />
+                            <span className="font-medium text-[#BCAA88]">
+                              <span className="font-bold">1,000 </span>
+                              MAX
+                            </span>
+                            <span className="text-14-base-b text-mercury-30">
+                              {" "}
+                              Pay Now*
+                            </span>
+                          </div>
+                        </Button>
+                      )}
                     </div>
                     <Checkbox
                       radius="full"
                       isSelected={isSelected}
-                      onChange={() => {
-                        if (isDisabled) return
-                        onChange(item.key)
-                      }}
+                      onChange={() => onChangeAgentType(onChange(item.key))}
                     />
                   </div>
                 )
@@ -246,7 +245,7 @@ const AgentType: React.FC<{ isDisabled?: boolean }> = ({ isDisabled }) => {
 
       <div className="flex justify-end">
         <span className="text-[13px] italic text-mercury-700">
-          *Note: You can pay later to activate the DeFAI type.
+          *Note: You can pay later to activate the agent type.
         </span>
       </div>
 

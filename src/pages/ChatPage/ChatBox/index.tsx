@@ -18,7 +18,7 @@ const ChatBox = () => {
   }, [isLogin, chatId])
 
   return (
-    <div className="relative h-full max-h-dvh w-full">
+    <div className="] relative h-full max-h-[calc(100dvh-100px)] w-full">
       {(isLogin && chatId) || inviteAgentId ? (
         <>
           <ChatMessages />

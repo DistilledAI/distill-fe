@@ -3,6 +3,7 @@ import {
   blackrackAvartar2,
   gnrtAvatar,
   guardLogo,
+  jpowLogo,
   leeQuidAvatar,
   racksAvatar,
   usdcLogo,
@@ -24,6 +25,7 @@ export enum StakeTokenAddress {
   LeeQuid = "oraix39mVDGnusyjag97Tz5H8GvGriSZmhVvkvXRoc4",
   Guard = "oraiUNrTQmeuc13JoMFSyNcJCnXYpqErfp9v5diy64b",
   Banker = "oraiBbhuMd7MeVxyBjtnK8sggprf2NpHkeJaeHzpBFK",
+  JPOW = "orairHM3Yw2PbTfCty1PXy7tEUx3uBMfjouNbm4KnRJ",
 }
 
 export const LIST_TOKEN_STAKE = [
@@ -82,6 +84,15 @@ export const LIST_TOKEN_STAKE = [
     avatar: bankerLogo,
     coinGeckoId: null,
   },
+  {
+    id: 7,
+    address: StakeTokenAddress.JPOW,
+    label: "JPOW",
+    decimals: 6,
+    tokenName: "JPOW",
+    avatar: jpowLogo,
+    coinGeckoId: CoinGeckoId["jpow-ai"],
+  },
 ]
 
 const Stake = () => {
@@ -97,7 +108,7 @@ const Stake = () => {
 
   return (
     <div className="mx-auto max-w-[1232px] px-4 max-md:py-[60px]">
-      <BackButton className="fixed left-0 top-0 h-[50px] max-md:h-[40px] max-md:w-full max-md:bg-white" />
+      <BackButton className="fixed left-0 h-[50px] pl-4 max-md:h-[40px] max-md:w-full max-md:bg-white" />
       {isBlackRack ? <BlackRackVault /> : <SimpleStaking />}
     </div>
   )

@@ -14,7 +14,6 @@ import UploadFAQ from "../UploadFAQ"
 import UploadSocialLink from "../UploadSocialLink"
 import useActiveAgent from "../useActiveAgent"
 import AgentSetupStatus from "./AgentSetupStatus"
-import { AGENT_TYPE_KEY } from "./AgentType"
 
 const ConnectData = () => {
   const navigate = useNavigate()
@@ -71,7 +70,7 @@ const ConnectData = () => {
       <div className="mx-auto h-auto w-full max-w-[800px] overflow-y-auto px-4 md:h-full md:px-0">
         <AgentSetupStatus isAgentActive={isAgentActive} />
         <div className="mb-4 space-y-2 md:mb-6">
-          {typeAgentData === AGENT_TYPE_KEY.DEFAULT ? (
+          {/* {typeAgentData === AGENT_TYPE_KEY.DEFAULT ? (
             <AlertBox
               isVisible={!isAgentActive}
               messages={[
@@ -88,7 +87,7 @@ const ConnectData = () => {
             />
           ) : (
             <div />
-          )}
+          )} */}
 
           <AlertBox
             isVisible={!agentDataList.length && isAgentDataFetched}

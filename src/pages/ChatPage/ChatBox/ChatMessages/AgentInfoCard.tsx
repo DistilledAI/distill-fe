@@ -4,7 +4,7 @@ import { ShareWithQrIcon } from "@components/Icons/Share"
 import { PATH_NAMES, RoleUser } from "@constants/index"
 import { getBadgeColor, IMessageBox } from "./helpers"
 // import { ThreeDotsCircleIcon } from "@components/Icons/SocialLinkIcon"
-import { Button, useDisclosure } from "@nextui-org/react"
+import { Button, Skeleton, useDisclosure } from "@nextui-org/react"
 import { useQuery } from "@tanstack/react-query"
 import { Link } from "react-router-dom"
 import { getUserPublicDetail } from "services/user"
@@ -21,7 +21,7 @@ const AgentInfoCard = ({ messages, groupId }: AgentInfoCardProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   const { data: chatDetailResult } = useQuery<any>({
-    queryKey: [QueryDataKeys.GROUP_DETAIL, groupId],
+    queryKey: [`${QueryDataKeys.GROUP_DETAIL}-${groupId}`],
     enabled: !!groupId,
     staleTime: 60 * 60 * 1000,
   })
@@ -44,12 +44,16 @@ const AgentInfoCard = ({ messages, groupId }: AgentInfoCardProps) => {
   const agentInfo = data?.data
 
   if (!agentInfo) {
-    return <></>
+    return (
+      <div className="md:p-4">
+        <Skeleton className="mx-auto min-h-[111px] max-w-[768px] md:rounded-[14px]" />
+      </div>
+    )
   }
 
   return (
-    <div className="px-4">
-      <div className="mx-auto min-h-[111px] max-w-[768px] border border-mercury-100 bg-mercury-50 p-3 max-md:border-x-0 md:rounded-[14px] md:p-4">
+    <div className="md:px-4">
+      <div className="mx-auto min-h-[111px] max-w-[768px] border border-mercury-100 bg-mercury-50 p-2 max-md:border-x-0 md:rounded-[14px]">
         <div className="flex gap-x-3 md:gap-x-4">
           <AvatarCustom
             publicAddress={agentInfo?.publicAddress}
@@ -103,7 +107,7 @@ const AgentInfoCard = ({ messages, groupId }: AgentInfoCardProps) => {
             </div>
 
             <div className="flex items-center justify-between gap-x-2 md:gap-x-4">
-              <p className="line-clamp-4 max-w-[510px] text-14 font-medium text-mercury-600">
+              <p className="line-clamp-4 text-14 font-medium text-mercury-600">
                 {agentInfo?.description || "Distilled AI Agent"}
               </p>
             </div>
@@ -115,6 +119,7 @@ const AgentInfoCard = ({ messages, groupId }: AgentInfoCardProps) => {
         onClose={onClose}
         shareUrl={`${window.location.origin}${PATH_NAMES.INVITE}/${agentInfo?.id}`}
         title="Agent QR"
+        imageSrc={agentInfo?.avatar}
       />
     </div>
   )

@@ -7,6 +7,9 @@ import useConnectPhantom from "@pages/Stake/useConnectPhantom"
 import useCreateProposal, { ProposalType } from "./useCreateProposal"
 import { toast } from "react-toastify"
 import { useParams } from "react-router-dom"
+import useStakerInfo from "./useStakerInfo"
+import { getInfoTokenByAddress } from "@pages/Stake/helpers"
+import { StakeTokenAddress } from "@pages/Stake"
 
 const CreateProposal: React.FC = () => {
   const [tab, setTab] = useState<ProposalType>(ProposalType.YesNo)
@@ -17,6 +20,9 @@ const CreateProposal: React.FC = () => {
   const [title, setTitle] = useState("")
   const [description, setDescription] = useState("")
   const MAX_OPTION = 8
+
+  const { isCanAction } = useStakerInfo()
+  const vaultInfo = getInfoTokenByAddress(agentAddress as StakeTokenAddress)
 
   const handleCreate = async () => {
     if (!agentAddress || loading || !isConnectWallet) return
@@ -38,8 +44,13 @@ const CreateProposal: React.FC = () => {
   }
 
   return (
-    <div className="mx-auto mb-5 max-w-[844px] px-4 py-4 max-md:pb-10">
-      <BackButton className="fixed left-0 top-0 h-[50px] max-md:h-[40px] max-md:w-full max-md:bg-white" />
+    <div className="mx-auto mb-5 min-h-dvh max-w-[844px] px-4 pb-20 pt-14 md:p-6 md:pt-0">
+      <BackButton className="fixed left-0 top-0 h-[50px] pl-4 max-md:h-[40px] max-md:w-full max-md:bg-white" />
+      {isCanAction !== null && isCanAction === false && (
+        <div className="mb-2 font-medium italic text-red-500">
+          You must stake ${vaultInfo?.tokenName} to cast your vote!
+        </div>
+      )}
       <div className="flex items-center justify-between">
         <p className="text-24 font-semibold max-md:text-18">New Proposal</p>
         <Tooltip isDisabled={isConnectWallet} content="Login to continue">
@@ -47,7 +58,7 @@ const CreateProposal: React.FC = () => {
             <Button
               onPress={handleCreate}
               isLoading={loading}
-              isDisabled={!isConnectWallet}
+              isDisabled={!isConnectWallet || !isCanAction}
               className="rounded-full bg-primary !text-16 font-semibold text-white max-md:h-[36px] max-md:!text-14"
             >
               <PlusIcon color="white" size={16} /> Create
@@ -85,14 +96,14 @@ const CreateProposal: React.FC = () => {
           <p className="mb-2 text-18 font-semibold max-md:text-16">Vote type</p>
           <Tabs
             classNames={{
-              tabList: "w-[250px] bg-mercury-200",
-              // base: "w-[200px]",
+              base: "w-full",
+              tabList: "w-full md:w-[250px] bg-mercury-200 ",
               tab: "font-medium text-mercury-900",
             }}
             onSelectionChange={(key) => setTab(key as ProposalType)}
           >
             <Tab key={ProposalType.YesNo} title="Yes/No">
-              <div className="max-w-[250px]">
+              <div className="md:max-w-[250px]">
                 <div className="flex items-center justify-between rounded-full bg-mercury-70 px-4 py-2 font-medium">
                   Yes
                   <CheckFilledIcon />

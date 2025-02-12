@@ -33,6 +33,7 @@ export const TX_FEE = 0.25
  * STAKING VAULTS
  */
 export const STAKING_VAULT_SEED = "staking_vault"
+export const VOTER_SEED = "voter"
 export const STAKING_STAKER_INFO_SEED = "staker_info"
 export const STAKING_UNBONDING_INFO_SEED = "unbonding_info_seed"
 /**
