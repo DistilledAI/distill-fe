@@ -8,19 +8,14 @@ import { WalletContextState } from "@solana/wallet-adapter-react"
 import { PublicKey } from "@solana/web3.js"
 import { FungStakingVault } from "./idl/staking_vault.ts"
 import idl from "./idl/staking_vault.json"
-import guardIdl from "./idl/guard_staking_vault.json"
 import { getDurationByAddress } from "./helpers.ts"
 import { Web3StakeBase } from "./web3StakeBase.ts"
 
 const vaultInterface = JSON.parse(JSON.stringify(idl))
-const guardVaultInterface = JSON.parse(JSON.stringify(guardIdl))
 
 export class Web3SolanaLockingToken extends Web3StakeBase {
-  private hasPeriod: boolean
-
-  constructor(hasPeriod = true) {
+  constructor() {
     super()
-    this.hasPeriod = hasPeriod
   }
 
   private getVaultPda(
@@ -28,13 +23,11 @@ export class Web3SolanaLockingToken extends Web3StakeBase {
     program: Program<FungStakingVault>,
   ): PublicKey {
     const mintKey = new PublicKey(stakeCurrencyMint)
-    const seeds = !this.hasPeriod
-      ? [Buffer.from(STAKING_VAULT_SEED), mintKey.toBytes()]
-      : [
-          Buffer.from(STAKING_VAULT_SEED),
-          mintKey.toBytes(),
-          new BN(getDurationByAddress(stakeCurrencyMint)).toBuffer("le", 8),
-        ]
+    const seeds = [
+      Buffer.from(STAKING_VAULT_SEED),
+      mintKey.toBytes(),
+      new BN(getDurationByAddress(stakeCurrencyMint)).toBuffer("le", 8),
+    ]
     const [vaultPda] = PublicKey.findProgramAddressSync(
       seeds,
       program.programId,
@@ -102,31 +95,22 @@ export class Web3SolanaLockingToken extends Web3StakeBase {
   ) {
     try {
       const provider = this.getProvider(wallet)
-      const program = this.getProgram(
+      const program = this.getProgram<FungStakingVault>(
         provider,
-        !this.hasPeriod ? guardVaultInterface : vaultInterface,
+        vaultInterface,
       )
       if (!wallet.publicKey) {
         console.error("Wallet not connected")
         return
       }
 
-      const stakeIx = !this.hasPeriod
-        ? await program.methods
-            //@ts-ignore
-            .stake(new BN(amount))
-            .accounts({
-              signer: wallet.publicKey,
-              stakeCurrencyMint,
-            })
-            .instruction()
-        : await program.methods
-            .stake(new BN(unbondingPeriod), new BN(amount))
-            .accounts({
-              signer: wallet.publicKey,
-              stakeCurrencyMint,
-            })
-            .instruction()
+      const stakeIx = await program.methods
+        .stake(new BN(unbondingPeriod), new BN(amount))
+        .accounts({
+          signer: wallet.publicKey,
+          stakeCurrencyMint,
+        })
+        .instruction()
 
       return await this.sendTransaction(provider, wallet, [stakeIx])
     } catch (error: any) {
@@ -140,7 +124,7 @@ export class Web3SolanaLockingToken extends Web3StakeBase {
       const provider = this.getProvider(wallet)
       const program = this.getProgram<FungStakingVault>(
         provider,
-        !this.hasPeriod ? guardVaultInterface : vaultInterface,
+        vaultInterface,
       )
       if (!wallet.publicKey) {
         console.error("Wallet not connected")
@@ -162,7 +146,7 @@ export class Web3SolanaLockingToken extends Web3StakeBase {
       const provider = this.getProvider(wallet)
       const program = this.getProgram<FungStakingVault>(
         provider,
-        !this.hasPeriod ? guardVaultInterface : vaultInterface,
+        vaultInterface,
       )
 
       const vaultPda = this.getVaultPda(stakeCurrencyMint, program)
@@ -253,7 +237,10 @@ export class Web3SolanaLockingToken extends Web3StakeBase {
   ) {
     try {
       const provider = this.getProvider(wallet)
-      const program = this.getProgram(provider, vaultInterface)
+      const program = this.getProgram<FungStakingVault>(
+        provider,
+        vaultInterface,
+      )
       if (!wallet.publicKey) {
         console.error("Wallet not connected")
         return
@@ -310,7 +297,10 @@ export class Web3SolanaLockingToken extends Web3StakeBase {
   ) {
     try {
       const provider = this.getProvider(wallet)
-      const program = this.getProgram(provider, vaultInterface)
+      const program = this.getProgram<FungStakingVault>(
+        provider,
+        vaultInterface,
+      )
       if (!wallet.publicKey) {
         console.error("Wallet not connected")
         return

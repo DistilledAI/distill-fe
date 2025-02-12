@@ -1,7 +1,6 @@
 import { Button } from "@nextui-org/react"
 import { StakeTokenAddress } from "@pages/Stake"
 import {
-  checkHasPeriod,
   getDurationByAddress,
   getInfoTokenByAddress,
 } from "@pages/Stake/helpers"
@@ -31,11 +30,9 @@ const StakeAction: React.FC<{
   const { balance, loading, getBalance } = useGetBalance(tokenAddress)
   const tokenInfo = getInfoTokenByAddress(tokenAddress as StakeTokenAddress)
 
-  const hasPeriod = checkHasPeriod(tokenAddress as StakeTokenAddress)
   const isExpired = endDate ? Date.now() > endDate : false
-  const isMaintenance = tokenAddress === StakeTokenAddress.Guard
 
-  const web3Locking = new Web3SolanaLockingToken(hasPeriod)
+  const web3Locking = new Web3SolanaLockingToken()
 
   const AMOUNT_LIST = [
     {
@@ -66,7 +63,6 @@ const StakeAction: React.FC<{
 
   const handleStake = async () => {
     try {
-      if (isMaintenance) return
       if (isExpired) return
       if (!tokenAddress) {
         return toast.warning("Token address not found!")
@@ -162,12 +158,12 @@ const StakeAction: React.FC<{
       )}
       {isConnectWallet ? (
         <Button
-          isDisabled={isExpired || isMaintenance}
+          isDisabled={isExpired}
           isLoading={loadingSubmit}
           onClick={handleStake}
           className="mt-7 h-[48px] w-full rounded-full bg-mercury-950 text-white"
         >
-          {isMaintenance ? "This vault is under maintenance" : "Deposit"}
+          Deposit
         </Button>
       ) : (
         <Button
