@@ -2,7 +2,6 @@ import { Button } from "@nextui-org/react"
 import { StakeTokenAddress } from "@pages/Stake"
 import { SPL_DECIMAL } from "@pages/Stake/config"
 import {
-  checkHasPeriod,
   getDurationByAddress,
   getInfoTokenByAddress,
 } from "@pages/Stake/helpers"
@@ -32,11 +31,9 @@ const StakeAction: React.FC<{
   const { setVisible } = useWalletModal()
   const { balance, loading, getBalance } = useGetBalance(tokenAddress)
   const tokenInfo = getInfoTokenByAddress(tokenAddress as StakeTokenAddress)
-
-  const hasPeriod = checkHasPeriod(tokenAddress as StakeTokenAddress)
   const isExpired = endDate ? Date.now() > endDate : false
 
-  const web3Locking = new Web3SolanaLockingToken(hasPeriod)
+  const web3Locking = new Web3SolanaLockingToken()
 
   const AMOUNT_LIST = [
     {

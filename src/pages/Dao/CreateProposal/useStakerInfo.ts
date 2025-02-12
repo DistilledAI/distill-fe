@@ -1,6 +1,4 @@
-import { StakeTokenAddress } from "@pages/Stake"
 import { SPL_DECIMAL } from "@pages/Stake/config"
-import { checkHasPeriod } from "@pages/Stake/helpers"
 import { Web3SolanaLockingToken } from "@pages/Stake/web3Locking"
 import { useWallet } from "@solana/wallet-adapter-react"
 import { toBN } from "@utils/format"
@@ -12,9 +10,8 @@ const useStakerInfo = () => {
   const [isCanAction, setIsCanAction] = useState<boolean | null>(null)
   const [totalUserStake, setTotalUserStake] = useState(0)
   const { agentAddress } = useParams()
-  const hasPeriod = checkHasPeriod(agentAddress as StakeTokenAddress)
 
-  const web3Locking = new Web3SolanaLockingToken(hasPeriod)
+  const web3Locking = new Web3SolanaLockingToken()
 
   const getStakedAmount = async () => {
     try {
