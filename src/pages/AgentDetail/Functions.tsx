@@ -1,5 +1,5 @@
 import ComingSoon from "@components/ComingSoon"
-import { BoltOutlineIcon } from "@components/Icons"
+import { BoltOutlineIcon, SettingIcon } from "@components/Icons"
 import {
   PencilBoltIcon,
   PhototBoltIcon,
@@ -9,15 +9,8 @@ import { CloseFilledIcon } from "@components/Icons/DefiLens"
 import { TelegramOutlineIcon } from "@components/Icons/SocialLinkIcon"
 import { TablerPlusIcon } from "@components/Icons/TablerPlusIcon"
 import { TwitterIcon } from "@components/Icons/Twitter"
-import {
-  Button,
-  Divider,
-  Input,
-  Select,
-  SelectItem,
-  Switch,
-} from "@nextui-org/react"
-import { isArray, uniqBy } from "lodash"
+import { Button, Divider, Input, Select, SelectItem } from "@nextui-org/react"
+import { isArray, uniq, uniqBy } from "lodash"
 import { useState } from "react"
 import { Controller, useFormContext } from "react-hook-form"
 import { toast } from "react-toastify"
@@ -84,9 +77,12 @@ const Functions: React.FC<{
   const [category, setCategory] = useState<string>("crypto")
   const botWebhooks = agentData?.botWebhooks
   const dataSources = DATA_SOURCES_BY_CATEGORY[category]
+
   const [isShowInput, setIsShowInput] = useState<boolean>(false)
+  const [isShowKeywordInput, setIsShowKeywordInput] = useState<boolean>(false)
   const [inputValue, setInputValue] = useState<string>("")
   const xUserNameValues = JSON.parse(watch("x_user_names") || "[]")
+  const xKeywordsValues = JSON.parse(watch("x_keywords") || "[]")
 
   const xBotData = agentConfigs?.find(
     (agent: any) => agent.key === "bindTwitterKey",
@@ -98,6 +94,10 @@ const Functions: React.FC<{
     setIsShowInput(!isShowInput)
   }
 
+  const toggleShowKeywordInput = () => {
+    setIsShowKeywordInput(!isShowKeywordInput)
+  }
+
   const onSelectCategory = (value: string) => {
     setCategory(value)
   }
@@ -107,6 +107,13 @@ const Functions: React.FC<{
       (item: any) => item?.user_name !== userName,
     )
     setValue("x_user_names", JSON.stringify(newUserNameValues))
+  }
+
+  const removeKeyword = (keywordValue: string) => {
+    const newKeywordsValues = xKeywordsValues.filter(
+      (keyword: string) => keyword !== keywordValue,
+    )
+    setValue("x_keywords", JSON.stringify(newKeywordsValues))
   }
 
   const getUserName = (url: string) => {
@@ -121,18 +128,20 @@ const Functions: React.FC<{
     return url
   }
 
-  const renderKolList = () => {
+  const renderFollowXAccount = () => {
     return (
       <div className="mt-6">
-        <span className="text-mercury-700">
-          <span className="text-base-sb text-mercury-950">Following list </span>
-          Your agent will subscribe to the information source from the following
-          X account:
+        <span className="text-base-sb text-mercury-950">
+          Following X Account <br />
         </span>
-        <div className="mt-4">
-          <div className="flex flex-wrap items-center gap-1">
-            {isArray(xUserNameValues) &&
-              xUserNameValues.map((item: any) => {
+        <span className="text-mercury-700">
+          Your agent will subscribe to and reply to posts from the following X
+          account:
+        </span>
+        <div className="my-2 rounded-lg bg-mercury-70 p-2">
+          {isArray(xUserNameValues) && xUserNameValues?.length > 0 && (
+            <div className="mb-2 flex flex-wrap items-center gap-1">
+              {xUserNameValues.map((item: any) => {
                 const userName = item?.user_name
                 return (
                   <div
@@ -151,15 +160,16 @@ const Functions: React.FC<{
                   </div>
                 )
               })}
-          </div>
+            </div>
+          )}
 
           {isShowInput && (
             <Input
               type="text"
               placeholder="Enter X (Twitter) profile link or username"
-              className="w-1/2"
+              className="w-1/2 max-md:w-full"
               classNames={{
-                mainWrapper: "border border-mercury-400 rounded-lg mt-4",
+                mainWrapper: "border border-mercury-400 rounded-lg",
                 inputWrapper: " bg-mercury-70",
               }}
               endContent={
@@ -199,15 +209,92 @@ const Functions: React.FC<{
               }}
             />
           )}
-
           {!isShowInput && (
             <div
               onClick={() => toggleShowInput()}
-              className="mt-3 flex cursor-pointer items-center gap-1"
+              className="flex cursor-pointer items-center gap-1"
             >
               <TablerPlusIcon color="#A2845E" size={20} />
               <span className="text-base-md text-brown-10">
                 Add account (Max. 10)
+              </span>
+            </div>
+          )}
+        </div>
+
+        {/* keywords */}
+        <span className="text-mercury-700">
+          Your agent will reply to posts containing these keywords:
+        </span>
+
+        <div className="my-2 rounded-lg bg-mercury-70 p-2">
+          {isArray(xKeywordsValues) && xKeywordsValues?.length > 0 && (
+            <div className="mb-2 flex flex-wrap items-center gap-1">
+              {xKeywordsValues.map((keyword: string) => {
+                return (
+                  <div
+                    className="flex items-center gap-1 rounded-lg border-[2px] border-[#4986C9] p-1"
+                    key={keyword}
+                  >
+                    <span className="text-base-b text-mercury-900">
+                      {keyword}
+                    </span>
+                    <div
+                      className="cursor-pointer"
+                      onClick={() => removeKeyword(keyword)}
+                    >
+                      <CloseFilledIcon size={20} color="#4986C9" />
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          )}
+
+          {isShowKeywordInput && (
+            <Input
+              type="text"
+              placeholder="Enter keywords  (Use a comma to separate multiple sources)"
+              className="w-[65%] max-md:w-full"
+              classNames={{
+                mainWrapper: "border border-mercury-400 rounded-lg",
+                inputWrapper: " bg-mercury-70",
+              }}
+              endContent={
+                <Button
+                  className="h-[30px] rounded-full border border-mercury-50 bg-mercury-950 max-sm:h-[38px]"
+                  onPress={() => {
+                    if (!inputValue) return
+                    const newXKeywords = [...xKeywordsValues, inputValue]
+                    const uniqueNewXKeywords = uniq(newXKeywords)
+                    if (uniqueNewXKeywords.length > 10)
+                      return toast.warning(
+                        "You have reached the limit for keywords",
+                      )
+                    setValue("x_keywords", JSON.stringify(uniqueNewXKeywords))
+                    setInputValue("")
+                    toggleShowKeywordInput()
+                  }}
+                >
+                  <span className="text-base text-mercury-30 max-sm:text-[14px]">
+                    Save
+                  </span>
+                </Button>
+              }
+              onChange={(e) => {
+                const value = e.target.value
+                setInputValue(value)
+              }}
+            />
+          )}
+          {!isShowKeywordInput && (
+            <div
+              onClick={() => toggleShowKeywordInput()}
+              className="flex cursor-pointer items-center gap-1"
+            >
+              <SettingIcon />
+              <span className="text-base-md text-brown-10">
+                Add Following keywords (Max. 10)
               </span>
             </div>
           )}
@@ -306,7 +393,7 @@ const Functions: React.FC<{
               />
             </div>
 
-            <div className="pointer-events-none w-[60%] rounded-[22px] bg-mercury-30 p-4 opacity-50 max-md:w-full">
+            {/* <div className="pointer-events-none w-[60%] rounded-[22px] bg-mercury-30 p-4 opacity-50 max-md:w-full">
               <span className="text-base-sb text-mercury-950">Functions</span>
               <div className="mt-4 flex flex-wrap justify-between gap-y-6">
                 {TWITTER_FEATURE.map((item, index) => {
@@ -329,7 +416,7 @@ const Functions: React.FC<{
                   )
                 })}
               </div>
-            </div>
+            </div> */}
           </div>
           <div className="mt-6">
             <span className="text-mercury-700">
@@ -382,7 +469,7 @@ const Functions: React.FC<{
               </div>
             </div>
           </div>
-          {renderKolList()}
+          {renderFollowXAccount()}
         </div>
       </ComingSoon>
     </div>
