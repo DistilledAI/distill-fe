@@ -17,7 +17,7 @@ const web3Solana = new Web3SolanaProgramInteraction()
 const HeaderWallet = () => {
   const { publicKey } = useWallet()
   const [tokenBal, setTokenBal] = useState<number>(0)
-  const { setVisible } = useWalletModal()
+  const { setVisible: setVisibleWalletModal } = useWalletModal()
   const address = publicKey?.toBase58() || ""
   const getBalance = async () => {
     if (!publicKey) {
@@ -74,7 +74,7 @@ const HeaderWallet = () => {
     </div>
   ) : (
     <Button
-      onPress={() => setVisible(true)}
+      onPress={() => setVisibleWalletModal(true)}
       className="rounded bg-white font-medium max-md:w-full"
     >
       Connect Wallet

@@ -1,6 +1,5 @@
 import { ArrowLeftFilledIcon } from "@components/Icons/Arrow"
 import { PATH_NAMES } from "@constants/index"
-import { Button } from "@nextui-org/react"
 import React from "react"
 import { useLocation, useNavigate } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
@@ -19,18 +18,19 @@ const BackButton: React.FC<{
   }
 
   return (
-    <Button
+    <button
+      type="button"
       className={twMerge(
-        "group absolute left-8 top-[22px] z-20 hidden items-center gap-x-3 bg-transparent md:flex",
+        "group absolute left-8 top-[22px] z-20 flex items-center justify-start gap-x-2 bg-transparent",
         className,
       )}
-      onPress={() => (onClick ? onClick() : onBack())}
+      onClick={() => (onClick ? onClick() : onBack())}
     >
       <div className="rounded-full bg-transparent p-[2px] group-hover:bg-mercury-50">
         <ArrowLeftFilledIcon size={24} />
       </div>
-      <span className="text-16 font-bold text-mercury-950">Back</span>
-    </Button>
+      <span className="text-16 font-semibold text-mercury-950">Back</span>
+    </button>
   )
 }
 

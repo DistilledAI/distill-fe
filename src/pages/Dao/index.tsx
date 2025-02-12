@@ -3,8 +3,8 @@ import BackButton from "@pages/AuthorProfile/BackButton"
 
 const Dao = () => {
   return (
-    <div className="mx-auto max-w-[844px] p-6">
-      <BackButton className="fixed left-0 top-0 h-[50px] max-md:h-[40px] max-md:w-full max-md:bg-white" />
+    <div className="mx-auto min-h-dvh max-w-[1024px] px-4 pb-20 pt-14 md:p-6 md:pt-0">
+      <BackButton className="fixed left-0 top-0 h-[50px] pl-4 max-md:h-[40px] max-md:w-full max-md:bg-white" />
       <Proposals />
     </div>
   )

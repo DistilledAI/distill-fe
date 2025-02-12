@@ -44,8 +44,8 @@ const CreateProposal: React.FC = () => {
   }
 
   return (
-    <div className="mx-auto mb-5 max-w-[844px] px-4 py-4 max-md:pb-10">
-      <BackButton className="fixed left-0 top-0 h-[50px] max-md:h-[40px] max-md:w-full max-md:bg-white" />
+    <div className="mx-auto mb-5 min-h-dvh max-w-[844px] px-4 pb-20 pt-14 md:p-6 md:pt-0">
+      <BackButton className="fixed left-0 top-0 h-[50px] pl-4 max-md:h-[40px] max-md:w-full max-md:bg-white" />
       {isCanAction !== null && isCanAction === false && (
         <div className="mb-2 font-medium italic text-red-500">
           You must stake ${vaultInfo?.tokenName} to cast your vote!
@@ -96,14 +96,14 @@ const CreateProposal: React.FC = () => {
           <p className="mb-2 text-18 font-semibold max-md:text-16">Vote type</p>
           <Tabs
             classNames={{
-              tabList: "w-[250px] bg-mercury-200",
-              // base: "w-[200px]",
+              base: "w-full",
+              tabList: "w-full md:w-[250px] bg-mercury-200 ",
               tab: "font-medium text-mercury-900",
             }}
             onSelectionChange={(key) => setTab(key as ProposalType)}
           >
             <Tab key={ProposalType.YesNo} title="Yes/No">
-              <div className="max-w-[250px]">
+              <div className="md:max-w-[250px]">
                 <div className="flex items-center justify-between rounded-full bg-mercury-70 px-4 py-2 font-medium">
                   Yes
                   <CheckFilledIcon />
