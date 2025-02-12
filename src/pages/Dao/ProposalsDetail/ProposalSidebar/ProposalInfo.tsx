@@ -1,3 +1,4 @@
+import { IDataProposal } from "@pages/Dao/CreateProposal/useCreateProposal"
 import {
   getColorProposalStatus,
   getProposalStatus,
@@ -26,11 +27,14 @@ const InfoRow = ({
 
 interface Props {
   proposalDetail: IProposal | null
+  proposalIpfs: IDataProposal | null
 }
 
-const ProposalInfo = ({ proposalDetail }: Props) => {
+const ProposalInfo = ({ proposalDetail, proposalIpfs }: Props) => {
+  const voteType = proposalIpfs?.vote?.type
   const proposalStatus =
-    proposalDetail && getProposalStatus(proposalDetail, Date.now() / 1000)
+    proposalDetail &&
+    getProposalStatus(proposalDetail, Date.now() / 1000, voteType)
 
   return (
     <div className="space-y-1">

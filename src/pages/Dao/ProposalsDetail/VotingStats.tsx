@@ -20,6 +20,7 @@ const VotingStats = ({ proposalDetail, proposalIpfs }: Props) => {
     ? proposalDetail?.voteCount.reduce((total, current) => total + current, 0)
     : 0
   const totalStaked = proposalDetail?.totalStaked || 0
+  const voteType = proposalIpfs?.vote.type
 
   return (
     <div className="overflow-hidden rounded-2xl border border-mercury-100 bg-mercury-70">
@@ -32,12 +33,14 @@ const VotingStats = ({ proposalDetail, proposalIpfs }: Props) => {
 
       <div className="h-[1px] w-full bg-mercury-100" />
 
-      <StatBlock>
-        <TurnoutStats
-          quorum={proposalDetail?.quorum ? proposalDetail?.quorum * 100 : 0}
-          turnout={getTurnout(totalVoteCount, totalStaked)}
-        />
-      </StatBlock>
+      {voteType === ProposalType.YesNo ? (
+        <StatBlock>
+          <TurnoutStats
+            quorum={proposalDetail?.quorum ? proposalDetail?.quorum * 100 : 0}
+            turnout={getTurnout(totalVoteCount, totalStaked)}
+          />
+        </StatBlock>
+      ) : null}
     </div>
   )
 }
@@ -67,42 +70,56 @@ const VoteRatio = ({ proposalDetail, proposalIpfs }: Props) => {
   const renderRatioVotes = () => {
     if (voteType === ProposalType.YesNo) {
       return (
-        <div className="overflow-hidden">
+        <>
+          <div className="overflow-hidden">
+            <div className="flex items-center justify-between">
+              <span className="text-16 text-green-500">{percents[0]}% Yes</span>
+              <div className="space-x-3">
+                <span className="text-16 text-[#FF3B30]">
+                  {percents[1]}% No
+                </span>
+                {/* <span className="text-16 text-mercury-700">5.053% Abstain</span> */}
+              </div>
+            </div>
+            <div className="relative flex h-3 w-full items-start rounded-full">
+              <div
+                className={twMerge(
+                  "h-full w-1/2 max-w-full rounded-bl-full rounded-tl-full bg-green-500",
+                  percents[0] === 100 && "rounded-full",
+                )}
+                style={{
+                  width: `${percents[0]}%`,
+                }}
+              />
+              {/* <div className="h-full w-1/2 bg-[#FF3B30]" /> */}
+              <div
+                className="h-full w-1/2 rounded-br-full rounded-tr-full bg-[#FF3B30]"
+                style={{
+                  width: `${percents[1]}%`,
+                }}
+              />
+              <div className="absolute -bottom-[14px] left-1/2 -translate-x-1/2 -rotate-90">
+                <PlayIcon color="#888888" size={18} />
+              </div>
+            </div>
+          </div>
           <div className="flex items-center justify-between">
-            <span className="text-16 text-green-500">{percents[0]}% Yes</span>
-            <div className="space-x-3">
-              <span className="text-16 text-[#FF3B30]">{percents[1]}% No</span>
-              {/* <span className="text-16 text-mercury-700">5.053% Abstain</span> */}
+            <span className="text-16 text-mercury-700">Passing threshold</span>
+            <div className="flex items-center gap-1">
+              <span className="text-16 text-mercury-950">{`Majority (>${proposalDetail?.threshold ? proposalDetail?.threshold * 100 : 0}%)`}</span>
+              <CheckFilledIcon />
             </div>
           </div>
-          <div className="relative flex h-3 w-full items-start rounded-full">
-            <div
-              className={twMerge(
-                "h-full w-1/2 max-w-full rounded-bl-full rounded-tl-full bg-green-500",
-                percents[0] === 100 && "rounded-full",
-              )}
-              style={{
-                width: `${percents[0]}%`,
-              }}
-            />
-            {/* <div className="h-full w-1/2 bg-[#FF3B30]" /> */}
-            <div
-              className="h-full w-1/2 rounded-br-full rounded-tr-full bg-[#FF3B30]"
-              style={{
-                width: `${percents[1]}%`,
-              }}
-            />
-            <div className="absolute -bottom-[14px] left-1/2 -translate-x-1/2 -rotate-90">
-              <PlayIcon color="#888888" size={18} />
-            </div>
-          </div>
-        </div>
+        </>
       )
     }
+
     return (
       <ul className="flex flex-col space-y-1">
         {voteOptions.length
           ? voteOptions.map((val, index) => {
+              const isLargestPercent = Math.max(...percents) === percents[index]
+
               return (
                 <div
                   className={twMerge(
@@ -114,16 +131,27 @@ const VoteRatio = ({ proposalDetail, proposalIpfs }: Props) => {
                       "absolute inset-0 rounded-full bg-mercury-300",
                       percents[index] < 100 &&
                         "rounded-br-none rounded-tr-none",
+                      isLargestPercent && "bg-mercury-950",
                     )}
                     style={{
                       width: `${percents[index]}%`,
                     }}
                   />
                   <div className="relative flex items-center justify-between">
-                    <p className="line-clamp-1 text-16 text-mercury-950">
+                    <p
+                      className={twMerge(
+                        "line-clamp-1 text-[16px] text-mercury-950",
+                        isLargestPercent && "font-semibold text-white",
+                      )}
+                    >
                       {val}
                     </p>
-                    <span className="flex-shrink-0 text-16 font-semibold text-mercury-950">
+                    <span
+                      className={twMerge(
+                        "flex-shrink-0 text-16 font-semibold text-mercury-950",
+                        isLargestPercent && "text-white",
+                      )}
+                    >
                       {percents[index]}%
                     </span>
                   </div>
@@ -135,18 +163,7 @@ const VoteRatio = ({ proposalDetail, proposalIpfs }: Props) => {
     )
   }
 
-  return (
-    <>
-      {renderRatioVotes()}
-      <div className="flex items-center justify-between">
-        <span className="text-16 text-mercury-700">Passing threshold</span>
-        <div className="flex items-center gap-1">
-          <span className="text-16 text-mercury-950">{`Majority (>${proposalDetail?.threshold ? proposalDetail?.threshold * 100 : 0}%)`}</span>
-          <CheckFilledIcon />
-        </div>
-      </div>
-    </>
-  )
+  return renderRatioVotes()
 }
 
 const TurnoutStats = ({

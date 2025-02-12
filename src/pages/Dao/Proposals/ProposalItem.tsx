@@ -15,10 +15,15 @@ interface Props {
 const ProposalItem = ({ proposal, order }: Props) => {
   const navigate = useNavigate()
   const { agentAddress } = useParams()
-  const proposalStatus = getProposalStatus(proposal, Date.now() / 1000)
   const { proposalIpfs } = useProposalIpfs({
     uri: proposal.uri,
   })
+  const voteType = proposalIpfs?.vote?.type
+  const proposalStatus = getProposalStatus(
+    proposal,
+    Date.now() / 1000,
+    voteType,
+  )
 
   return (
     <div

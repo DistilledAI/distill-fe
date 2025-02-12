@@ -20,7 +20,10 @@ const ProposalSidebar = ({
     <div className="fixed w-full max-w-[350px]">
       <h2 className="text-24 font-semibold">Proposal</h2>
       <PropsalStatusContent proposalDetail={proposalDetail} />
-      <ProposalInfo proposalDetail={proposalDetail} />
+      <ProposalInfo
+        proposalDetail={proposalDetail}
+        proposalIpfs={proposalIpfs}
+      />
       <VotingWidget
         getProposalsDetail={getProposalsDetail}
         proposalIpfs={proposalIpfs}
