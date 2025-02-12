@@ -97,7 +97,7 @@ const Stake = () => {
 
   return (
     <div className="mx-auto max-w-[1232px] px-4 max-md:py-[60px]">
-      <BackButton className="fixed left-0 top-0 h-[50px] max-md:h-[40px] max-md:w-full max-md:bg-white" />
+      <BackButton className="fixed left-0 h-[50px] pl-4 max-md:h-[40px] max-md:w-full max-md:bg-white" />
       {isBlackRack ? <BlackRackVault /> : <SimpleStaking />}
     </div>
   )

@@ -31,6 +31,7 @@ const MainLayout = () => {
       `${PATH_NAMES.PRIVATE_AGENT}/${privateChatId}`,
       `${PATH_NAMES.MY_AGENTS}`,
       `${PATH_NAMES.STAKING}`,
+      `${PATH_NAMES.DAO}`,
     ],
     [chatId, inviteAgentId, privateChatId],
   )

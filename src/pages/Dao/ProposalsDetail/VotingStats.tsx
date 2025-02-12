@@ -93,7 +93,10 @@ const VoteRatio = ({ proposalDetail, proposalIpfs }: Props) => {
               />
               {/* <div className="h-full w-1/2 bg-[#FF3B30]" /> */}
               <div
-                className="h-full w-1/2 rounded-br-full rounded-tr-full bg-[#FF3B30]"
+                className={twMerge(
+                  "h-full w-1/2 rounded-br-full rounded-tr-full bg-[#FF3B30]",
+                  percents[1] === 100 && "rounded-full",
+                )}
                 style={{
                   width: `${percents[1]}%`,
                 }}
