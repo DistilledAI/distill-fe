@@ -5,7 +5,7 @@ import { useWallet } from "@solana/wallet-adapter-react"
 import { toast } from "react-toastify"
 import { useNavigate, useParams } from "react-router-dom"
 import { PATH_NAMES } from "@constants/index"
-import { ALL_CONFIGS } from "@pages/Stake/config"
+import { getDurationByAddress } from "@pages/Stake/helpers"
 
 export const enum ProposalType {
   YesNo = "yes_no",
@@ -42,7 +42,7 @@ const useCreateProposal = () => {
         const web3Dao = new Web3Dao()
 
         const resWeb3 = await web3Dao.createProposal({
-          unbondingPeriod: ALL_CONFIGS.VOTING_PROPOSAL_PERIOD,
+          unbondingPeriod: getDurationByAddress(agentAddress),
           wallet,
           numOptions: numOptions || 1,
           uri,

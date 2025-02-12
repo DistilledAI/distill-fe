@@ -1,5 +1,5 @@
 import { Web3Dao } from "@pages/Dao/web3Dao"
-import { ALL_CONFIGS } from "@pages/Stake/config"
+import { getDurationByAddress } from "@pages/Stake/helpers"
 import { useWallet } from "@solana/wallet-adapter-react"
 import { useState } from "react"
 import { useParams } from "react-router-dom"
@@ -21,7 +21,7 @@ const useSubmitVote = () => {
       const web3Dao = new Web3Dao()
       const res = await web3Dao.voteProposal({
         wallet,
-        unbondingPeriod: ALL_CONFIGS.VOTING_PROPOSAL_PERIOD,
+        unbondingPeriod: getDurationByAddress(agentAddress),
         stakeCurrencyMint: agentAddress,
         proposalPublicKey,
         option,

@@ -16,6 +16,7 @@ export const getDurationByAddress = (
     case StakeTokenAddress.LeeQuid:
       return 30 * 24 * 60 * 60 * 2
     case StakeTokenAddress.Banker:
+    case StakeTokenAddress.Guard:
       return MAX_DURATION_STAKE
 
     default:
