@@ -29,7 +29,7 @@ const VotePower = () => {
         <div>
           <p className="text-14 font-medium">
             Voting power:{" "}
-            <span className="text-orange-500">{votePower.toFixed(2)}%</span>
+            <span className="text-orange-500">{+votePower.toFixed(6)}%</span>
           </p>
         </div>
       </div>
