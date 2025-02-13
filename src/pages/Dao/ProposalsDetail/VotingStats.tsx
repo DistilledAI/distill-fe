@@ -65,7 +65,7 @@ const StatBlock = ({
 const VoteRatio = ({ proposalDetail, proposalIpfs }: Props) => {
   const voteType = proposalIpfs?.vote.type
   const voteOptions = proposalIpfs?.vote.data || []
-  const percents = getPercentVotes(proposalDetail?.voteCount)
+  const percents = getPercentVotes(proposalDetail?.voteCount, voteType)
 
   const renderRatioVotes = () => {
     if (voteType === ProposalType.YesNo) {
@@ -123,6 +123,7 @@ const VoteRatio = ({ proposalDetail, proposalIpfs }: Props) => {
           ? voteOptions.map((val, index) => {
               return (
                 <div
+                  key={index}
                   className={twMerge(
                     "relative rounded-full bg-mercury-100 px-4 py-2",
                   )}

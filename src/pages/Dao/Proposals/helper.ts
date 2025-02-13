@@ -56,12 +56,18 @@ export const getColorProposalStatus = (status: string) => {
   }
 }
 
-export const getPercentVotes = (voteCounts: number[] = []) => {
+export const getPercentVotes = (
+  voteCounts: number[] = [],
+  voteType = ProposalType.YesNo,
+) => {
   if (voteCounts.length === 0) return []
 
   const totalVotes = voteCounts.reduce((acc, count) => acc + count, 0)
 
   if (totalVotes === 0) {
+    if (voteType === ProposalType.Options) {
+      return voteCounts
+    }
     const equalPercentage = Number((100 / voteCounts.length).toFixed(2))
     const percentages = new Array(voteCounts.length).fill(equalPercentage)
     const sumSoFar = equalPercentage * voteCounts.length
