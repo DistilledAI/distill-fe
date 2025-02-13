@@ -65,7 +65,7 @@ const StatBlock = ({
 const VoteRatio = ({ proposalDetail, proposalIpfs }: Props) => {
   const voteType = proposalIpfs?.vote.type
   const voteOptions = proposalIpfs?.vote.data || []
-  const percents = getPercentVotes(proposalDetail?.voteCount)
+  const percents = getPercentVotes(proposalDetail?.voteCount, voteType)
 
   const renderRatioVotes = () => {
     if (voteType === ProposalType.YesNo) {
