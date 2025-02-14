@@ -1,6 +1,6 @@
 import { DistilledAIIcon } from "@components/Icons/DistilledAIIcon"
 import { PlusIcon } from "@components/Icons/Plus"
-import { Link, useLocation } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import Menu from "./Menu"
 import Socials from "./Socials"
 import { ChevronDownIcon } from "@components/Icons/ChevronDownIcon"
@@ -8,11 +8,13 @@ import { useAppDispatch, useAppSelector } from "@hooks/useAppRedux"
 import { twMerge } from "tailwind-merge"
 import { updateSidebarCollapsed } from "@reducers/sidebarCollapsedSlice"
 import { useLayoutEffect } from "react"
+import { PATH_NAMES } from "@constants/index"
 
 const Sidebar = () => {
   const dispatch = useAppDispatch()
   const sidebarCollapsed = useAppSelector((state) => state.sidebarCollapsed)
   const { pathname } = useLocation()
+  const navigate = useNavigate()
 
   useLayoutEffect(() => {
     if (pathname) {
@@ -39,18 +41,18 @@ const Sidebar = () => {
               sidebarCollapsed && "flex-col gap-4",
             )}
           >
-            <Link to={"/"}>
-              <DistilledAIIcon
-                baseClassName="w-fit h-fit rounded-none border-none "
-                iconClassName="w-[38px] h-5"
-              />
-            </Link>
+            <DistilledAIIcon
+              baseClassName="w-fit h-fit rounded-none border-none cursor-pointer"
+              iconClassName="w-[38px] h-5"
+              onClick={() => navigate("/")}
+            />
             <button
               type="button"
               className={twMerge(
                 "group flex items-center gap-2",
                 sidebarCollapsed && "w-full",
               )}
+              onClick={() => navigate(PATH_NAMES.CREATE_AGENT)}
             >
               <div
                 className={twMerge(

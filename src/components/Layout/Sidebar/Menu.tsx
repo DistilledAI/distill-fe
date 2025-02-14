@@ -13,8 +13,7 @@ import {
 } from "@components/Icons/Sidebar"
 import { PATH_NAMES } from "@constants/index"
 import { useAppSelector } from "@hooks/useAppRedux"
-import { useState } from "react"
-import { useNavigate } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
 
 const MENU = [
@@ -29,11 +28,11 @@ const MENU = [
     id: "my-agent",
     icon: (color?: string) => <BrainOutlineIcon color={color} />,
     name: "My Agent",
-    rightContent: () => (
+    rightContent: (avatarAgent?: string) => (
       <img
-        src={maxAvatarPlaceholder}
+        src={avatarAgent || maxAvatarPlaceholder}
         alt="avatar placeholder"
-        className="h-8 w-8"
+        className="h-8 w-8 rounded-full"
       />
     ),
     pathname: PATH_NAMES.MY_AGENTS,
@@ -92,14 +91,15 @@ const MENU = [
 ]
 
 const Menu = () => {
-  const [menuId, setMenuId] = useState<string>("home")
   const sidebarCollapsed = useAppSelector((state) => state.sidebarCollapsed)
   const navigate = useNavigate()
+  const { pathname } = useLocation()
+  const myAgent = useAppSelector((state) => state.agents.myAgent)
 
   return (
     <nav className="space-y-2">
       {MENU.map((item, index) => {
-        const isActive = item.id === menuId
+        const isActive = item.pathname === pathname
         return (
           <div
             key={index}
@@ -109,7 +109,6 @@ const Menu = () => {
               sidebarCollapsed && "h-12 justify-center",
             )}
             onClick={() => {
-              setMenuId(item.id)
               navigate(item.pathname)
             }}
           >
@@ -126,7 +125,7 @@ const Menu = () => {
             <div
               className={twMerge("flex-shrink-0", sidebarCollapsed && "hidden")}
             >
-              {item.rightContent && item.rightContent()}
+              {item.rightContent && item.rightContent(myAgent?.avatar)}
             </div>
           </div>
         )

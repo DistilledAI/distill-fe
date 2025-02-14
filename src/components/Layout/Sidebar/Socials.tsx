@@ -46,9 +46,9 @@ const Socials = () => {
           {item.type === "internal" ? (
             <div
               className={twMerge(
-                "flex items-center gap-2 px-4 py-2",
+                "flex h-10 items-center gap-2 px-4 py-2",
                 sidebarCollapsed &&
-                  "h-10 justify-center rounded-full border-[2px] border-transparent transition-all duration-100 ease-in-out hover:border-brown-500 hover:bg-brown-50",
+                  "justify-center rounded-full border-[2px] border-transparent transition-all duration-100 ease-in-out hover:border-brown-500 hover:bg-brown-50",
               )}
               onClick={() => navigate(item.link)}
             >
@@ -66,7 +66,7 @@ const Socials = () => {
             <Link
               to={item.link}
               target="_blank"
-              className="flex items-center gap-2 px-4 py-2"
+              className="flex h-10 items-center gap-2 px-4 py-2"
             >
               <div>{item.icon}</div>
               <span

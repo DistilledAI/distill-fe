@@ -6,7 +6,7 @@ import UserAuth from "."
 import BackAction from "./BackAction"
 import { PATH_NAMES } from "@constants/index"
 import { useLocation } from "react-router-dom"
-import Title from "./Title"
+import TitlePathName from "@components/Layout/Header/TitlePathName"
 
 const UserAuthWrapper = () => {
   const { connectMultipleWallet } = useConnectWallet()
@@ -24,7 +24,7 @@ const UserAuthWrapper = () => {
       )}
     >
       <BackAction />
-      <Title />
+      <TitlePathName />
       <div className="w-full flex-1 pb-2 pl-[18px] pr-4 pt-4">
         <UserAuth connectWallet={connectMultipleWallet} />
       </div>
