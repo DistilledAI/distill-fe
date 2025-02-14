@@ -146,7 +146,10 @@ const AgentDetail: React.FC = () => {
       if (configData.length > 0) {
         await updateAgentConfig({
           botId: agentIdNumber,
-          data: configData,
+          data: [
+            ...configData,
+            { key: "llm_model", value: newData?.llmModel?.toString() },
+          ],
         })
       }
       if (res.data) {
