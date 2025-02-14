@@ -80,7 +80,9 @@ const LLM_MODEL_OPTIONS = [
 const urlStaging = ["mesh-distilled-ai-dev.web.app", "localhost:5173"]
 const isStaging = urlStaging.includes(window.location.host)
 
-const AgentType: React.FC<{ isDisabled?: boolean }> = ({ isDisabled }) => {
+const AgentType: React.FC<{ isDisabledTypeAgent?: boolean }> = ({
+  isDisabledTypeAgent,
+}) => {
   const { isPaid, checkPayment } = useGetPaymentHistory()
   const { control } = useFormContext()
   const { handleSend } = useSend()
@@ -137,12 +139,6 @@ const AgentType: React.FC<{ isDisabled?: boolean }> = ({ isDisabled }) => {
     }
   }
 
-  const onChangeAgentType = (onChange: any) => {
-    if (isDisabled) return
-    onChange()
-    setIsLoading(false)
-  }
-
   return (
     <div>
       <CategoryLabel text="Agent Type" icon={<UserHexagonIcon />} />
@@ -161,8 +157,12 @@ const AgentType: React.FC<{ isDisabled?: boolean }> = ({ isDisabled }) => {
                     className="flex h-[200px] items-start justify-between gap-3 rounded-[14px] border-[2px] border-transparent bg-mercury-30 p-4 hover:cursor-pointer aria-checked:opacity-60 aria-selected:border-brown-500 max-md:h-auto"
                     key={item.key}
                     aria-selected={isSelected}
-                    aria-checked={isDisabled}
-                    onClick={() => onChangeAgentType(onChange(item.key))}
+                    aria-checked={isDisabledTypeAgent}
+                    onClick={() => {
+                      if (isDisabledTypeAgent) return
+                      onChange(item.key)
+                      setIsLoading(false)
+                    }}
                   >
                     {item.icon}
                     <div>
@@ -202,7 +202,7 @@ const AgentType: React.FC<{ isDisabled?: boolean }> = ({ isDisabled }) => {
                         <Button
                           className="mt-2 h-8 rounded-full bg-mercury-950"
                           onPress={() => {
-                            if (isDisabled) return
+                            if (isDisabledTypeAgent) return
                             handleSubmit({
                               tokenAddress: maxTokenAddress,
                               toAccountAddress: ADDRESS_PAYMENT_NETWORK_SOL,
@@ -233,7 +233,11 @@ const AgentType: React.FC<{ isDisabled?: boolean }> = ({ isDisabled }) => {
                     <Checkbox
                       radius="full"
                       isSelected={isSelected}
-                      onChange={() => onChangeAgentType(onChange(item.key))}
+                      onChange={() => {
+                        if (isDisabledTypeAgent) return
+                        onChange(item.key)
+                        setIsLoading(false)
+                      }}
                     />
                   </div>
                 )
@@ -260,14 +264,10 @@ const AgentType: React.FC<{ isDisabled?: boolean }> = ({ isDisabled }) => {
                 const isSelected = value == record.value
                 return (
                   <div
-                    className="flex h-[100px] w-1/2 items-start justify-between gap-3 rounded-[14px] border-[2px] border-transparent bg-mercury-30 p-4 hover:cursor-pointer aria-checked:opacity-60 aria-selected:border-brown-500 max-md:h-auto max-md:w-full"
+                    className="flex h-[100px] w-1/2 items-start justify-between gap-3 rounded-[14px] border-[2px] border-transparent bg-mercury-30 p-4 hover:cursor-pointer aria-selected:border-brown-500 max-md:h-auto max-md:w-full"
                     key={record.value}
                     aria-selected={isSelected}
-                    aria-checked={isDisabled}
-                    onClick={() => {
-                      if (isDisabled) return
-                      onChange(record.value)
-                    }}
+                    onClick={() => onChange(record.value)}
                   >
                     <div className="flex gap-3">
                       {record.icon}
@@ -285,10 +285,7 @@ const AgentType: React.FC<{ isDisabled?: boolean }> = ({ isDisabled }) => {
                     <Checkbox
                       radius="full"
                       isSelected={isSelected}
-                      onChange={() => {
-                        if (isDisabled) return
-                        onChange(record.value)
-                      }}
+                      onChange={() => onChange(record.value)}
                     />
                   </div>
                 )
