@@ -19,6 +19,7 @@ const AuthorProfile = lazy(() => import("@pages/AuthorProfile"))
 const ChatBoxLive = lazy(() => import("@pages/ChatBoxLive"))
 const ChatMyAgent = lazy(() => import("@pages/ChatMyAgent"))
 const ChatBox = lazy(() => import("@pages/ChatPage/ChatBox"))
+const HomePage = lazy(() => import("@pages/Home"))
 const AgentInitialization = lazy(
   () =>
     import(
@@ -50,10 +51,7 @@ const AppRouter = () => {
           path={PATH_NAMES.HOME}
           element={isMobile ? <MainLayout /> : <MainLayoutDesktop />}
         >
-          <Route
-            path={PATH_NAMES.HOME}
-            element={isMobile ? <ChatPageMobile /> : <ChatBox />}
-          />
+          <Route path={PATH_NAMES.HOME} element={<HomePage />} />
           <Route
             path={PATH_NAMES.CHAT_DETAIL}
             element={isMobile ? <ChatPageMobile /> : <ChatBox />}
