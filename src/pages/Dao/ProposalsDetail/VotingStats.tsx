@@ -123,6 +123,7 @@ const VoteRatio = ({ proposalDetail, proposalIpfs }: Props) => {
           ? voteOptions.map((val, index) => {
               return (
                 <div
+                  key={index}
                   className={twMerge(
                     "relative rounded-full bg-mercury-100 px-4 py-2",
                   )}

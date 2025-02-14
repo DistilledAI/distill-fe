@@ -103,58 +103,102 @@ const CreateProposal: React.FC = () => {
             onSelectionChange={(key) => setTab(key as ProposalType)}
           >
             <Tab key={ProposalType.YesNo} title="Yes/No">
-              <div className="md:max-w-[250px]">
-                <div className="flex items-center justify-between rounded-full bg-mercury-70 px-4 py-2 font-medium">
-                  Yes
-                  <CheckFilledIcon />
+              <div className="grid grid-cols-2 gap-3 max-md:grid-cols-1">
+                <div className="md:max-w-[300px]">
+                  <div className="flex items-center justify-between rounded-full bg-mercury-70 px-4 py-2 font-medium">
+                    Yes
+                    <CheckFilledIcon />
+                  </div>
+                  <div className="mt-1 flex items-center justify-between rounded-full bg-mercury-70 px-4 py-2 font-medium">
+                    No
+                    <CloseFilledIcon />
+                  </div>
                 </div>
-                <div className="mt-1 flex items-center justify-between rounded-full bg-mercury-70 px-4 py-2 font-medium">
-                  No
-                  <CloseFilledIcon />
+                <div className="max-md:mt-4">
+                  <p className="mb-1 font-bold leading-none">How it works:</p>
+                  <ul className="list-outside list-disc pl-5 text-[15px] text-mercury-800">
+                    <li>
+                      <b>Stake into an agent’s vault</b> to unlock governance.
+                    </li>
+                    <li>
+                      Proposals pass with <b>50% threshold & 10% quorum</b>.
+                    </li>
+                    <li>
+                      <b>Voting lasts 7 days</b>—meet quorum, or the proposal is
+                      removed.
+                    </li>
+                  </ul>
                 </div>
               </div>
             </Tab>
             <Tab key={ProposalType.Options} title="Options">
-              <div className="max-w-[400px]">
-                {options.map((item, index) => (
-                  <div key={index} className="mt-1 flex items-center gap-2">
-                    <Input
-                      onValueChange={(val) =>
-                        setOptions((prev) =>
-                          prev.map((op, i) => {
-                            if (i === index) return val
-                            return op
-                          }),
-                        )
-                      }
-                      value={item}
-                      classNames={{
-                        inputWrapper: "min-h-[38px] rounded-full h-[38px]",
-                      }}
-                      placeholder="Enter title"
-                    />
-                    {options.length !== 1 && (
-                      <div
-                        onClick={() =>
-                          setOptions((prev) =>
-                            prev.filter((_op, i) => i !== index),
-                          )
-                        }
-                        className="cursor-pointer"
-                      >
-                        <CloseFilledIcon color="red" />
+              <div>
+                <div className="grid grid-cols-2 gap-5 max-md:grid-cols-1">
+                  <div>
+                    <p className="mb-2 text-14 text-mercury-800">
+                      Max: 8 options
+                    </p>
+                    {options.map((item, index) => (
+                      <div key={index} className="mt-1 flex items-center gap-2">
+                        <Input
+                          onValueChange={(val) =>
+                            setOptions((prev) =>
+                              prev.map((op, i) => {
+                                if (i === index) return val
+                                return op
+                              }),
+                            )
+                          }
+                          value={item}
+                          classNames={{
+                            inputWrapper: "min-h-[38px] rounded-full h-[38px]",
+                          }}
+                          placeholder="Enter title"
+                        />
+                        {options.length !== 1 && (
+                          <div
+                            onClick={() =>
+                              setOptions((prev) =>
+                                prev.filter((_op, i) => i !== index),
+                              )
+                            }
+                            className="cursor-pointer"
+                          >
+                            <CloseFilledIcon color="red" />
+                          </div>
+                        )}
                       </div>
-                    )}
+                    ))}
+                    {options.length < MAX_OPTION ? (
+                      <Button
+                        onPress={() => setOptions((prev) => [...prev, ""])}
+                        className="mt-3 h-[36px] rounded-full bg-mercury-950 text-white"
+                      >
+                        + Add a new option
+                      </Button>
+                    ) : null}
                   </div>
-                ))}
-                {options.length < MAX_OPTION ? (
-                  <Button
-                    onPress={() => setOptions((prev) => [...prev, ""])}
-                    className="mt-3 h-[36px] rounded-full bg-mercury-950 text-white"
-                  >
-                    + Add a new option
-                  </Button>
-                ) : null}
+                  <div>
+                    <p className="mb-1 font-bold leading-none">How it works:</p>
+                    <ul className="list-outside list-disc pl-5 text-[15px] text-mercury-800">
+                      <li>
+                        <b>Stake into an agent’s vault</b> to unlock governance.
+                      </li>
+                      <li>
+                        Proposals pass with{" "}
+                        <b>
+                          the option that receives the highest percentage of
+                          votes
+                        </b>
+                        .
+                      </li>
+                      <li>
+                        <b>Voting lasts 7 days</b>—meet quorum, or the proposal
+                        is removed.
+                      </li>
+                    </ul>
+                  </div>
+                </div>
               </div>
             </Tab>
           </Tabs>

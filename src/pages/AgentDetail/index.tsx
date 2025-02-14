@@ -148,7 +148,10 @@ const AgentDetail: React.FC = () => {
       if (configData.length > 0) {
         await updateAgentConfig({
           botId: agentIdNumber,
-          data: configData,
+          data: [
+            ...configData,
+            { key: "llm_model", value: newData?.llmModel?.toString() },
+          ],
         })
       }
       if (res.data) {
@@ -167,7 +170,7 @@ const AgentDetail: React.FC = () => {
   const componentScrollTo = [
     {
       title: "Agent Type",
-      content: <AgentType isDisabled />,
+      content: <AgentType isDisabledTypeAgent />,
       icon: <UserHexagonIcon />,
     },
     {
