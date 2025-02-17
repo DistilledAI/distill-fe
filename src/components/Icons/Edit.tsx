@@ -22,6 +22,26 @@ export const EditPenOutlineIcon = ({
   )
 }
 
+export const PenFullIcon = ({ size = 20, color = "#FAFAFA" }: IconProps) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 20 20"
+      fill="none"
+    >
+      <path
+        d="M11.25 5.41676L14.5834 8.75009M3.33337 16.6668H6.66671L15.4167 7.91676C15.6356 7.69789 15.8092 7.43805 15.9276 7.15208C16.0461 6.86612 16.1071 6.55962 16.1071 6.25009C16.1071 5.94056 16.0461 5.63406 15.9276 5.3481C15.8092 5.06213 15.6356 4.80229 15.4167 4.58342C15.1978 4.36455 14.938 4.19094 14.652 4.07248C14.3661 3.95403 14.0596 3.89307 13.75 3.89307C13.4405 3.89307 13.134 3.95403 12.848 4.07248C12.5621 4.19094 12.3022 4.36455 12.0834 4.58342L3.33337 13.3334V16.6668Z"
+        stroke={color}
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}
+
 export const EditPenFilledIcon = ({
   size = 20,
   color = "#676767",

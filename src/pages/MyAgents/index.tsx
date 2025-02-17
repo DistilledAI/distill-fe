@@ -10,7 +10,7 @@ import { STATUS_AGENT } from "@constants/index"
 import { useAppSelector } from "@hooks/useAppRedux"
 import useAuthState from "@hooks/useAuthState"
 import { Button } from "@nextui-org/react"
-import MyAgents from "@pages/Account/MyAgents"
+import MyAgents from "@pages/Account1/MyAgents"
 import AgentStatus from "@pages/ChatPage/ChatContainer/RightContent/MyPrivateAgentContent/AgentInitialization/AgentStatus"
 import { AGENT_TYPE_KEY } from "@pages/ChatPage/ChatContainer/RightContent/MyPrivateAgentContent/AgentInitialization/AgentType"
 import useGetPaymentHistory from "@pages/ChatPage/ChatContainer/RightContent/MyPrivateAgentContent/AgentInitialization/useGetPaymentHistory"
@@ -29,7 +29,6 @@ const MyAgentPage = () => {
   const agents = useAppSelector((state) => state.agents.myAgents)
   const agent = agents[0]
   const isAgentActive = agent && agent?.status === STATUS_AGENT.ACTIVE
-  //@ts-ignore
   const typeAgentData = agent?.typeAgent
 
   const { handleSend } = useSend()
