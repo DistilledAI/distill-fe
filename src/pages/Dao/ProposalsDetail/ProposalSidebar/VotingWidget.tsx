@@ -126,6 +126,7 @@ const VotingWidget = ({
       default:
         return proposalIpfs.vote.data?.map((item, index) => (
           <Tooltip
+            key={index}
             content={item}
             className="max-w-[350px]"
             showArrow
