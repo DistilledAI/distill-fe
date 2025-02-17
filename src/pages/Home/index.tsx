@@ -3,12 +3,24 @@ import FeaturedAgent from "./FeaturedAgent"
 import NewAgent from "./NewAgent"
 import ForCreator from "./ForCreator"
 import MultiChat from "./MultiChat"
+import { useAppSelector } from "@hooks/useAppRedux"
+import { twMerge } from "tailwind-merge"
 
 const HomePage = () => {
+  const sidebarCollapsed = useAppSelector((state) => state.sidebarCollapsed)
+
   return (
-    <div className="relative pb-14">
+    <div
+      className={twMerge(
+        "relative pb-14 duration-300",
+        !sidebarCollapsed && "pl-[196px]",
+      )}
+    >
       <div
-        className="absolute left-0 top-0 h-[calc(100dvh-68px)] w-full"
+        className={twMerge(
+          "fixed left-0 right-0 top-0 h-dvh duration-300",
+          !sidebarCollapsed && "left-[196px]",
+        )}
         style={{
           backgroundImage: `url(${desktopPrivateAgent})`,
           backgroundSize: "cover",

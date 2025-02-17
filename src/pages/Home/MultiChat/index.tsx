@@ -1,10 +1,19 @@
 import { PATH_NAMES } from "@constants/index"
+import { useAppSelector } from "@hooks/useAppRedux"
 import { ORCHESTRATION_LIST } from "@pages/ChatPage/ChatBox/LeftBar/OrchestrationSlider"
 import { Link } from "react-router-dom"
+import { twMerge } from "tailwind-merge"
 
 const MultiChat = () => {
+  const sidebarCollapsed = useAppSelector((state) => state.sidebarCollapsed)
+
   return (
-    <div className="fixed bottom-0 left-0 flex w-full items-center gap-4 bg-[#FC0] px-4 py-1">
+    <div
+      className={twMerge(
+        "fixed bottom-0 left-[84px] right-0 flex items-center gap-4 bg-[#FC0] px-4 py-1 duration-300",
+        !sidebarCollapsed && "left-[280px]",
+      )}
+    >
       <div className="text-14 font-bold">Multi-agent Chatroom</div>
       <span className="h-[32px] w-[1px] bg-mercury-950 opacity-20"></span>
       <div className="flex-1 overflow-x-auto scrollbar-hide">
