@@ -47,7 +47,7 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
       </div>
       {isShowInfo ? (
         <div className="inline-flex items-center gap-2">
-          <Button
+          {/* <Button
             onPress={() => navigate(PATH_NAMES.MY_DATA)}
             className={twMerge(
               "btn-primary hidden h-11 md:block",
@@ -67,7 +67,7 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
               <SearchUserIconOutline />
               <span className="text-base">My Agents</span>
             </div>
-          </Button>
+          </Button> */}
 
           <div
             className="relative flex cursor-pointer items-center gap-1"

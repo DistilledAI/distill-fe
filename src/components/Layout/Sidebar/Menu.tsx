@@ -13,88 +13,89 @@ import {
 } from "@components/Icons/Sidebar"
 import { PATH_NAMES } from "@constants/index"
 import { useAppSelector } from "@hooks/useAppRedux"
-import { useLocation, useNavigate } from "react-router-dom"
+import { useLocation, useNavigate, useParams } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
-
-const MENU = [
-  {
-    id: "home",
-    icon: (color?: string) => <HomeOutlineIcon color={color} />,
-    name: "Home",
-    rightContent: null,
-    pathname: "/",
-  },
-  {
-    id: "my-agent",
-    icon: (color?: string) => <BrainOutlineIcon color={color} />,
-    name: "My Agent",
-    rightContent: (avatarAgent?: string) => (
-      <img
-        src={avatarAgent || maxAvatarPlaceholder}
-        alt="avatar placeholder"
-        className="h-8 w-8 rounded-full"
-      />
-    ),
-    pathname: PATH_NAMES.MY_AGENTS,
-  },
-  {
-    id: "agent-clan",
-    icon: (color?: string) => <ClanOutlineIcon color={color} />,
-    name: "Agent Clan",
-    rightContent: () => (
-      <div className="flex items-center">
-        <div className="rounded-full bg-lgd-code-hot-ramp p-[2px]">
-          <div className="rounded-full bg-white p-[2px]">
-            <img
-              src={maxAvatar}
-              alt="avatar agent"
-              className="h-6 w-6 rounded-full border border-mercury-400"
-            />
-          </div>
-        </div>
-        <div className="-ml-2 rounded-full bg-lgd-code-hot-ramp p-[2px]">
-          <div className="rounded-full bg-white p-[2px]">
-            <img
-              src={racksAvatar}
-              alt="avatar agent"
-              className="h-6 w-6 rounded-full border border-mercury-400"
-            />
-          </div>
-        </div>
-        <div className="-ml-2 rounded-full bg-lgd-code-hot-ramp p-[2px]">
-          <div className="rounded-full bg-white p-[2px]">
-            <img
-              src={gnrtAvatar}
-              alt="avatar agent"
-              className="h-6 w-6 rounded-full border border-mercury-400"
-            />
-          </div>
-        </div>
-      </div>
-    ),
-    pathname: PATH_NAMES.CLAN,
-  },
-  {
-    id: "private-agent",
-    icon: (color?: string) => <MessageAIOutlineIcon color={color} />,
-    name: "Private Chat",
-    rightContent: null,
-    pathname: PATH_NAMES.PRIVATE_AGENT,
-  },
-  {
-    id: "vaults",
-    icon: (color?: string) => <CoinsOutlineIcon color={color} />,
-    name: "My Staked Vaults",
-    rightContent: null,
-    pathname: PATH_NAMES.STAKING,
-  },
-]
 
 const Menu = () => {
   const sidebarCollapsed = useAppSelector((state) => state.sidebarCollapsed)
   const navigate = useNavigate()
   const { pathname } = useLocation()
   const myAgent = useAppSelector((state) => state.agents.myAgent)
+  const { chatId } = useParams()
+
+  const MENU = [
+    {
+      id: "home",
+      icon: (color?: string) => <HomeOutlineIcon color={color} />,
+      name: "Home",
+      rightContent: null,
+      pathname: "/",
+    },
+    {
+      id: "my-agent",
+      icon: (color?: string) => <BrainOutlineIcon color={color} />,
+      name: "My Agent",
+      rightContent: (avatarAgent?: string) => (
+        <img
+          src={avatarAgent || maxAvatarPlaceholder}
+          alt="avatar placeholder"
+          className="h-8 w-8 rounded-full"
+        />
+      ),
+      pathname: PATH_NAMES.MY_AGENTS,
+    },
+    {
+      id: "agent-clan",
+      icon: (color?: string) => <ClanOutlineIcon color={color} />,
+      name: "Agent Clan",
+      rightContent: () => (
+        <div className="flex items-center">
+          <div className="rounded-full bg-lgd-code-hot-ramp p-[2px]">
+            <div className="rounded-full bg-white p-[2px]">
+              <img
+                src={maxAvatar}
+                alt="avatar agent"
+                className="h-6 w-6 rounded-full border border-mercury-400"
+              />
+            </div>
+          </div>
+          <div className="-ml-2 rounded-full bg-lgd-code-hot-ramp p-[2px]">
+            <div className="rounded-full bg-white p-[2px]">
+              <img
+                src={racksAvatar}
+                alt="avatar agent"
+                className="h-6 w-6 rounded-full border border-mercury-400"
+              />
+            </div>
+          </div>
+          <div className="-ml-2 rounded-full bg-lgd-code-hot-ramp p-[2px]">
+            <div className="rounded-full bg-white p-[2px]">
+              <img
+                src={gnrtAvatar}
+                alt="avatar agent"
+                className="h-6 w-6 rounded-full border border-mercury-400"
+              />
+            </div>
+          </div>
+        </div>
+      ),
+      pathname: `${PATH_NAMES.CLAN}/${chatId}`,
+    },
+    {
+      id: "private-agent",
+      icon: (color?: string) => <MessageAIOutlineIcon color={color} />,
+      name: "Private Chat",
+      rightContent: null,
+      pathname: PATH_NAMES.PRIVATE_AGENT,
+    },
+    {
+      id: "vaults",
+      icon: (color?: string) => <CoinsOutlineIcon color={color} />,
+      name: "My Staked Vaults",
+      rightContent: null,
+      pathname: PATH_NAMES.STAKING,
+    },
+  ]
 
   return (
     <nav className="space-y-2">
@@ -125,7 +126,7 @@ const Menu = () => {
             <div
               className={twMerge("flex-shrink-0", sidebarCollapsed && "hidden")}
             >
-              {item.rightContent && item.rightContent(myAgent?.avatar)}
+              {item.rightContent && item.rightContent(myAgent?.avatar || "")}
             </div>
           </div>
         )

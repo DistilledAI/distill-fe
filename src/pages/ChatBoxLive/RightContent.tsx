@@ -13,7 +13,7 @@ import { QueryDataKeys } from "types/queryDataKeys"
 import ListMessage from "./ListMessage"
 import SendMessage from "./SendMessage"
 
-const ClanShortInfo = lazy(() => import("@pages/AgentClan/ClanShortInfo"))
+const ClanShortInfo = lazy(() => import("@pages/Rank/ClanShortInfo"))
 const ToggleActionsMobile = lazy(() => import("./ToggleActionsMobile"))
 const InstructionBanner = lazy(() => import("./InstructionBanner"))
 
