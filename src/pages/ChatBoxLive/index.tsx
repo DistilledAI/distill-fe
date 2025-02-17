@@ -4,14 +4,26 @@ import LeftContent from "./LeftContent"
 import RightContent from "./RightContent"
 import useGroupDetail from "@pages/ChatPage/hooks/useGroupDetail"
 import useJoinGroupLive from "@hooks/useJoinGroupLive"
-import { lazy } from "react"
+import { lazy, useLayoutEffect } from "react"
+import { useNavigate, useParams } from "react-router-dom"
+import { PATH_NAMES } from "@constants/index"
 
 const ChatLiveHeader = lazy(() => import("./ChatLiveHeader"))
 
 const ChatBoxLive = () => {
   const { isMobile } = useWindowSize()
+  const { chatId } = useParams()
+  const navigate = useNavigate()
+
   useJoinGroupLive()
   const { groupDetail, isFetched } = useGroupDetail()
+
+  useLayoutEffect(() => {
+    if (chatId?.includes(" ")) {
+      const newChatId = chatId.replace(/\s/g, "")
+      navigate(`${PATH_NAMES.CLAN}/${newChatId}`)
+    }
+  }, [chatId])
 
   return (
     <div
