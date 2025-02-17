@@ -127,3 +127,26 @@ export const getPaymentHistory = async ({
     },
   })
 }
+
+export const getAgentReply = async ({
+  offset = 0,
+  size = 5,
+  keyword,
+  filter,
+}: {
+  offset?: number
+  size?: number
+  keyword?: string
+  filter?: string
+}) => {
+  return fetchApiAuth({
+    method: "GET",
+    url: endpoint.GET_AGENT_REPLY,
+    params: {
+      offset,
+      size,
+      keyword,
+      filter,
+    },
+  })
+}
