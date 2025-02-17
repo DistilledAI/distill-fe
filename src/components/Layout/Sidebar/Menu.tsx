@@ -85,7 +85,9 @@ const Menu = () => {
       icon: (color?: string) => <MessageAIOutlineIcon color={color} />,
       name: "Private Chat",
       rightContent: null,
-      pathname: PATH_NAMES.PRIVATE_AGENT,
+      pathname: myAgent
+        ? `${PATH_NAMES.PRIVATE_AGENT}/${myAgent.id}`
+        : PATH_NAMES.PRIVATE_AGENT,
     },
     {
       id: "vaults",
