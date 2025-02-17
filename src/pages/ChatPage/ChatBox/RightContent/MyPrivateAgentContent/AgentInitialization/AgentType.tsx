@@ -22,9 +22,9 @@ import { toast } from "react-toastify"
 import { twMerge } from "tailwind-merge"
 import useGetPaymentHistory from "./useGetPaymentHistory"
 
-export const AGENT_TYPE_KEY = {
-  DEFAULT: 0,
-  DEFAI: 1,
+export enum AGENT_TYPE_KEY {
+  DEFAULT = 0,
+  DEFAI = 1,
 }
 
 export const TYPE_LLM_MODEL = {

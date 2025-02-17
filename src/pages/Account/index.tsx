@@ -1,68 +1,69 @@
-import { CopyIcon } from "@components/Icons/Copy"
-import { LogoutIcon } from "@components/Icons/OutputIcon"
 import { PATH_NAMES } from "@constants/index"
-import useAuthAction from "@hooks/useAuthAction"
-import useAuthState from "@hooks/useAuthState"
-import { centerTextEllipsis, copyClipboard } from "@utils/index"
-import { useNavigate } from "react-router-dom"
-import AgentInfo from "./AgentInfo"
-import MyPoints from "./MyPoints"
-import AuthorProfile from "./Profile"
-import { useAppSelector } from "@hooks/useAppRedux"
+import { lazy, useEffect } from "react"
+import { useNavigate, useSearchParams } from "react-router-dom"
+import { twMerge } from "tailwind-merge"
+import AccountInfo from "./AccountInfo"
+const MyAgent = lazy(() => import("./MyAgent"))
+
+enum TabKey {
+  MyAgent = "my-agent",
+  MyVaultHolding = "my-vault-holdings",
+}
 
 const Account = () => {
-  const { user } = useAuthState()
+  const [searchParams] = useSearchParams()
+  const tab = searchParams.get("tab")
   const navigate = useNavigate()
-  const { logout } = useAuthAction()
-  const agent = useAppSelector((state) => state.agents.myAgent)
+  useEffect(() => {
+    if (!tab) navigate(`${PATH_NAMES.ACCOUNT}?tab=${TabKey.MyAgent}`)
+  }, [])
 
-  const renderLogoutBtn = () => {
-    return (
-      <div
-        onClick={() => {
-          logout()
-          navigate(PATH_NAMES.HOME)
-        }}
-        className="ml-3 cursor-pointer"
-      >
-        <LogoutIcon color="#FF3B30" />
-      </div>
-    )
+  const isActive = (key: TabKey) => tab === key
+
+  const renderContent = () => {
+    switch (tab) {
+      case TabKey.MyAgent:
+        return <MyAgent />
+
+      default:
+        return <MyAgent />
+    }
   }
 
   return (
-    <div className="mx-auto w-[800px] max-w-full px-4 max-md:mt-4 max-md:pb-[80px]">
-      <h3 className="mb-2 text-18 font-semibold md:text-24">My wallet</h3>
-      <div className="inline-flex items-center">
-        <div
-          onClick={(e) => copyClipboard(e, user?.publicAddress ?? "")}
-          className="flex cursor-pointer"
-        >
-          <span className="text-16 font-medium text-mercury-800">Address:</span>
-          <span className="ml-1 text-16 font-bold text-mercury-800">
-            {centerTextEllipsis(user?.publicAddress ?? "", 6)}
-          </span>
-        </div>
-        <div
-          onClick={(e) => copyClipboard(e, user?.publicAddress ?? "")}
-          className="ml-3 cursor-pointer"
-        >
-          <CopyIcon />
-        </div>
-        {renderLogoutBtn()}
-      </div>
-
-      <div className="mt-10 flex flex-col gap-4 max-md:mt-7">
-        <div className="grid grid-cols-2 gap-4 max-md:grid-cols-1">
-          <div>
-            <MyPoints />
+    <div className="mx-auto max-w-[1080px] px-4">
+      <div className="flex flex-wrap">
+        <div className="w-[calc(100%-300px)] pr-[64px]">
+          <div className="flex items-center gap-2">
+            <div
+              onClick={() =>
+                navigate(`${PATH_NAMES.ACCOUNT}?tab=${TabKey.MyAgent}`)
+              }
+              className={twMerge(
+                "flex h-[60px] cursor-pointer items-center justify-center rounded-full border-1 border-transparent bg-mercury-30 px-6 text-22 font-bold text-mercury-700 duration-300 hover:opacity-70",
+                isActive(TabKey.MyAgent) &&
+                  "border-brown-500 bg-brown-50 text-brown-600",
+              )}
+            >
+              My Agent
+            </div>
+            <div
+              onClick={() =>
+                navigate(`${PATH_NAMES.ACCOUNT}?tab=${TabKey.MyVaultHolding}`)
+              }
+              className={twMerge(
+                "flex h-[60px] cursor-pointer items-center justify-center rounded-full border-1 border-transparent bg-mercury-30 px-6 text-22 font-bold text-mercury-700 duration-300 hover:opacity-70",
+                isActive(TabKey.MyVaultHolding) &&
+                  "border-brown-500 bg-brown-50 text-brown-600",
+              )}
+            >
+              My Vault Holdings
+            </div>
           </div>
-          <div>
-            <AuthorProfile />
-          </div>
+          {renderContent()}
         </div>
-        <div>
-          <AgentInfo agent={agent} />
+        <div className="w-[300px]">
+          <AccountInfo />
         </div>
       </div>
     </div>
