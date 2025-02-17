@@ -1,18 +1,18 @@
-import { creditBg } from "@assets/images"
+// import { creditBg } from "@assets/images"
 import { ArrowLeftFilledIcon } from "@components/Icons/Arrow"
-import { CopyIcon } from "@components/Icons/Copy"
+// import { CopyIcon } from "@components/Icons/Copy"
 import { InfoCircleIcon } from "@components/Icons/InfoCircleIcon"
-import { QRCodeIcon } from "@components/Icons/QRCode"
-import {
-  SpeakerPhoneIcon,
-  UsersGroupIcon,
-} from "@components/Icons/RewardsIcons"
+// import { QRCodeIcon } from "@components/Icons/QRCode"
+// import {
+//   SpeakerPhoneIcon,
+//   UsersGroupIcon,
+// } from "@components/Icons/RewardsIcons"
 import ShareModal from "@components/ShareQRModal"
 import { PATH_NAMES } from "@constants/index"
 import useAuthState from "@hooks/useAuthState"
 import useFetchMe from "@hooks/useFetchMe"
-import { Button, Divider, Tooltip, useDisclosure } from "@nextui-org/react"
-import { copyClipboard } from "@utils/index"
+import { Tooltip, useDisclosure } from "@nextui-org/react"
+// import { copyClipboard } from "@utils/index"
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import { getTaskSuccess, getUserClaimTaskSuccess } from "services/agent"
@@ -38,15 +38,15 @@ const Rewards: React.FC = () => {
   const { user } = useAuthState()
   const referralCode = user?.code
   const totalxDstlPoint = user?.xDstlPoint || 0
-  const refLink = `${window.location.origin}/?invite=${referralCode}` as any
+  // const refLink = `${window.location.origin}/?invite=${referralCode}` as any
   const [listTaskSuccess, setListTaskSuccess] = useState<any>([])
   const listActionTaskSuccess = listTaskSuccess?.map((item: any) => item.action)
-  const [totalReferral, setTotalReferral] = useState<number>(0)
+  const [, setTotalReferral] = useState<number>(0)
   const { fetchData } = useFetchMe(false)
 
   const {
     isOpen: isOpenQR,
-    onOpen: onOpenQR,
+    // onOpen: onOpenQR,
     onClose: onCloseQR,
   } = useDisclosure()
 
@@ -142,7 +142,7 @@ const Rewards: React.FC = () => {
       </div>
 
       <div className="relative mx-auto max-w-[800px] px-4 py-5 max-md:min-h-dvh max-md:bg-mercury-70 max-md:pt-[70px] max-sm:pb-20 max-sm:pt-6">
-        <div className="mb-6 mt-2 flex flex-col max-md:mb-4 max-md:mt-0">
+        {/* <div className="mb-6 mt-2 flex flex-col max-md:mb-4 max-md:mt-0">
           <div className="flex items-center gap-2">
             <SpeakerPhoneIcon />
             <span className="text-22 font-semibold text-mercury-950 max-sm:text-18">
@@ -228,17 +228,8 @@ const Rewards: React.FC = () => {
               </p>
             </div>
           </Tooltip>
-
-          {/* <div className="flex items-center justify-between leading-none">
-            <span className="text-base-md text-mercury-600">You got:</span>
-
-            <div className="flex items-center gap-2">
-              <img src={xDSTL} width={16} height={16} />
-              <span className="text-base-md text-mercury-600">200 xDSTL</span>
-            </div>
-          </div> */}
         </div>
-        <Divider className="my-8 max-md:my-4" />
+        <Divider className="my-8 max-md:my-4" /> */}
         <Objectives
           listActionTaskSuccess={listActionTaskSuccess}
           callGetTaskSuccess={callGetTaskSuccess}

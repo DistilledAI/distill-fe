@@ -165,17 +165,20 @@ const TurnoutStats = ({
 }) => (
   <>
     <span className="text-16 text-mercury-950">{turnout}% turnout</span>
-    <div className="relative flex h-3 w-full items-start overflow-hidden rounded-full bg-mercury-100">
-      <div
-        className="h-full rounded-full bg-mercury-300"
-        style={{
-          width: `${turnout}%`,
-        }}
-      />
+    <div className="relative">
+      <div className="flex h-3 w-full items-start overflow-hidden rounded-full bg-mercury-100">
+        <div
+          className="h-full rounded-full bg-mercury-300"
+          style={{
+            width: `${turnout}%`,
+          }}
+        />
+      </div>
       <div className="absolute -bottom-[14px] left-[10%] -translate-x-1/2 -rotate-90">
         <PlayIcon color="#888888" size={18} />
       </div>
     </div>
+
     <div className="flex items-center justify-between">
       <div className="flex items-center gap-1">
         <span className="text-16 text-mercury-700">Quorum</span>
