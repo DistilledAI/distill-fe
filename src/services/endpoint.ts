@@ -43,6 +43,7 @@ const endpoint = {
   ),
   REPOST_X: withBaseURL("/point/xDstl/retweet-x"),
   GET_PAYMENT_HISTORY: withBaseURL("/payment/history"),
+  GET_AGENT_REPLY: withBaseURL("/dashboard/agent-reply"),
 
   //chat
   GET_MY_CHAT_GROUP_LIST: withBaseURL("/chat/group/list"),

@@ -13,6 +13,7 @@ import { IAgentData } from "types/user"
 import BindYourAccount from "./BindYourAccount"
 import BindYourBot from "./BindYourBot"
 import CategoryLabel, { FieldLabel } from "./CategoryLabel"
+import RepliesDashboard from "./RepliesDashboard"
 import { AgentConfig } from "./useFetchAgentConfig"
 
 // const TWITTER_FEATURE = [
@@ -488,6 +489,8 @@ const Functions: React.FC<{
           Note: The agent will reply to all posts if no keywords are included.
         </span>
       </div>
+
+      <RepliesDashboard />
     </div>
   )
 }
