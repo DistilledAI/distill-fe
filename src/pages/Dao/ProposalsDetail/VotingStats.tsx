@@ -122,7 +122,7 @@ const VoteRatio = ({ proposalDetail, proposalIpfs }: Props) => {
                 <div
                   key={index}
                   className={twMerge(
-                    "relative rounded-full bg-mercury-100 px-4 py-2",
+                    "relative overflow-hidden rounded-full bg-mercury-100 px-4 py-2",
                   )}
                 >
                   <div
@@ -135,14 +135,16 @@ const VoteRatio = ({ proposalDetail, proposalIpfs }: Props) => {
                       width: `${percents[index]}%`,
                     }}
                   />
-                  <div className="relative flex items-center justify-between">
-                    <p className="line-clamp-1 text-[16px] font-medium text-mercury-950">
-                      {val}
-                    </p>
-                    <span className="flex-shrink-0 text-16 font-semibold text-mercury-950">
-                      {percents[index]}%
-                    </span>
-                  </div>
+                  <Tooltip content={val} className="max-w-[480px]" showArrow>
+                    <div className="relative flex items-center justify-between">
+                      <p className="line-clamp-1 text-[16px] font-medium text-mercury-950">
+                        {val}
+                      </p>
+                      <span className="flex-shrink-0 text-16 font-semibold text-mercury-950">
+                        {percents[index]}%
+                      </span>
+                    </div>
+                  </Tooltip>
                 </div>
               )
             })
@@ -163,7 +165,7 @@ const TurnoutStats = ({
 }) => (
   <>
     <span className="text-16 text-mercury-950">{turnout}% turnout</span>
-    <div className="relative flex h-3 w-full items-start rounded-full bg-mercury-100">
+    <div className="relative flex h-3 w-full items-start overflow-hidden rounded-full bg-mercury-100">
       <div
         className="h-full rounded-full bg-mercury-300"
         style={{
