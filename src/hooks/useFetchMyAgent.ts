@@ -20,6 +20,7 @@ const useFetchMyAgent = () => {
       const res = await getMyPrivateAgent()
       if (res.data) {
         const firstAgent = res?.data?.items?.[0]
+
         if (firstAgent) {
           dispatch(
             updateMyAgent({

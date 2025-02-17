@@ -1,8 +1,14 @@
 import ChatBoxLive from "@pages/ChatBoxLive"
 import AllClans from "./AllClans"
 import MyAgentClan from "./MyAgentClan"
+import MyAgentClanEmpty from "./MyAgentClanEmpty"
+import { useLocation } from "react-router-dom"
+import { PATH_NAMES } from "@constants/index"
 
 const AgentClan = () => {
+  const { pathname } = useLocation()
+  const isClanEmpty = pathname === PATH_NAMES.CLAN
+
   return (
     <div className="flex">
       <div className="h-full w-[250px]">
@@ -17,7 +23,9 @@ const AgentClan = () => {
           </div>
         </div>
       </div>
-      <ChatBoxLive />
+      <div className="flex-1">
+        {isClanEmpty ? <MyAgentClanEmpty /> : <ChatBoxLive />}
+      </div>
     </div>
   )
 }

@@ -1,11 +1,14 @@
 import { maxAvatarPlaceholder } from "@assets/images"
 import { AvatarClanByList } from "@components/AvatarContainer"
 import { IconSearch } from "@components/Icons/DefiLens"
+import { PATH_NAMES } from "@constants/index"
 import useAuthState from "@hooks/useAuthState"
 import useFetchClan from "@pages/Marketplace/useFetchClan"
+import { useNavigate } from "react-router-dom"
 
 const AllClans = () => {
   const { user, isLogin } = useAuthState()
+  const navigate = useNavigate()
   const { data } = useFetchClan({
     isFetchNow: true,
     userId: isLogin ? user.id : undefined,
@@ -22,7 +25,11 @@ const AllClans = () => {
       </div>
       <div>
         {data.map((item) => (
-          <div className="flex cursor-pointer items-center gap-2 p-2">
+          <div
+            key={item.id}
+            className="flex cursor-pointer items-center gap-2 rounded-full px-3 py-2 hover:bg-mercury-100"
+            onClick={() => navigate(`${PATH_NAMES.CLAN}/${item.label}`)}
+          >
             <AvatarClanByList
               key={item.id}
               avatarUrl={item.image || maxAvatarPlaceholder}

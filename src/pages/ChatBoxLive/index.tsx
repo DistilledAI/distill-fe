@@ -16,7 +16,7 @@ const ChatBoxLive = () => {
   return (
     <div
       className={twMerge(
-        "relative h-[calc(100dvh-50px)] w-full flex-1 bg-mercury-30 max-md:overflow-hidden md:z-[22] md:h-[calc(100dvh-68px)] md:bg-white md:px-6",
+        "relative h-[calc(100dvh-50px)] w-full bg-mercury-30 max-md:overflow-hidden md:z-[22] md:h-[calc(100dvh-68px)] md:bg-white md:px-6",
       )}
     >
       {isMobile ? <ChatLiveHeader groupDetail={groupDetail} /> : null}

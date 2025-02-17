@@ -59,6 +59,7 @@ const AppRouter = () => {
             path={PATH_NAMES.CHAT_DETAIL}
             element={isMobile ? <ChatPageMobile /> : <ChatBox />}
           />
+          <Route path={`${PATH_NAMES.CLAN}`} element={<AgentClanPage />} />
           <Route
             path={`${PATH_NAMES.CLAN}/:chatId`}
             element={<AgentClanPage />}
