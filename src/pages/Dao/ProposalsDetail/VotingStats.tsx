@@ -20,7 +20,6 @@ const VotingStats = ({ proposalDetail, proposalIpfs }: Props) => {
     ? proposalDetail?.voteCount.reduce((total, current) => total + current, 0)
     : 0
   const totalStaked = proposalDetail?.totalStaked || 0
-  const voteType = proposalIpfs?.vote.type
 
   return (
     <div className="overflow-hidden rounded-2xl border border-mercury-100 bg-mercury-70">
@@ -33,14 +32,12 @@ const VotingStats = ({ proposalDetail, proposalIpfs }: Props) => {
 
       <div className="h-[1px] w-full bg-mercury-100" />
 
-      {voteType === ProposalType.YesNo ? (
-        <StatBlock>
-          <TurnoutStats
-            quorum={proposalDetail?.quorum ? proposalDetail?.quorum * 100 : 0}
-            turnout={getTurnout(totalVoteCount, totalStaked)}
-          />
-        </StatBlock>
-      ) : null}
+      <StatBlock>
+        <TurnoutStats
+          quorum={proposalDetail?.quorum ? proposalDetail?.quorum * 100 : 0}
+          turnout={getTurnout(totalVoteCount, totalStaked)}
+        />
+      </StatBlock>
     </div>
   )
 }

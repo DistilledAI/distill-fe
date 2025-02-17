@@ -188,7 +188,7 @@ const CreateProposal: React.FC = () => {
                         Proposals pass with{" "}
                         <b>
                           the option that receives the highest percentage of
-                          votes
+                          votes & 10% quorum
                         </b>
                         .
                       </li>

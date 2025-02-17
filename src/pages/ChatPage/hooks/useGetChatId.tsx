@@ -9,7 +9,8 @@ const useGetChatId = () => {
   const getChatId = async () => {
     try {
       if (chatIdParam?.includes("@")) {
-        let newChatIdParam = chatIdParam
+        let newChatIdParam = chatIdParam?.split(" ")?.join("")
+
         if (chatIdParam === "@maxisbuyin") {
           newChatIdParam = "@maxisbuyin_"
         }
@@ -27,7 +28,7 @@ const useGetChatId = () => {
     initialData: "",
     queryKey: [`${QueryDataKeys.CHAT_ID_BY_USERNAME}-${chatIdParam}`],
     queryFn: getChatId,
-    enabled: !!chatIdParam,
+    enabled: !!chatIdParam && !chatIdParam.includes(" "),
   })
 
   return { chatId, originalChatId: chatIdParam }
