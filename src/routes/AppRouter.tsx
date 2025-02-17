@@ -39,6 +39,7 @@ const StakePage = lazy(() => import("@pages/Stake"))
 const CreateProposal = lazy(() => import("@pages/Dao/CreateProposal"))
 const DaoPage = lazy(() => import("@pages/Dao"))
 const ProposalsDetailPage = lazy(() => import("@pages/Dao/ProposalsDetail"))
+const AgentClanPage = lazy(() => import("@pages/AgentClan"))
 // const TrendingPage = lazy(() => import("@pages/Trending"))
 
 const AppRouter = () => {
@@ -58,7 +59,7 @@ const AppRouter = () => {
           />
           <Route
             path={`${PATH_NAMES.CLAN}/:chatId`}
-            element={<ChatBoxLive />}
+            element={<AgentClanPage />}
           />
           <Route path={`${PATH_NAMES.STAKING}`} element={<StakePage />} />
           <Route
