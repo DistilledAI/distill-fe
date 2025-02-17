@@ -14,7 +14,6 @@ const Header = () => {
   const { connectMultipleWallet } = useConnectWallet()
   useReconnectWallet()
   const { pathname } = useLocation()
-
   const isClanSidebar = !!CLAN_SIDEBAR_PATH_NAMES.find((val) =>
     pathname.startsWith(val),
   )
@@ -22,9 +21,9 @@ const Header = () => {
   return (
     <div
       className={twMerge(
-        "fixed right-0 top-0 z-50 flex w-[calc(100dvw-280px)] items-center justify-between px-8 pb-1 pt-5 transition-all duration-200 ease-in-out",
+        "fixed right-0 top-0 z-50 flex w-[calc(100dvw-280px)] items-center justify-between bg-white px-8 pb-1 pt-5 transition-all duration-200 ease-in-out",
         sidebarCollapsed && "w-[calc(100dvw-84px)]",
-        isClanSidebar && "w-[calc(100dvh-334px)]",
+        isClanSidebar && "w-[calc(100dvw-334px)]",
       )}
     >
       <TitlePathName />
