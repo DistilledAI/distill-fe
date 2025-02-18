@@ -223,6 +223,7 @@ const RepliesDashboard: React.FC = () => {
         const tweetedUrl = item?.tweetedUrl
         const match = tweetedUrl.match(/status\/(\d+)/)
         const tweetId = match?.[1]
+        console.log("🚀 ~ renderCell ~ tweetId:", tweetId)
 
         return (
           <div className="w-[400px]">
