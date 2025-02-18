@@ -39,10 +39,10 @@ const DataSource = [
     label: "News",
     value: DatasourceEnum.NEWS,
   },
-  {
-    label: "Twitter category KOLs",
-    value: DatasourceEnum.TWITTER_CATEGORY_KOLS,
-  },
+  // {
+  //   label: "Twitter category KOLs",
+  //   value: DatasourceEnum.TWITTER_CATEGORY_KOLS,
+  // },
   {
     label: "Twitter following KOLs",
     value: DatasourceEnum.TWITTER_FOLLOWING_KOLS,
@@ -55,21 +55,6 @@ enum ColumnKey {
   sourceUrl = "sourceUrl",
   metadata = "metadata",
 }
-
-const columns = [
-  {
-    key: ColumnKey.createdAt,
-    label: "Date",
-  },
-  {
-    key: ColumnKey.replyXUserId,
-    label: "Reply",
-  },
-  {
-    key: ColumnKey.metadata,
-    label: "Scource",
-  },
-]
 
 const RepliesDashboard: React.FC = () => {
   const today = new Date()
@@ -118,6 +103,33 @@ const RepliesDashboard: React.FC = () => {
     filter: paramsValues && JSON.stringify(paramsValues),
     offset,
   })
+
+  const columns =
+    sourceValue == DatasourceEnum.NEWS
+      ? [
+          {
+            key: ColumnKey.createdAt,
+            label: "Date",
+          },
+          {
+            key: ColumnKey.replyXUserId,
+            label: "Reply",
+          },
+          {
+            key: ColumnKey.metadata,
+            label: "Source",
+          },
+        ]
+      : [
+          {
+            key: ColumnKey.createdAt,
+            label: "Date",
+          },
+          {
+            key: ColumnKey.replyXUserId,
+            label: "Reply",
+          },
+        ]
 
   const onPageChange = async (page: number) => {
     setPage(page)
@@ -217,7 +229,11 @@ const RepliesDashboard: React.FC = () => {
     switch (columnKey) {
       case ColumnKey.createdAt:
         return (
-          <div className="w-[80px]">
+          <div
+            className={twMerge(
+              sourceValue == DatasourceEnum.NEWS ? "w-[80px]" : "w-150px",
+            )}
+          >
             <span className="text-14 font-medium text-mercury-900">
               {item.createdAt && moment(item.createdAt).format("ll")}
             </span>
@@ -232,7 +248,11 @@ const RepliesDashboard: React.FC = () => {
         if (!tweetId) return <div />
 
         return (
-          <div className="w-[400px]">
+          <div
+            className={twMerge(
+              sourceValue == DatasourceEnum.NEWS ? "w-[400px]" : "w-full",
+            )}
+          >
             <TweetEmbed
               tweetId={tweetId}
               options={{ cards: "hidden" }}
