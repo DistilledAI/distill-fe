@@ -228,7 +228,7 @@ const RepliesDashboard: React.FC = () => {
 
       case ColumnKey.replyXUserId:
         const tweetedUrl = item?.tweetedUrl
-        const match = tweetedUrl.match(/status\/(\d+)/)
+        const match = tweetedUrl?.match(/status\/(\d+)/)
         const tweetId = match?.[1]
 
         if (!tweetId) return <div />
