@@ -7,7 +7,9 @@ import {
 } from "@components/Icons/UserIcon"
 import SmoothScrollTo from "@components/SmoothScrollTo"
 import { BEHAVIORS_AGENT, STATUS_AGENT } from "@constants/index"
-import { TYPE_LLM_MODEL } from "@pages/ChatPage/ChatContainer/RightContent/MyPrivateAgentContent/AgentInitialization/AgentType"
+import AgentType, {
+  TYPE_LLM_MODEL,
+} from "@pages/ChatPage/ChatContainer/RightContent/MyPrivateAgentContent/AgentInitialization/AgentType"
 import { refreshFetchMyAgent } from "@reducers/agentSlice"
 import { useEffect, useState } from "react"
 import { FormProvider, useForm } from "react-hook-form"
@@ -35,7 +37,6 @@ import {
 } from "./helpers"
 import useFetchAgentConfig from "./useFetchAgentConfig"
 import useFetchDetail from "./useFetchDetail"
-import AgentType from "@pages/ChatPage/ChatBox/RightContent/MyPrivateAgentContent/AgentInitialization/AgentType"
 
 export const BLACKLIST_BOT_VERSION = [
   "devorai/distilled-chat:0.0.6.4-cc",
