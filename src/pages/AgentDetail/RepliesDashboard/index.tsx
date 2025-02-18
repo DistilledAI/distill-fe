@@ -24,7 +24,7 @@ import {
 import moment from "moment"
 import { useState } from "react"
 import { useParams } from "react-router-dom"
-import TweetEmbed from "react-tweet-embed"
+import { Tweet } from "react-tweet"
 import { twMerge } from "tailwind-merge"
 import useFetchAgentReply from "./useFetchAgentReply"
 
@@ -93,6 +93,7 @@ const RepliesDashboard: React.FC = () => {
     botId: agentId,
     startDate: today?.toISOString(),
     endDate: last30Days?.toISOString(),
+    sourceType: DatasourceEnum.NEWS,
   })
   const [sourceValue, setSourceValue] = useState<string>(DatasourceEnum.NEWS)
   const [dateKey, setDateKey] = useState<string>("30days")
@@ -251,13 +252,13 @@ const RepliesDashboard: React.FC = () => {
         return (
           <div
             className={twMerge(
+              "-mt-4",
               sourceValue == DatasourceEnum.NEWS ? "w-[400px]" : "w-full",
             )}
           >
-            <TweetEmbed
-              tweetId={tweetId}
-              options={{ cards: "hidden" }}
-              placeholder={
+            <Tweet
+              id={tweetId}
+              fallback={
                 <Card
                   className="mt-0 h-[300px] w-[400px] space-y-5 p-4"
                   radius="lg"
@@ -278,6 +279,7 @@ const RepliesDashboard: React.FC = () => {
                   </div>
                 </Card>
               }
+              // options={{ cards: "hidden" }}
             />
           </div>
         )
