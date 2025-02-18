@@ -24,7 +24,7 @@ import {
 import moment from "moment"
 import { useState } from "react"
 import { useParams } from "react-router-dom"
-import { TwitterTweetEmbed } from "react-twitter-embed"
+import TweetEmbed from "react-tweet-embed"
 import { twMerge } from "tailwind-merge"
 import useFetchAgentReply from "./useFetchAgentReply"
 
@@ -112,7 +112,7 @@ const RepliesDashboard: React.FC = () => {
   const [sourceValue, setSourceValue] = useState<string>(DatasourceEnum.NEWS)
   const [dateKey, setDateKey] = useState<string>("30days")
   const [page, setPage] = useState<number>(1)
-  const [offset, setOffset] = useState<number>(0)
+  const offset = 10 * (page - 1)
 
   const { agentReplyData, totalPages } = useFetchAgentReply({
     filter: paramsValues && JSON.stringify(paramsValues),
@@ -120,9 +120,7 @@ const RepliesDashboard: React.FC = () => {
   })
 
   const onPageChange = async (page: number) => {
-    const offset = page * 10
     setPage(page)
-    setOffset(offset)
   }
 
   const onSourceChange = (value: string) => {
@@ -236,7 +234,7 @@ const RepliesDashboard: React.FC = () => {
 
         return (
           <div className="w-[400px]">
-            <TwitterTweetEmbed
+            <TweetEmbed
               tweetId={tweetId}
               options={{ cards: "hidden" }}
               placeholder={
@@ -291,7 +289,6 @@ const RepliesDashboard: React.FC = () => {
     setSourceValue(DatasourceEnum.NEWS)
     setDateKey("30days")
     setPage(1)
-    setOffset(0)
     setParamsValues({
       ...paramsValues,
       sourceType: DatasourceEnum.NEWS,
