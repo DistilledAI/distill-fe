@@ -17,8 +17,9 @@ const AddMyData = lazy(() => import("@pages/AddMyData"))
 const AgentDetail = lazy(() => import("@pages/AgentDetail"))
 const AuthorProfile = lazy(() => import("@pages/AuthorProfile"))
 const ChatBoxLive = lazy(() => import("@pages/ChatBoxLive"))
-const ChatBox = lazy(() => import("@pages/ChatPage/ChatContainer"))
 const HomePage = lazy(() => import("@pages/Home"))
+// const ChatMyAgent = lazy(() => import("@pages/ChatMyAgent"))
+const ChatBox = lazy(() => import("@pages/ChatPage/ChatContainer"))
 const AgentInitialization = lazy(
   () =>
     import(
