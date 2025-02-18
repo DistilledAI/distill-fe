@@ -233,7 +233,10 @@ const RepliesDashboard: React.FC = () => {
               tweetId={tweetId}
               options={{ cards: "hidden" }}
               placeholder={
-                <Card className="mt-0 w-[400px] space-y-5 p-4" radius="lg">
+                <Card
+                  className="mt-0 h-[300px] w-[400px] space-y-5 p-4"
+                  radius="lg"
+                >
                   <Skeleton className="rounded-lg">
                     <div className="h-24 rounded-lg bg-default-300" />
                   </Skeleton>
@@ -261,8 +264,8 @@ const RepliesDashboard: React.FC = () => {
               <span className="text-base-b mb-1">
                 {item.metadata.sourceTitle}
               </span>
-              <span className="text-base-14-md">
-                {item.metadata.tweetedContent}
+              <span className="text-18 text-base font-medium text-mercury-900">
+                {item.shortDescription}...
               </span>
             </div>
 
@@ -314,8 +317,8 @@ const RepliesDashboard: React.FC = () => {
       >
         <ModalContent>
           <ModalBody>
-            <div className="relative mt-4 w-auto pb-2">
-              <div className="flex-items-center mb-6 justify-between">
+            <div className="relative w-auto pb-2 max-md:p-0">
+              <div className="flex-items-center mb-6 justify-between max-md:mb-3">
                 <div className="flex w-full justify-center">
                   <span className="flex items-center text-24 font-semibold text-mercury-950">
                     Replies Dashboard
@@ -327,13 +330,13 @@ const RepliesDashboard: React.FC = () => {
               </div>
 
               <div className="">
-                <div className="flex items-center">
-                  <div className="w-1/2">
+                <div className="flex items-center max-md:flex-col max-md:items-start">
+                  <div className="w-1/2 max-md:mb-2">
                     <span className="text-base-b text-mercury-950">
                       Replies History
                     </span>
                   </div>
-                  <div className="flex w-1/2 items-center gap-4">
+                  <div className="flex w-1/2 items-center gap-4 max-md:w-full max-md:justify-between max-md:gap-1">
                     <Select
                       className="w-[40%]"
                       classNames={{
