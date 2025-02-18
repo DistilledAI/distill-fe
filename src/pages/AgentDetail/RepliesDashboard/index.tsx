@@ -111,7 +111,7 @@ const RepliesDashboard: React.FC = () => {
   const [offset, setOffset] = useState<number>(0)
 
   const { agentReplyData, totalPages } = useFetchAgentReply({
-    filter: JSON.stringify(paramsValues),
+    filter: paramsValues && JSON.stringify(paramsValues),
     offset,
   })
 
