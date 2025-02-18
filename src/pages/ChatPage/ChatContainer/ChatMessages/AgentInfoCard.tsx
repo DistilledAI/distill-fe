@@ -107,7 +107,7 @@ const AgentInfoCard = ({ messages, groupId }: AgentInfoCardProps) => {
             </div>
 
             <div className="flex items-center justify-between gap-x-2 md:gap-x-4">
-              <p className="line-clamp-4 text-14 font-medium text-mercury-600">
+              <p className="line-clamp-3 text-14 font-medium text-mercury-600">
                 {agentInfo?.description || "Distilled AI Agent"}
               </p>
             </div>

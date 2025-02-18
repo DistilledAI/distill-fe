@@ -1,7 +1,7 @@
 import { ArrowLeftFilledIcon } from "@components/Icons/Arrow"
 import { Button } from "@nextui-org/react"
 import { useNavigate } from "react-router-dom"
-import DelegatePrivateAgent from "@pages/ChatPage/ChatBox/ChatMessages/ChatActions/DelegatePrivateAgent"
+import DelegatePrivateAgent from "@pages/ChatPage/ChatContainer/ChatMessages/ChatActions/DelegatePrivateAgent"
 import ChatInfoCurrent from "@components/ChatInfoCurrent"
 import { getActiveColorRandomById } from "@utils/index"
 import useGroupDetail from "@pages/ChatPage/hooks/useGroupDetail"

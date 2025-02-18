@@ -4,7 +4,7 @@ import { updateSidebarCollapsed } from "@reducers/sidebarCollapsedSlice"
 import { defineElement } from "@utils/index"
 import { useEffect, useState } from "react"
 import AddPerson from "./AddPerson"
-import MessagesContainer from "./MessagesContainer"
+// import MessagesContainer from "../../../PrivateChat/AllMessages"
 import SearchContainer from "./SearchContainer"
 
 export const DISPLAY_MODES = {
@@ -14,7 +14,7 @@ export const DISPLAY_MODES = {
 }
 
 const MAP_CONTENT_BY_DISPLAY_MODE = {
-  [DISPLAY_MODES.MESSAGES]: <MessagesContainer />,
+  // [DISPLAY_MODES.MESSAGES]: <MessagesContainer />,
   [DISPLAY_MODES.SEARCH]: <SearchContainer />,
   [DISPLAY_MODES.ADD_PERSON]: <AddPerson />,
 }

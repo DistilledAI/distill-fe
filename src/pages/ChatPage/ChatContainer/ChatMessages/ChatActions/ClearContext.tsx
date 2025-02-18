@@ -81,14 +81,16 @@ const ClearContext = () => {
   return (
     <Button
       type="button"
-      className="btn-primary !bg-mercury-70 px-3 max-md:!gap-1 max-md:!border-mercury-100 max-md:!text-[14px]"
+      className="btn-primary group !h-fit !bg-transparent !px-0 max-md:!gap-1"
       onPress={handleClearChat}
       isDisabled={mutation.isPending}
     >
       <div>
-        <RefreshIcon />
+        <RefreshIcon size={18} color="#676767" />
       </div>
-      Clear Context
+      <span className="text-13 text-mercury-500 underline group-hover:text-mercury-950">
+        Clear Context
+      </span>
     </Button>
   )
 }

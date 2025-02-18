@@ -5,7 +5,7 @@ import {
   chatMessagesKey,
   ICachedMessageData,
   IReactionMsgStats,
-} from "@pages/ChatPage/ChatBox/ChatMessages/useFetchMessages"
+} from "@pages/ChatPage/ChatContainer/ChatMessages/useFetchMessages"
 import { emojiReactionsMap } from "../helpers"
 
 const useEmojiReactions = (

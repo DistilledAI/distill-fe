@@ -2,7 +2,7 @@ import { maxAvatarPlaceholder } from "@assets/images"
 import { AvatarClanByList } from "@components/AvatarContainer"
 import { PATH_NAMES } from "@constants/index"
 import { useAppSelector } from "@hooks/useAppRedux"
-import ActiveEffect from "@pages/ChatPage/ChatBox/LeftBar/ActiveEffect"
+import ActiveEffect from "@pages/ChatPage/ChatContainer/LeftBar/ActiveEffect"
 import { useNavigate, useParams } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
 

@@ -1,3 +1,4 @@
+import { maxAvatarPlaceholder } from "@assets/images"
 import AvatarCustom from "@components/AvatarCustom"
 import { LiveIcon } from "@components/Icons"
 import { FilledUserIcon } from "@components/Icons/UserIcon"

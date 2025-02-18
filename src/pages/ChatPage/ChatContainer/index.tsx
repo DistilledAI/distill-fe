@@ -6,7 +6,7 @@ import ChatMessages from "./ChatMessages"
 import MyPrivateAgentContent from "./RightContent/MyPrivateAgentContent"
 import SendMessage from "./SendMessage"
 
-const ChatBox = () => {
+const ChatContainer = () => {
   const { loading, connectMultipleWallet } = useConnectWallet()
   const { inviteAgentId, privateChatId, chatId } = useParams()
   const { isLogin } = useAuthState()
@@ -18,7 +18,7 @@ const ChatBox = () => {
   }, [isLogin, chatId])
 
   return (
-    <div className="] relative h-full max-h-[calc(100dvh-100px)] w-full">
+    <div className="relative h-full max-h-[calc(100dvh-100px)] w-full">
       {(isLogin && chatId) || inviteAgentId ? (
         <>
           <ChatMessages />
@@ -34,4 +34,4 @@ const ChatBox = () => {
   )
 }
 
-export default ChatBox
+export default ChatContainer

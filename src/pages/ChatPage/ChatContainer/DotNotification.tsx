@@ -17,7 +17,7 @@ const DotNotification = ({ groupId }: Props) => {
   return (
     <div
       className={twMerge(
-        "absolute left-[10px] top-[10px] hidden h-2 w-2 rounded-full bg-red-600",
+        "hidden h-2 w-2 rounded-full bg-red-600",
         isHasNotification(groupsHaveNotification, groupId, Number(chatId)) &&
           "block",
       )}

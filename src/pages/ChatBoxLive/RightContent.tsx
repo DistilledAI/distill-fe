@@ -1,10 +1,10 @@
 import { useAppSelector } from "@hooks/useAppRedux"
 import useWindowSize from "@hooks/useWindowSize"
-import { IMessageBox } from "@pages/ChatPage/ChatBox/ChatMessages/helpers"
+import { IMessageBox } from "@pages/ChatPage/ChatContainer/ChatMessages/helpers"
 import {
   GroupConfig,
   UserGroup,
-} from "@pages/ChatPage/ChatBox/LeftBar/useFetchGroups"
+} from "@pages/ChatPage/ChatContainer/LeftBar/useFetchGroups"
 import useGetChatId from "@pages/ChatPage/hooks/useGetChatId"
 import { useQuery } from "@tanstack/react-query"
 import React, { lazy, useState } from "react"

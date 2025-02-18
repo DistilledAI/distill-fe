@@ -4,7 +4,7 @@ import { PATH_NAMES } from "@constants/index"
 import useFetchMe from "@hooks/useFetchMe"
 import useInviteAgent from "@hooks/useInviteAgent"
 import useReconnectWallet from "@hooks/useReconnectWallet"
-import useMessageSocket from "@pages/ChatPage/ChatBox/useMessageSocket"
+import useMessageSocket from "@pages/ChatPage/ChatContainer/useMessageSocket"
 import useWindowSize from "@hooks/useWindowSize"
 import useGetChatId from "@pages/ChatPage/hooks/useGetChatId"
 
