@@ -3,7 +3,6 @@ import { ChevronDownIcon } from "@components/Icons/ChevronDownIcon"
 import { CloseFilledIcon } from "@components/Icons/DefiLens"
 import {
   Button,
-  Card,
   cn,
   Modal,
   ModalBody,
@@ -12,7 +11,6 @@ import {
   PaginationItemType,
   Select,
   SelectItem,
-  Skeleton,
   Table,
   TableBody,
   TableCell,
@@ -24,7 +22,6 @@ import {
 import moment from "moment"
 import { useState } from "react"
 import { useParams } from "react-router-dom"
-import { TwitterTweetEmbed } from "react-twitter-embed"
 import { twMerge } from "tailwind-merge"
 import useFetchAgentReply from "./useFetchAgentReply"
 
@@ -217,7 +214,7 @@ const RepliesDashboard: React.FC = () => {
         return (
           <div className="w-[80px]">
             <span className="text-14 font-medium text-mercury-900">
-              {moment(item.createdAt).format("ll")}
+              {item?.createdAt && moment(item?.createdAt).format("ll")}
             </span>
           </div>
         )
@@ -229,7 +226,7 @@ const RepliesDashboard: React.FC = () => {
 
         return (
           <div className="w-[400px]">
-            <TwitterTweetEmbed
+            {/* <TwitterTweetEmbed
               tweetId={tweetId}
               options={{ cards: "hidden" }}
               placeholder={
@@ -253,7 +250,7 @@ const RepliesDashboard: React.FC = () => {
                   </div>
                 </Card>
               }
-            />
+            /> */}
           </div>
         )
 
@@ -262,10 +259,10 @@ const RepliesDashboard: React.FC = () => {
           <div>
             <div className="flex flex-col">
               <span className="text-base-b mb-1">
-                {item.metadata.sourceTitle}
+                {item?.metadata?.sourceTitle}
               </span>
               <span className="text-18 text-base font-medium text-mercury-900">
-                {item.shortDescription}...
+                {item?.shortDescription}...
               </span>
             </div>
 
