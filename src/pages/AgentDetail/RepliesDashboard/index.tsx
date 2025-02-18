@@ -1,7 +1,9 @@
-import DotLoading from "@components/DotLoading"
+import { LinkAccountIcon } from "@components/Icons"
 import { ChevronDownIcon } from "@components/Icons/ChevronDownIcon"
 import { CloseFilledIcon } from "@components/Icons/DefiLens"
 import {
+  Button,
+  Card,
   cn,
   Modal,
   ModalBody,
@@ -10,6 +12,7 @@ import {
   PaginationItemType,
   Select,
   SelectItem,
+  Skeleton,
   Table,
   TableBody,
   TableCell,
@@ -20,7 +23,8 @@ import {
 } from "@nextui-org/react"
 import moment from "moment"
 import { useState } from "react"
-import TweetEmbed from "react-tweet-embed"
+import { useParams } from "react-router-dom"
+import { TwitterTweetEmbed } from "react-twitter-embed"
 import { twMerge } from "tailwind-merge"
 import useFetchAgentReply from "./useFetchAgentReply"
 
@@ -98,15 +102,24 @@ const DateOptions = [
 ]
 
 const RepliesDashboard: React.FC = () => {
-  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
-  const [paramsValues, setParamsValues] = useState<any>({ botId: 1810 })
-
+  const { agentId } = useParams()
+  const { isOpen, onOpen, onOpenChange } = useDisclosure()
+  const [paramsValues, setParamsValues] = useState<any>({ botId: agentId })
   const [sourceValue, setSourceValue] = useState<string>(DatasourceEnum.NEWS)
   const [dateKey, setDateKey] = useState<string>("30days")
+  const [page, setPage] = useState<number>(1)
+  const [offset, setOffset] = useState<number>(0)
 
-  const { agentReplyData } = useFetchAgentReply({
+  const { agentReplyData, totalPages } = useFetchAgentReply({
     filter: JSON.stringify(paramsValues),
+    offset,
   })
+
+  const onPageChange = async (page: number) => {
+    const offset = page * 10
+    setPage(page)
+    setOffset(offset)
+  }
 
   const onSourceChange = (value: string) => {
     setSourceValue(value)
@@ -179,10 +192,6 @@ const RepliesDashboard: React.FC = () => {
     )
   }
 
-  const totalPages = 100
-  const page = 1
-  const onPageChange = () => {}
-
   const renderPagination = () => {
     return agentReplyData ? (
       <Pagination
@@ -190,13 +199,13 @@ const RepliesDashboard: React.FC = () => {
         initialPage={1}
         radius="full"
         renderItem={renderItem}
-        total={totalPages}
         variant="light"
         classNames={{
           base: "flex justify-center mt-2",
           cursor: "bg-lgd-code-hot-ramp font-bold",
         }}
         onChange={onPageChange}
+        total={totalPages}
         page={page}
       />
     ) : null
@@ -213,32 +222,90 @@ const RepliesDashboard: React.FC = () => {
           </div>
         )
 
-      case ColumnKey.metadata:
+      case ColumnKey.replyXUserId:
+        const tweetedUrl = item?.tweetedUrl
+        const match = tweetedUrl.match(/status\/(\d+)/)
+        const tweetId = match?.[1]
+
         return (
-          <div className="">
-            <span>{item.metadata.sourceTitle}</span>
-            <span>{item.metadata.tweetedContent}</span>
+          <div className="w-[400px]">
+            <TwitterTweetEmbed
+              tweetId={tweetId}
+              options={{ cards: "hidden" }}
+              placeholder={
+                <Card className="mt-0 w-[400px] space-y-5 p-4" radius="lg">
+                  <Skeleton className="rounded-lg">
+                    <div className="h-24 rounded-lg bg-default-300" />
+                  </Skeleton>
+                  <div className="space-y-3">
+                    <Skeleton className="w-3/5 rounded-lg">
+                      <div className="h-3 w-3/5 rounded-lg bg-default-200" />
+                    </Skeleton>
+                    <Skeleton className="w-4/5 rounded-lg">
+                      <div className="h-3 w-4/5 rounded-lg bg-default-200" />
+                    </Skeleton>
+                    <Skeleton className="w-2/5 rounded-lg">
+                      <div className="h-3 w-2/5 rounded-lg bg-default-300" />
+                    </Skeleton>
+                  </div>
+                </Card>
+              }
+            />
           </div>
         )
 
       default:
         return (
-          <div className="w-[500px]">
-            <TweetEmbed
-              tweetId="1891177886125891729"
-              placeholder={<DotLoading />}
-              options={{ cards: "hidden" }}
-            />
+          <div>
+            <div className="flex flex-col">
+              <span className="text-base-b mb-1">
+                {item.metadata.sourceTitle}
+              </span>
+              <span className="text-base-14-md">
+                {item.metadata.tweetedContent}
+              </span>
+            </div>
+
+            <Button
+              className="mt-4 min-w-[90px] rounded-full bg-mercury-950 text-[15px] font-medium text-white"
+              onPress={() => window.open(item.sourceUrl, "_blank")}
+            >
+              View Data Source
+            </Button>
           </div>
         )
     }
   }
 
+  const onCloseModal = () => {
+    setSourceValue(DatasourceEnum.NEWS)
+    setDateKey("30days")
+    setPage(1)
+    setOffset(0)
+    setParamsValues({
+      ...paramsValues,
+      sourceType: DatasourceEnum.NEWS,
+      startDate: today.toISOString(),
+      endDate: last30Days.toISOString(),
+    })
+    onOpenChange()
+  }
+
   return (
-    <div>
+    <>
+      <div
+        className="flex cursor-pointer items-center gap-2 hover:underline"
+        onClick={() => onOpen()}
+      >
+        <LinkAccountIcon />
+        <span className="text-base-md text-brown-10">
+          View Replies Dashboard
+        </span>
+      </div>
+
       <Modal
-        isOpen={true}
-        onOpenChange={onOpenChange}
+        isOpen={isOpen}
+        onOpenChange={onCloseModal}
         hideCloseButton
         classNames={{
           base: "bg-[#E6E6E6]",
@@ -254,7 +321,7 @@ const RepliesDashboard: React.FC = () => {
                     Replies Dashboard
                   </span>
                 </div>
-                <div className="cursor-pointer" onClick={onOpenChange}>
+                <div className="cursor-pointer" onClick={onCloseModal}>
                   <CloseFilledIcon />
                 </div>
               </div>
@@ -271,6 +338,7 @@ const RepliesDashboard: React.FC = () => {
                       className="w-[40%]"
                       classNames={{
                         trigger: "rounded-full !bg-white h-[50px]",
+                        value: "text-base text-mercury-95 font-semibold",
                       }}
                       disableSelectorIconRotation
                       selectionMode="single"
@@ -285,7 +353,14 @@ const RepliesDashboard: React.FC = () => {
                       onChange={(e) => onDateChange(e.target.value)}
                     >
                       {DateOptions.map((item) => (
-                        <SelectItem key={item.key}>{item.label}</SelectItem>
+                        <SelectItem
+                          key={item.key}
+                          classNames={{
+                            title: "text-base text-mercury-95 font-semibold",
+                          }}
+                        >
+                          {item.label}
+                        </SelectItem>
                       ))}
                     </Select>
 
@@ -293,6 +368,7 @@ const RepliesDashboard: React.FC = () => {
                       className="w-[60%]"
                       classNames={{
                         trigger: "rounded-full !bg-white h-[50px]",
+                        value: "text-base text-mercury-95 font-semibold",
                       }}
                       selectedKeys={[sourceValue]}
                       disableSelectorIconRotation
@@ -307,25 +383,31 @@ const RepliesDashboard: React.FC = () => {
                       onChange={(e) => onSourceChange(e.target.value)}
                     >
                       {DataSource.map((item) => (
-                        <SelectItem key={item.value}>{item.label}</SelectItem>
+                        <SelectItem
+                          key={item.value}
+                          classNames={{
+                            title: "text-base text-mercury-95 font-semibold",
+                          }}
+                        >
+                          {item.label}
+                        </SelectItem>
                       ))}
                     </Select>
                   </div>
                 </div>
 
                 <Table
-                  isHeaderSticky
                   aria-label="stake table"
                   classNames={{
-                    base: "mt-4 md:mt-6  max-h-[600px] overflow-auto",
+                    base: "mt-4 md:mt-6 max-h-[600px] overflow-auto h-[800px]",
                     wrapper:
                       "shadow-none border-1 border-mercury-100 rounded-[22px] gap-0 bg-white md:bg-mercury-30 pb-0",
                     thead: [
                       "h-9 [&>tr]:first:shadow-none",
                       "before:absolute before:bottom-0 before:w-full before:border-b-1 before:border-mercury-100",
                     ].join(" "),
-                    th: "bg-transparent h-5 p-0 pr-4 text-base font-normal text-mercury-600",
-                    td: "pl-0 pr-3 py-4",
+                    th: "bg-transparent h-10 p-0 pr-4 text-base font-normal text-mercury-600",
+                    td: "pl-0 pr-3 py-4 align-top",
                     tbody: "[&>tr:first-child>td]:pt-4",
                     emptyWrapper: "h-10",
                     sortIcon: "ml-1 text-[#363636]",
@@ -352,7 +434,7 @@ const RepliesDashboard: React.FC = () => {
                     }
                   >
                     {(item) => (
-                      <TableRow key={item.id} className="flex">
+                      <TableRow key={item.id}>
                         {(columnKey) => (
                           <TableCell>
                             {renderCell(item, columnKey as string)}
@@ -362,14 +444,13 @@ const RepliesDashboard: React.FC = () => {
                     )}
                   </TableBody>
                 </Table>
-
                 {renderPagination()}
               </div>
             </div>
           </ModalBody>
         </ModalContent>
       </Modal>
-    </div>
+    </>
   )
 }
 export default RepliesDashboard
