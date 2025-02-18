@@ -25,7 +25,7 @@ const useFetchAgentReply = ({
 
   useEffect(() => {
     callGetAgentReply()
-  }, [filter, offset])
+  }, [filter, offset, size])
 
   return {
     agentReplyData,

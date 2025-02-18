@@ -3,6 +3,7 @@ import { ChevronDownIcon } from "@components/Icons/ChevronDownIcon"
 import { CloseFilledIcon } from "@components/Icons/DefiLens"
 import {
   Button,
+  Card,
   cn,
   Modal,
   ModalBody,
@@ -11,6 +12,7 @@ import {
   PaginationItemType,
   Select,
   SelectItem,
+  Skeleton,
   Table,
   TableBody,
   TableCell,
@@ -22,6 +24,7 @@ import {
 import moment from "moment"
 import { useState } from "react"
 import { useParams } from "react-router-dom"
+import { TwitterTweetEmbed } from "react-twitter-embed"
 import { twMerge } from "tailwind-merge"
 import useFetchAgentReply from "./useFetchAgentReply"
 
@@ -68,40 +71,44 @@ const columns = [
   },
 ]
 
-const today = new Date()
-const last30Days = new Date()
-const last60Days = new Date()
-const last90Days = new Date()
-
-last30Days.setDate(today.getDate() - 30)
-last60Days.setDate(today.getDate() - 60)
-last90Days.setDate(today.getDate() - 90)
-
-const DateOptions = [
-  {
-    label: "Last 30 days",
-    startDate: today.toISOString(),
-    endDate: last30Days.toISOString(),
-    key: "30days",
-  },
-  {
-    label: "Last 60 days",
-    startDate: today.toISOString(),
-    endDate: last60Days.toISOString(),
-    key: "60days",
-  },
-  {
-    label: "Last 90 days",
-    startDate: today.toISOString(),
-    endDate: last90Days.toISOString(),
-    key: "90days",
-  },
-]
-
 const RepliesDashboard: React.FC = () => {
+  const today = new Date()
+  const last30Days = new Date()
+  const last60Days = new Date()
+  const last90Days = new Date()
+
+  last30Days.setDate(today?.getDate() - 30)
+  last60Days.setDate(today?.getDate() - 60)
+  last90Days.setDate(today?.getDate() - 90)
+
+  const DateOptions = [
+    {
+      label: "Last 30 days",
+      startDate: today?.toISOString(),
+      endDate: last30Days?.toISOString(),
+      key: "30days",
+    },
+    {
+      label: "Last 60 days",
+      startDate: today?.toISOString(),
+      endDate: last60Days?.toISOString(),
+      key: "60days",
+    },
+    {
+      label: "Last 90 days",
+      startDate: today?.toISOString(),
+      endDate: last90Days?.toISOString(),
+      key: "90days",
+    },
+  ]
+
   const { agentId } = useParams()
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
-  const [paramsValues, setParamsValues] = useState<any>({ botId: agentId })
+  const [paramsValues, setParamsValues] = useState<any>({
+    botId: agentId,
+    startDate: today?.toISOString(),
+    endDate: last30Days?.toISOString(),
+  })
   const [sourceValue, setSourceValue] = useState<string>(DatasourceEnum.NEWS)
   const [dateKey, setDateKey] = useState<string>("30days")
   const [page, setPage] = useState<number>(1)
@@ -214,7 +221,7 @@ const RepliesDashboard: React.FC = () => {
         return (
           <div className="w-[80px]">
             <span className="text-14 font-medium text-mercury-900">
-              {item?.createdAt && moment(item?.createdAt).format("ll")}
+              {item.createdAt && moment(item.createdAt).format("ll")}
             </span>
           </div>
         )
@@ -224,9 +231,11 @@ const RepliesDashboard: React.FC = () => {
         const match = tweetedUrl.match(/status\/(\d+)/)
         const tweetId = match?.[1]
 
+        if (!tweetId) return <div />
+
         return (
           <div className="w-[400px]">
-            {/* <TwitterTweetEmbed
+            <TwitterTweetEmbed
               tweetId={tweetId}
               options={{ cards: "hidden" }}
               placeholder={
@@ -250,7 +259,7 @@ const RepliesDashboard: React.FC = () => {
                   </div>
                 </Card>
               }
-            /> */}
+            />
           </div>
         )
 
