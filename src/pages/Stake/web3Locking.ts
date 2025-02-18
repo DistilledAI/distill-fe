@@ -134,6 +134,7 @@ export class Web3SolanaLockingToken extends Web3StakeBase {
       const userStakePda = this.getUserStakePda(vaultPda, wallet, program)
 
       const userData = await program.account.stakerInfo.fetch(userStakePda)
+
       return { totalStake: userData.totalStake }
     } catch (error) {
       console.error("Error fetching staker info:", error)

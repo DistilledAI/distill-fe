@@ -4,6 +4,7 @@ import { useNavigate, useSearchParams } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
 import AccountInfo from "./AccountInfo"
 const MyAgent = lazy(() => import("./MyAgent"))
+const MyStakedVault = lazy(() => import("./MyStakedVault"))
 
 enum TabKey {
   MyAgent = "my-agent",
@@ -26,12 +27,12 @@ const Account = () => {
         return <MyAgent />
 
       default:
-        return <MyAgent />
+        return <MyStakedVault />
     }
   }
 
   return (
-    <div className="mx-auto max-w-[1080px] px-4">
+    <div className="mx-auto max-w-[1080px] px-4 pt-5">
       <div className="flex flex-wrap">
         <div className="w-[calc(100%-300px)] pr-[64px]">
           <div className="flex items-center gap-2">

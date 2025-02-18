@@ -6,8 +6,11 @@ import { PenFullIcon } from "@components/Icons/Edit"
 import useAuthState from "@hooks/useAuthState"
 import { Button } from "@nextui-org/react"
 import { centerTextEllipsis, copyClipboard } from "@utils/index"
+import { useState } from "react"
+import EditProfile from "./EditProfile"
 
 const AccountInfo = () => {
+  const [isOpen, setIsOpen] = useState(false)
   const { user } = useAuthState()
 
   return (
@@ -66,11 +69,17 @@ const AccountInfo = () => {
         </div>
       </div>
       <div className="relative mt-4 flex justify-end">
-        <Button className="bg-[rgba(84, 84, 84, 0.2)] rounded-full border-1 border-mercury-900 backdrop-blur-[2.5px]">
+        <Button
+          onPress={() => setIsOpen(true)}
+          className="bg-[rgba(84, 84, 84, 0.2)] rounded-full border-1 border-mercury-900 backdrop-blur-[2.5px]"
+        >
           <PenFullIcon />
           <span className="font-bold text-white">Edit Profile</span>
         </Button>
       </div>
+      {isOpen && (
+        <EditProfile isOpen={isOpen} onClose={() => setIsOpen(false)} />
+      )}
     </div>
   )
 }

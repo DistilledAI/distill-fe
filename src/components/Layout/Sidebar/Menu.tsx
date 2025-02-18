@@ -13,7 +13,7 @@ import {
 } from "@components/Icons/Sidebar"
 import { PATH_NAMES } from "@constants/index"
 import { useAppSelector } from "@hooks/useAppRedux"
-import { useLocation, useNavigate, useParams } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
 
 const Menu = () => {
@@ -21,7 +21,6 @@ const Menu = () => {
   const navigate = useNavigate()
   const { pathname } = useLocation()
   const myAgent = useAppSelector((state) => state.agents.myAgent)
-  const { chatId } = useParams()
 
   const MENU = [
     {
@@ -79,14 +78,16 @@ const Menu = () => {
           </div>
         </div>
       ),
-      pathname: `${PATH_NAMES.CLAN}/${chatId}`,
+      pathname: PATH_NAMES.CLAN,
     },
     {
       id: "private-agent",
       icon: (color?: string) => <MessageAIOutlineIcon color={color} />,
       name: "Private Chat",
       rightContent: null,
-      pathname: PATH_NAMES.PRIVATE_AGENT,
+      pathname: myAgent
+        ? `${PATH_NAMES.PRIVATE_AGENT}/${myAgent.id}`
+        : PATH_NAMES.PRIVATE_AGENT,
     },
     {
       id: "vaults",
@@ -100,7 +101,11 @@ const Menu = () => {
   return (
     <nav className="space-y-2">
       {MENU.map((item, index) => {
-        const isActive = item.pathname === pathname
+        const isActive =
+          item.pathname === "/"
+            ? pathname === "/"
+            : pathname.startsWith(item.pathname)
+
         return (
           <div
             key={index}
