@@ -49,7 +49,7 @@ const MyAgentClanEmpty = () => {
 
       {!isUserLogged ? (
         <Button
-          className="h-[44px] rounded-full bg-mercury-950 text-white max-md:h-[36px]"
+          className="h-14 rounded-full bg-mercury-950 text-white max-md:h-[36px]"
           isLoading={loading}
           onPress={connectMultipleWallet}
         >

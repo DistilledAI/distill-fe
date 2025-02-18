@@ -1,7 +1,7 @@
 import React, { useCallback } from "react"
 import { twMerge } from "tailwind-merge"
-import { IMessageBox } from "@pages/ChatPage/ChatBox/ChatMessages/helpers"
-import useFetchMessages from "@pages/ChatPage/ChatBox/ChatMessages/useFetchMessages"
+import { IMessageBox } from "@pages/ChatPage/ChatContainer/ChatMessages/helpers"
+import useFetchMessages from "@pages/ChatPage/ChatContainer/ChatMessages/useFetchMessages"
 import MessageLive from "../MessageLive"
 import ChatWindowV2 from "@components/ChatWindowV2"
 

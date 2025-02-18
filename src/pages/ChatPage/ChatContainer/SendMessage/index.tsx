@@ -37,7 +37,7 @@ const SendMessage: React.FC<{
       <ChatInput
         onSubmit={onChatSubmit}
         isDisabledInput={isChatting || !isEnableTextInput}
-        wrapperClassName="left-1/2 -translate-x-1/2 w-[calc(100%-32px)] md:bottom-0"
+        wrapperClassName="md:bottom-12 flex-col items-end md:py-3 rounded-3xl justify-end left-1/2 -translate-x-1/2 w-[calc(100%-32px)]"
       />
       <ReCaptchaWraper reCaptchaRef={reCaptchaRef} />
     </>

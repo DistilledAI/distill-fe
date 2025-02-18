@@ -2,14 +2,16 @@ import { maxAvatarPlaceholder } from "@assets/images"
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { PATH_NAMES } from "@constants/index"
 import { useAppSelector } from "@hooks/useAppRedux"
-import ActiveEffect from "@pages/ChatPage/ChatBox/LeftBar/ActiveEffect"
-import { useLocation } from "react-router-dom"
+import ActiveEffect from "@pages/ChatPage/ChatContainer/LeftBar/ActiveEffect"
+import { useLocation, useNavigate } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
 
 const MyPrivateAgent = () => {
+  const navigate = useNavigate()
   const { pathname } = useLocation()
   const myAgent = useAppSelector((state) => state.agents.myAgent)
   const isSelected = pathname.startsWith(PATH_NAMES.PRIVATE_AGENT)
+  const myAgentId = myAgent?.id
 
   return (
     <button
@@ -19,11 +21,9 @@ const MyPrivateAgent = () => {
         isSelected && "bg-mercury-100",
       )}
       onClick={() =>
-        // agentNameJoin
-        //   ? navigate(`${PATH_NAMES.CLAN}/@${agentNameJoin}`)
-        //   : navigate(PATH_NAMES.CLAN)
-        // navigate(PATH_NAMES.CLAN)
-        null
+        myAgentId
+          ? navigate(`${PATH_NAMES.PRIVATE_AGENT}/${myAgentId}`)
+          : navigate(PATH_NAMES.PRIVATE_AGENT)
       }
     >
       <div className="relative flex-shrink-0">
@@ -37,9 +37,12 @@ const MyPrivateAgent = () => {
         </div>
       </div>
       <span className="line-clamp-2 text-left text-16 font-bold text-mercury-950">
-        {myAgent?.username || "Clan name"}
+        {myAgent?.username || "Agent name"}
       </span>
-      <ActiveEffect isActive={true} className="-left-3 bg-lgd-code-agent-3" />
+      <ActiveEffect
+        isActive={isSelected}
+        className="-left-3 bg-lgd-code-agent-3"
+      />
     </button>
   )
 }

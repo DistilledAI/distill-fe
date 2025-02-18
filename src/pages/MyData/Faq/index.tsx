@@ -6,7 +6,7 @@ import useWindowSize from "@hooks/useWindowSize"
 import {
   FaqSample,
   faqSampleDefault,
-} from "@pages/ChatPage/ChatBox/RightContent/MyPrivateAgentContent/UploadFAQ/AddFAQModal"
+} from "@pages/ChatPage/ChatContainer/RightContent/MyPrivateAgentContent/UploadFAQ/AddFAQModal"
 import { BotDataTypeKey } from "@types"
 import moment from "moment"
 import React, { useState } from "react"

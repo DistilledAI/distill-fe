@@ -129,7 +129,7 @@ const ChatMessages = () => {
         isFetchingPreviousPage={isFetchingPreviousPage}
         onLoadPrevMessages={onLoadPrevMessages}
         chatId={groupId}
-        className="max-h-[calc(100%-192px)] md:max-h-[calc(100%-232px)]"
+        className="max-h-[calc(100%-192px)] md:max-h-[calc(100%-260px)]"
         msgBoxClassName="p-0 md:px-4 "
         style={{
           paddingBottom: `${spacing}px`,
@@ -138,8 +138,8 @@ const ChatMessages = () => {
       />
       <ChatActions
         isClearContextBtn={!isOwner}
-        isDelegateBtn={isOwner}
-        className="bottom-14 md:bottom-[64px]"
+        isDelegateBtn={false}
+        className="justify-end md:bottom-3"
       />
     </>
   )

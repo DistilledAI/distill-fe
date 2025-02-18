@@ -2,17 +2,13 @@ import { xDSTL } from "@assets/images"
 import AvatarCustom from "@components/AvatarCustom"
 import ChatInfoCurrent from "@components/ChatInfoCurrent"
 import { WarningIcon } from "@components/Icons"
-import { DatabaseSearchIcon } from "@components/Icons/DatabaseImportIcon"
-import { SearchUserIconOutline } from "@components/Icons/UserIcon"
 import { WalletIcon } from "@components/Icons/Wallet"
 import { PATH_NAMES, RoleUser } from "@constants/index"
-import { useAppSelector } from "@hooks/useAppRedux"
 import useAuthState from "@hooks/useAuthState"
 import { Button } from "@nextui-org/react"
 import useGroupDetail from "@pages/ChatPage/hooks/useGroupDetail"
 import { getActiveColorRandomById } from "@utils/index"
 import { useLocation, useNavigate } from "react-router-dom"
-import { twMerge } from "tailwind-merge"
 import LoginPhantom from "./LoginPhantom"
 import { numberWithCommas } from "@utils/format"
 
@@ -25,11 +21,11 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
   const navigate = useNavigate()
   const { pathname } = useLocation()
   const { groupDetail, groupId } = useGroupDetail()
-  const myAgent = useAppSelector((state) => state.agents.myAgent)
-  const hasBot = !!myAgent
+  // const myAgent = useAppSelector((state) => state.agents.myAgent)
+  // const hasBot = !!myAgent
 
   const { textColor } = getActiveColorRandomById(groupId)
-  const isHiddenMyData = !hasBot
+  // const isHiddenMyData = !hasBot
   const isShowInfo =
     user && user.publicAddress && user.role !== RoleUser.ANONYMOUS
   const totalxDstlPoint = user?.xDstlPoint || 0

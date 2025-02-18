@@ -1,4 +1,4 @@
-import useFetchGroups from "@pages/ChatPage/ChatBox/LeftBar/useFetchGroups"
+import useFetchGroups from "@pages/ChatPage/ChatContainer/LeftBar/useFetchGroups"
 import { IUser, loginSuccessByAnonymous } from "@reducers/userSlice"
 import { useEffect, useLayoutEffect } from "react"
 import { postCreateAnonymous } from "services/auth"

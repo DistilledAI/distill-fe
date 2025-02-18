@@ -3,7 +3,7 @@ import DotLoading from "@components/DotLoading"
 import { FilledExclamationCircleIcon } from "@components/Icons/FilledExclamationCircleIcon"
 import { ExploreFilledIcon } from "@components/Icons/MetamaskIcon"
 import useConnectWallet from "@hooks/useConnectWallet"
-import IntroVideo from "@pages/ChatPage/ChatBox/RightContent/Modal/CreatPrivateAgentModal/IntroVideo"
+import IntroVideo from "@pages/ChatPage/ChatContainer/RightContent/Modal/CreatPrivateAgentModal/IntroVideo"
 
 const Login = () => {
   const { connectMultipleWallet, loading } = useConnectWallet()

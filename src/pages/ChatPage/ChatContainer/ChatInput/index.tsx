@@ -1,4 +1,3 @@
-import { PaperClipFilledIcon } from "@components/Icons/PaperClip"
 import { PATH_NAMES } from "@constants/index"
 import useWindowSize from "@hooks/useWindowSize"
 import useGetChatId from "@pages/ChatPage/hooks/useGetChatId"
@@ -30,22 +29,22 @@ interface ChatInputProps {
   isDisabledInput: boolean
   onSubmit: (value: string) => void
   wrapperClassName?: string
-  isDarkTheme?: boolean
   replyUsername?: string
   resetRely?: () => void
   hasFocus?: boolean
   setHasFocus?: React.Dispatch<React.SetStateAction<boolean>>
+  actionsWrapperClassName?: string
 }
 
 const ChatInput = ({
   isDisabledInput,
   onSubmit,
   wrapperClassName,
-  isDarkTheme,
   replyUsername,
   hasFocus,
   setHasFocus,
   resetRely,
+  actionsWrapperClassName,
 }: ChatInputProps) => {
   const { transcript, listening, resetTranscript } = useSpeechRecognition()
   const [isFocus, setIsFocus] = useState(false)
@@ -158,11 +157,10 @@ const ChatInput = ({
         "absolute bottom-4 z-[11] flex max-w-[768px] items-center gap-3 rounded-[35px] border-1 bg-mercury-200 p-2 py-1 transition-all duration-300 ease-linear max-md:static max-md:gap-2 max-md:pl-3 md:bottom-8 md:min-h-[60px] md:p-3 md:py-[7.89px]",
         isFocus ? "border-mercury-300" : "border-mercury-200",
         spacing && "items-end",
-        isDarkTheme && "bg-mercury-950",
         wrapperClassName,
       )}
     >
-      <button
+      {/* <button
         type="button"
         disabled
         className={twMerge(
@@ -175,7 +173,7 @@ const ChatInput = ({
         <PaperClipFilledIcon
           color={isDarkTheme ? "rgba(84, 84, 84, 1)" : "#545454"}
         />
-      </button>
+      </button> */}
       <MentionsInputAny
         inputRef={inputRef}
         value={message}
@@ -191,7 +189,7 @@ const ChatInput = ({
           maxWidth: "100%",
           fontFamily: "Barlow",
           maxHeight: isMobile ? "40px" : "200px",
-          color: isDarkTheme ? "#FAFAFA" : "#11181c",
+          color: "#11181c",
           control: {
             maxHeight: isMobile ? "40px" : "200px",
           },
@@ -208,7 +206,7 @@ const ChatInput = ({
             outline: "none",
             fontSize: isMobile ? "14px" : "18px",
             lineHeight: "normal",
-            color: isDarkTheme ? "#fafafa" : "inherit",
+            color: "#11181c",
           },
         }}
         className="mention-margin"
@@ -232,26 +230,28 @@ const ChatInput = ({
           }}
         />
       </MentionsInputAny>
-      <VoiceChat
-        resetTranscript={resetTranscript}
-        isListening={listening}
-        SpeechRecognition={SpeechRecognition}
-        transcript={transcript}
-        setMessages={setMessage}
-        isDisabled={isDisabledInput}
-        isDarkTheme={isDarkTheme}
-      />
-      <button
-        type="button"
-        onClick={handleSubmit}
-        disabled={isDisabledInput || !message}
-        className={twMerge(
-          "h-9 w-[52px] min-w-[52px] rounded-full border border-mercury-900 bg-mercury-950 px-4 py-2 disabled:border-transparent disabled:bg-mercury-950/60",
-          isDarkTheme && "bg-white disabled:bg-white/60",
-        )}
+      <div
+        className={twMerge("flex items-center gap-3", actionsWrapperClassName)}
       >
-        <ArrowUpFilledIcon bgColor={isDarkTheme ? "#363636" : "#FAFAFA"} />
-      </button>
+        <VoiceChat
+          resetTranscript={resetTranscript}
+          isListening={listening}
+          SpeechRecognition={SpeechRecognition}
+          transcript={transcript}
+          setMessages={setMessage}
+          isDisabled={isDisabledInput}
+        />
+        <button
+          type="button"
+          onClick={handleSubmit}
+          disabled={isDisabledInput || !message}
+          className={twMerge(
+            "h-9 w-[52px] min-w-[52px] rounded-full border border-mercury-900 bg-mercury-950 px-4 py-2 disabled:border-transparent disabled:bg-mercury-950/60",
+          )}
+        >
+          <ArrowUpFilledIcon bgColor={"#FAFAFA"} />
+        </button>
+      </div>
     </div>
   )
 }

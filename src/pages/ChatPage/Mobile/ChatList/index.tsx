@@ -6,19 +6,19 @@ import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { FilledUserIcon } from "@components/Icons/UserIcon"
 import { PATH_NAMES, RoleUser } from "@constants/index"
 import useAuthState from "@hooks/useAuthState"
-import DotNotification from "@pages/ChatPage/ChatBox/DotNotification"
+import DotNotification from "@pages/ChatPage/ChatContainer/DotNotification"
 import {
   getAvatarGroupChat,
   getColorGroupIcon,
   getNameGroup,
   getPublicAddressGroupChat,
   getRoleUser,
-} from "@pages/ChatPage/ChatBox/LeftBar/helpers"
+} from "@pages/ChatPage/ChatContainer/LeftBar/helpers"
 import useFetchGroups, {
   LIMIT,
   TypeGroup,
   UserGroup,
-} from "@pages/ChatPage/ChatBox/LeftBar/useFetchGroups"
+} from "@pages/ChatPage/ChatContainer/LeftBar/useFetchGroups"
 import { IUser } from "@reducers/userSlice"
 import { useQueryClient } from "@tanstack/react-query"
 import { useNavigate } from "react-router-dom"

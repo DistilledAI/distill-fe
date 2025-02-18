@@ -1,15 +1,9 @@
-import { brainAIIcon } from "@assets/svg"
-import AlertBox from "@components/AlertBox"
-import ChatWindow from "@components/ChatWindow"
+// import AlertBox from "@components/AlertBox"
 import ContextCleared from "@components/ContextCleared"
 import ReCaptchaWraper from "@components/ReCaptchaWraper"
 import ReceiverMessage from "@components/ReceiverMessage"
 import SenderMessage from "@components/SenderMessage"
-import {
-  CLEAR_CACHED_MESSAGE,
-  PATH_NAMES,
-  STATUS_AGENT,
-} from "@constants/index"
+import { CLEAR_CACHED_MESSAGE, STATUS_AGENT } from "@constants/index"
 import { useAppSelector } from "@hooks/useAppRedux"
 import useSubmitChat from "@hooks/useSubmitChat"
 import useFetchMyData from "@pages/MyData/useFetch"
@@ -20,12 +14,18 @@ import { useParams } from "react-router-dom"
 import SpeechRecognition from "react-speech-recognition"
 import { twMerge } from "tailwind-merge"
 import { QueryDataKeys } from "types/queryDataKeys"
-import ChatInput from "../../ChatInput"
-import ChatActions from "../../ChatMessages/ChatActions"
-import { IMessageBox, RoleChat } from "../../ChatMessages/helpers"
-import useFetchMessages from "../../ChatMessages/useFetchMessages"
+import ChatInput from "../../ChatPage/ChatContainer/ChatInput"
+import ChatActions from "../../ChatPage/ChatContainer/ChatMessages/ChatActions"
+import {
+  IMessageBox,
+  RoleChat,
+} from "../../ChatPage/ChatContainer/ChatMessages/helpers"
+import useFetchMessages from "../../ChatPage/ChatContainer/ChatMessages/useFetchMessages"
+import ChatWindowV2 from "@components/ChatWindowV2"
+import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
+import { maxAvatarPlaceholder } from "@assets/images"
 
-const PrivateAgentChatContent: React.FC<{
+const ChatMyAgentBox: React.FC<{
   hasInputChat?: boolean
 }> = ({ hasInputChat = true }) => {
   const {
@@ -72,8 +72,10 @@ const PrivateAgentChatContent: React.FC<{
         {message.role === RoleChat.CUSTOMER ? (
           <ReceiverMessage
             avatar={{
-              src: brainAIIcon,
-              className: "bg-white p-1",
+              src: message.avatar || maxAvatarPlaceholder,
+              className: "bg-white",
+              badgeIcon: <FilledBrainAIIcon size={14} />,
+              badgeClassName: "bg-[#FFCC00]",
             }}
             content={message.content}
             isTyping={message.isTyping}
@@ -82,7 +84,7 @@ const PrivateAgentChatContent: React.FC<{
         {message.role === RoleChat.OWNER ? (
           <SenderMessage
             content={message.content}
-            baseClassName="bg-lgd-code-agent-1 bg-mercury-950 text-white"
+            baseClassName="bg-lgd-code-agent-3  text-white"
           />
         ) : null}
       </div>
@@ -98,7 +100,7 @@ const PrivateAgentChatContent: React.FC<{
 
   return (
     <>
-      <ChatWindow
+      <ChatWindowV2
         messages={messages}
         itemContent={renderMessage}
         isLoading={isLoading}
@@ -110,17 +112,10 @@ const PrivateAgentChatContent: React.FC<{
         style={{
           paddingBottom: `${spacing}px`,
         }}
-        className={
-          !isBotActive && !isChatActions
-            ? "max-h-[calc(100%-120px)] md:max-h-[calc(100%-190px)]"
-            : ""
-        }
+        className="md:max-h-[calc(100%-110px)]"
         isChatActions={isChatActions}
       />
-      {isChatActions ? (
-        <ChatActions isClearContextBtn isDelegateBtn={false} />
-      ) : null}
-      <div
+      {/* <div
         className={twMerge(
           "absolute bottom-[70px] left-1/2 w-[calc(100%-32px)] -translate-x-1/2 bg-white pb-0 md:bottom-[95px] md:pb-2",
           isChatActions && "bottom-[124px] md:bottom-[140px]",
@@ -149,19 +144,23 @@ const PrivateAgentChatContent: React.FC<{
             links={[{ to: PATH_NAMES.ADD_MY_DATA, label: "Add Data" }]}
           />
         ) : null}
-      </div>
+      </div> */}
       {hasInputChat && (
         <>
           <ChatInput
             onSubmit={onChatSubmit}
             isDisabledInput={isChatting}
-            wrapperClassName="left-1/2 -translate-x-1/2 w-[calc(100%-32px)]"
-            isDarkTheme
+            wrapperClassName="md:bottom-12 flex-col items-end md:py-3 rounded-3xl justify-end w-[calc(100%-32px)] left-1/2 -translate-x-1/2 max-md:left-4"
           />
           <ReCaptchaWraper reCaptchaRef={reCaptchaRef} />
         </>
       )}
+      <ChatActions
+        isClearContextBtn
+        isDelegateBtn={false}
+        className="justify-end md:bottom-3"
+      />
     </>
   )
 }
-export default PrivateAgentChatContent
+export default ChatMyAgentBox

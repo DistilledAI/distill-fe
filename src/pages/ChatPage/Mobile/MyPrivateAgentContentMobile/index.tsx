@@ -1,5 +1,5 @@
 import useConnectWallet from "@hooks/useConnectWallet"
-import MyPrivateAgentContent from "@pages/ChatPage/ChatBox/RightContent/MyPrivateAgentContent"
+import MyPrivateAgentContent from "@pages/ChatPage/ChatContainer/RightContent/MyPrivateAgentContent"
 
 const MyPrivateAgentContentMobile: React.FC = () => {
   const { loading, connectMultipleWallet } = useConnectWallet()
