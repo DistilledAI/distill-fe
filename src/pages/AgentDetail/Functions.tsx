@@ -133,7 +133,6 @@ const Functions: React.FC<{
           <span className="text-base-sb text-mercury-950">
             Following X Account
           </span>
-
           <RepliesDashboard />
         </div>
 

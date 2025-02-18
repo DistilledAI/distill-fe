@@ -114,7 +114,7 @@ const RepliesDashboard: React.FC = () => {
           },
           {
             key: ColumnKey.replyXUserId,
-            label: "Reply",
+            label: "Tweet",
           },
           {
             key: ColumnKey.metadata,
@@ -278,7 +278,6 @@ const RepliesDashboard: React.FC = () => {
                   </div>
                 </Card>
               }
-              // options={{ cards: "hidden" }}
             />
           </div>
         )
@@ -321,15 +320,21 @@ const RepliesDashboard: React.FC = () => {
 
   return (
     <>
-      <div
+      <Button
+        className="flex min-w-[90px] cursor-pointer items-center gap-2 rounded-full bg-mercury-950 text-[15px] font-medium text-white"
+        onPress={() => onOpen()}
+      >
+        <LinkAccountIcon color="#FAFAFA" />
+        <span className="text-base-md text-white">View X Dashboard</span>
+      </Button>
+
+      {/* <div
         className="flex cursor-pointer items-center gap-2 hover:underline"
         onClick={() => onOpen()}
       >
         <LinkAccountIcon />
-        <span className="text-base-md text-brown-10">
-          View Replies Dashboard
-        </span>
-      </div>
+        <span className="text-base-md text-brown-10">View X Dashboard</span>
+      </div> */}
 
       <Modal
         isOpen={isOpen}
@@ -346,7 +351,7 @@ const RepliesDashboard: React.FC = () => {
               <div className="flex-items-center mb-6 justify-between max-md:mb-3">
                 <div className="flex w-full justify-center">
                   <span className="flex items-center text-24 font-semibold text-mercury-950">
-                    Replies Dashboard
+                    X Dashboard
                   </span>
                 </div>
                 <div className="cursor-pointer" onClick={onCloseModal}>
@@ -358,7 +363,7 @@ const RepliesDashboard: React.FC = () => {
                 <div className="flex items-center max-md:flex-col max-md:items-start">
                   <div className="w-1/2 max-md:mb-2">
                     <span className="text-base-b text-mercury-950">
-                      Replies History
+                      X History
                     </span>
                   </div>
                   <div className="flex w-1/2 items-center gap-4 max-md:w-full max-md:justify-between max-md:gap-1">
