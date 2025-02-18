@@ -129,9 +129,14 @@ const Functions: React.FC<{
       isArray(xUserNameValues) && xUserNameValues?.length > 0
     return (
       <div className="mt-6">
-        <span className="text-base-sb text-mercury-950">
-          Following X Account <br />
-        </span>
+        <div className="flex items-center justify-between">
+          <span className="text-base-sb text-mercury-950">
+            Following X Account
+          </span>
+
+          <RepliesDashboard />
+        </div>
+
         <span className="text-mercury-700">
           Your agent will subscribe to and reply to posts from the following X
           account:
@@ -489,8 +494,6 @@ const Functions: React.FC<{
           Note: The agent will reply to all posts if no keywords are included.
         </span>
       </div>
-
-      <RepliesDashboard />
     </div>
   )
 }
