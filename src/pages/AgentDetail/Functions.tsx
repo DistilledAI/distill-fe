@@ -13,6 +13,7 @@ import { IAgentData } from "types/user"
 import BindYourAccount from "./BindYourAccount"
 import BindYourBot from "./BindYourBot"
 import CategoryLabel, { FieldLabel } from "./CategoryLabel"
+import RepliesDashboard from "./RepliesDashboard"
 import { AgentConfig } from "./useFetchAgentConfig"
 
 // const TWITTER_FEATURE = [
@@ -128,9 +129,14 @@ const Functions: React.FC<{
       isArray(xUserNameValues) && xUserNameValues?.length > 0
     return (
       <div className="mt-6">
-        <span className="text-base-sb text-mercury-950">
-          Following X Account <br />
-        </span>
+        <div className="flex items-center justify-between">
+          <span className="text-base-sb text-mercury-950">
+            Following X Account
+          </span>
+
+          <RepliesDashboard />
+        </div>
+
         <span className="text-mercury-700">
           Your agent will subscribe to and reply to posts from the following X
           account:

@@ -68,6 +68,7 @@
     "react-router-dom": "^6.26.2",
     "react-speech-recognition": "^3.10.0",
     "react-toastify": "^9.1.3",
+    "react-twitter-embed": "^4.0.4",
     "react-virtuoso": "^4.12.3",
     "react-wordcloud": "^1.2.7",
     "redux-persist": "^6.0.0",
