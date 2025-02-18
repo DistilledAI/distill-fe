@@ -15,9 +15,10 @@ const Account = () => {
   const [searchParams] = useSearchParams()
   const tab = searchParams.get("tab")
   const navigate = useNavigate()
+
   useEffect(() => {
     if (!tab) navigate(`${PATH_NAMES.ACCOUNT}?tab=${TabKey.MyAgent}`)
-  }, [])
+  }, [tab])
 
   const isActive = (key: TabKey) => tab === key
 

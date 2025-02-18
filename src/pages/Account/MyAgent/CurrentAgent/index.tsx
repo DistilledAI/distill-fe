@@ -8,7 +8,7 @@ import { CheckFilledIcon } from "@components/Icons/DefiLens"
 import { PenFullIcon } from "@components/Icons/Edit"
 import { MessagePlusIcon } from "@components/Icons/Message"
 import { PublishIcon } from "@components/Icons/RewardsIcons"
-import { Publish, STATUS_AGENT } from "@constants/index"
+import { PATH_NAMES, Publish, STATUS_AGENT } from "@constants/index"
 import { useAppSelector } from "@hooks/useAppRedux"
 import useAuthState from "@hooks/useAuthState"
 import { Button } from "@nextui-org/react"
@@ -237,9 +237,9 @@ const CurrentAgent = () => {
               </div>
             </div>
           </div>
-          <div className="my-6 w-full border-t-1 border-dashed border-mercury-400"></div>
+          <div className="my-6 w-full border-t-1 border-dashed border-mercury-400" />
           <div className="flex items-center justify-between">
-            <Link to={"#"}>
+            <Link to={`${PATH_NAMES.PRIVATE_AGENT}/${agent.id}`}>
               <MessagePlusIcon color="black" />
             </Link>
             <Button

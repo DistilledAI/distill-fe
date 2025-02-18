@@ -41,7 +41,7 @@ const Menu = () => {
           className="h-8 w-8 rounded-full"
         />
       ),
-      pathname: PATH_NAMES.MY_AGENTS,
+      pathname: PATH_NAMES.ACCOUNT,
     },
     {
       id: "agent-clan",
@@ -94,7 +94,7 @@ const Menu = () => {
       icon: (color?: string) => <CoinsOutlineIcon color={color} />,
       name: "My Staked Vaults",
       rightContent: null,
-      pathname: PATH_NAMES.STAKING,
+      pathname: `${PATH_NAMES.ACCOUNT}?tab=my-vault-holdings`,
     },
   ]
 
@@ -110,8 +110,8 @@ const Menu = () => {
           <div
             key={index}
             className={twMerge(
-              "group/item flex cursor-pointer items-center gap-2 rounded-full border-[2px] border-white bg-mercury-30 px-4 py-[10px] transition-all duration-300 ease-in-out hover:border-brown-500",
-              isActive && "border-brown-500 bg-brown-50",
+              "group/item flex cursor-pointer items-center gap-2 rounded-full border-[2px] border-white bg-mercury-30 px-4 py-[10px] transition-all duration-200 ease-in-out hover:bg-brown-50",
+              isActive && "h-12 border-brown-500 bg-brown-50",
               sidebarCollapsed && "h-12 justify-center",
             )}
             onClick={() => {

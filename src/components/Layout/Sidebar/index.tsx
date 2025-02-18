@@ -37,7 +37,7 @@ const Sidebar = () => {
         <div className="flex-1">
           <div
             className={twMerge(
-              "mb-4 flex items-center justify-between",
+              "mb-4 flex h-[26px] items-center justify-between",
               sidebarCollapsed && "flex-col gap-4",
             )}
           >
@@ -50,7 +50,7 @@ const Sidebar = () => {
               type="button"
               className={twMerge(
                 "group flex items-center gap-2",
-                sidebarCollapsed && "w-full",
+                sidebarCollapsed && "hidden",
               )}
               onClick={() => navigate(PATH_NAMES.CREATE_AGENT)}
             >

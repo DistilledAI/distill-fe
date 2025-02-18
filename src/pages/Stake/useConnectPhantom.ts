@@ -7,7 +7,7 @@ const useConnectPhantom = () => {
 
   const connectWallet = async () => {
     try {
-      await wallet.select(null)
+      await wallet.select(PhantomWalletName)
       await wallet.connect()
     } catch (error) {
       console.error(error)
