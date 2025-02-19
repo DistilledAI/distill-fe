@@ -115,16 +115,13 @@ const MarkdownMessage = ({ msg }: { msg: string }) => {
     },
   }
 
-  // Split message first before any processing
-  const thinkRegex = /<think>([\s\S]*?)<\/think>([\s\S]*)/i
-  const match = msg.match(thinkRegex)
+  const regex = /<think>\s*([\s\S]*?)(?:\s*<\/think>\s*([\s\S]*)|$)/
+  const match = msg.match(regex)
 
   if (match) {
-    const insideThink = match[1].trim()
-    const mainContent = match[2].trim()
-
-    // Process main content separately
-    const processedContent = breakLine(enhancedMessage(mainContent))
+    const insideThink = match ? match[1].trim() : null
+    const message = match && match[2] !== undefined ? match[2].trim() : ""
+    const processedMessage = breakLine(enhancedMessage(message))
 
     return (
       <>
@@ -134,8 +131,8 @@ const MarkdownMessage = ({ msg }: { msg: string }) => {
           className="mb-2 flex items-center gap-1 rounded-full bg-mercury-100 px-4 py-2"
         >
           <Image src={distilledAIIcon} alt="distilled AI icon" />
-          <span className="text-16 font-medium text-mercury-950">
-            {mainContent ? "Thought" : "Thinking..."}
+          <span className="font-medium text-mercury-950">
+            {!!processedMessage ? "Thought" : "Thinking..."}
           </span>
 
           <div className={twMerge(isCollapsed && "rotate-180")}>
@@ -154,12 +151,11 @@ const MarkdownMessage = ({ msg }: { msg: string }) => {
             {insideThink}
           </p>
         </div>
-        <Markdown components={renderers}>{processedContent}</Markdown>
+        <Markdown components={renderers}>{processedMessage}</Markdown>
       </>
     )
   }
 
-  // Process normal message without think block
   const processedMessage = breakLine(enhancedMessage(msg))
   return <Markdown components={renderers}>{processedMessage}</Markdown>
 }
