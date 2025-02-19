@@ -44,6 +44,8 @@ export const BLACKLIST_BOT_VERSION = [
   "distilled/distilled-agent:1.0.0-cc",
   "oraichain/distilled-agent:1.0.0",
   "harbor.orai.network/distill/distilled-agent:3.0.0",
+  "harbor.orai.network/distill/distilled-agent:4.0.0",
+  "harbor.orai.network/distill/distilled-agent:5.0.0",
 ]
 
 const AgentDetail: React.FC = () => {
