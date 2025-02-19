@@ -4,6 +4,7 @@ import { useLocation } from "react-router-dom"
 const TITLE_BY_PATH_NAMES = {
   [PATH_NAMES.HOME]: "Home",
   [PATH_NAMES.ACCOUNT]: "My Profile",
+  [PATH_NAMES.MARKETPLACE]: "Agent Store",
 }
 
 const TitlePathName = () => {
