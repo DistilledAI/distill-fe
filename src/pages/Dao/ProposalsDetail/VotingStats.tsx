@@ -20,7 +20,6 @@ const VotingStats = ({ proposalDetail, proposalIpfs }: Props) => {
     ? proposalDetail?.voteCount.reduce((total, current) => total + current, 0)
     : 0
   const totalStaked = proposalDetail?.totalStaked || 0
-  const voteType = proposalIpfs?.vote.type
 
   return (
     <div className="overflow-hidden rounded-2xl border border-mercury-100 bg-mercury-70">
@@ -33,14 +32,12 @@ const VotingStats = ({ proposalDetail, proposalIpfs }: Props) => {
 
       <div className="h-[1px] w-full bg-mercury-100" />
 
-      {voteType === ProposalType.YesNo ? (
-        <StatBlock>
-          <TurnoutStats
-            quorum={proposalDetail?.quorum ? proposalDetail?.quorum * 100 : 0}
-            turnout={getTurnout(totalVoteCount, totalStaked)}
-          />
-        </StatBlock>
-      ) : null}
+      <StatBlock>
+        <TurnoutStats
+          quorum={proposalDetail?.quorum ? proposalDetail?.quorum * 100 : 0}
+          turnout={getTurnout(totalVoteCount, totalStaked)}
+        />
+      </StatBlock>
     </div>
   )
 }
@@ -125,7 +122,7 @@ const VoteRatio = ({ proposalDetail, proposalIpfs }: Props) => {
                 <div
                   key={index}
                   className={twMerge(
-                    "relative rounded-full bg-mercury-100 px-4 py-2",
+                    "relative overflow-hidden rounded-full bg-mercury-100 px-4 py-2",
                   )}
                 >
                   <div
@@ -138,14 +135,16 @@ const VoteRatio = ({ proposalDetail, proposalIpfs }: Props) => {
                       width: `${percents[index]}%`,
                     }}
                   />
-                  <div className="relative flex items-center justify-between">
-                    <p className="line-clamp-1 text-[16px] font-medium text-mercury-950">
-                      {val}
-                    </p>
-                    <span className="flex-shrink-0 text-16 font-semibold text-mercury-950">
-                      {percents[index]}%
-                    </span>
-                  </div>
+                  <Tooltip content={val} className="max-w-[480px]" showArrow>
+                    <div className="relative flex items-center justify-between">
+                      <p className="line-clamp-1 text-[16px] font-medium text-mercury-950">
+                        {val}
+                      </p>
+                      <span className="flex-shrink-0 text-16 font-semibold text-mercury-950">
+                        {percents[index]}%
+                      </span>
+                    </div>
+                  </Tooltip>
                 </div>
               )
             })
@@ -166,17 +165,20 @@ const TurnoutStats = ({
 }) => (
   <>
     <span className="text-16 text-mercury-950">{turnout}% turnout</span>
-    <div className="relative flex h-3 w-full items-start rounded-full bg-mercury-100">
-      <div
-        className="h-full rounded-full bg-mercury-300"
-        style={{
-          width: `${turnout}%`,
-        }}
-      />
+    <div className="relative">
+      <div className="flex h-3 w-full items-start overflow-hidden rounded-full bg-mercury-100">
+        <div
+          className="h-full rounded-full bg-mercury-300"
+          style={{
+            width: `${turnout}%`,
+          }}
+        />
+      </div>
       <div className="absolute -bottom-[14px] left-[10%] -translate-x-1/2 -rotate-90">
         <PlayIcon color="#888888" size={18} />
       </div>
     </div>
+
     <div className="flex items-center justify-between">
       <div className="flex items-center gap-1">
         <span className="text-16 text-mercury-700">Quorum</span>
