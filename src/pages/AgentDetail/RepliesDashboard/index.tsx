@@ -221,7 +221,8 @@ const RepliesDashboard: React.FC = () => {
         return (
           <div className="w-[80px]">
             <span className="text-14 font-medium text-mercury-900">
-              {item.createdAt && moment(item.createdAt).format("ll")}
+              {item.createdAt &&
+                moment(item.createdAt).format("YYYY-MM-DD HH:mm:ss")}
             </span>
           </div>
         )
