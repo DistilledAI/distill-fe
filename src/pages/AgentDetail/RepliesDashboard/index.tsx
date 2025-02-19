@@ -1,4 +1,4 @@
-import { LinkAccountIcon } from "@components/Icons"
+import { ViewIcon } from "@components/Icons"
 import { ChevronDownIcon } from "@components/Icons/ChevronDownIcon"
 import { CloseFilledIcon } from "@components/Icons/DefiLens"
 import {
@@ -54,6 +54,7 @@ enum ColumnKey {
   replyXUserId = "replyXUserId",
   sourceUrl = "sourceUrl",
   metadata = "metadata",
+  tweetedUrl = "tweetedUrl",
 }
 
 const RepliesDashboard: React.FC = () => {
@@ -105,32 +106,20 @@ const RepliesDashboard: React.FC = () => {
     offset,
   })
 
-  const columns =
-    sourceValue == DatasourceEnum.NEWS
-      ? [
-          {
-            key: ColumnKey.createdAt,
-            label: "Date",
-          },
-          {
-            key: ColumnKey.replyXUserId,
-            label: "Reply",
-          },
-          {
-            key: ColumnKey.metadata,
-            label: "Source",
-          },
-        ]
-      : [
-          {
-            key: ColumnKey.createdAt,
-            label: "Date",
-          },
-          {
-            key: ColumnKey.replyXUserId,
-            label: "Reply",
-          },
-        ]
+  const columns = [
+    {
+      key: ColumnKey.createdAt,
+      label: "Date",
+    },
+    {
+      key: ColumnKey.replyXUserId,
+      label: "Tweet",
+    },
+    {
+      key: ColumnKey.metadata,
+      label: "Source",
+    },
+  ]
 
   const onPageChange = async (page: number) => {
     setPage(page)
@@ -230,11 +219,7 @@ const RepliesDashboard: React.FC = () => {
     switch (columnKey) {
       case ColumnKey.createdAt:
         return (
-          <div
-            className={twMerge(
-              sourceValue == DatasourceEnum.NEWS ? "w-[80px]" : "w-150px",
-            )}
-          >
+          <div className="w-[80px]">
             <span className="text-14 font-medium text-mercury-900">
               {item.createdAt && moment(item.createdAt).format("ll")}
             </span>
@@ -250,12 +235,7 @@ const RepliesDashboard: React.FC = () => {
         if (!tweetId) return <div />
 
         return (
-          <div
-            className={twMerge(
-              "-mt-4",
-              sourceValue == DatasourceEnum.NEWS ? "w-[400px]" : "w-full",
-            )}
-          >
+          <div className="-mt-4 w-[400px]">
             <Tweet
               id={tweetId}
               fallback={
@@ -279,29 +259,63 @@ const RepliesDashboard: React.FC = () => {
                   </div>
                 </Card>
               }
-              // options={{ cards: "hidden" }}
             />
           </div>
         )
 
       default:
-        return (
-          <div>
-            <div className="flex flex-col">
-              <span className="text-base-b mb-1">
-                {item?.metadata?.sourceTitle}
-              </span>
-              <span className="text-18 text-base font-medium text-mercury-900">
-                {item?.shortDescription}...
-              </span>
-            </div>
+        const sourceUrl = item?.sourceUrl
+        const match1 = sourceUrl?.match(/status\/(\d+)/)
+        const tweetSourceId = match1?.[1]
 
-            <Button
-              className="mt-4 min-w-[90px] rounded-full bg-mercury-950 text-[15px] font-medium text-white"
-              onPress={() => window.open(item.sourceUrl, "_blank")}
-            >
-              View Data Source
-            </Button>
+        if (sourceValue == DatasourceEnum.NEWS) {
+          return (
+            <div>
+              <div className="flex flex-col">
+                <span className="text-base-b mb-1">
+                  {item?.metadata?.sourceTitle}
+                </span>
+                <span className="text-18 text-base font-medium text-mercury-900">
+                  {item?.shortDescription}...
+                </span>
+              </div>
+
+              <Button
+                className="mt-4 min-w-[90px] rounded-full bg-mercury-950 text-[15px] font-medium text-white"
+                onPress={() => window.open(item.sourceUrl, "_blank")}
+              >
+                View Data Source
+              </Button>
+            </div>
+          )
+        }
+
+        return (
+          <div className="-mt-4">
+            <Tweet
+              id={tweetSourceId}
+              fallback={
+                <Card
+                  className="mt-0 h-[300px] w-[400px] space-y-5 p-4"
+                  radius="lg"
+                >
+                  <Skeleton className="rounded-lg">
+                    <div className="h-24 rounded-lg bg-default-300" />
+                  </Skeleton>
+                  <div className="space-y-3">
+                    <Skeleton className="w-3/5 rounded-lg">
+                      <div className="h-3 w-3/5 rounded-lg bg-default-200" />
+                    </Skeleton>
+                    <Skeleton className="w-4/5 rounded-lg">
+                      <div className="h-3 w-4/5 rounded-lg bg-default-200" />
+                    </Skeleton>
+                    <Skeleton className="w-2/5 rounded-lg">
+                      <div className="h-3 w-2/5 rounded-lg bg-default-300" />
+                    </Skeleton>
+                  </div>
+                </Card>
+              }
+            />
           </div>
         )
     }
@@ -322,15 +336,13 @@ const RepliesDashboard: React.FC = () => {
 
   return (
     <>
-      <div
-        className="flex cursor-pointer items-center gap-2 hover:underline"
-        onClick={() => onOpen()}
+      <Button
+        className="flex h-[32px] min-w-[90px] cursor-pointer items-center gap-2 rounded-full bg-mercury-950 text-[15px] font-medium text-white"
+        onPress={() => onOpen()}
       >
-        <LinkAccountIcon />
-        <span className="text-base-md text-brown-10">
-          View Replies Dashboard
-        </span>
-      </div>
+        <ViewIcon />
+        <span className="text-base-md text-white">View X Dashboard</span>
+      </Button>
 
       <Modal
         isOpen={isOpen}
@@ -343,11 +355,11 @@ const RepliesDashboard: React.FC = () => {
       >
         <ModalContent>
           <ModalBody>
-            <div className="relative w-auto pb-2 max-md:p-0">
+            <div className="w-auto pb-2 max-md:p-0">
               <div className="flex-items-center mb-6 justify-between max-md:mb-3">
                 <div className="flex w-full justify-center">
                   <span className="flex items-center text-24 font-semibold text-mercury-950">
-                    Replies Dashboard
+                    X Dashboard
                   </span>
                 </div>
                 <div className="cursor-pointer" onClick={onCloseModal}>
@@ -359,7 +371,7 @@ const RepliesDashboard: React.FC = () => {
                 <div className="flex items-center max-md:flex-col max-md:items-start">
                   <div className="w-1/2 max-md:mb-2">
                     <span className="text-base-b text-mercury-950">
-                      Replies History
+                      X History
                     </span>
                   </div>
                   <div className="flex w-1/2 items-center gap-4 max-md:w-full max-md:justify-between max-md:gap-1">
@@ -432,7 +444,7 @@ const RepliesDashboard: React.FC = () => {
                     wrapper:
                       "shadow-none border-1 border-mercury-100 rounded-[22px] gap-0 bg-white md:bg-mercury-30 pb-0",
                     thead: [
-                      "h-9 [&>tr]:first:shadow-none",
+                      "h-9 [&>tr]:first:shadow-none relative",
                       "before:absolute before:bottom-0 before:w-full before:border-b-1 before:border-mercury-100",
                     ].join(" "),
                     th: "bg-transparent h-10 p-0 pr-4 text-base font-normal text-mercury-600",

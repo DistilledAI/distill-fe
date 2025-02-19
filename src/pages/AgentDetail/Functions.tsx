@@ -128,27 +128,25 @@ const Functions: React.FC<{
     const isUsernameData =
       isArray(xUserNameValues) && xUserNameValues?.length > 0
     return (
-      <div className="mt-6">
+      <div className="">
         <div className="flex items-center justify-between">
           <span className="text-base-sb text-mercury-950">
             Following X Account
           </span>
-
-          <RepliesDashboard />
         </div>
 
         <span className="text-mercury-700">
-          Your agent will subscribe to and reply to posts from the following X
-          account:
+          Your agent will follow and reply to this X account:
         </span>
-        <div className="my-2 rounded-lg bg-mercury-70 p-2">
-          {isUsernameData && (
-            <div className="mb-2 flex flex-wrap items-center gap-1">
-              {xUserNameValues.map((item: any) => {
+
+        <div className="my-2 flex items-center justify-between rounded-lg bg-mercury-70 p-2">
+          <div className="mb-2 flex w-1/2 flex-wrap items-center gap-1">
+            {isUsernameData &&
+              xUserNameValues.map((item: any) => {
                 const userName = item?.user_name
                 return (
                   <div
-                    className="flex items-center gap-1 rounded-lg border-[2px] border-brown-500 p-1"
+                    className="flex items-center gap-1 rounded-lg border-[2px] border-brown-500 bg-brown-100 p-1"
                     key={userName}
                   >
                     <span className="text-base-b text-mercury-900">
@@ -163,66 +161,67 @@ const Functions: React.FC<{
                   </div>
                 )
               })}
-            </div>
-          )}
+          </div>
 
-          {isShowInput && (
-            <Input
-              type="text"
-              placeholder="Enter X (Twitter) profile link or username"
-              className="w-1/2 max-md:w-full"
-              classNames={{
-                mainWrapper: "border border-mercury-400 rounded-lg",
-                inputWrapper: " bg-mercury-70",
-              }}
-              endContent={
-                <Button
-                  className="h-[30px] rounded-full border border-mercury-50 bg-mercury-950 max-sm:h-[38px]"
-                  onPress={() => {
-                    if (!inputValue) return
-                    const newXUserNames = [
-                      ...xUserNameValues,
-                      { user_name: inputValue },
-                    ]
-                    const uniqueNewXUserNames = uniqBy(
-                      newXUserNames,
-                      "user_name",
-                    )
-                    if (uniqueNewXUserNames.length > 10)
-                      return toast.warning(
-                        "You have reached the limit for following X accounts",
+          <div className="w-1/2">
+            {isShowInput && (
+              <Input
+                type="text"
+                placeholder="Enter X (Twitter) profile link or username"
+                className="w-full"
+                classNames={{
+                  mainWrapper: "border border-mercury-400 rounded-lg ",
+                  inputWrapper: " bg-mercury-70 ",
+                }}
+                endContent={
+                  <Button
+                    className="h-[30px] rounded-full border border-mercury-50 bg-mercury-950 max-sm:h-[38px]"
+                    onPress={() => {
+                      if (!inputValue) return
+                      const newXUserNames = [
+                        ...xUserNameValues,
+                        { user_name: inputValue },
+                      ]
+                      const uniqueNewXUserNames = uniqBy(
+                        newXUserNames,
+                        "user_name",
                       )
-                    setValue(
-                      "x_user_names",
-                      JSON.stringify(uniqueNewXUserNames),
-                    )
-                    setInputValue("")
-                    toggleShowInput()
-                  }}
-                >
-                  <span className="text-base text-mercury-30 max-sm:text-[14px]">
-                    Save
-                  </span>
-                </Button>
-              }
-              onChange={(e) => {
-                const value = e.target.value
-                const newValue = getUserName(value)
-                setInputValue(newValue)
-              }}
-            />
-          )}
-          {!isShowInput && (
-            <div
-              onClick={() => toggleShowInput()}
-              className="flex cursor-pointer items-center gap-1"
-            >
-              <TablerPlusIcon color="#A2845E" size={20} />
-              <span className="text-base-md text-brown-10">
-                Add account (Max. 10)
-              </span>
-            </div>
-          )}
+                      if (uniqueNewXUserNames.length > 10)
+                        return toast.warning(
+                          "You have reached the limit for following X accounts",
+                        )
+                      setValue(
+                        "x_user_names",
+                        JSON.stringify(uniqueNewXUserNames),
+                      )
+                      setInputValue("")
+                      toggleShowInput()
+                    }}
+                  >
+                    <span className="text-base text-mercury-30 max-sm:text-[14px]">
+                      Save
+                    </span>
+                  </Button>
+                }
+                onChange={(e) => {
+                  const value = e.target.value
+                  const newValue = getUserName(value)
+                  setInputValue(newValue)
+                }}
+              />
+            )}
+            {!isShowInput && (
+              <div
+                onClick={() => toggleShowInput()}
+                className="flex cursor-pointer items-center justify-end gap-1"
+              >
+                <TablerPlusIcon color="#A2845E" size={20} />
+                <span className="text-base-md text-brown-10">
+                  Add account (Max. 10)
+                </span>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     )
@@ -254,40 +253,46 @@ const Functions: React.FC<{
         }
       />
       <Divider className="my-6" />
+
       <FieldLabel
         text={
           <div className="flex items-center justify-between gap-3 max-sm:flex-col max-sm:items-start">
             <div className="flex flex-wrap items-center gap-2">
               <TwitterIcon size={20} />
               <span className="text-base-sb text-mercury-950">
-                Automated on X (Twitter)
+                Autonomous X Account
               </span>
               <Button className="text-base-14 h-auto rounded-full bg-brown-500 py-[2px] font-bold uppercase text-mercury-30 max-sm:text-12">
                 ai agent generate
               </Button>
             </div>
-            <div>
-              <BindYourAccount agentConfigs={agentConfigs} refetch={refetch} />
-            </div>
           </div>
         }
       />
+
+      <div className="mb-4 mt-4 flex items-center justify-between rounded-lg bg-brown-50 p-4">
+        <BindYourAccount agentConfigs={agentConfigs} refetch={refetch} />
+        <RepliesDashboard />
+      </div>
 
       <ComingSoon
         childrenClassName={!!twitterUsername ? "" : "opacity-50"}
         content="You need to bind an X account to use this feature"
         isOffComing={!!twitterUsername}
       >
-        <div>
-          <div className="mt-4 flex w-full gap-4 max-md:flex-wrap">
-            <div className="flex w-[40%] flex-col justify-between rounded-[22px] border-1 border-white bg-mercury-30 p-4 max-md:w-full">
+        <>
+          <span className="text-base-sb text-mercury-950">
+            Feeds Configuration
+          </span>
+          <div className="mb-4 mt-4 rounded-[22px] border-1 border-mercury-100 bg-mercury-30 p-4">
+            <div className="mb-4 flex w-full justify-between border-b border-dashed border-mercury-400 pb-4">
               <div>
                 <span className="text-base-sb text-mercury-950">
                   Post Interval:
                 </span>
                 <br />
                 <span className="text-mercury-700">
-                  Choose how often to post tweets.
+                  Set tweet posting frequency
                 </span>
               </div>
 
@@ -296,9 +301,8 @@ const Functions: React.FC<{
                 control={control}
                 render={({ field: { value, onChange } }: any) => {
                   return (
-                    <div className="flex items-center gap-3">
+                    <div className="w-[20%]">
                       <Select
-                        className="max-w-[50%]"
                         radius="full"
                         classNames={{
                           trigger: "!bg-mercury-100",
@@ -318,178 +322,184 @@ const Functions: React.FC<{
               />
             </div>
 
-            {/* <div className="pointer-events-none w-[60%] rounded-[22px] bg-mercury-30 p-4 opacity-50 max-md:w-full">
-              <span className="text-base-sb text-mercury-950">Functions</span>
-              <div className="mt-4 flex flex-wrap justify-between gap-y-6">
-                {TWITTER_FEATURE.map((item, index) => {
-                  return (
-                    <div
-                      className="flex min-w-[190px] items-center justify-between max-sm:w-full"
-                      key={index}
-                    >
-                      <div className="flex items-center gap-1">
-                        {item.icon}
-                        <span className="text-base-md max-sm:text-15">
-                          {item.label}
-                        </span>
-                      </div>
-                      <Switch
-                        isSelected={item.enabled}
-                        aria-label="Automatic updates"
-                      />
-                    </div>
-                  )
-                })}
-              </div>
-            </div> */}
-          </div>
-          <div className="mt-6">
-            <span className="text-mercury-700">
-              <span className="text-base-sb text-mercury-950">
-                X Categories{" "}
-              </span>
-              Your agent will post, follow, quote, and more with the following
-              data sources.
-            </span>
-
-            <div className="mt-4 flex items-center justify-between gap-2 max-md:flex-wrap">
-              <Controller
-                name="category"
-                control={control}
-                render={({ field: { value, onChange } }: any) => {
-                  return (
-                    <Select
-                      className="max-w-[20%] max-md:max-w-full"
-                      radius="full"
-                      classNames={{
-                        trigger: "!bg-mercury-100",
-                      }}
-                      onChange={(e) => {
-                        onChange(e.target.value)
-                        onSelectCategory(e.target.value)
-                      }}
-                      selectedKeys={value ? [value] : ""}
-                    >
-                      {CATEGORIES.map((value) => (
-                        <SelectItem key={`${value}`}>{value}</SelectItem>
-                      ))}
-                    </Select>
-                  )
-                }}
-              />
-
-              <div className="flex w-full flex-wrap items-center gap-1 rounded-lg border border-mercury-400 bg-mercury-70 p-2">
-                {dataSources.map((item: string) => {
-                  return (
-                    <div
-                      className="rounded-lg border-[2px] border-brown-500 p-1"
-                      key={item}
-                    >
-                      <span className="text-base-b text-mercury-900">
-                        {item}
-                      </span>
-                    </div>
-                  )
-                })}
-              </div>
-            </div>
-          </div>
-          {renderFollowXAccount()}
-        </div>
-      </ComingSoon>
-
-      {/* keywords */}
-
-      <ComingSoon
-        childrenClassName={
-          !!isArray(xUserNameValues) && xUserNameValues?.length > 0
-            ? ""
-            : "opacity-50"
-        }
-        content="You need to follow an X account to use this feature"
-        isOffComing={!!isArray(xUserNameValues) && xUserNameValues?.length > 0}
-      >
-        <>
-          <span className="text-mercury-700">
-            Your agent will reply to posts containing these keywords:
-          </span>
-
-          <div className="my-2 rounded-lg bg-mercury-70 p-2">
-            {isArray(xKeywordsValues) && xKeywordsValues?.length > 0 && (
-              <div className="mb-2 flex flex-wrap items-center gap-1">
-                {xKeywordsValues.map((keyword: string) => {
-                  return (
-                    <div
-                      className="flex items-center gap-1 rounded-lg border-[2px] border-[#4986C9] p-1"
-                      key={keyword}
-                    >
-                      <span className="text-base-b text-mercury-900">
-                        {keyword}
-                      </span>
-                      <div
-                        className="cursor-pointer"
-                        onClick={() => removeKeyword(keyword)}
-                      >
-                        <CloseFilledIcon size={20} color="#4986C9" />
-                      </div>
-                    </div>
-                  )
-                })}
-              </div>
-            )}
-
-            {isShowKeywordInput && (
-              <Input
-                type="text"
-                placeholder="Enter keywords"
-                className="w-[65%] max-md:w-full"
-                classNames={{
-                  mainWrapper: "border border-mercury-400 rounded-lg",
-                  inputWrapper: " bg-mercury-70",
-                }}
-                endContent={
-                  <Button
-                    className="h-[30px] rounded-full border border-mercury-50 bg-mercury-950 max-sm:h-[38px]"
-                    onPress={() => {
-                      if (!inputValue) return
-                      const newXKeywords = [...xKeywordsValues, inputValue]
-                      const uniqueNewXKeywords = uniq(newXKeywords)
-                      if (uniqueNewXKeywords.length > 10)
-                        return toast.warning(
-                          "You have reached the limit for keywords",
-                        )
-                      setValue("x_keywords", JSON.stringify(uniqueNewXKeywords))
-                      setInputValue("")
-                      toggleShowKeywordInput()
-                    }}
-                  >
-                    <span className="text-base text-mercury-30 max-sm:text-[14px]">
-                      Save
-                    </span>
-                  </Button>
-                }
-                onChange={(e) => {
-                  const value = e.target.value
-                  setInputValue(value)
-                }}
-              />
-            )}
-            {!isShowKeywordInput && (
-              <div
-                onClick={() => toggleShowKeywordInput()}
-                className="flex cursor-pointer items-center gap-1"
-              >
-                <SettingIcon />
-                <span className="text-base-md text-brown-10">
-                  Add Following keywords (Max. 10)
+            <div className="">
+              <div>
+                <span className="text-base-sb text-mercury-950">
+                  Following Categories:
+                </span>
+                <br />
+                <span className="text-mercury-700">
+                  Your agent will post, follow, and quote from these sources:
                 </span>
               </div>
-            )}
+
+              <div className="mt-4 flex items-center justify-between gap-2 rounded-lg bg-mercury-70 p-2 max-md:flex-wrap">
+                <div className="flex w-full flex-wrap items-center gap-1">
+                  {dataSources.map((item: string) => {
+                    return (
+                      <div
+                        className="rounded-lg border-[2px] border-mercury-600 p-1"
+                        key={item}
+                      >
+                        <span className="text-base-b text-mercury-900">
+                          {item}
+                        </span>
+                      </div>
+                    )
+                  })}
+                </div>
+
+                <Controller
+                  name="category"
+                  control={control}
+                  render={({ field: { value, onChange } }: any) => {
+                    return (
+                      <Select
+                        className="max-w-[20%] max-md:max-w-full"
+                        radius="full"
+                        classNames={{
+                          trigger: "!bg-mercury-100",
+                        }}
+                        onChange={(e) => {
+                          onChange(e.target.value)
+                          onSelectCategory(e.target.value)
+                        }}
+                        selectedKeys={value ? [value] : ""}
+                      >
+                        {CATEGORIES.map((value) => (
+                          <SelectItem key={`${value}`}>{value}</SelectItem>
+                        ))}
+                      </Select>
+                    )
+                  }}
+                />
+              </div>
+            </div>
           </div>
         </>
       </ComingSoon>
 
-      <div className="flex justify-end">
+      <span className="text-base-sb text-mercury-950">
+        Engage Configuration
+      </span>
+
+      <div className="mt-4 rounded-[22px] border-1 border-mercury-100 bg-mercury-30 p-4">
+        <div className="mb-4 flex w-full items-center justify-between border-b border-dashed border-mercury-400 pb-4">
+          <span className="text-base-sb text-mercury-950 opacity-50">
+            Reply Interval:
+          </span>
+          <div className="rounded-full bg-mercury-100 px-4 py-2 opacity-50">
+            <span className="text-14 font-medium text-mercury-950">
+              ~5 minutes
+            </span>
+          </div>
+        </div>
+
+        <ComingSoon
+          childrenClassName={!!twitterUsername ? "" : "opacity-50"}
+          content="You need to bind an X account to use this feature"
+          isOffComing={!!twitterUsername}
+        >
+          {renderFollowXAccount()}
+        </ComingSoon>
+
+        <ComingSoon
+          childrenClassName={
+            !!isArray(xUserNameValues) && xUserNameValues?.length > 0
+              ? ""
+              : "opacity-50"
+          }
+          content="You need to follow an X account to use this feature"
+          isOffComing={
+            !!isArray(xUserNameValues) && xUserNameValues?.length > 0
+          }
+        >
+          <>
+            <span className="text-mercury-700">
+              Your agent will reply to posts containing these keywords:
+            </span>
+            <div className="my-2 flex items-center justify-between rounded-lg bg-mercury-70 p-2">
+              <div className="mb-2 flex w-1/2 flex-wrap items-center gap-1">
+                {isArray(xKeywordsValues) &&
+                  xKeywordsValues?.length > 0 &&
+                  xKeywordsValues.map((keyword: string) => {
+                    return (
+                      <div
+                        className="flex items-center gap-1 rounded-lg border-[2px] border-[#4986C9] bg-[#D5E9FF] p-1"
+                        key={keyword}
+                      >
+                        <span className="text-base-b text-mercury-900">
+                          {keyword}
+                        </span>
+                        <div
+                          className="cursor-pointer"
+                          onClick={() => removeKeyword(keyword)}
+                        >
+                          <CloseFilledIcon size={20} color="#4986C9" />
+                        </div>
+                      </div>
+                    )
+                  })}
+              </div>
+
+              <div className="w-1/2">
+                {isShowKeywordInput && (
+                  <Input
+                    type="text"
+                    placeholder="Enter keywords"
+                    className="w-full"
+                    classNames={{
+                      mainWrapper: "border border-mercury-400 rounded-lg",
+                      inputWrapper: " bg-mercury-70",
+                    }}
+                    endContent={
+                      <Button
+                        className="h-[30px] rounded-full border border-mercury-50 bg-mercury-950 max-sm:h-[38px]"
+                        onPress={() => {
+                          if (!inputValue) return
+                          const newXKeywords = [...xKeywordsValues, inputValue]
+                          const uniqueNewXKeywords = uniq(newXKeywords)
+                          if (uniqueNewXKeywords.length > 10)
+                            return toast.warning(
+                              "You have reached the limit for keywords",
+                            )
+                          setValue(
+                            "x_keywords",
+                            JSON.stringify(uniqueNewXKeywords),
+                          )
+                          setInputValue("")
+                          toggleShowKeywordInput()
+                        }}
+                      >
+                        <span className="text-base text-mercury-30 max-sm:text-[14px]">
+                          Save
+                        </span>
+                      </Button>
+                    }
+                    onChange={(e) => {
+                      const value = e.target.value
+                      setInputValue(value)
+                    }}
+                  />
+                )}
+                {!isShowKeywordInput && (
+                  <div
+                    onClick={() => toggleShowKeywordInput()}
+                    className="flex cursor-pointer items-center justify-end gap-1"
+                  >
+                    <SettingIcon />
+                    <span className="text-base-md text-brown-10">
+                      Add Following keywords (Max. 10)
+                    </span>
+                  </div>
+                )}
+              </div>
+            </div>
+          </>
+        </ComingSoon>
+      </div>
+
+      <div className="mt-2 flex justify-end">
         <span className="text-[13px] italic text-mercury-700">
           Note: The agent will reply to all posts if no keywords are included.
         </span>
