@@ -1,6 +1,6 @@
 import { distilledAIIcon } from "@assets/svg"
 import { CaretUpFilledIcon } from "@components/Icons/TrendingPage"
-import { Button, Image } from "@nextui-org/react"
+import { Image } from "@nextui-org/react"
 import { useQueryClient } from "@tanstack/react-query"
 import { getActiveColorRandomById, isImageUrl } from "@utils/index"
 import { useState } from "react"
@@ -115,29 +115,30 @@ const MarkdownMessage = ({ msg }: { msg: string }) => {
     },
   }
 
-  let processedMessage = breakLine(enhancedMessage(msg))
-  const regex = /<think>\s*([\s\S]*?)(?:\s*<\/think>\s*(.*)|$)/
-  const match = processedMessage.match(regex)
+  const regex = /<think>\s*([\s\S]*?)(?:\s*<\/think>\s*([\s\S]*)|$)/
+  const match = msg.match(regex)
 
   if (match) {
-    const insideThink = match ? match[1].trim() : null,
-      processedMessage = match && match[2] !== undefined ? match[2].trim() : ""
+    const insideThink = match ? match[1].trim() : null
+    const message = match && match[2] !== undefined ? match[2].trim() : ""
+    const processedMessage = breakLine(enhancedMessage(message))
 
     return (
       <>
-        <Button onPress={() => setIsCollapsed(!isCollapsed)} className="mb-2">
+        <button
+          type="button"
+          onClick={() => setIsCollapsed(!isCollapsed)}
+          className="mb-2 flex items-center gap-1 rounded-full bg-mercury-100 px-4 py-2"
+        >
           <Image src={distilledAIIcon} alt="distilled AI icon" />
           <span className="font-medium text-mercury-950">
             {!!processedMessage ? "Thought" : "Thinking..."}
           </span>
-          {isCollapsed ? (
-            <div className="rotate-180">
-              <CaretUpFilledIcon color="#363636" />
-            </div>
-          ) : (
+
+          <div className={twMerge(isCollapsed && "rotate-180")}>
             <CaretUpFilledIcon color="#363636" />
-          )}
-        </Button>
+          </div>
+        </button>
         <div
           className={twMerge(
             `overflow-hidden transition-all duration-300 ease-in-out`,
@@ -146,13 +147,16 @@ const MarkdownMessage = ({ msg }: { msg: string }) => {
           )}
           aria-expanded={isCollapsed}
         >
-          <p className="text-base-14 text-mercury-900">{insideThink}</p>
+          <p className="whitespace-pre-line text-14 text-mercury-900">
+            {insideThink}
+          </p>
         </div>
         <Markdown components={renderers}>{processedMessage}</Markdown>
       </>
     )
   }
 
+  const processedMessage = breakLine(enhancedMessage(msg))
   return <Markdown components={renderers}>{processedMessage}</Markdown>
 }
 
