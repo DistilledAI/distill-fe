@@ -278,6 +278,26 @@ export const LinkAccountIcon = ({ color = "#A2845E" }: { color?: string }) => {
   )
 }
 
+export const ViewIcon = () => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="20"
+      height="20"
+      viewBox="0 0 20 20"
+      fill="none"
+    >
+      <path
+        d="M15.4168 15.4167L17.5002 17.5M3.3335 5H16.6668M3.3335 10H6.66683M3.3335 15H6.66683M9.16683 12.5C9.16683 13.3841 9.51802 14.2319 10.1431 14.857C10.7683 15.4821 11.6161 15.8333 12.5002 15.8333C13.3842 15.8333 14.2321 15.4821 14.8572 14.857C15.4823 14.2319 15.8335 13.3841 15.8335 12.5C15.8335 11.6159 15.4823 10.7681 14.8572 10.143C14.2321 9.51786 13.3842 9.16667 12.5002 9.16667C11.6161 9.16667 10.7683 9.51786 10.1431 10.143C9.51802 10.7681 9.16683 11.6159 9.16683 12.5Z"
+        stroke="#FAFAFA"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  )
+}
+
 export const CircleCheckFilled = ({
   size = 18,
   color = "#2CB34E",
