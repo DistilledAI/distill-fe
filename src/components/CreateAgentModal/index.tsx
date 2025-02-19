@@ -13,7 +13,6 @@ const CreateAgentModal: React.FC<{
   isCanClose?: boolean
 }> = ({ isOpen, onClose, isCanClose = true }) => {
   const navigate = useNavigate()
-  const [typeAgent, setTypeAgent] = useState<number>(0)
   const [llmModel, setLlmModel] = useState<number>(
     TYPE_LLM_MODEL.LLM_MODEL_BASIC,
   )
@@ -44,18 +43,13 @@ const CreateAgentModal: React.FC<{
             )}
           </div>
           <div>
-            <AgentType
-              llmModel={llmModel}
-              setLlmModel={setLlmModel}
-              typeAgent={typeAgent}
-              setTypeAgent={setTypeAgent}
-            />
+            <AgentType isDisabledTypeAgent setLlmModel={setLlmModel} />
           </div>
           <div className="flex items-center justify-end">
             <Button
               onPress={() =>
                 navigate(PATH_NAMES.CREATE_AGENT, {
-                  state: { typeAgent, llmModel },
+                  state: { llmModel },
                 })
               }
               className="mt-5 h-[46px] rounded-full bg-mercury-950 font-semibold text-white"

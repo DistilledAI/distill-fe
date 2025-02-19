@@ -22,9 +22,9 @@ import { toast } from "react-toastify"
 import { twMerge } from "tailwind-merge"
 import useGetPaymentHistory from "./useGetPaymentHistory"
 
-export enum AGENT_TYPE_KEY {
-  DEFAULT = 0,
-  DEFAI = 1,
+export const AGENT_TYPE_KEY = {
+  DEFAULT: 0,
+  DEFAI: 1,
 }
 
 export const TYPE_LLM_MODEL = {
@@ -83,7 +83,8 @@ const isStaging = urlStaging.includes(window.location.host)
 const AgentType: React.FC<{
   isDisabledTypeAgent?: boolean
   isDisabledLLMModel?: boolean
-}> = ({ isDisabledTypeAgent, isDisabledLLMModel }) => {
+  setLlmModel?: React.Dispatch<React.SetStateAction<number>>
+}> = ({ isDisabledTypeAgent, isDisabledLLMModel, setLlmModel }) => {
   const { isPaid, checkPayment } = useGetPaymentHistory()
   const { control } = useFormContext()
   const { handleSend } = useSend()
@@ -272,6 +273,7 @@ const AgentType: React.FC<{
                     onClick={() => {
                       if (isDisabledLLMModel) return
                       onChange(record.value)
+                      if (setLlmModel) setLlmModel(record.value)
                     }}
                   >
                     <div className="flex gap-3">
