@@ -139,7 +139,7 @@ const Functions: React.FC<{
           Your agent will follow and reply to this X account:
         </span>
 
-        <div className="my-2 flex items-center justify-between rounded-lg bg-mercury-70 p-2">
+        <div className="my-2 flex items-center justify-between rounded-lg bg-mercury-70 p-2 max-md:flex-col max-md:items-start">
           <div className="mb-2 flex w-1/2 flex-wrap items-center gap-1">
             {isUsernameData &&
               xUserNameValues.map((item: any) => {
@@ -163,7 +163,7 @@ const Functions: React.FC<{
               })}
           </div>
 
-          <div className="w-1/2">
+          <div className="w-1/2 max-md:w-full">
             {isShowInput && (
               <Input
                 type="text"
@@ -270,7 +270,7 @@ const Functions: React.FC<{
         }
       />
 
-      <div className="mb-4 mt-4 flex items-center justify-between rounded-lg bg-brown-50 p-4">
+      <div className="mb-4 mt-4 flex items-center justify-between rounded-lg bg-brown-50 p-4 max-md:flex-col max-md:items-start max-md:justify-start max-md:gap-2">
         <BindYourAccount agentConfigs={agentConfigs} refetch={refetch} />
         <RepliesDashboard />
       </div>
@@ -285,7 +285,7 @@ const Functions: React.FC<{
             Feeds Configuration
           </span>
           <div className="mb-4 mt-4 rounded-[22px] border-1 border-mercury-100 bg-mercury-30 p-4">
-            <div className="mb-4 flex w-full justify-between border-b border-dashed border-mercury-400 pb-4">
+            <div className="mb-4 flex w-full justify-between border-b border-dashed border-mercury-400 pb-4 max-md:flex-col max-md:gap-2">
               <div>
                 <span className="text-base-sb text-mercury-950">
                   Post Interval:
@@ -301,7 +301,7 @@ const Functions: React.FC<{
                 control={control}
                 render={({ field: { value, onChange } }: any) => {
                   return (
-                    <div className="w-[20%]">
+                    <div className="w-[20%] max-md:w-full">
                       <Select
                         radius="full"
                         classNames={{
@@ -418,7 +418,7 @@ const Functions: React.FC<{
             <span className="text-mercury-700">
               Your agent will reply to posts containing these keywords:
             </span>
-            <div className="my-2 flex items-center justify-between rounded-lg bg-mercury-70 p-2">
+            <div className="my-2 flex items-center justify-between rounded-lg bg-mercury-70 p-2 max-md:flex-col max-md:items-start">
               <div className="mb-2 flex w-1/2 flex-wrap items-center gap-1">
                 {isArray(xKeywordsValues) &&
                   xKeywordsValues?.length > 0 &&
@@ -442,7 +442,7 @@ const Functions: React.FC<{
                   })}
               </div>
 
-              <div className="w-1/2">
+              <div className="w-1/2 max-md:w-full">
                 {isShowKeywordInput && (
                   <Input
                     type="text"

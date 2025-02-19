@@ -44,7 +44,7 @@ const DataSource = [
   //   value: DatasourceEnum.TWITTER_CATEGORY_KOLS,
   // },
   {
-    label: "Twitter following KOLs",
+    label: "Following X Account",
     value: DatasourceEnum.TWITTER_FOLLOWING_KOLS,
   },
 ]
