@@ -17,9 +17,9 @@ import { useLocation, useNavigate } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
 
 const Menu = () => {
-  const sidebarCollapsed = useAppSelector((state) => state.sidebarCollapsed)
   const navigate = useNavigate()
-  const { pathname } = useLocation()
+  const { pathname: currentPath, search: currentSearch } = useLocation()
+  const sidebarCollapsed = useAppSelector((state) => state.sidebarCollapsed)
   const myAgent = useAppSelector((state) => state.agents.myAgent)
 
   const MENU = [
@@ -41,7 +41,7 @@ const Menu = () => {
           className="h-8 w-8 rounded-full"
         />
       ),
-      pathname: PATH_NAMES.ACCOUNT,
+      pathname: `${PATH_NAMES.ACCOUNT}?tab=my-agent`,
     },
     {
       id: "agent-clan",
@@ -101,10 +101,10 @@ const Menu = () => {
   return (
     <nav className="space-y-2">
       {MENU.map((item, index) => {
+        const [itemBasePath, itemQuery] = item.pathname.split("?")
+        const expectedSearch = itemQuery ? `?${itemQuery}` : ""
         const isActive =
-          item.pathname === "/"
-            ? pathname === "/"
-            : pathname.startsWith(item.pathname)
+          currentPath === itemBasePath && currentSearch === expectedSearch
 
         return (
           <div
