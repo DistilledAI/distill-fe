@@ -35,6 +35,16 @@ import {
 } from "./helpers"
 import useFetchAgentConfig from "./useFetchAgentConfig"
 import useFetchDetail from "./useFetchDetail"
+import AgentType from "@pages/ChatPage/ChatBox/RightContent/MyPrivateAgentContent/AgentInitialization/AgentType"
+
+export const BLACKLIST_BOT_VERSION = [
+  "devorai/distilled-chat:0.0.6.4-cc",
+  "devorai/distilled-chat:0.0.6.5-cc",
+  "devorai/distilled-chat:0.0.6.6-cc",
+  "distilled/distilled-agent:1.0.0-cc",
+  "oraichain/distilled-agent:1.0.0",
+  "harbor.orai.network/distill/distilled-agent:3.0.0",
+]
 
 const AgentDetail: React.FC = () => {
   const { agentId } = useParams()
@@ -52,6 +62,8 @@ const AgentDetail: React.FC = () => {
   const avatarData = agentData?.avatar
   const typeAgentData = agentData?.typeAgent
   const llmModelData = agentData?.llmModel
+  const botVersionData = agentData?.botVersion
+  const isDisabledLLMModel = BLACKLIST_BOT_VERSION.includes(botVersionData)
 
   const methods = useForm<any>({
     defaultValues: {
@@ -168,8 +180,12 @@ const AgentDetail: React.FC = () => {
   const componentScrollTo = [
     {
       title: "Agent Type",
-      // content: <AgentType isDisabled />,
-      content: <div></div>,
+      content: (
+        <AgentType
+          isDisabledTypeAgent
+          isDisabledLLMModel={isDisabledLLMModel}
+        />
+      ),
       icon: <UserHexagonIcon />,
     },
     {
