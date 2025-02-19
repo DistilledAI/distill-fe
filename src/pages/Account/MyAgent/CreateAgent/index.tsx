@@ -1,10 +1,12 @@
 import { avaMaxGray } from "@assets/images"
 import AvatarCustom from "@components/AvatarCustom"
+import CreateAgentModal from "@components/CreateAgentModal"
 import { PlusIcon } from "@components/Icons/Plus"
 import useAuthState from "@hooks/useAuthState"
-import { Button } from "@nextui-org/react"
+import { Button, useDisclosure } from "@nextui-org/react"
 
 const CreateAgent = () => {
+  const { onOpen, isOpen, onClose } = useDisclosure()
   const { user } = useAuthState()
 
   return (
@@ -37,11 +39,15 @@ const CreateAgent = () => {
           </div>
         </div>
         <div>
-          <Button className="flex h-[56px] items-center rounded-full bg-mercury-950 text-white">
+          <Button
+            onPress={onOpen}
+            className="flex h-[56px] items-center rounded-full bg-mercury-950 text-white"
+          >
             <PlusIcon size={16} color="white" />
             <span className="font-bold">Create Agent</span>
           </Button>
         </div>
+        <CreateAgentModal isOpen={isOpen} onClose={onClose} />
       </div>
     </>
   )

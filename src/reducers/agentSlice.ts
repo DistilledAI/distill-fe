@@ -13,6 +13,7 @@ export interface IMyAgent {
   status: number
   publicAddress: string | null
   avatar: string | null
+  contractAddress?: string | null
 }
 
 export interface AgentState {

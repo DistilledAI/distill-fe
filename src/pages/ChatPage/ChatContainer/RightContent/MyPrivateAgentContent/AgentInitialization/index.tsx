@@ -20,7 +20,7 @@ import { toast } from "react-toastify"
 import { updateAgentConfig } from "services/agent"
 import { createBot } from "services/chat"
 import { updateAvatarUser } from "services/user"
-import AgentType, { TYPE_LLM_MODEL } from "./AgentType"
+import { TYPE_LLM_MODEL } from "./AgentType"
 import Header from "./Header"
 
 const AgentInitialization = () => {
@@ -107,7 +107,7 @@ const AgentInitialization = () => {
       <form onSubmit={methods.handleSubmit(onSubmit)}>
         <Header isLoading={isLoading} />
         <div className="mx-auto max-w-[768px] space-y-8 pb-[100px] pt-6 max-xl:px-4 max-md:min-h-dvh max-md:bg-mercury-70">
-          <AgentType />
+          {/* <AgentType /> */}
           <GeneralInfo />
           <Divider />
           <AgentBehaviors
