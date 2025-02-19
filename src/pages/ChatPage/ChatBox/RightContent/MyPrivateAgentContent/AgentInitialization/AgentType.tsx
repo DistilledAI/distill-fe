@@ -80,9 +80,10 @@ const LLM_MODEL_OPTIONS = [
 const urlStaging = ["mesh-distilled-ai-dev.web.app", "localhost:5173"]
 const isStaging = urlStaging.includes(window.location.host)
 
-const AgentType: React.FC<{ isDisabledTypeAgent?: boolean }> = ({
-  isDisabledTypeAgent,
-}) => {
+const AgentType: React.FC<{
+  isDisabledTypeAgent?: boolean
+  isDisabledLLMModel?: boolean
+}> = ({ isDisabledTypeAgent, isDisabledLLMModel }) => {
   const { isPaid, checkPayment } = useGetPaymentHistory()
   const { control } = useFormContext()
   const { handleSend } = useSend()
@@ -264,10 +265,14 @@ const AgentType: React.FC<{ isDisabledTypeAgent?: boolean }> = ({
                 const isSelected = value == record.value
                 return (
                   <div
-                    className="flex h-[100px] w-1/2 items-start justify-between gap-3 rounded-[14px] border-[2px] border-transparent bg-mercury-30 p-4 hover:cursor-pointer aria-selected:border-brown-500 max-md:h-auto max-md:w-full"
+                    className="flex h-[100px] w-1/2 items-start justify-between gap-3 rounded-[14px] border-[2px] border-transparent bg-mercury-30 p-4 hover:cursor-pointer aria-checked:opacity-50 aria-selected:border-brown-500 max-md:h-auto max-md:w-full"
                     key={record.value}
                     aria-selected={isSelected}
-                    onClick={() => onChange(record.value)}
+                    aria-checked={isDisabledLLMModel}
+                    onClick={() => {
+                      if (isDisabledLLMModel) return
+                      onChange(record.value)
+                    }}
                   >
                     <div className="flex gap-3">
                       {record.icon}
@@ -285,7 +290,10 @@ const AgentType: React.FC<{ isDisabledTypeAgent?: boolean }> = ({
                     <Checkbox
                       radius="full"
                       isSelected={isSelected}
-                      onChange={() => onChange(record.value)}
+                      onChange={() => {
+                        if (isDisabledLLMModel) return
+                        onChange(record.value)
+                      }}
                     />
                   </div>
                 )
