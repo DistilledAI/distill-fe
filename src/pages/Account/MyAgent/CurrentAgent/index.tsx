@@ -116,8 +116,8 @@ const CurrentAgent = () => {
   }
 
   const getTradeLink = () => {
-    if (!agent.publicAddress) return undefined
-    return `https://agents.land/${agent.typeAgent === AGENT_TYPE_KEY.DEFAULT ? "trading" : "trading-defai"}/${agent.publicAddress}`
+    if (!agent.contractAddress) return undefined
+    return `https://agents.land/${agent.typeAgent === AGENT_TYPE_KEY.DEFAULT ? "trading" : "trading-defai"}/${agent.contractAddress}`
   }
 
   return (
@@ -197,7 +197,7 @@ const CurrentAgent = () => {
               <AvatarCustom
                 className="h-[72px] w-[72px] rounded-full border-none"
                 src={agent.avatar || undefined}
-                publicAddress={agent.publicAddress || ""}
+                publicAddress={agent.publicAddress || agent.username}
               />
             </div>
             <div>
@@ -224,14 +224,14 @@ const CurrentAgent = () => {
                     btnLink: "!w-auto h-[32px]",
                   }}
                 />
-                {agent.publicAddress && (
+                {agent.contractAddress && (
                   <ContractDisplay
                     label=""
                     classNames={{
                       contentWrapper: "bg-mercury-100 py-1",
                     }}
                     icon={solanaCircleIcon}
-                    value={agent.publicAddress}
+                    value={agent.contractAddress}
                   />
                 )}
               </div>
