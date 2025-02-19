@@ -7,9 +7,7 @@ import {
 } from "@components/Icons/UserIcon"
 import SmoothScrollTo from "@components/SmoothScrollTo"
 import { BEHAVIORS_AGENT, STATUS_AGENT } from "@constants/index"
-import AgentType, {
-  TYPE_LLM_MODEL,
-} from "@pages/ChatPage/ChatContainer/RightContent/MyPrivateAgentContent/AgentInitialization/AgentType"
+import { TYPE_LLM_MODEL } from "@pages/ChatPage/ChatContainer/RightContent/MyPrivateAgentContent/AgentInitialization/AgentType"
 import { refreshFetchMyAgent } from "@reducers/agentSlice"
 import { useEffect, useState } from "react"
 import { FormProvider, useForm } from "react-hook-form"
@@ -65,8 +63,8 @@ const AgentDetail: React.FC = () => {
   const avatarData = agentData?.avatar
   const typeAgentData = agentData?.typeAgent
   const llmModelData = agentData?.llmModel
-  const botVersionData = agentData?.botVersion
-  const isDisabledLLMModel = BLACKLIST_BOT_VERSION.includes(botVersionData)
+  // const botVersionData = agentData?.botVersion
+  // const isDisabledLLMModel = BLACKLIST_BOT_VERSION.includes(botVersionData)
 
   const methods = useForm<any>({
     defaultValues: {
@@ -183,12 +181,8 @@ const AgentDetail: React.FC = () => {
   const componentScrollTo = [
     {
       title: "Agent Type",
-      content: (
-        <AgentType
-          isDisabledTypeAgent
-          isDisabledLLMModel={isDisabledLLMModel}
-        />
-      ),
+      // content: <AgentType isDisabled />,
+      content: <div></div>,
       icon: <UserHexagonIcon />,
     },
     {
