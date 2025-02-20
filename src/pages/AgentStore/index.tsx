@@ -1,4 +1,4 @@
-import React, { useState, useRef, Suspense } from "react"
+import { useState, useRef, Suspense } from "react"
 import { FilledSearchIcon } from "@components/Icons/SearchIcon"
 import { Input } from "@nextui-org/react"
 import SortAgents from "./SortAgents"

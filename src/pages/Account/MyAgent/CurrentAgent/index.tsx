@@ -1,4 +1,4 @@
-import { maxAvatar } from "@assets/images"
+import { avaMaxGray, maxAvatar } from "@assets/images"
 import { solanaCircleIcon } from "@assets/svg"
 import AgentStatus from "@components/AgentStatus"
 import AlertBox from "@components/AlertBox"
@@ -196,7 +196,7 @@ const CurrentAgent = () => {
             <div>
               <AvatarCustom
                 className="h-[72px] w-[72px] rounded-full border-none"
-                src={agent.avatar || undefined}
+                src={agent.avatar || avaMaxGray}
                 publicAddress={agent.publicAddress || agent.username}
               />
             </div>

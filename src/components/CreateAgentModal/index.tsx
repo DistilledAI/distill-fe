@@ -10,7 +10,8 @@ import { useNavigate } from "react-router-dom"
 const CreateAgentModal: React.FC<{
   isOpen: boolean
   onClose: () => void
-}> = ({ isOpen, onClose }) => {
+  isCanClose?: boolean
+}> = ({ isOpen, onClose, isCanClose = true }) => {
   const navigate = useNavigate()
   const [typeAgent, setTypeAgent] = useState<number>(0)
   const [llmModel, setLlmModel] = useState<number>(
@@ -33,12 +34,14 @@ const CreateAgentModal: React.FC<{
         <div className="px-4">
           <div className="relative flex items-center justify-center">
             <p className="mb-2 text-20 font-semibold">Select Agent Type</p>
-            <div
-              onClick={onClose}
-              className="absolute right-0 top-0 cursor-pointer"
-            >
-              <CloseFilledIcon />
-            </div>
+            {isCanClose && (
+              <div
+                onClick={onClose}
+                className="absolute right-0 top-0 cursor-pointer"
+              >
+                <CloseFilledIcon />
+              </div>
+            )}
           </div>
           <div>
             <AgentType
