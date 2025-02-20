@@ -1,14 +1,17 @@
 import { CloseFilledIcon } from "@components/Icons/DefiLens"
+import { PATH_NAMES } from "@constants/index"
 import { Button, Modal, ModalContent } from "@nextui-org/react"
 import AgentType, {
   TYPE_LLM_MODEL,
 } from "@pages/ChatPage/ChatContainer/RightContent/MyPrivateAgentContent/AgentInitialization/AgentType"
 import React, { useState } from "react"
+import { useNavigate } from "react-router-dom"
 
 const CreateAgentModal: React.FC<{
   isOpen: boolean
   onClose: () => void
 }> = ({ isOpen, onClose }) => {
+  const navigate = useNavigate()
   const [typeAgent, setTypeAgent] = useState<number>(0)
   const [llmModel, setLlmModel] = useState<number>(
     TYPE_LLM_MODEL.LLM_MODEL_BASIC,
@@ -46,7 +49,14 @@ const CreateAgentModal: React.FC<{
             />
           </div>
           <div className="flex items-center justify-end">
-            <Button className="mt-5 h-[46px] rounded-full bg-mercury-950 font-semibold text-white">
+            <Button
+              onPress={() =>
+                navigate(PATH_NAMES.CREATE_AGENT, {
+                  state: { typeAgent, llmModel },
+                })
+              }
+              className="mt-5 h-[46px] rounded-full bg-mercury-950 font-semibold text-white"
+            >
               Next - Setup Information
             </Button>
           </div>
