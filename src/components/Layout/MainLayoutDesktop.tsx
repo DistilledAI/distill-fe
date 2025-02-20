@@ -5,7 +5,6 @@ import { useAppSelector } from "@hooks/useAppRedux"
 import useFetchMe from "@hooks/useFetchMe"
 import useInviteAgent from "@hooks/useInviteAgent"
 import useMessageSocket from "@pages/ChatPage/ChatContainer/useMessageSocket"
-import UserAuthWrapper from "@pages/ChatPage/ChatContainer/UserAuth/UserAuthWrapper"
 import { StyleSpacingProvider } from "providers/StyleSpacingProvider"
 import { Outlet, useLocation, useParams } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
@@ -20,41 +19,37 @@ const MainLayoutDesktop = () => {
   useFetchMe()
   useMessageSocket()
 
-  const isHideLeftBar = useMemo(() => {
+  const isHideSideBar = useMemo(() => {
     return (
       pathname === PATH_NAMES.TRENDING ||
       pathname === PATH_NAMES.STAKING ||
+      pathname === PATH_NAMES.CREATE_AGENT ||
       pathname.startsWith(PATH_NAMES.DAO) ||
       pathname === `${PATH_NAMES.AGENT_DETAIL}/${agentId}`
     )
   }, [pathname, agentId])
 
-  const renderContent = useMemo(() => {
-    if (isHideLeftBar) {
-      return (
-        <div className="flex bg-white font-barlow">
-          <div className="relative w-full pt-[68px]">
-            <UserAuthWrapper />
-            <Outlet />
-          </div>
-        </div>
-      )
-    }
+  const isHideHeader = useMemo(() => {
+    return pathname === PATH_NAMES.CREATE_AGENT
+  }, [pathname])
 
+  const renderContent = useMemo(() => {
     return (
       <div className="flex bg-white font-barlow">
-        <Sidebar />
+        {!isHideSideBar && <Sidebar />}
         <div
           className={twMerge(
-            "ml-auto h-full w-[calc(100dvw-84px)] pt-[68px] transition-all duration-200 ease-in-out",
+            "ml-auto w-[calc(100dvw-84px)] pt-[68px] transition-all duration-200 ease-in-out",
+            isHideSideBar && "w-full",
+            isHideHeader && "pt-0",
           )}
         >
-          <Header />
+          {!isHideHeader && <Header />}
           <Outlet />
         </div>
       </div>
     )
-  }, [isHideLeftBar, sidebarCollapsed])
+  }, [isHideSideBar, sidebarCollapsed])
 
   return (
     <>
