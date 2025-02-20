@@ -30,6 +30,7 @@ const useFetchMyAgent = () => {
               description: firstAgent.description,
               avatar: firstAgent.avatar,
               publicAddress: firstAgent.publicAddress,
+              typeAgent: firstAgent.typeAgent,
             }),
           )
         } else {

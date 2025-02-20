@@ -21,4 +21,5 @@ export interface IGroupDetail {
     total: number
     createdAt: string
   }
+  groupConfig: any[]
 }

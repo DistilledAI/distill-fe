@@ -118,7 +118,7 @@ const AIAgentList = () => {
               </div>
               <div>
                 <div className="w-fit rounded-[4px] border border-brown-400 bg-brown-50 px-2 text-14 font-medium text-brown-600">
-                  AI agent
+                  AI Agent
                 </div>
               </div>
             </div>
