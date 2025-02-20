@@ -30,7 +30,7 @@ const AgentInitialization = lazy(
 const MyPrivateAgentContentMobile = lazy(
   () => import("@pages/ChatPage/Mobile/MyPrivateAgentContentMobile"),
 )
-const Marketplace = lazy(() => import("@pages/Marketplace"))
+// const Marketplace = lazy(() => import("@pages/Marketplace"))
 const MyAgentPage = lazy(() => import("@pages/MyAgents"))
 const MyData = lazy(() => import("@pages/MyData"))
 const Orchestration = lazy(() => import("@pages/Orchestration"))
@@ -41,6 +41,7 @@ const DaoPage = lazy(() => import("@pages/Dao"))
 const ProposalsDetailPage = lazy(() => import("@pages/Dao/ProposalsDetail"))
 const AgentClanPage = lazy(() => import("@pages/AgentClan"))
 const PrivateChatPage = lazy(() => import("@pages/PrivateChat"))
+const AgentStorePage = lazy(() => import("@pages/AgentStore"))
 // const TrendingPage = lazy(() => import("@pages/Trending"))
 
 const AppRouter = () => {
@@ -76,7 +77,7 @@ const AppRouter = () => {
             path={`${PATH_NAMES.PRIVATE_AGENT}/:privateChatId`}
             element={isMobile ? <ChatPageMobile /> : <ChatMyAgent />}
           /> */}
-          <Route path={PATH_NAMES.MARKETPLACE} element={<Marketplace />} />
+          <Route path={PATH_NAMES.MARKETPLACE} element={<AgentStorePage />} />
           <Route path={PATH_NAMES.ADD_MY_DATA} element={<AddMyData />} />
           <Route
             path={`${PATH_NAMES.AUTHOR_PROFILE}/:authorId`}
