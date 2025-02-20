@@ -37,7 +37,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <Providers>
       <App />
       <ToastContainer
-        toastClassName="rounded-[14px] text-14 font-medium  bg-mercury-30"
+        toastClassName="rounded-[14px] text-14 font-medium  bg-mercury-30 z-[99]"
         closeButton={<CloseFilledIcon size={18} />}
         bodyClassName="text-14 font-medium flex items-center"
         hideProgressBar={true}

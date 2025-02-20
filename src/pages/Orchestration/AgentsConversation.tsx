@@ -71,7 +71,7 @@ const AgentsConversation = () => {
       isChatActions={false}
       msgBoxClassName="p-0 "
       className="max-h-[calc(100dvh-250px)] pt-1 md:max-h-[calc(100dvh-135px)]"
-      scrollBottomClassName="max-md:fixed !bottom-[11.7%] h-32 md:h-40 md:!bottom-24"
+      scrollBottomClassName="max-md:fixed !bottom-[11.7%] h-32 md:h-32 md:!bottom-14"
       increaseViewportBy={1000}
     />
   )

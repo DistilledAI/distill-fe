@@ -103,8 +103,20 @@ const Menu = () => {
       {MENU.map((item, index) => {
         const [itemBasePath, itemQuery] = item.pathname.split("?")
         const expectedSearch = itemQuery ? `?${itemQuery}` : ""
-        const isActive =
+
+        let isActive =
           currentPath === itemBasePath && currentSearch === expectedSearch
+
+        console.log({
+          currentPath,
+          currentSearch,
+          expectedSearch,
+          itemBasePath,
+        })
+
+        if (item.id === "agent-clan") {
+          isActive = currentPath.includes(item.pathname)
+        }
 
         return (
           <div

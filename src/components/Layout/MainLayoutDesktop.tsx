@@ -46,7 +46,7 @@ const MainLayoutDesktop = () => {
         <Sidebar />
         <div
           className={twMerge(
-            "ml-auto w-[calc(100dvw-84px)] pt-[68px] transition-all duration-200 ease-in-out",
+            "ml-auto h-full w-[calc(100dvw-84px)] pt-[68px] transition-all duration-200 ease-in-out",
           )}
         >
           <Header />

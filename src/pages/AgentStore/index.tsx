@@ -6,6 +6,7 @@ import { twMerge } from "tailwind-merge"
 import { Swiper, SwiperRef, SwiperSlide } from "swiper/react"
 import { Navigation } from "swiper/modules"
 import AgentClansStore from "./AgentClansStore"
+import AIAgentList from "./AIAgentList"
 
 // Chuyển CATEGORIES thành object, key là id của tab
 const CATEGORIES: {
@@ -18,6 +19,11 @@ const CATEGORIES: {
   "agent-clans": {
     name: "Agent Clans",
     component: <AgentClansStore />,
+    isComing: false,
+  },
+  "ai-agents": {
+    name: "All AI Agents",
+    component: <AIAgentList />,
     isComing: false,
   },
   defai: {

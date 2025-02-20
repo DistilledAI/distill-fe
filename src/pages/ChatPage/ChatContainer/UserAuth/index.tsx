@@ -1,16 +1,29 @@
 import { xDSTL } from "@assets/images"
 import AvatarCustom from "@components/AvatarCustom"
 import ChatInfoCurrent from "@components/ChatInfoCurrent"
-import { WarningIcon } from "@components/Icons"
 import { WalletIcon } from "@components/Icons/Wallet"
 import { PATH_NAMES, RoleUser } from "@constants/index"
 import useAuthState from "@hooks/useAuthState"
-import { Button } from "@nextui-org/react"
+import {
+  Button,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
+} from "@nextui-org/react"
 import useGroupDetail from "@pages/ChatPage/hooks/useGroupDetail"
-import { getActiveColorRandomById } from "@utils/index"
+import {
+  centerTextEllipsis,
+  copyClipboard,
+  getActiveColorRandomById,
+} from "@utils/index"
 import { useLocation, useNavigate } from "react-router-dom"
 import LoginPhantom from "./LoginPhantom"
 import { numberWithCommas } from "@utils/format"
+import { CopyIcon } from "@components/Icons/Copy"
+import { LogoutIcon } from "@components/Icons/OutputIcon"
+import { UserIcon } from "@components/Icons/UserIcon"
+import useAuthAction from "@hooks/useAuthAction"
 
 interface UserAuthProps {
   connectWallet: any
@@ -21,11 +34,9 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
   const navigate = useNavigate()
   const { pathname } = useLocation()
   const { groupDetail, groupId } = useGroupDetail()
-  // const myAgent = useAppSelector((state) => state.agents.myAgent)
-  // const hasBot = !!myAgent
+  const { logout } = useAuthAction()
 
   const { textColor } = getActiveColorRandomById(groupId)
-  // const isHiddenMyData = !hasBot
   const isShowInfo =
     user && user.publicAddress && user.role !== RoleUser.ANONYMOUS
   const totalxDstlPoint = user?.xDstlPoint || 0
@@ -43,28 +54,6 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
       </div>
       {isShowInfo ? (
         <div className="inline-flex items-center gap-2">
-          {/* <Button
-            onPress={() => navigate(PATH_NAMES.MY_DATA)}
-            className={twMerge(
-              "btn-primary hidden h-11 md:block",
-              isHiddenMyData && "!hidden",
-            )}
-          >
-            <div className="flex items-center gap-1">
-              <DatabaseSearchIcon />
-              <span className="text-base">My Data</span>
-            </div>
-          </Button>
-          <Button
-            onPress={() => navigate(PATH_NAMES.MY_AGENTS)}
-            className={twMerge("btn-primary hidden h-11 md:block")}
-          >
-            <div className="flex items-center gap-1">
-              <SearchUserIconOutline />
-              <span className="text-base">My Agents</span>
-            </div>
-          </Button> */}
-
           <div
             className="relative flex cursor-pointer items-center gap-1"
             onClick={() => navigate(PATH_NAMES.REWARDS)}
@@ -79,27 +68,79 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
             <div className="absolute -right-2 -top-2 h-3 w-3 rounded-full bg-[#FF3B30] max-md:hidden" />
           </div>
 
-          <Button
-            onPress={() => navigate(PATH_NAMES.ACCOUNT)}
-            className="btn-primary h-11 w-fit max-md:!h-auto max-md:!w-auto max-md:min-w-0 max-md:gap-0 max-md:p-0"
-          >
-            <AvatarCustom
-              publicAddress={user.publicAddress}
-              src={user.avatar}
-              className="h-8 w-8"
-            />
-            {user.walletActive ? (
-              <span className="line-clamp-1 block max-w-[150px] text-base max-md:hidden">
-                {user.username}
-              </span>
-            ) : (
-              <div className="hidden items-center gap-1 md:flex">
-                <div className="flex items-center gap-1 text-[#F78500]">
-                  <WarningIcon color="#F78500" /> Inactive
+          <Dropdown placement="bottom">
+            <DropdownTrigger>
+              <button
+                type="button"
+                className="rounded-full border border-white bg-mercury-30 p-2 !outline-none"
+              >
+                <AvatarCustom
+                  publicAddress={user.publicAddress}
+                  src={user.avatar}
+                  className="h-8 w-8"
+                />
+              </button>
+            </DropdownTrigger>
+            <DropdownMenu className="items-start p-4">
+              <DropdownItem
+                key="user-info"
+                className="p-0 hover:!bg-transparent"
+              >
+                <div className="flex gap-3">
+                  <AvatarCustom
+                    publicAddress={user.publicAddress}
+                    src={user.avatar}
+                  />
+                  <div>
+                    <span className="text-14 font-bold text-mercury-950">
+                      {user.username}
+                    </span>
+                    <div
+                      onClick={(e) => {
+                        copyClipboard(e, user?.publicAddress ?? "")
+                      }}
+                      className="flex cursor-pointer items-center gap-1"
+                    >
+                      <span className="text-16 text-mercury-900">
+                        {centerTextEllipsis(user?.publicAddress ?? "", 4)}
+                      </span>
+                      <CopyIcon color="#545454" size={20} />
+                    </div>
+                  </div>
                 </div>
-              </div>
-            )}
-          </Button>
+
+                <div className="my-4 h-[1px] w-full bg-mercury-200" />
+              </DropdownItem>
+              <DropdownItem
+                key="my-profile"
+                onPress={() => {
+                  navigate(PATH_NAMES.ACCOUNT)
+                }}
+                className="p-0 hover:!bg-transparent"
+              >
+                <div className="mb-2 flex w-full cursor-pointer items-center gap-2 rounded-lg p-2 hover:bg-mercury-70">
+                  <UserIcon />
+                  <span className="text-16 font-bold text-mercury-900">
+                    My Profile
+                  </span>
+                </div>
+              </DropdownItem>
+              <DropdownItem
+                key="logout"
+                onPress={() => {
+                  logout()
+                }}
+                className="p-0 hover:!bg-transparent"
+              >
+                <div className="flex w-full cursor-pointer items-center gap-2 rounded-lg p-2 hover:bg-mercury-70">
+                  <LogoutIcon color="#FF3B30" />
+                  <span className="text-16 font-bold text-[#FF3B30]">
+                    Log out
+                  </span>
+                </div>
+              </DropdownItem>
+            </DropdownMenu>
+          </Dropdown>
         </div>
       ) : (
         <div className="flex items-center gap-1">

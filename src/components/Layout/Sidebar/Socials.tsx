@@ -5,31 +5,33 @@ import {
 import { DuneOutlineIcon, XIcon } from "@components/Icons/SocialLinkIcon"
 import { PATH_NAMES } from "@constants/index"
 import { useAppSelector } from "@hooks/useAppRedux"
-import { Link, useNavigate } from "react-router-dom"
+import { Link, useLocation, useNavigate } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
 
 const SOCIALS = [
   {
     name: "Agents Store",
-    icon: <FilledSquareCircleIcon size={18} />,
+    icon: (color?: string) => (
+      <FilledSquareCircleIcon size={18} color={color} />
+    ),
     link: PATH_NAMES.MARKETPLACE,
     type: "internal",
   },
   {
     name: "Agents.land",
-    icon: <AgentDotLandIcon size={18} />,
+    icon: (color?: string) => <AgentDotLandIcon size={18} color={color} />,
     link: "https://agents.land",
     type: "external",
   },
   {
     name: "Dune Analytics",
-    icon: <DuneOutlineIcon />,
+    icon: (color?: string) => <DuneOutlineIcon color={color} />,
     link: "https://dune.com/distilled_ai_team/distilledaistats",
     type: "external",
   },
   {
     name: "X (Twitter)",
-    icon: <XIcon size={18} />,
+    icon: (color?: string) => <XIcon size={18} color={color} />,
     link: "https://dune.com/distilled_ai_team/distilledaistats",
     type: "external",
   },
@@ -37,50 +39,60 @@ const SOCIALS = [
 
 const Socials = () => {
   const navigate = useNavigate()
+  const { pathname: currentPath, search: currentSearch } = useLocation()
   const sidebarCollapsed = useAppSelector((state) => state.sidebarCollapsed)
 
   return (
     <ul>
-      {SOCIALS.map((item, index) => (
-        <li key={index} className="cursor-pointer">
-          {item.type === "internal" ? (
-            <div
-              className={twMerge(
-                "flex h-10 items-center gap-2 px-4 py-2",
-                sidebarCollapsed &&
-                  "justify-center rounded-full border-[2px] border-transparent transition-all duration-100 ease-in-out hover:border-brown-500 hover:bg-brown-50",
-              )}
-              onClick={() => navigate(item.link)}
-            >
-              <div>{item.icon}</div>
-              <span
+      {SOCIALS.map((item, index) => {
+        const [itemBasePath, itemQuery] = item.link.split("?")
+        const expectedSearch = itemQuery ? `?${itemQuery}` : ""
+        const isActive =
+          currentPath === itemBasePath && currentSearch === expectedSearch
+
+        return (
+          <li key={index} className="cursor-pointer">
+            {item.type === "internal" ? (
+              <div
                 className={twMerge(
-                  "whitespace-nowrap text-[16px] font-medium text-mercury-900 hover:underline",
-                  sidebarCollapsed && "hidden",
+                  "flex h-10 items-center gap-2 rounded-full border-[2px] border-transparent px-4 py-2",
+                  sidebarCollapsed &&
+                    "justify-center transition-all duration-100 ease-in-out hover:border-brown-500 hover:bg-brown-50",
+                  isActive && "border-brown-500 bg-brown-50",
                 )}
+                onClick={() => navigate(item.link)}
               >
-                {item.name}
-              </span>
-            </div>
-          ) : (
-            <Link
-              to={item.link}
-              target="_blank"
-              className="flex h-10 items-center gap-2 px-4 py-2"
-            >
-              <div>{item.icon}</div>
-              <span
-                className={twMerge(
-                  "whitespace-nowrap text-[16px] font-medium text-mercury-900 hover:underline",
-                  sidebarCollapsed && "hidden",
-                )}
+                <div>{item.icon(isActive ? "#83664B" : "#545454")}</div>
+                <span
+                  className={twMerge(
+                    "whitespace-nowrap text-[16px] font-medium text-mercury-900 hover:underline",
+                    sidebarCollapsed && "hidden",
+                    isActive && "text-brown-600 hover:no-underline",
+                  )}
+                >
+                  {item.name}
+                </span>
+              </div>
+            ) : (
+              <Link
+                to={item.link}
+                target="_blank"
+                className="flex h-10 items-center gap-2 border-[2px] border-transparent px-4 py-2"
               >
-                {item.name}
-              </span>
-            </Link>
-          )}
-        </li>
-      ))}
+                <div>{item.icon("#545454")}</div>
+                <span
+                  className={twMerge(
+                    "whitespace-nowrap text-[16px] font-medium text-mercury-900 hover:underline",
+                    sidebarCollapsed && "hidden",
+                  )}
+                >
+                  {item.name}
+                </span>
+              </Link>
+            )}
+          </li>
+        )
+      })}
     </ul>
   )
 }
