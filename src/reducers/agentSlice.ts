@@ -16,6 +16,7 @@ export interface IMyAgent {
   avatar: string | null
   typeAgent: AGENT_TYPE_KEY
   contractAddress?: string | null
+  typeAgent: AGENT_TYPE_KEY
 }
 
 export interface AgentState {
