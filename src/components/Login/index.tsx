@@ -10,7 +10,7 @@ const Login = () => {
 
   return (
     <div
-      className="relative mx-auto flex h-full w-full flex-1 items-center justify-center rounded-[22px] border border-white bg-white bg-cover bg-center bg-no-repeat font-barlow max-md:h-[calc(100dvh-50px)]"
+      className="relative mx-auto flex h-[calc(100dvh-68px)] w-full flex-1 items-center justify-center rounded-[22px] border border-white bg-white bg-cover bg-center bg-no-repeat font-barlow max-md:h-[calc(100dvh-50px)]"
       style={{
         backgroundImage: `url(${desktopPrivateAgent})`,
       }}
