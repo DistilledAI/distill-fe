@@ -5,8 +5,8 @@ import { IGroupDetail } from "types/group"
 const useFetchClan = ({
   isFetchNow = true,
   userId,
-  limit,
-  offset,
+  limit = 10,
+  offset = 0,
 }: {
   isFetchNow?: boolean
   userId?: number
@@ -15,23 +15,35 @@ const useFetchClan = ({
 }) => {
   const [loading, setLoading] = useState(false)
   const [data, setData] = useState<IGroupDetail[]>([])
+  const [hasMore, setHasMore] = useState(true)
+  const [currentOffset, setCurrentOffset] = useState(offset)
 
   const getList = async ({
     hasLoading = true,
-    limit = 10,
-    offset = 0,
+    isFetchMore = false,
+    fetchLimit = limit,
+    fetchOffset = currentOffset,
   }: {
     hasLoading?: boolean
-    limit?: number
-    offset?: number
+    isFetchMore?: boolean
+    fetchLimit?: number
+    fetchOffset?: number
   }) => {
     try {
       if (hasLoading) setLoading(true)
       const filter = userId
         ? JSON.stringify({ userId: userId.toString() })
         : undefined
-      const res = await getListGroupAgentPublic(filter, limit, offset)
-      if (res.data.items) setData(res.data.items)
+      const res = await getListGroupAgentPublic(filter, fetchLimit, fetchOffset)
+      const newData = res.data.items || []
+
+      if (isFetchMore) {
+        setData((prev) => [...prev, ...newData])
+      } else {
+        setData(newData)
+      }
+
+      setHasMore(newData.length === fetchLimit)
     } catch (error: any) {
       console.error(error)
     } finally {
@@ -40,10 +52,29 @@ const useFetchClan = ({
   }
 
   useEffect(() => {
-    if (isFetchNow) getList({ limit, offset })
-  }, [userId, isFetchNow, limit, offset])
+    if (isFetchNow) {
+      getList({
+        hasLoading: true,
+        isFetchMore: false,
+        fetchLimit: limit,
+        fetchOffset: offset,
+      })
+    }
+  }, [isFetchNow, userId, limit, offset])
 
-  return { data, loading, getList }
+  const fetchMore = () => {
+    if (!hasMore || loading) return
+    const newOffset = currentOffset + limit
+    setCurrentOffset(newOffset)
+    getList({
+      hasLoading: true,
+      isFetchMore: true,
+      fetchLimit: limit,
+      fetchOffset: newOffset,
+    })
+  }
+
+  return { data, loading, hasMore, fetchMore, getList }
 }
 
 export default useFetchClan

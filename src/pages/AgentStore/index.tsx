@@ -8,11 +8,10 @@ import { Navigation } from "swiper/modules"
 import AgentClansStore from "./AgentClansStore"
 import AIAgentList from "./AIAgentList"
 
-// Chuyển CATEGORIES thành object, key là id của tab
 const CATEGORIES: {
   [key: string]: {
     name: string
-    component: JSX.Element
+    component: JSX.Element | null
     isComing: boolean
   }
 } = {
@@ -28,23 +27,23 @@ const CATEGORIES: {
   },
   defai: {
     name: "DeFAI Management",
-    component: <div>123</div>,
-    isComing: false,
+    component: null,
+    isComing: true,
   },
   "emotional-companion": {
     name: "Emotional Companion",
-    component: <div>123</div>,
-    isComing: false,
+    component: null,
+    isComing: true,
   },
   research: {
     name: "Research",
-    component: <div>123</div>,
-    isComing: false,
+    component: null,
+    isComing: true,
   },
   productivity: {
     name: "Productivity",
-    component: <div>123</div>,
-    isComing: false,
+    component: null,
+    isComing: true,
   },
 }
 
@@ -62,7 +61,7 @@ const AgentStore = () => {
   const activeCategory = CATEGORIES[tabId]
 
   return (
-    <div className="mx-auto mt-8 max-w-[852px]">
+    <div className="mx-auto mt-8 max-w-[852px] max-lg:px-4">
       <div className="flex items-center justify-between gap-2">
         <Input
           startContent={<FilledSearchIcon size={24} color="#363636" />}

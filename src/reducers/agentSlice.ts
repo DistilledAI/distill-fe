@@ -1,3 +1,4 @@
+import { AGENT_TYPE_KEY } from "@pages/ChatPage/ChatContainer/RightContent/MyPrivateAgentContent/AgentInitialization/AgentType"
 import type { PayloadAction } from "@reduxjs/toolkit"
 import { createSlice } from "@reduxjs/toolkit"
 import { IAgentData } from "types/user"
@@ -13,6 +14,7 @@ export interface IMyAgent {
   status: number
   publicAddress: string | null
   avatar: string | null
+  typeAgent: AGENT_TYPE_KEY
   contractAddress?: string | null
 }
 

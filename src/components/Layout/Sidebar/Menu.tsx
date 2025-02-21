@@ -107,13 +107,6 @@ const Menu = () => {
         let isActive =
           currentPath === itemBasePath && currentSearch === expectedSearch
 
-        console.log({
-          currentPath,
-          currentSearch,
-          expectedSearch,
-          itemBasePath,
-        })
-
         if (item.id === "agent-clan") {
           isActive = currentPath.includes(item.pathname)
         }
