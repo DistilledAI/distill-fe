@@ -10,7 +10,7 @@ export enum TabKeyAgent {
   Basic = "basic",
   ClanUtilities = "clan_utilities",
   Autonomous = "autonomous",
-  Knowledge = "Knowledge",
+  Knowledge = "knowledge",
 }
 
 const LIST = [
