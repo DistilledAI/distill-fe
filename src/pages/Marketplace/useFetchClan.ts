@@ -17,6 +17,7 @@ const useFetchClan = ({
   const [data, setData] = useState<IGroupDetail[]>([])
   const [hasMore, setHasMore] = useState(true)
   const [currentOffset, setCurrentOffset] = useState(offset)
+  const [total, setTotal] = useState<number>(0)
 
   const getList = async ({
     hasLoading = true,
@@ -42,7 +43,7 @@ const useFetchClan = ({
       } else {
         setData(newData)
       }
-
+      setTotal(res?.data?.total)
       setHasMore(newData.length === fetchLimit)
     } catch (error: any) {
       console.error(error)
@@ -74,7 +75,7 @@ const useFetchClan = ({
     })
   }
 
-  return { data, loading, hasMore, fetchMore, getList }
+  return { data, loading, hasMore, fetchMore, getList, total }
 }
 
 export default useFetchClan

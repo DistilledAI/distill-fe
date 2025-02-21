@@ -18,31 +18,30 @@ export interface AgentSocialsProps {
     | undefined
   classNames?: {
     wrapper?: string
+    button?: string
   }
 }
 
 const AgentSocials = ({ agentInfo, classNames }: AgentSocialsProps) => {
   return (
-    <div
-      className={twMerge(
-        "flex items-center justify-between gap-3",
-        classNames?.wrapper,
-      )}
-    >
+    <div className={twMerge("flex items-center gap-3", classNames?.wrapper)}>
       <SocialButton
         icon={<WorldGlobalIcon />}
         link={agentInfo?.website}
         isDisabled={!agentInfo?.website}
+        btnClassName={classNames?.button}
       />
       <SocialButton
         icon={<TwitterIcon size={20} />}
         link={agentInfo?.xLink}
         isDisabled={!agentInfo?.xLink}
+        btnClassName={classNames?.button}
       />
       <SocialButton
         icon={<TelegramOutlineIcon size={20} />}
         link={agentInfo?.teleLink}
         isDisabled={!agentInfo?.teleLink}
+        btnClassName={classNames?.button}
       />
     </div>
   )

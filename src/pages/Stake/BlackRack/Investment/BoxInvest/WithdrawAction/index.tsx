@@ -112,9 +112,9 @@ const WithdrawAction: React.FC<{
           user: wallet.publicKey?.toBase58(),
           nextTimeTakeManagementFee: 1740023243,
         },
-      })
+      }).catch(() => undefined);
       const isHaveCredit =
-        proofsResponse.data && proofsResponse.data.proof.length > 0
+        proofsResponse?.data && proofsResponse.data.proof.length > 0
       const amount = toBN(
         toBN(amountVal)
           .multipliedBy(10 ** SPL_DECIMAL)

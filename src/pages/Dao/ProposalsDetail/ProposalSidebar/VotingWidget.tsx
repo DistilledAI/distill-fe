@@ -1,5 +1,5 @@
 import { CheckFilledIcon, CloseFilledIcon } from "@components/Icons/DefiLens"
-import { Button } from "@nextui-org/react"
+import { Button, Tooltip } from "@nextui-org/react"
 import {
   IDataProposal,
   ProposalType,
@@ -125,19 +125,29 @@ const VotingWidget = ({
 
       default:
         return proposalIpfs.vote.data?.map((item, index) => (
-          <VoteOption
-            onClick={handleSelectOption}
-            value={index}
-            selected={option === index || optionUser === index}
-            key={item}
-            icon={
-              option === index || optionUser === index ? (
-                <CheckFilledIcon />
-              ) : null
-            }
-            label={item}
-            className={!isCanVote ? "cursor-default" : ""}
-          />
+          <Tooltip
+            key={index}
+            content={item}
+            className="max-w-[350px]"
+            showArrow
+            placement="right"
+          >
+            <div>
+              <VoteOption
+                onClick={handleSelectOption}
+                value={index}
+                selected={option === index || optionUser === index}
+                key={item}
+                icon={
+                  option === index || optionUser === index ? (
+                    <CheckFilledIcon />
+                  ) : null
+                }
+                label={item}
+                className={!isCanVote ? "cursor-default" : ""}
+              />
+            </div>
+          </Tooltip>
         ))
     }
   }
