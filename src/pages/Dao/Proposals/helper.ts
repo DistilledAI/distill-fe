@@ -21,11 +21,16 @@ export function getProposalStatus(
     const [yesVotes, noVotes] = proposal.voteCount
     const totalVotes = yesVotes + noVotes
 
-    if (totalVotes === 0 || totalVotes < proposal.quorum) {
+    const turnout = getTurnout(totalVotes, proposal.totalStaked)
+    const ratioYesVotes = (yesVotes / totalVotes) * 100
+    const quorum = proposal.quorum * 100
+    const threshold = proposal.threshold * 100
+
+    if (totalVotes === 0 || turnout < quorum || ratioYesVotes < threshold) {
       return ProposalStatus.REJECTED
     }
 
-    if (yesVotes / totalVotes >= proposal.threshold) {
+    if (ratioYesVotes >= threshold && turnout >= quorum) {
       return ProposalStatus.PASSED
     }
 
