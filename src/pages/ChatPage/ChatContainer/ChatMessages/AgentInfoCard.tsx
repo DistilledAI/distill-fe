@@ -27,6 +27,7 @@ const AgentInfoCard = ({ messages, groupId }: AgentInfoCardProps) => {
   })
 
   const userBId = chatDetailResult?.data?.group?.userBId
+  const isAgent = chatDetailResult?.data?.group?.userB?.role === RoleUser.BOT
 
   const { data } = useQuery<any>({
     queryKey: [QueryDataKeys.USER_PUBLIC_DETAIL, userBId?.toString()],
@@ -36,12 +37,14 @@ const AgentInfoCard = ({ messages, groupId }: AgentInfoCardProps) => {
       )?.agentId
       return agentIdOfUserB ? await getUserPublicDetail(agentIdOfUserB) : {}
     },
-    enabled: !!userBId && messages.length > 0,
+    enabled: !!userBId && !isAgent && messages.length > 0,
     staleTime: 60 * 60 * 1000,
   })
 
-  const agentOwner = chatDetailResult?.data?.group?.userB
-  const agentInfo = data?.data
+  const agentOwner = isAgent
+    ? chatDetailResult?.data?.group?.userB?.ownerInfo
+    : chatDetailResult?.data?.group?.userB
+  const agentInfo = isAgent ? chatDetailResult?.data?.group?.userB : data?.data
 
   if (!agentInfo) {
     return (
