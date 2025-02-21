@@ -22,9 +22,9 @@ import { toast } from "react-toastify"
 import { twMerge } from "tailwind-merge"
 import useGetPaymentHistory from "./useGetPaymentHistory"
 
-export const AGENT_TYPE_KEY = {
-  DEFAULT: 0,
-  DEFAI: 1,
+export enum AGENT_TYPE_KEY {
+  DEFAULT = 0,
+  DEFAI = 1,
 }
 
 export const TYPE_LLM_MODEL = {
@@ -83,8 +83,18 @@ const isStaging = urlStaging.includes(window.location.host)
 const AgentType: React.FC<{
   isDisabledTypeAgent?: boolean
   isDisabledLLMModel?: boolean
+  typeAgent?: number
+  llmModel?: number
   setLlmModel?: React.Dispatch<React.SetStateAction<number>>
-}> = ({ isDisabledTypeAgent, isDisabledLLMModel, setLlmModel }) => {
+  setTypeAgent?: React.Dispatch<React.SetStateAction<number>>
+}> = ({
+  isDisabledTypeAgent,
+  isDisabledLLMModel,
+  setLlmModel,
+  llmModel,
+  typeAgent,
+  setTypeAgent,
+}) => {
   const { isPaid, checkPayment } = useGetPaymentHistory()
   const { control } = useFormContext()
   const { handleSend } = useSend()
@@ -153,7 +163,7 @@ const AgentType: React.FC<{
               name="typeAgent"
               control={control}
               render={({ field: { value, onChange } }: any) => {
-                const isSelected = value === item.key
+                const isSelected = value === item.key || typeAgent === item.key
                 return (
                   <div
                     className="flex h-[200px] items-start justify-between gap-3 rounded-[14px] border-[2px] border-transparent bg-mercury-30 p-4 hover:cursor-pointer aria-checked:opacity-60 aria-selected:border-brown-500 max-md:h-auto"
@@ -239,6 +249,7 @@ const AgentType: React.FC<{
                         if (isDisabledTypeAgent) return
                         onChange(item.key)
                         setIsLoading(false)
+                        if (setTypeAgent) setTypeAgent(item.key)
                       }}
                     />
                   </div>
@@ -263,7 +274,8 @@ const AgentType: React.FC<{
               name="llmModel"
               control={control}
               render={({ field: { value, onChange } }: any) => {
-                const isSelected = value == record.value
+                const isSelected =
+                  value == record.value || llmModel === record.value
                 return (
                   <div
                     className="flex h-[100px] w-1/2 items-start justify-between gap-3 rounded-[14px] border-[2px] border-transparent bg-mercury-30 p-4 hover:cursor-pointer aria-checked:opacity-50 aria-selected:border-brown-500 max-md:h-auto max-md:w-full"
