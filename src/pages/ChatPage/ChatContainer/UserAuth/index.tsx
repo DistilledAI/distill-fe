@@ -53,7 +53,7 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
         <ChatInfoCurrent groupDetail={groupDetail} textColor={textColor} />
       </div>
       {isShowInfo ? (
-        <div className="inline-flex items-center gap-2">
+        <div className="inline-flex items-center gap-3">
           <div
             className="relative flex cursor-pointer items-center gap-1"
             onClick={() => navigate(PATH_NAMES.REWARDS)}
@@ -72,7 +72,7 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
             <DropdownTrigger>
               <button
                 type="button"
-                className="rounded-full border border-white bg-mercury-30 p-2 !outline-none"
+                className="flex h-12 w-12 items-center justify-center rounded-full border border-white bg-mercury-30 !outline-none"
               >
                 <AvatarCustom
                   publicAddress={user.publicAddress}

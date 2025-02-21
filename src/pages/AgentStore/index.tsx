@@ -25,26 +25,26 @@ const CATEGORIES: {
     component: <AIAgentList />,
     isComing: false,
   },
-  defai: {
-    name: "DeFAI Management",
-    component: null,
-    isComing: true,
-  },
-  "emotional-companion": {
-    name: "Emotional Companion",
-    component: null,
-    isComing: true,
-  },
-  research: {
-    name: "Research",
-    component: null,
-    isComing: true,
-  },
-  productivity: {
-    name: "Productivity",
-    component: null,
-    isComing: true,
-  },
+  // defai: {
+  //   name: "DeFAI Management",
+  //   component: null,
+  //   isComing: true,
+  // },
+  // "emotional-companion": {
+  //   name: "Emotional Companion",
+  //   component: null,
+  //   isComing: true,
+  // },
+  // research: {
+  //   name: "Research",
+  //   component: null,
+  //   isComing: true,
+  // },
+  // productivity: {
+  //   name: "Productivity",
+  //   component: null,
+  //   isComing: true,
+  // },
 }
 
 const AgentStore = () => {

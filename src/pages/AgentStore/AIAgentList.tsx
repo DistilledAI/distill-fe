@@ -1,4 +1,3 @@
-import { maxAvatarPlaceholder2 } from "@assets/images"
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { envConfig } from "@configs/env"
 import { PATH_NAMES, Publish, RoleUser, STATUS_AGENT } from "@constants/index"
@@ -9,14 +8,52 @@ import { ConfigBotType } from "@types"
 import { useNavigate } from "react-router-dom"
 import { searchUsers } from "services/chat"
 import { QueryDataKeys } from "types/queryDataKeys"
-// import AgentSkeleton from "./AgentSkeleton"
+import { useState } from "react"
+import { Pagination } from "@nextui-org/react"
+import PaginationItemCustom from "./PaginationItemCustom"
+import AvatarCustom from "@components/AvatarCustom"
+import { maxAvatarPlaceholder } from "@assets/images"
 
 const AIAgentList = () => {
   const navigate = useNavigate()
   const { user } = useAuthState()
+  const limit = 9
+  const [page, setPage] = useState(1)
+
+  const fetchPrivateAgents = async () => {
+    const payloadData = {
+      username: "",
+      status: STATUS_AGENT.ACTIVE,
+      role: RoleUser.BOT,
+      publish: Publish.Published,
+    }
+    const res = await searchUsers(
+      JSON.stringify(payloadData),
+      limit,
+      (page - 1) * limit,
+    )
+    return {
+      agents: res?.data?.items as IUser[],
+      total: res?.data?.total,
+    }
+  }
+
+  const { data, error } = useQuery({
+    queryKey: [QueryDataKeys.PRIVATE_AGENTS_MKL, page],
+    queryFn: fetchPrivateAgents,
+    staleTime: 5 * 60 * 1000,
+    refetchOnWindowFocus: false,
+  })
+
+  if (error) {
+    console.error(error)
+  }
+
+  const onPageChange = (newPage: number) => {
+    setPage(newPage)
+  }
 
   const handleChatWithAgent = async (agent: IUser) => {
-    // invite user to group live
     const isBotLive = agent?.configBot === ConfigBotType.LIVE
     if (isBotLive) {
       const groupId = envConfig.groupIdMax
@@ -30,102 +67,57 @@ const AIAgentList = () => {
     }
   }
 
-  const fetchPrivateAgents = async () => {
-    const payloadData = {
-      username: "",
-      status: STATUS_AGENT.ACTIVE,
-      role: RoleUser.BOT,
-      publish: Publish.Published,
-    }
-    const res = await searchUsers(JSON.stringify(payloadData))
-    return res?.data?.items as IUser[]
-  }
-
-  const {
-    data: agents = [],
-    error,
-    // isFetching,
-  } = useQuery({
-    queryKey: [QueryDataKeys.PRIVATE_AGENTS_MKL],
-    queryFn: fetchPrivateAgents,
-    staleTime: 5 * 60 * 1000,
-    refetchOnWindowFocus: false,
-  })
-
-  if (error) {
-    console.log({ error })
-  }
-
-  // if (isFetching)
-  //   return (
-  //     <>
-  //       <AgentSkeleton />
-  //       <AgentSkeleton />
-  //       <AgentSkeleton />
-  //       <AgentSkeleton />
-  //       <AgentSkeleton />
-  //       <AgentSkeleton />
-  //     </>
-  //   )
-
   return (
-    <div className="grid grid-cols-2 gap-3">
-      {agents.map((item) => (
-        <div
-          key={item.id}
-          className="cursor-pointer rounded-[22px] border border-mercury-100 bg-mercury-50 p-4 hover:bg-mercury-100"
-          onClick={() => handleChatWithAgent(item)}
-        >
-          <div className="flex gap-4">
-            <div
-              className="relative h-[120px] w-[100px] flex-shrink-0 overflow-hidden rounded-lg bg-cover bg-center bg-no-repeat"
-              style={{
-                backgroundImage: `url(${item.avatar || maxAvatarPlaceholder2})`,
-              }}
-            >
-              <div className="absolute inset-0 z-10 rounded-lg border-[2px] border-white/20" />
-              <div
-                className="absolute inset-0"
-                style={{
-                  background:
-                    "linear-gradient(180deg, rgba(0, 0, 0, 0.70) 0%, #000 100%)",
-                  opacity: 0.1,
-                }}
-              />
-              <div
-                className="absolute inset-0 top-[21.05%] h-[78.95%] w-full"
-                style={{
-                  background:
-                    "linear-gradient(180deg, rgba(0, 0, 0, 0.00) 28.5%, #000 100%)",
-                }}
-              />
+    <>
+      <div className="grid grid-cols-3 gap-3">
+        {data?.agents.map((item) => (
+          <div
+            key={item.id}
+            className="flex cursor-pointer flex-col justify-between gap-2 rounded-[22px] border border-mercury-100 bg-mercury-50 p-4 hover:bg-mercury-100"
+            onClick={() => handleChatWithAgent(item)}
+          >
+            <div className="flex flex-col items-center">
+              <div>
+                <AvatarCustom
+                  src={item.avatar}
+                  badgeIcon={<FilledBrainAIIcon size={14} />}
+                  badgeClassName="bg-[#FC0]"
+                />
+              </div>
+
+              <span className="text-16 font-bold text-mercury-950">
+                {item.username}
+              </span>
+
+              <p className="line-clamp-3 text-center text-14 font-medium text-mercury-800">
+                {item.description || "-"}
+              </p>
             </div>
-
-            <div className="flex flex-col justify-between gap-2">
-              <div>
-                <div className="flex items-center gap-1">
-                  <span className="text-16 font-bold text-mercury-950">
-                    {item.username}
-                  </span>
-                  <div className="w-fit rounded-[4px] bg-[#FFCC00] p-[2px]">
-                    <FilledBrainAIIcon size={14} />
-                  </div>
-                </div>
-
-                <p className="line-clamp-3 text-13 font-medium text-mercury-800">
-                  {item.description || "-"}
-                </p>
-              </div>
-              <div>
-                <div className="w-fit rounded-[4px] border border-brown-400 bg-brown-50 px-2 text-14 font-medium text-brown-600">
-                  AI Agent
-                </div>
-              </div>
+            <div className="flex items-center justify-center gap-2 text-14 font-medium text-mercury-600">
+              Created by{" "}
+              <img src={maxAvatarPlaceholder} className="h-[18px] w-[18px]" /> -
             </div>
           </div>
-        </div>
-      ))}
-    </div>
+        ))}
+      </div>
+
+      {data && (
+        <Pagination
+          showControls
+          initialPage={1}
+          radius="full"
+          renderItem={PaginationItemCustom}
+          total={data.total ? Math.ceil(data.total / limit) : 1}
+          variant="light"
+          classNames={{
+            base: "flex justify-center mt-4",
+            cursor: "bg-mercury-950 font-bold",
+          }}
+          onChange={onPageChange}
+          page={page}
+        />
+      )}
+    </>
   )
 }
 

@@ -164,19 +164,6 @@ const LeftContent: React.FC<{
 
         {isFetched && groupDetail !== null ? (
           <>
-            <AgentSocials
-              agentInfo={{
-                username: groupDetail?.group?.name,
-                xLink: groupConfig?.x as string,
-                teleLink: groupConfig?.telegram as string,
-                shareLink: `${window.location.origin}${PATH_NAMES.CLAN}/${groupDetail?.group?.label}`,
-                contract: groupConfig?.contractAddress as string,
-                website: groupConfig?.website as string,
-              }}
-              classNames={{
-                wrapper: "mt-3 hidden md:flex",
-              }}
-            />
             <VaultButton
               key={groupConfig?.contractAddress}
               address={groupConfig?.contractAddress as StakeTokenAddress}
@@ -217,6 +204,20 @@ const LeftContent: React.FC<{
         ) : (
           <SkeletonDesc />
         )}
+        <AgentSocials
+          agentInfo={{
+            username: groupDetail?.group?.name,
+            xLink: groupConfig?.x as string,
+            teleLink: groupConfig?.telegram as string,
+            shareLink: `${window.location.origin}${PATH_NAMES.CLAN}/${groupDetail?.group?.label}`,
+            contract: groupConfig?.contractAddress as string,
+            website: groupConfig?.website as string,
+          }}
+          classNames={{
+            wrapper: "mt-3 hidden md:flex",
+            button: "p-0 !min-w-fit !w-fit !h-fit bg-transparent",
+          }}
+        />
       </div>
 
       {isOpenModal && (
