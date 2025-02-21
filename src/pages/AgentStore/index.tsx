@@ -61,7 +61,7 @@ const AgentStore = () => {
   const activeCategory = CATEGORIES[tabId]
 
   return (
-    <div className="mx-auto mt-8 max-w-[852px] max-lg:px-4">
+    <div className="mx-auto mt-8 max-w-[1024px] max-lg:px-4">
       <div className="flex items-center justify-between gap-2">
         <Input
           startContent={<FilledSearchIcon size={24} color="#363636" />}
