@@ -48,14 +48,14 @@ const AgentInfoCard = ({ messages, groupId }: AgentInfoCardProps) => {
 
   if (!agentInfo) {
     return (
-      <div className="md:p-4">
+      <div className="h-fit md:p-4">
         <Skeleton className="mx-auto min-h-[111px] max-w-[768px] md:rounded-[14px]" />
       </div>
     )
   }
 
   return (
-    <div className="md:px-4">
+    <div className="h-fit md:px-4">
       <div className="mx-auto min-h-[111px] max-w-[768px] border border-mercury-100 bg-mercury-50 p-2 max-md:border-x-0 md:rounded-[14px]">
         <div className="flex gap-x-3 md:gap-x-4">
           <AvatarCustom
@@ -99,13 +99,6 @@ const AgentInfoCard = ({ messages, groupId }: AgentInfoCardProps) => {
                 >
                   <ShareWithQrIcon />
                 </Button>
-                {/* <Button
-                  isDisabled
-                  isIconOnly
-                  className="rounded-full border border-mercury-50 bg-mercury-100 md:h-9 md:min-w-[52px]"
-                >
-                  <ThreeDotsCircleIcon />
-                </Button> */}
               </div>
             </div>
 
