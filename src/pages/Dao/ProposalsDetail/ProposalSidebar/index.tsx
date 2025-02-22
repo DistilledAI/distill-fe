@@ -19,7 +19,10 @@ const ProposalSidebar = ({
   <div className="col-span-1 max-md:order-2">
     <div className="w-full md:fixed md:max-w-[350px]">
       <h2 className="text-24 font-semibold">Proposal</h2>
-      <PropsalStatusContent proposalDetail={proposalDetail} />
+      <PropsalStatusContent
+        proposalDetail={proposalDetail}
+        proposalIpfs={proposalIpfs}
+      />
       <ProposalInfo
         proposalDetail={proposalDetail}
         proposalIpfs={proposalIpfs}

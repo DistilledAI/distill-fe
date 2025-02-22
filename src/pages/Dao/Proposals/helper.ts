@@ -8,6 +8,29 @@ export enum ProposalStatus {
   CLOSED = "Closed",
 }
 
+export const getRatioOfVotes = (
+  proposal: IProposal,
+  voteType: ProposalType = ProposalType.YesNo,
+) => {
+  const [yesVotes, noVotes] = proposal.voteCount
+  let totalVotes = yesVotes + noVotes
+  let turnout = getTurnout(totalVotes, proposal.totalStaked)
+
+  const totalYesVotes = (yesVotes / totalVotes) * 100
+  const quorum = proposal.quorum * 100
+  const threshold = proposal.threshold * 100
+
+  if (voteType === ProposalType.Options) {
+    totalVotes = proposal.voteCount.reduce(
+      (total, current) => total + current,
+      0,
+    )
+    turnout = getTurnout(totalVotes, proposal.totalStaked)
+  }
+
+  return { turnout, totalYesVotes, quorum, threshold }
+}
+
 export function getProposalStatus(
   proposal: IProposal,
   currentTime: number,
@@ -18,19 +41,14 @@ export function getProposalStatus(
       return ProposalStatus.OPEN
     }
 
-    const [yesVotes, noVotes] = proposal.voteCount
-    const totalVotes = yesVotes + noVotes
+    const { turnout, totalYesVotes, quorum, threshold } =
+      getRatioOfVotes(proposal)
 
-    const turnout = getTurnout(totalVotes, proposal.totalStaked)
-    const ratioYesVotes = (yesVotes / totalVotes) * 100
-    const quorum = proposal.quorum * 100
-    const threshold = proposal.threshold * 100
-
-    if (totalVotes === 0 || turnout < quorum || ratioYesVotes < threshold) {
+    if (totalYesVotes === 0 || turnout < quorum || totalYesVotes < threshold) {
       return ProposalStatus.REJECTED
     }
 
-    if (ratioYesVotes >= threshold && turnout >= quorum) {
+    if (totalYesVotes >= threshold && turnout >= quorum) {
       return ProposalStatus.PASSED
     }
 
