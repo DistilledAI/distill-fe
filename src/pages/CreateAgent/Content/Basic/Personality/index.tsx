@@ -8,7 +8,7 @@ import {
 } from "@assets/images"
 import { LockFilledIcon } from "@components/Icons/AgentDetailIcon"
 import { StarUserIconOutline } from "@components/Icons/UserIcon"
-import { Checkbox } from "@nextui-org/react"
+import { Checkbox, Textarea } from "@nextui-org/react"
 import CategoryLabel from "@pages/AgentDetail/CategoryLabel"
 import { useFormContext } from "react-hook-form"
 
@@ -52,7 +52,7 @@ const PERSONALITY_LIST = [
     icon: TemCustom,
     label: "Custom",
     selected: false,
-    value: "personality_traits",
+    value: "",
     type: "custom",
   },
 ]
@@ -105,27 +105,55 @@ const Personality = () => {
           Select the trait that best describe your agent's personality.
         </p>
       </div>
-      <div className="mt-5 grid grid-cols-3 gap-4 rounded-[22px] bg-[#E9E3D8] p-3">
-        {PERSONALITY_LIST.map((item) => (
-          <div
-            key={item.value}
-            onClick={() => handleSelect("personality_traits", item.value)}
-            className="flex cursor-pointer items-center justify-between rounded-[14px] border-1 border-white bg-mercury-30 p-3"
-          >
-            <div className="flex items-center gap-3">
-              <img
-                className="h-10 w-10 rounded-[8px] object-cover"
-                src={item.icon}
-                alt="avatar"
+      <div className="mt-5 rounded-[22px] bg-[#E9E3D8] p-3">
+        <div className="grid grid-cols-3 gap-4">
+          {PERSONALITY_LIST.map((item) => (
+            <div
+              key={item.value}
+              onClick={() => handleSelect("personality_traits", item.value)}
+              className="flex cursor-pointer items-center justify-between rounded-[14px] border-1 border-white bg-mercury-30 p-3"
+            >
+              <div className="flex items-center gap-3">
+                <img
+                  className="h-10 w-10 rounded-[8px] object-cover"
+                  src={item.icon}
+                  alt="avatar"
+                />
+                <p className="text-14 font-medium">{item.label}</p>
+              </div>
+              <Checkbox
+                radius="full"
+                onValueChange={(check) =>
+                  setValue("personality_traits", check ? [item.value] : [])
+                }
+                isSelected={watch("personality_traits")?.[0] === item.value}
               />
-              <p className="text-14 font-medium">{item.label}</p>
             </div>
-            <Checkbox
-              radius="full"
-              isSelected={watch("personality_traits")?.[0] === item.value}
-            />
-          </div>
-        ))}
+          ))}
+        </div>
+        <div className="mt-5">
+          <p className="mb-1 font-semibold">Agent's Purpose</p>
+          <Textarea
+            classNames={{
+              inputWrapper: "!bg-mercury-30  border-1 border-mercury-400",
+              input: "text-15 font-semibold !text-brown-600",
+            }}
+            onValueChange={(val) => {
+              setValue("personality_traits", [val])
+            }}
+            value={watch("personality_traits")?.[0]}
+          />
+        </div>
+        <div className="mt-4">
+          <p className="mb-1 font-semibold">Communication Style</p>
+          <Textarea
+            classNames={{
+              inputWrapper: "!bg-mercury-30  border-1 border-mercury-400",
+              input: "text-15 font-semibold !text-brown-600",
+            }}
+            value={watch("personality_traits")?.[0]}
+          />
+        </div>
       </div>
     </div>
   )

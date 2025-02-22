@@ -42,8 +42,7 @@ const columns = [
 
 const StakedTable: React.FC<{
   list: IVaultData[]
-  setList: React.Dispatch<React.SetStateAction<any[]>>
-}> = ({ list, setList }) => {
+}> = ({ list }) => {
   const renderCell = (item: Record<string, any>, columnKey: string) => {
     switch (columnKey) {
       case ColumnKey.VaultName:
@@ -58,7 +57,7 @@ const StakedTable: React.FC<{
         return <ItemTotalStaked data={item} />
 
       case ColumnKey.MyStaked:
-        return <ItemMyStaked setList={setList} data={item} />
+        return <ItemMyStaked data={item} />
 
       case ColumnKey.Action:
         return (
