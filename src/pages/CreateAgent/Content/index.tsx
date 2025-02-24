@@ -3,8 +3,6 @@ import { TabKeyAgent } from "../NavTab"
 import { lazy } from "react"
 import { twMerge } from "tailwind-merge"
 const AgentBasicInfo = lazy(() => import("./Basic"))
-const ClanUtilities = lazy(() => import("./ClanUtilities"))
-const Knowledge = lazy(() => import("./Knowledge"))
 
 const AgentContent = () => {
   const [searchParams] = useSearchParams()
@@ -17,22 +15,6 @@ const AgentContent = () => {
         className={twMerge("hidden", isActive(TabKeyAgent.Basic) && "block")}
       >
         <AgentBasicInfo />
-      </div>
-      <div
-        className={twMerge(
-          "hidden",
-          isActive(TabKeyAgent.ClanUtilities) && "block",
-        )}
-      >
-        <ClanUtilities />
-      </div>
-      <div
-        className={twMerge(
-          "hidden",
-          isActive(TabKeyAgent.Knowledge) && "block",
-        )}
-      >
-        <Knowledge />
       </div>
     </>
   )
