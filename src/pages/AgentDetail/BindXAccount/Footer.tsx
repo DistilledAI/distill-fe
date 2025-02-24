@@ -4,10 +4,12 @@ import { InputField } from "./BindYourAccount"
 
 const Footer: React.FC<{
   stepNumber: number
-  formState: any
+  methods: any
   onNextStep: any
-}> = ({ stepNumber, formState, onNextStep }) => {
-  const { register, handleSubmit, watch, resetField, setValue } = formState
+  onBindYourAccount: any
+  loading: boolean
+}> = ({ stepNumber, methods, onNextStep, onBindYourAccount, loading }) => {
+  const { register, watch, handleSubmit, resetField, setValue } = methods
   const consumerKeyValue = watch("consumerKey")
   const consumerSecretValue = watch("consumerSecret")
   const accessTokenValue = watch("accessToken")
@@ -165,13 +167,25 @@ const Footer: React.FC<{
     <ModalFooter className="bg-mercury-950">
       <div className="flex w-full items-center justify-between py-4">
         {renderContent()}
-        <Button
-          className="rounded-full bg-white"
-          size="lg"
-          onPress={onNextStep}
-        >
-          <span className="text-base-b">Next Step</span>
-        </Button>
+
+        {stepNumber < 5 ? (
+          <Button
+            className="rounded-full bg-white"
+            size="lg"
+            onPress={onNextStep}
+          >
+            <span className="text-base-b">Next Step</span>
+          </Button>
+        ) : (
+          <Button
+            className="rounded-full bg-white"
+            size="lg"
+            onPress={handleSubmit(onBindYourAccount)}
+            isLoading={loading}
+          >
+            <span className="text-base-b">Finish</span>
+          </Button>
+        )}
       </div>
     </ModalFooter>
   )

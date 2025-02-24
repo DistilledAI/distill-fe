@@ -4,7 +4,7 @@ import videoStep3 from "@assets/video/BindXAccount/step3.mp4"
 import videoStep4 from "@assets/video/BindXAccount/step4.mp4"
 import videoStep5 from "@assets/video/BindXAccount/step5.mp4"
 import VideoCustom from "@components/VideoCustom"
-import { useEffect } from "react"
+import { defineElement } from "@utils/index"
 
 const STEPS = [
   {
@@ -35,25 +35,28 @@ interface ContentProps {
 
 const Content: React.FC<ContentProps> = ({ stepNumber }) => {
   const mapVideoSrcToStepNumber = {
-    1: videoStep1,
-    2: videoStep2,
-    3: videoStep3,
-    4: videoStep4,
-    5: videoStep5,
+    1: (
+      <VideoCustom videoSrc={videoStep1} isPlayIcon isFullScreenIcon key={1} />
+    ),
+    2: (
+      <VideoCustom videoSrc={videoStep2} isPlayIcon isFullScreenIcon key={2} />
+    ),
+    3: (
+      <VideoCustom videoSrc={videoStep3} isPlayIcon isFullScreenIcon key={3} />
+    ),
+    4: (
+      <VideoCustom videoSrc={videoStep4} isPlayIcon isFullScreenIcon key={4} />
+    ),
+    5: (
+      <VideoCustom videoSrc={videoStep5} isPlayIcon isFullScreenIcon key={5} />
+    ),
   } as any
-
-  let videoSrc = videoStep1
-
-  useEffect(() => {
-    videoSrc = mapVideoSrcToStepNumber?.[stepNumber]
-  }, [stepNumber])
 
   return (
     <div className="flex items-center justify-between gap-6">
       <div className="w-[70%] overflow-hidden rounded-lg">
-        <VideoCustom videoSrc={videoSrc} isPlayIcon isFullScreenIcon />
+        {defineElement(mapVideoSrcToStepNumber[stepNumber])}
       </div>
-
       <div className="relative w-[30%]">
         {STEPS.map((step: any) => {
           const isStepActive = step.stepNumber === stepNumber
