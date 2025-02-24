@@ -41,7 +41,6 @@ const AIAgentList = () => {
   const { data, error } = useQuery({
     queryKey: [QueryDataKeys.PRIVATE_AGENTS_MKL, page],
     queryFn: fetchPrivateAgents,
-    staleTime: 5 * 60 * 1000,
     refetchOnWindowFocus: false,
   })
 
@@ -69,7 +68,7 @@ const AIAgentList = () => {
 
   return (
     <>
-      <div className="grid grid-cols-3 gap-3">
+      <div className="grid grid-cols-3 gap-4">
         {data?.agents.map((item) => (
           <div
             key={item.id}
@@ -93,9 +92,13 @@ const AIAgentList = () => {
                 {item.description || "-"}
               </p>
             </div>
-            <div className="flex items-center justify-center gap-2 text-14 font-medium text-mercury-600">
+            <div className="line-clamp-1 flex items-center justify-center gap-2 text-14 font-medium text-mercury-600">
               Created by{" "}
-              <img src={maxAvatarPlaceholder} className="h-[18px] w-[18px]" /> -
+              <img
+                src={item?.ownerInfo?.avatar || maxAvatarPlaceholder}
+                className="h-[18px] w-[18px] rounded-full"
+              />{" "}
+              {item?.ownerInfo?.username || "-"}
             </div>
           </div>
         ))}

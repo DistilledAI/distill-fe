@@ -91,7 +91,7 @@ const AgentClansStore = () => {
           title: "Clans",
         })}
 
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-2 gap-4">
           {data.map((item: IGroupDetail) => {
             const description = item?.groupConfig?.find(
               (val) => val.key === "description" && val.type === "clan",
@@ -99,7 +99,7 @@ const AgentClansStore = () => {
             return (
               <div key={item.id} className="w-full">
                 <div
-                  className="cursor-pointer rounded-[22px] border border-mercury-100 bg-mercury-50 p-4 hover:bg-mercury-100"
+                  className="h-full cursor-pointer rounded-[22px] border border-mercury-100 bg-mercury-50 p-4 hover:bg-mercury-100"
                   onClick={() => handleChatAgentClan(item)}
                 >
                   <div className="flex gap-4">
