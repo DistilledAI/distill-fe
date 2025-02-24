@@ -26,7 +26,14 @@ interface ProposalStatusContent {
 
 const proposalStatusTemplates = {
   [ProposalStatus.OPEN]: {
-    content: ({ proposal, voteType }: ProposalStatusContent) => {
+    content: () => "This proposal is open for voting.",
+  },
+  [ProposalStatus.PASSED]: {
+    content: ({ turnout, ratio }: ProposalStatusContent) =>
+      `This proposal is closed for voting with a turnout of ${turnout}% and ${ratio}% of voters in favor.`,
+  },
+  [ProposalStatus.REJECTED]: {
+    content: ({ ratio, proposal, voteType }: ProposalStatusContent) => {
       if (proposal) {
         const { turnout, totalYesVotes, quorum, threshold } = getRatioOfVotes(
           proposal,
@@ -38,19 +45,11 @@ const proposalStatusTemplates = {
           (totalYesVotes >= threshold && turnoutPass) ||
           (voteType === ProposalType.Options && turnoutPass)
         ) {
-          return "If the current vote stands, this proposal will pass."
+          return `This proposal is closed for voting with a turnout of ${turnout}% and ${ratio}% of voters in favor.`
         }
       }
-      return "If the current vote stands, this proposal will fail due to a lack of voter participation."
+      return "This proposal is closed and rejected."
     },
-  },
-  [ProposalStatus.PASSED]: {
-    content: ({ turnout, ratio }: ProposalStatusContent) =>
-      `This proposal is closed for voting with a turnout of ${turnout}% and ${ratio}% of voters in favor. It was passed.`,
-  },
-  [ProposalStatus.REJECTED]: {
-    content: ({ turnout, ratio }: ProposalStatusContent) =>
-      `This proposal is closed for voting with a turnout of ${turnout}% and ${ratio}% of voters in favor. It was rejected.`,
   },
 }
 
