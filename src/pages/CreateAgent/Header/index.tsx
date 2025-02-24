@@ -1,8 +1,18 @@
 import { Button, useDisclosure } from "@nextui-org/react"
 import CancelModal from "./CancelModal"
+import React from "react"
+import { useFormContext } from "react-hook-form"
 
-const AgentHeader = () => {
+const AgentHeader: React.FC<{
+  isLoading: boolean
+}> = ({ isLoading }) => {
   const { onOpen, onClose, isOpen } = useDisclosure()
+  const { watch } = useFormContext()
+  const personality = watch("personality_traits")
+  const agentName = watch("username")
+  const agentDesc = watch("description")
+
+  const isDisabled = personality.length === 0 || !agentName || !agentDesc
 
   return (
     <div className="fixed left-0 top-0 z-50 w-full border-b-1 border-mercury-100 bg-mercury-70">
@@ -19,7 +29,12 @@ const AgentHeader = () => {
             Setup Information
           </p>
         </div>
-        <Button className="h-[50px] w-[140px] rounded-full bg-mercury-950 font-semibold text-white">
+        <Button
+          type="submit"
+          isLoading={isLoading}
+          isDisabled={isDisabled}
+          className="h-[50px] w-[140px] rounded-full bg-mercury-950 font-semibold text-white"
+        >
           Save & Create
         </Button>
       </div>
