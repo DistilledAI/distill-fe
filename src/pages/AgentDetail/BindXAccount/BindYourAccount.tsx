@@ -119,7 +119,7 @@ const BindYourAccount: React.FC<{
         classNames={{
           base: "bg-mercury-100 ",
         }}
-        size="3xl"
+        size="5xl"
         id="bind-your-account-modal"
         scrollBehavior="inside"
       >
