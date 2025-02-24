@@ -1,4 +1,4 @@
-import { useState, useRef, Suspense } from "react"
+import { useState, useRef, useEffect } from "react"
 import { FilledSearchIcon } from "@components/Icons/SearchIcon"
 import { Input } from "@nextui-org/react"
 import SortAgents from "./SortAgents"
@@ -7,58 +7,65 @@ import { Swiper, SwiperRef, SwiperSlide } from "swiper/react"
 import { Navigation } from "swiper/modules"
 import AgentClansStore from "./AgentClansStore"
 import AIAgentList from "./AIAgentList"
+import { useNavigate, useLocation } from "react-router-dom"
 
-const CATEGORIES: {
-  [key: string]: {
-    name: string
-    component: JSX.Element | null
-    isComing: boolean
-  }
-} = {
+const CATEGORIES = {
   "agent-clans": {
     name: "Agent Clans",
-    component: <AgentClansStore />,
-    isComing: false,
   },
   "ai-agents": {
     name: "All AI Agents",
-    component: <AIAgentList />,
-    isComing: false,
   },
-  // defai: {
-  //   name: "DeFAI Management",
-  //   component: null,
-  //   isComing: true,
-  // },
-  // "emotional-companion": {
-  //   name: "Emotional Companion",
-  //   component: null,
-  //   isComing: true,
-  // },
-  // research: {
-  //   name: "Research",
-  //   component: null,
-  //   isComing: true,
-  // },
-  // productivity: {
-  //   name: "Productivity",
-  //   component: null,
-  //   isComing: true,
-  // },
-}
+} as const
+
+type TabId = keyof typeof CATEGORIES
 
 const AgentStore = () => {
-  const [tabId, setTabId] = useState("agent-clans")
+  const navigate = useNavigate()
+  const location = useLocation()
+  const [tabId, setTabId] = useState<TabId>()
   const swiperRef = useRef<SwiperRef | null>(null)
 
-  const handleSlideClick = (id: string, index: number) => {
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search)
+    const tabFromUrl = searchParams.get("tab")
+
+    if (!tabFromUrl) {
+      navigate(`${location.pathname}?tab=agent-clans`, { replace: true })
+      setTabId("agent-clans")
+      if (swiperRef.current?.swiper) {
+        swiperRef.current.swiper.slideTo(0)
+      }
+    } else {
+      const validTab = Object.keys(CATEGORIES).includes(tabFromUrl)
+        ? (tabFromUrl as TabId)
+        : "agent-clans"
+      setTabId(validTab)
+      if (swiperRef.current?.swiper) {
+        const index = Object.keys(CATEGORIES).indexOf(validTab)
+        swiperRef.current.swiper.slideTo(index)
+      }
+    }
+  }, [location.search, navigate])
+
+  const handleSlideClick = (id: TabId, index: number) => {
     if (swiperRef.current?.swiper) {
       swiperRef.current.swiper.slideTo(index)
     }
     setTabId(id)
+    navigate(`${location.pathname}?tab=${id}`, { replace: true })
   }
 
-  const activeCategory = CATEGORIES[tabId]
+  const renderActiveComponent = () => {
+    switch (tabId) {
+      case "agent-clans":
+        return <AgentClansStore key="agent-clans" />
+      case "ai-agents":
+        return <AIAgentList key="ai-agents" />
+      default:
+        return null
+    }
+  }
 
   return (
     <div className="mx-auto mt-8 max-w-[1024px] max-lg:px-4">
@@ -89,12 +96,12 @@ const AgentStore = () => {
           navigation={false}
         >
           {Object.keys(CATEGORIES).map((key, index) => {
-            const item = CATEGORIES[key]
+            const item = CATEGORIES[key as TabId]
             return (
               <SwiperSlide key={key} className="w-auto last:mr-14">
                 <button
                   type="button"
-                  onClick={() => handleSlideClick(key, index)}
+                  onClick={() => handleSlideClick(key as TabId, index)}
                   className={twMerge(
                     "h-14 flex-shrink-0 whitespace-nowrap rounded-full border border-transparent bg-mercury-30 px-4 text-[16px] font-bold text-mercury-700 transition-all duration-300 ease-linear",
                     tabId === key &&
@@ -107,13 +114,17 @@ const AgentStore = () => {
             )
           })}
         </Swiper>
-        <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-[30%] bg-gradient-to-l from-white via-white to-transparent" />
-        <div className="absolute right-0 top-0 z-10">
-          <SortAgents />
-        </div>
+        {tabId !== "ai-agents" && (
+          <>
+            <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-[30%] bg-gradient-to-l from-white via-white to-transparent" />
+            <div className="absolute right-0 top-0 z-10">
+              <SortAgents />
+            </div>
+          </>
+        )}
       </div>
 
-      <Suspense fallback={null}>{activeCategory?.component}</Suspense>
+      {renderActiveComponent()}
     </div>
   )
 }

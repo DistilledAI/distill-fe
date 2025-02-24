@@ -94,16 +94,27 @@ export const getChatHistoryById = async ({
   })
 }
 
-export const searchUsers = async (
-  payload: any,
-  limit: number = 30,
-  offset: number = 0,
-) => {
+export const searchUsers = async ({
+  filter,
+  sort,
+  limit = 30,
+  offset = 0,
+}: {
+  filter?: {
+    [key: string]: any
+  }
+  sort?: {
+    [key: string]: any
+  }
+  limit?: number
+  offset?: number
+}) => {
   return fetchApiAuth({
     method: "get",
     url: endpoint.SEARCH_USER,
     params: {
-      filter: payload,
+      filter: JSON.stringify(filter),
+      sort: JSON.stringify(sort),
       limit,
       offset,
     },

@@ -24,7 +24,9 @@ const useSearch = (inputRef: any, isAutoFocus = true) => {
         role: keyword === "" ? RoleUser.BOT : role,
         publish: Publish.Published,
       }
-      const response = await searchUsers(JSON.stringify(payloadData))
+      const response = await searchUsers({
+        filter: payloadData,
+      })
       if (response) {
         return setData(response?.data?.items)
       }

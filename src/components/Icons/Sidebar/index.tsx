@@ -93,7 +93,7 @@ export const ClanOutlineIcon = ({
         strokeLinecap="round"
         strokeLinejoin="round"
       />
-      <g clip-path="url(#clip0_7438_67252)">
+      <g clipPath="url(#clip0_7438_67252)">
         <path
           d="M6.25 10H13.75M10 13.75V6.25M8.125 8.125L11.875 11.875M8.125 11.875L11.875 8.125"
           stroke={color}
