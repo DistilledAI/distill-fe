@@ -144,6 +144,33 @@ export const CameraIcon = () => {
   )
 }
 
+export const BookDownloadIcon = () => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="20"
+      height="20"
+      viewBox="0 0 20 20"
+      fill="none"
+    >
+      <path
+        d="M10.0002 16.6663H5.00016C4.55814 16.6663 4.13421 16.4907 3.82165 16.1782C3.50909 15.8656 3.3335 15.4417 3.3335 14.9997V4.99967C3.3335 4.55765 3.50909 4.13372 3.82165 3.82116C4.13421 3.5086 4.55814 3.33301 5.00016 3.33301H15.0002V7.49967"
+        stroke="#83664B"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M10.8335 13.333H5.00016C4.55814 13.333 4.13421 13.5086 3.82165 13.8212C3.50909 14.1337 3.3335 14.5576 3.3335 14.9997M12.5002 15.833L15.0002 18.333M15.0002 18.333L17.5002 15.833M15.0002 18.333V10.833"
+        stroke="#83664B"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}
+
 export const LeafIcon = () => {
   return (
     <svg

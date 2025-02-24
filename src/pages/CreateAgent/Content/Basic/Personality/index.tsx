@@ -6,11 +6,14 @@ import {
   TemProfessional,
   TemSupportive,
 } from "@assets/images"
+import { BookDownloadIcon } from "@components/Icons"
 import { LockFilledIcon } from "@components/Icons/AgentDetailIcon"
 import { StarUserIconOutline } from "@components/Icons/UserIcon"
-import { Checkbox, Textarea } from "@nextui-org/react"
+import { Checkbox, Textarea, useDisclosure } from "@nextui-org/react"
 import CategoryLabel from "@pages/AgentDetail/CategoryLabel"
+import { useState } from "react"
 import { useFormContext } from "react-hook-form"
+import CommunicationStylePreset from "./CommunicationStylePreset"
 
 const PERSONALITY_LIST = [
   {
@@ -57,20 +60,37 @@ const PERSONALITY_LIST = [
   },
 ]
 
+export interface BehaviorItem {
+  value: string
+  label: string
+  type?: string
+  emoji?: string
+  desc?: string
+}
+
+// enum BehaviorAgentKeys {
+//   personality_traits = "personality_traits",
+//   communication_style = "communication_style",
+// }
+
 export interface SelectedBehaviors {
   personality_traits: string[]
+  communication_style: string[]
 }
 
 const Personality = () => {
   const { watch, setValue } = useFormContext()
-  console.log("XXXX", watch("personality_traits"))
+  const [isCustom, setIsCustom] = useState(false)
+  const { onOpen, isOpen, onClose } = useDisclosure()
 
   const selectedBehaviors = {
     personality_traits: watch("personality_traits"),
+    communication_style: watch("communication_style"),
   }
   const handleSelectBehaviors = (selected: SelectedBehaviors) => {
-    const { personality_traits } = selected
+    const { personality_traits, communication_style } = selected
     setValue("personality_traits", personality_traits)
+    setValue("communication_style", communication_style)
   }
 
   const handleSelect = (type: keyof SelectedBehaviors, item: string) => {
@@ -110,7 +130,11 @@ const Personality = () => {
           {PERSONALITY_LIST.map((item) => (
             <div
               key={item.value}
-              onClick={() => handleSelect("personality_traits", item.value)}
+              onClick={() => {
+                handleSelect("personality_traits", item.value)
+                if (item.type === "custom") setIsCustom((prev) => !prev)
+                else setIsCustom(false)
+              }}
               className="flex cursor-pointer items-center justify-between rounded-[14px] border-1 border-white bg-mercury-30 p-3"
             >
               <div className="flex items-center gap-3">
@@ -123,38 +147,74 @@ const Personality = () => {
               </div>
               <Checkbox
                 radius="full"
-                onValueChange={(check) =>
+                onValueChange={(check) => {
+                  if (item.type === "custom") {
+                    setIsCustom(check ? true : false)
+                  }
                   setValue("personality_traits", check ? [item.value] : [])
+                }}
+                isSelected={
+                  (selectedBehaviors.personality_traits[0] === item.value &&
+                    item.type !== "custom") ||
+                  (item.type === "custom" && isCustom)
                 }
-                isSelected={watch("personality_traits")?.[0] === item.value}
               />
             </div>
           ))}
         </div>
-        <div className="mt-5">
-          <p className="mb-1 font-semibold">Agent's Purpose</p>
-          <Textarea
-            classNames={{
-              inputWrapper: "!bg-mercury-30  border-1 border-mercury-400",
-              input: "text-15 font-semibold !text-brown-600",
-            }}
-            onValueChange={(val) => {
-              setValue("personality_traits", [val])
-            }}
-            value={watch("personality_traits")?.[0]}
-          />
-        </div>
-        <div className="mt-4">
-          <p className="mb-1 font-semibold">Communication Style</p>
-          <Textarea
-            classNames={{
-              inputWrapper: "!bg-mercury-30  border-1 border-mercury-400",
-              input: "text-15 font-semibold !text-brown-600",
-            }}
-            value={watch("personality_traits")?.[0]}
-          />
-        </div>
+        {(selectedBehaviors.personality_traits[0] || isCustom) && (
+          <>
+            <div className="mt-5">
+              <p className="mb-1 font-semibold">Agent's Purpose</p>
+              <Textarea
+                classNames={{
+                  inputWrapper: "!bg-mercury-30  border-1 border-mercury-400",
+                  input: "text-15 font-semibold !text-brown-600",
+                }}
+                onValueChange={(val) => {
+                  setValue("personality_traits", [val])
+                  if (PERSONALITY_LIST.find((item) => item.value === val))
+                    setIsCustom(false)
+                  else setIsCustom(true)
+                }}
+                value={selectedBehaviors.personality_traits[0]}
+              />
+            </div>
+            <div className="mt-4">
+              <div className="flex items-center justify-between">
+                <p className="mb-1 font-semibold">Communication Style</p>
+                <div
+                  onClick={onOpen}
+                  className="flex cursor-pointer items-center gap-1 hover:opacity-70"
+                >
+                  <BookDownloadIcon />
+                  <span className="font-semibold text-brown-600">
+                    More Presets
+                  </span>
+                </div>
+              </div>
+              <Textarea
+                classNames={{
+                  inputWrapper: "!bg-mercury-30  border-1 border-mercury-400",
+                  input: "text-15 font-semibold !text-brown-600",
+                }}
+                onValueChange={(val) =>
+                  handleSelect("communication_style", val)
+                }
+                value={selectedBehaviors.communication_style}
+              />
+            </div>
+          </>
+        )}
       </div>
+      {isOpen && (
+        <CommunicationStylePreset
+          handleSelect={handleSelect}
+          selectedBehaviors={selectedBehaviors}
+          isOpen={isOpen}
+          onClose={onClose}
+        />
+      )}
     </div>
   )
 }

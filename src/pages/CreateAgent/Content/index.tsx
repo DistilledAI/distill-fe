@@ -1,6 +1,7 @@
 import { useSearchParams } from "react-router-dom"
 import { TabKeyAgent } from "../NavTab"
 import { lazy } from "react"
+import { twMerge } from "tailwind-merge"
 const AgentBasicInfo = lazy(() => import("./Basic"))
 const ClanUtilities = lazy(() => import("./ClanUtilities"))
 const Knowledge = lazy(() => import("./Knowledge"))
@@ -8,22 +9,33 @@ const Knowledge = lazy(() => import("./Knowledge"))
 const AgentContent = () => {
   const [searchParams] = useSearchParams()
   const tab = searchParams.get("tab")
+  const isActive = (key: TabKeyAgent) => tab === key
 
-  const renderContent = () => {
-    switch (tab as TabKeyAgent) {
-      case TabKeyAgent.Basic:
-        return <AgentBasicInfo />
-      case TabKeyAgent.ClanUtilities:
-        return <ClanUtilities />
-      case TabKeyAgent.Knowledge:
-        return <Knowledge />
-
-      default:
-        return null
-    }
-  }
-
-  return renderContent()
+  return (
+    <>
+      <div
+        className={twMerge("hidden", isActive(TabKeyAgent.Basic) && "block")}
+      >
+        <AgentBasicInfo />
+      </div>
+      <div
+        className={twMerge(
+          "hidden",
+          isActive(TabKeyAgent.ClanUtilities) && "block",
+        )}
+      >
+        <ClanUtilities />
+      </div>
+      <div
+        className={twMerge(
+          "hidden",
+          isActive(TabKeyAgent.Knowledge) && "block",
+        )}
+      >
+        <Knowledge />
+      </div>
+    </>
+  )
 }
 
 export default AgentContent
