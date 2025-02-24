@@ -12,7 +12,7 @@ import { BroadcastIcon } from "@components/Icons/Broadcast"
 import { ClanIcon } from "@components/Icons/Clan"
 import { UsersGroupOutlineIcon } from "@components/Icons/UserIcon"
 import TotalMemberBadge from "@components/TotalMemberBadge"
-import { Pagination } from "@nextui-org/react"
+import { Pagination, Skeleton } from "@nextui-org/react" // Thêm Skeleton
 import PaginationItemCustom from "./PaginationItemCustom"
 
 const agentType = {
@@ -26,7 +26,7 @@ const AgentClansStore = () => {
 
   const [page, setPage] = useState(1)
 
-  const { data, total, getList } = useFetchClan({
+  const { data, total, getList, loading } = useFetchClan({
     isFetchNow: false,
     limit,
     offset: (page - 1) * limit,
@@ -63,6 +63,23 @@ const AgentClansStore = () => {
     </div>
   )
 
+  const renderSkeleton = () => (
+    <div className="w-full">
+      <div className="h-full rounded-[22px] border border-mercury-100 bg-mercury-50 p-4">
+        <div className="flex gap-4">
+          <Skeleton className="h-[120px] w-[100px] flex-shrink-0 rounded-lg" />
+          <div className="flex w-full flex-col justify-between gap-2">
+            <div className="space-y-2">
+              <Skeleton className="h-5 w-3/4 rounded-md" />
+              <Skeleton className="h-4 w-full rounded-md" />
+            </div>
+            <Skeleton className="h-6 w-24 rounded-[4px]" />
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+
   return (
     <div className="space-y-10">
       <div className="space-y-2">
@@ -92,74 +109,80 @@ const AgentClansStore = () => {
         })}
 
         <div className="grid grid-cols-2 gap-4">
-          {data.map((item: IGroupDetail) => {
-            const description = item?.groupConfig?.find(
-              (val) => val.key === "description" && val.type === "clan",
-            )
-            return (
-              <div key={item.id} className="w-full">
-                <div
-                  className="h-full cursor-pointer rounded-[22px] border border-mercury-100 bg-mercury-50 p-4 hover:bg-mercury-100"
-                  onClick={() => handleChatAgentClan(item)}
-                >
-                  <div className="flex gap-4">
+          {loading
+            ? // Hiển thị skeleton khi đang loading
+              Array.from({ length: limit }).map((_, index) => (
+                <div key={index}>{renderSkeleton()}</div>
+              ))
+            : // Hiển thị dữ liệu thực tế khi không loading
+              data.map((item: IGroupDetail) => {
+                const description = item?.groupConfig?.find(
+                  (val) => val.key === "description" && val.type === "clan",
+                )
+                return (
+                  <div key={item.id} className="w-full">
                     <div
-                      className="relative h-[120px] w-[100px] flex-shrink-0 overflow-hidden rounded-lg bg-cover bg-center bg-no-repeat"
-                      style={{
-                        backgroundImage: `url(${item.image || maxAvatarPlaceholder2})`,
-                      }}
+                      className="h-full cursor-pointer rounded-[22px] border border-mercury-100 bg-mercury-50 p-4 hover:bg-mercury-100"
+                      onClick={() => handleChatAgentClan(item)}
                     >
-                      <div className="absolute inset-0 z-10 rounded-lg border-[2px] border-white/20" />
-                      <div
-                        className="absolute inset-0"
-                        style={{
-                          background:
-                            "linear-gradient(180deg, rgba(0, 0, 0, 0.70) 0%, #000 100%)",
-                          opacity: 0.1,
-                        }}
-                      />
-                      <div
-                        className="absolute inset-0 top-[21.05%] h-[78.95%] w-full"
-                        style={{
-                          background:
-                            "linear-gradient(180deg, rgba(0, 0, 0, 0.00) 28.5%, #000 100%)",
-                        }}
-                      />
-                      <div className="absolute left-3 top-3 z-10">
-                        <BroadcastIcon />
-                      </div>
-                      <div className="absolute bottom-[10px] left-[10px] z-10">
-                        <TotalMemberBadge
-                          groupId={item?.id?.toString()}
-                          iconSize={10}
-                          textClassName="text-[11px] leading-[110%]"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="flex flex-col justify-between gap-2">
-                      <div>
-                        <div className="flex items-center gap-1">
-                          <span className="text-16 font-bold text-mercury-950">
-                            {item.name}
-                          </span>
-                          {renderAgentType()}
+                      <div className="flex gap-4">
+                        <div
+                          className="relative h-[120px] w-[100px] flex-shrink-0 overflow-hidden rounded-lg bg-cover bg-center bg-no-repeat"
+                          style={{
+                            backgroundImage: `url(${item.image || maxAvatarPlaceholder2})`,
+                          }}
+                        >
+                          <div className="absolute inset-0 z-10 rounded-lg border-[2px] border-white/20" />
+                          <div
+                            className="absolute inset-0"
+                            style={{
+                              background:
+                                "linear-gradient(180deg, rgba(0, 0, 0, 0.70) 0%, #000 100%)",
+                              opacity: 0.1,
+                            }}
+                          />
+                          <div
+                            className="absolute inset-0 top-[21.05%] h-[78.95%] w-full"
+                            style={{
+                              background:
+                                "linear-gradient(180deg, rgba(0, 0, 0, 0.00) 28.5%, #000 100%)",
+                            }}
+                          />
+                          <div className="absolute left-3 top-3 z-10">
+                            <BroadcastIcon />
+                          </div>
+                          <div className="absolute bottom-[10px] left-[10px] z-10">
+                            <TotalMemberBadge
+                              groupId={item?.id?.toString()}
+                              iconSize={10}
+                              textClassName="text-[11px] leading-[110%]"
+                            />
+                          </div>
                         </div>
-                        <p className="text-13 font-medium text-mercury-800">
-                          {description?.value || "-"}
-                        </p>
-                      </div>
-                      <div>
-                        <div className="w-fit rounded-[4px] border border-brown-400 bg-brown-50 px-2 text-14 font-medium text-brown-600">
-                          AI Agent Clan
+
+                        <div className="flex flex-col justify-between gap-2">
+                          <div>
+                            <div className="flex items-center gap-1">
+                              <span className="text-16 font-bold text-mercury-950">
+                                {item.name}
+                              </span>
+                              {renderAgentType()}
+                            </div>
+                            <p className="text-13 font-medium text-mercury-800">
+                              {description?.value || "-"}
+                            </p>
+                          </div>
+                          <div>
+                            <div className="border-brown-400 w-fit rounded-[4px] border bg-brown-50 px-2 text-14 font-medium text-brown-600">
+                              AI Agent Clan
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </div>
-            )
-          })}
+                )
+              })}
         </div>
         {data && (
           <Pagination

@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom"
 import { searchUsers } from "services/chat"
 import { QueryDataKeys } from "types/queryDataKeys"
 import { useState } from "react"
-import { Pagination } from "@nextui-org/react"
+import { Pagination, Skeleton } from "@nextui-org/react" // Thêm Skeleton
 import PaginationItemCustom from "./PaginationItemCustom"
 import AvatarCustom from "@components/AvatarCustom"
 import { maxAvatarPlaceholder } from "@assets/images"
@@ -38,7 +38,7 @@ const AIAgentList = () => {
     }
   }
 
-  const { data, error } = useQuery({
+  const { data, error, isLoading } = useQuery({
     queryKey: [QueryDataKeys.PRIVATE_AGENTS_MKL, page],
     queryFn: fetchPrivateAgents,
     refetchOnWindowFocus: false,
@@ -66,42 +66,59 @@ const AIAgentList = () => {
     }
   }
 
+  const renderSkeleton = () => (
+    <div className="flex flex-col justify-between gap-2 rounded-[22px] border border-mercury-100 bg-mercury-50 p-4">
+      <div className="flex flex-col items-center">
+        <Skeleton className="h-12 w-12 rounded-full" />
+        <Skeleton className="mt-2 h-4 w-3/4 rounded-md" />
+        <Skeleton className="mt-2 h-8 w-full rounded-md" />
+      </div>
+      <div className="flex items-center justify-center gap-2">
+        <Skeleton className="h-4 w-1/2 rounded-md" />
+      </div>
+    </div>
+  )
+
   return (
     <>
       <div className="grid grid-cols-3 gap-4">
-        {data?.agents.map((item) => (
-          <div
-            key={item.id}
-            className="flex cursor-pointer flex-col justify-between gap-2 rounded-[22px] border border-mercury-100 bg-mercury-50 p-4 hover:bg-mercury-100"
-            onClick={() => handleChatWithAgent(item)}
-          >
-            <div className="flex flex-col items-center">
-              <div>
-                <AvatarCustom
-                  src={item.avatar}
-                  badgeIcon={<FilledBrainAIIcon size={14} />}
-                  badgeClassName="bg-[#FC0]"
-                />
+        {isLoading
+          ? Array.from({ length: limit }).map((_, index) => (
+              <div key={index}>{renderSkeleton()}</div>
+            ))
+          : data?.agents.map((item) => (
+              <div
+                key={item.id}
+                className="flex cursor-pointer flex-col justify-between gap-2 rounded-[22px] border border-mercury-100 bg-mercury-50 p-4 hover:bg-mercury-100"
+                onClick={() => handleChatWithAgent(item)}
+              >
+                <div className="flex flex-col items-center">
+                  <div>
+                    <AvatarCustom
+                      src={item.avatar}
+                      badgeIcon={<FilledBrainAIIcon size={14} />}
+                      badgeClassName="bg-[#FC0]"
+                    />
+                  </div>
+
+                  <span className="text-16 font-bold text-mercury-950">
+                    {item.username}
+                  </span>
+
+                  <p className="line-clamp-3 text-center text-14 font-medium text-mercury-800">
+                    {item.description || "-"}
+                  </p>
+                </div>
+                <div className="line-clamp-1 flex items-center justify-center gap-2 text-14 font-medium text-mercury-600">
+                  Created by{" "}
+                  <img
+                    src={item?.ownerInfo?.avatar || maxAvatarPlaceholder}
+                    className="h-[18px] w-[18px] rounded-full"
+                  />{" "}
+                  {item?.ownerInfo?.username || "-"}
+                </div>
               </div>
-
-              <span className="text-16 font-bold text-mercury-950">
-                {item.username}
-              </span>
-
-              <p className="line-clamp-3 text-center text-14 font-medium text-mercury-800">
-                {item.description || "-"}
-              </p>
-            </div>
-            <div className="line-clamp-1 flex items-center justify-center gap-2 text-14 font-medium text-mercury-600">
-              Created by{" "}
-              <img
-                src={item?.ownerInfo?.avatar || maxAvatarPlaceholder}
-                className="h-[18px] w-[18px] rounded-full"
-              />{" "}
-              {item?.ownerInfo?.username || "-"}
-            </div>
-          </div>
-        ))}
+            ))}
       </div>
 
       {data && (
