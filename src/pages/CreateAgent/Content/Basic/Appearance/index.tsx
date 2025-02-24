@@ -49,7 +49,7 @@ const Appearance = () => {
             </div>
           </ChangeAvatarContainer>
           <p className="mt-4 text-center text-13 font-medium text-mercury-800">
-            Max file size: 20MB
+            Max file size: 5MB
           </p>
         </div>
         <div className="flex-1">

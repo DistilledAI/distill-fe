@@ -9,12 +9,14 @@ import { twMerge } from "tailwind-merge"
 import { updateSidebarCollapsed } from "@reducers/sidebarCollapsedSlice"
 import { useLayoutEffect } from "react"
 import { PATH_NAMES } from "@constants/index"
+import { EditFilledIcon } from "@components/Icons/DefiLens"
 
 const Sidebar = () => {
   const dispatch = useAppDispatch()
   const sidebarCollapsed = useAppSelector((state) => state.sidebarCollapsed)
   const { pathname } = useLocation()
   const navigate = useNavigate()
+  const myAgent = useAppSelector((state) => state.agents.myAgent)
 
   useLayoutEffect(() => {
     if (pathname) {
@@ -52,7 +54,13 @@ const Sidebar = () => {
                 "group flex items-center gap-2",
                 sidebarCollapsed && "hidden",
               )}
-              onClick={() => navigate(PATH_NAMES.CREATE_AGENT)}
+              onClick={() =>
+                navigate(
+                  myAgent
+                    ? `${PATH_NAMES.AGENT_DETAIL}/${myAgent.id}`
+                    : PATH_NAMES.CREATE_AGENT,
+                )
+              }
             >
               <div
                 className={twMerge(
@@ -60,7 +68,14 @@ const Sidebar = () => {
                   sidebarCollapsed && "h-12 w-full border-white bg-mercury-30",
                 )}
               >
-                <PlusIcon color="#545454" size={sidebarCollapsed ? 20 : 16} />
+                {myAgent ? (
+                  <EditFilledIcon
+                    color="#545454"
+                    size={sidebarCollapsed ? 20 : 16}
+                  />
+                ) : (
+                  <PlusIcon color="#545454" size={sidebarCollapsed ? 20 : 16} />
+                )}
               </div>
               <span
                 className={twMerge(
@@ -68,7 +83,7 @@ const Sidebar = () => {
                   sidebarCollapsed && "hidden",
                 )}
               >
-                Create Agent
+                {myAgent ? "Edit Agent" : "Create Agent"}
               </span>
             </button>
           </div>

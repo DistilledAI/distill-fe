@@ -76,7 +76,6 @@ const CreateAgentModal: React.FC<{
               <AgentType
                 typeAgent={typeAgent}
                 setTypeAgent={setTypeAgent}
-                isDisabledTypeAgent
                 llmModel={llmModel}
                 setLlmModel={setLlmModel}
               />
@@ -86,7 +85,7 @@ const CreateAgentModal: React.FC<{
             <Button
               onPress={() =>
                 navigate(PATH_NAMES.CREATE_AGENT, {
-                  state: { llmModel },
+                  state: { llmModel, typeAgent },
                 })
               }
               className="mt-5 h-[46px] rounded-full bg-mercury-950 font-semibold text-white"

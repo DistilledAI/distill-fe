@@ -51,6 +51,7 @@ const AgentNavTab = () => {
       title: "Knowledge",
       icon: <BrainOutlineIcon color="#545454" size={24} />,
       iconActive: <BrainOutlineIcon color="#83664B" size={24} />,
+      isLater: !agentId,
     },
   ]
 

@@ -68,11 +68,6 @@ export interface BehaviorItem {
   desc?: string
 }
 
-// enum BehaviorAgentKeys {
-//   personality_traits = "personality_traits",
-//   communication_style = "communication_style",
-// }
-
 export interface SelectedBehaviors {
   personality_traits: string[]
   communication_style: string[]

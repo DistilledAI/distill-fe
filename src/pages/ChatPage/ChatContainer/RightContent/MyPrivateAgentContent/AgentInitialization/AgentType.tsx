@@ -174,6 +174,7 @@ const AgentType: React.FC<{
                       if (isDisabledTypeAgent) return
                       onChange(item.key)
                       setIsLoading(false)
+                      if (setTypeAgent) setTypeAgent(item.key)
                     }}
                   >
                     {item.icon}
@@ -307,6 +308,7 @@ const AgentType: React.FC<{
                       onChange={() => {
                         if (isDisabledLLMModel) return
                         onChange(record.value)
+                        if (setLlmModel) setLlmModel(record.value)
                       }}
                     />
                   </div>
