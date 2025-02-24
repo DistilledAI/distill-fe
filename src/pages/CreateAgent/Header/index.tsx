@@ -5,7 +5,7 @@ const AgentHeader = () => {
   const { onOpen, onClose, isOpen } = useDisclosure()
 
   return (
-    <div className="fixed left-0 top-0 z-[1] w-full border-b-1 border-mercury-100 bg-mercury-70">
+    <div className="fixed left-0 top-0 z-50 w-full border-b-1 border-mercury-100 bg-mercury-70">
       <div className="mx-auto flex max-w-[1536px] items-center justify-between px-6 py-2">
         <Button
           onPress={onOpen}

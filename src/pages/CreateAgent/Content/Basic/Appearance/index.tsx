@@ -1,6 +1,5 @@
 import { maxAvatarPlaceholder2 } from "@assets/images"
 import { CameraIcon } from "@components/Icons"
-import { WorldIcon } from "@components/Icons/AgentDetailIcon"
 import { ClipboardTextIcon } from "@components/Icons/ClipboardTextIcon"
 import { TelegramIcon } from "@components/Icons/RewardsIcons"
 import { TwitterIcon } from "@components/Icons/Twitter"
@@ -11,6 +10,7 @@ import ChangeAvatarContainer from "@pages/AgentDetail/ChangeAvatarContainer"
 import { fileToBase64, isPassFileSize } from "@utils/index"
 import { Controller, useFormContext } from "react-hook-form"
 import { toast } from "react-toastify"
+import ClanPublicChip from "../../ClanUtilities/ClanPublicChip"
 
 const Appearance = () => {
   const { control, setValue, watch } = useFormContext()
@@ -33,14 +33,7 @@ const Appearance = () => {
     <div>
       <div className="flex items-center justify-between">
         <CategoryLabel text="Public Appearance" icon={<ClipboardTextIcon />} />
-        <div className="flex items-center gap-1 rounded-full bg-[rgba(0,122,255,0.15)] px-2">
-          <div className="-ml-[3px]">
-            <WorldIcon size={20} color="#007AFF" />
-          </div>
-          <span className="text-13 font-medium uppercase text-[#007AFF]">
-            public
-          </span>
-        </div>
+        <ClanPublicChip />
       </div>
       <div className="mt-6 flex flex-wrap gap-4 rounded-[22px] border-1 border-mercury-100 bg-mercury-30 p-6">
         <div className="flex w-[240px] flex-col items-center justify-center">

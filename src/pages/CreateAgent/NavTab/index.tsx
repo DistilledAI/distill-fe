@@ -3,7 +3,12 @@ import { ClipboardTextIcon } from "@components/Icons/ClipboardTextIcon"
 import { BrainOutlineIcon, ClanOutlineIcon } from "@components/Icons/Sidebar"
 import { PATH_NAMES } from "@constants/index"
 import { useEffect } from "react"
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom"
+import {
+  useLocation,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from "react-router-dom"
 import { twMerge } from "tailwind-merge"
 
 export enum TabKeyAgent {
@@ -13,39 +18,41 @@ export enum TabKeyAgent {
   Knowledge = "knowledge",
 }
 
-const LIST = [
-  {
-    key: TabKeyAgent.Basic,
-    title: "Basic",
-    icon: <ClipboardTextIcon color="#545454" size={24} />,
-    iconActive: <ClipboardTextIcon color="#83664B" size={24} />,
-  },
-  {
-    key: TabKeyAgent.ClanUtilities,
-    title: "Clan & Utilities",
-    icon: <ClanOutlineIcon color="#545454" size={24} />,
-    iconActive: <ClanOutlineIcon color="#83664B" size={24} />,
-  },
-  {
-    key: TabKeyAgent.Autonomous,
-    title: "Autonomous",
-    icon: <BoltOutlineIcon color="#545454" size={24} />,
-    iconActive: <BoltOutlineIcon color="#83664B" size={24} />,
-    isLater: true,
-  },
-  {
-    key: TabKeyAgent.Knowledge,
-    title: "Knowledge",
-    icon: <BrainOutlineIcon color="#545454" size={24} />,
-    iconActive: <BrainOutlineIcon color="#83664B" size={24} />,
-  },
-]
-
 const AgentNavTab = () => {
   const [searchParams] = useSearchParams()
   const tab = searchParams.get("tab")
   const { state } = useLocation()
   const navigate = useNavigate()
+  const { agentId } = useParams()
+
+  const LIST = [
+    {
+      key: TabKeyAgent.Basic,
+      title: "Basic",
+      icon: <ClipboardTextIcon color="#545454" size={24} />,
+      iconActive: <ClipboardTextIcon color="#83664B" size={24} />,
+    },
+    {
+      key: TabKeyAgent.ClanUtilities,
+      title: "Clan & Utilities",
+      icon: <ClanOutlineIcon color="#545454" size={24} />,
+      iconActive: <ClanOutlineIcon color="#83664B" size={24} />,
+      isLater: !agentId,
+    },
+    {
+      key: TabKeyAgent.Autonomous,
+      title: "Autonomous",
+      icon: <BoltOutlineIcon color="#545454" size={24} />,
+      iconActive: <BoltOutlineIcon color="#83664B" size={24} />,
+      isLater: !agentId,
+    },
+    {
+      key: TabKeyAgent.Knowledge,
+      title: "Knowledge",
+      icon: <BrainOutlineIcon color="#545454" size={24} />,
+      iconActive: <BrainOutlineIcon color="#83664B" size={24} />,
+    },
+  ]
 
   useEffect(() => {
     if (!tab)
@@ -73,13 +80,20 @@ const AgentNavTab = () => {
                 "absolute left-0 h-full w-full rounded-full border-1 border-white",
                 nav.key === tab && "border-2 border-brown-500",
               )}
-            ></div>
+            />
             <div className={nav.isLater ? "opacity-30" : ""}>
               {nav.key === tab ? nav.iconActive : nav.icon}
             </div>
-            <span className={nav.isLater ? "opacity-30" : ""}>{nav.title}</span>
+            <span
+              className={twMerge(
+                "text-[14px] font-bold text-mercury-900",
+                nav.isLater ? "opacity-30" : "",
+              )}
+            >
+              {nav.title}
+            </span>
             {nav.isLater && (
-              <span className="absolute right-2 rounded-full bg-mercury-200 px-1 py-[2px] text-13 font-bold leading-none text-mercury-900">
+              <span className="absolute right-2 rounded-full bg-mercury-200 px-1 py-[2px] text-12 font-bold leading-none text-mercury-900">
                 EDIT LATER
               </span>
             )}
