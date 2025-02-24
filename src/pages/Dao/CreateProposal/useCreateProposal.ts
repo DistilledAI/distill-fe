@@ -6,6 +6,7 @@ import { toast } from "react-toastify"
 import { useNavigate, useParams } from "react-router-dom"
 import { PATH_NAMES } from "@constants/index"
 import { getDurationByAddress } from "@pages/Stake/helpers"
+import { MAX_ADDRESS_SOLANA } from "program/constants"
 
 export const enum ProposalType {
   YesNo = "yes_no",
@@ -47,6 +48,7 @@ const useCreateProposal = () => {
           numOptions: numOptions || 1,
           uri,
           stakeCurrencyMint: agentAddress,
+          feeCurrencyMint: MAX_ADDRESS_SOLANA,
         })
 
         if (resWeb3 && resWeb3.result && resWeb3.proposal) {

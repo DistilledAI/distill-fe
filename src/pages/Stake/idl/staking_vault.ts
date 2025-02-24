@@ -450,6 +450,168 @@ export type FungStakingVault = {
       ]
     },
     {
+      name: "configGovGlobal"
+      discriminator: [106, 62, 177, 172, 31, 144, 203, 189]
+      accounts: [
+        {
+          name: "admin"
+          writable: true
+          signer: true
+        },
+        {
+          name: "authority"
+          pda: {
+            seeds: [
+              {
+                kind: "const"
+                value: [97, 117, 116, 104, 111, 114, 105, 116, 121]
+              },
+            ]
+          }
+        },
+        {
+          name: "govGlobalConfig"
+          writable: true
+          pda: {
+            seeds: [
+              {
+                kind: "const"
+                value: [
+                  103,
+                  108,
+                  111,
+                  98,
+                  97,
+                  108,
+                  95,
+                  103,
+                  111,
+                  118,
+                  95,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103,
+                ]
+              },
+            ]
+          }
+        },
+        {
+          name: "systemProgram"
+          address: "11111111111111111111111111111111"
+        },
+      ]
+      args: [
+        {
+          name: "newConfig"
+          type: {
+            defined: {
+              name: "govGlobalConfig"
+            }
+          }
+        },
+      ]
+    },
+    {
+      name: "configTreasury"
+      discriminator: [165, 170, 73, 70, 86, 99, 39, 227]
+      accounts: [
+        {
+          name: "admin"
+          writable: true
+          signer: true
+        },
+        {
+          name: "authority"
+          pda: {
+            seeds: [
+              {
+                kind: "const"
+                value: [97, 117, 116, 104, 111, 114, 105, 116, 121]
+              },
+            ]
+          }
+        },
+        {
+          name: "vault"
+          pda: {
+            seeds: [
+              {
+                kind: "const"
+                value: [
+                  115,
+                  116,
+                  97,
+                  107,
+                  105,
+                  110,
+                  103,
+                  95,
+                  118,
+                  97,
+                  117,
+                  108,
+                  116,
+                ]
+              },
+              {
+                kind: "account"
+                path: "stakeCurrencyMint"
+              },
+              {
+                kind: "arg"
+                path: "unbondingPeriod"
+              },
+            ]
+          }
+        },
+        {
+          name: "treasury"
+          writable: true
+          pda: {
+            seeds: [
+              {
+                kind: "const"
+                value: [116, 114, 101, 97, 115, 117, 114, 121]
+              },
+              {
+                kind: "account"
+                path: "vault"
+              },
+            ]
+          }
+        },
+        {
+          name: "stakeCurrencyMint"
+        },
+        {
+          name: "tokenProgram"
+          address: "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          name: "systemProgram"
+          address: "11111111111111111111111111111111"
+        },
+      ]
+      args: [
+        {
+          name: "unbondingPeriod"
+          type: "u64"
+        },
+        {
+          name: "newTreasury"
+          type: {
+            defined: {
+              name: "treasury"
+            }
+          }
+        },
+      ]
+    },
+    {
       name: "createProposal"
       discriminator: [132, 116, 68, 174, 216, 160, 198, 22]
       accounts: [
@@ -457,6 +619,35 @@ export type FungStakingVault = {
           name: "creator"
           writable: true
           signer: true
+        },
+        {
+          name: "govGlobalConfig"
+          pda: {
+            seeds: [
+              {
+                kind: "const"
+                value: [
+                  103,
+                  108,
+                  111,
+                  98,
+                  97,
+                  108,
+                  95,
+                  103,
+                  111,
+                  118,
+                  95,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103,
+                ]
+              },
+            ]
+          }
         },
         {
           name: "govConfig"
@@ -550,7 +741,101 @@ export type FungStakingVault = {
           }
         },
         {
+          name: "creatorFeeTokenAccount"
+          writable: true
+          pda: {
+            seeds: [
+              {
+                kind: "account"
+                path: "creator"
+              },
+              {
+                kind: "const"
+                value: [
+                  6,
+                  221,
+                  246,
+                  225,
+                  215,
+                  101,
+                  161,
+                  147,
+                  217,
+                  203,
+                  225,
+                  70,
+                  206,
+                  235,
+                  121,
+                  172,
+                  28,
+                  180,
+                  133,
+                  237,
+                  95,
+                  91,
+                  55,
+                  145,
+                  58,
+                  140,
+                  245,
+                  133,
+                  126,
+                  255,
+                  0,
+                  169,
+                ]
+              },
+              {
+                kind: "account"
+                path: "feeCurrencyMint"
+              },
+            ]
+            program: {
+              kind: "const"
+              value: [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89,
+              ]
+            }
+          }
+        },
+        {
           name: "stakeCurrencyMint"
+        },
+        {
+          name: "feeCurrencyMint"
+          writable: true
         },
         {
           name: "tokenProgram"
@@ -1365,6 +1650,10 @@ export type FungStakingVault = {
           name: "unbondingPeriod"
           type: "u64"
         },
+        {
+          name: "totalStake"
+          type: "u64"
+        },
       ]
     },
     {
@@ -2100,6 +2389,271 @@ export type FungStakingVault = {
         },
       ]
     },
+    {
+      name: "withdrawTreasury"
+      discriminator: [40, 63, 122, 158, 144, 216, 83, 96]
+      accounts: [
+        {
+          name: "admin"
+          writable: true
+          signer: true
+        },
+        {
+          name: "treasury"
+          pda: {
+            seeds: [
+              {
+                kind: "const"
+                value: [116, 114, 101, 97, 115, 117, 114, 121]
+              },
+              {
+                kind: "account"
+                path: "vault"
+              },
+            ]
+          }
+        },
+        {
+          name: "vault"
+          writable: true
+          pda: {
+            seeds: [
+              {
+                kind: "const"
+                value: [
+                  115,
+                  116,
+                  97,
+                  107,
+                  105,
+                  110,
+                  103,
+                  95,
+                  118,
+                  97,
+                  117,
+                  108,
+                  116,
+                ]
+              },
+              {
+                kind: "account"
+                path: "stakeCurrencyMint"
+              },
+              {
+                kind: "arg"
+                path: "unbondingPeriod"
+              },
+            ]
+          }
+        },
+        {
+          name: "vaultTokenAccount"
+          writable: true
+          pda: {
+            seeds: [
+              {
+                kind: "account"
+                path: "vault"
+              },
+              {
+                kind: "const"
+                value: [
+                  6,
+                  221,
+                  246,
+                  225,
+                  215,
+                  101,
+                  161,
+                  147,
+                  217,
+                  203,
+                  225,
+                  70,
+                  206,
+                  235,
+                  121,
+                  172,
+                  28,
+                  180,
+                  133,
+                  237,
+                  95,
+                  91,
+                  55,
+                  145,
+                  58,
+                  140,
+                  245,
+                  133,
+                  126,
+                  255,
+                  0,
+                  169,
+                ]
+              },
+              {
+                kind: "account"
+                path: "stakeCurrencyMint"
+              },
+            ]
+            program: {
+              kind: "const"
+              value: [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89,
+              ]
+            }
+          }
+        },
+        {
+          name: "adminTokenAccount"
+          writable: true
+          pda: {
+            seeds: [
+              {
+                kind: "account"
+                path: "admin"
+              },
+              {
+                kind: "const"
+                value: [
+                  6,
+                  221,
+                  246,
+                  225,
+                  215,
+                  101,
+                  161,
+                  147,
+                  217,
+                  203,
+                  225,
+                  70,
+                  206,
+                  235,
+                  121,
+                  172,
+                  28,
+                  180,
+                  133,
+                  237,
+                  95,
+                  91,
+                  55,
+                  145,
+                  58,
+                  140,
+                  245,
+                  133,
+                  126,
+                  255,
+                  0,
+                  169,
+                ]
+              },
+              {
+                kind: "account"
+                path: "stakeCurrencyMint"
+              },
+            ]
+            program: {
+              kind: "const"
+              value: [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89,
+              ]
+            }
+          }
+        },
+        {
+          name: "stakeCurrencyMint"
+        },
+        {
+          name: "tokenProgram"
+          address: "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          name: "systemProgram"
+          address: "11111111111111111111111111111111"
+        },
+        {
+          name: "associatedTokenProgram"
+          address: "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
+        },
+      ]
+      args: [
+        {
+          name: "unbondingPeriod"
+          type: "u64"
+        },
+        {
+          name: "amount"
+          type: "u64"
+        },
+      ]
+    },
   ]
   accounts: [
     {
@@ -2109,6 +2663,10 @@ export type FungStakingVault = {
     {
       name: "govConfig"
       discriminator: [25, 158, 54, 41, 143, 227, 58, 104]
+    },
+    {
+      name: "govGlobalConfig"
+      discriminator: [218, 225, 17, 26, 219, 131, 17, 229]
     },
     {
       name: "pause"
@@ -2125,6 +2683,10 @@ export type FungStakingVault = {
     {
       name: "stakerInfo"
       discriminator: [241, 238, 149, 141, 241, 59, 35, 107]
+    },
+    {
+      name: "treasury"
+      discriminator: [238, 239, 123, 238, 89, 1, 168, 253]
     },
     {
       name: "unbondingInfo"
@@ -2569,6 +3131,22 @@ export type FungStakingVault = {
       }
     },
     {
+      name: "govGlobalConfig"
+      type: {
+        kind: "struct"
+        fields: [
+          {
+            name: "feeToken"
+            type: "pubkey"
+          },
+          {
+            name: "feeAmount"
+            type: "u64"
+          },
+        ]
+      }
+    },
+    {
       name: "pause"
       type: {
         kind: "struct"
@@ -2684,6 +3262,18 @@ export type FungStakingVault = {
           {
             name: "currentId"
             type: "u64"
+          },
+        ]
+      }
+    },
+    {
+      name: "treasury"
+      type: {
+        kind: "struct"
+        fields: [
+          {
+            name: "treasury"
+            type: "pubkey"
           },
         ]
       }
