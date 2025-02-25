@@ -5,16 +5,17 @@ import {
   StarUserIconOutline,
   UserHexagonIcon,
 } from "@components/Icons/UserIcon"
-import SmoothScrollTo from "@components/SmoothScrollTo"
 import { BEHAVIORS_AGENT, STATUS_AGENT } from "@constants/index"
 import AgentType, {
   TYPE_LLM_MODEL,
 } from "@pages/ChatPage/ChatContainer/RightContent/MyPrivateAgentContent/AgentInitialization/AgentType"
+import AgentHeader from "@pages/CreateAgent/Header"
+import AgentNavTab from "@pages/CreateAgent/NavTab"
 import { refreshFetchMyAgent } from "@reducers/agentSlice"
 import { useEffect, useState } from "react"
 import { FormProvider, useForm } from "react-hook-form"
 import { useDispatch } from "react-redux"
-import { useParams } from "react-router-dom"
+import { useParams, useSearchParams } from "react-router-dom"
 import { toast } from "react-toastify"
 import { updateAgent, updateAgentConfig } from "services/agent"
 import { updateAvatarUser } from "services/user"
@@ -23,9 +24,9 @@ import {
   INTERACTION_FREQUENCY_KEY,
   RESPONSE_LENGTH_KEY,
 } from "./AgentBehaviors/constants"
-import Functions from "./Functions"
+import AgentContent from "./AgentContent"
+import Functions from "./AutonomousX"
 import GeneralInfo from "./GeneralInfo"
-import Header from "./Header"
 import KnowledgeAgent from "./Knowledge"
 import Monetization from "./Monetization"
 import TargetAudience from "./TargetAudience"
@@ -67,6 +68,9 @@ const AgentDetail: React.FC = () => {
   const llmModelData = agentData?.llmModel
   const botVersionData = agentData?.botVersion
   const isDisabledLLMModel = BLACKLIST_BOT_VERSION.includes(botVersionData)
+
+  const [searchParams] = useSearchParams()
+  const tabKey = searchParams.get("tab")
 
   const methods = useForm<any>({
     defaultValues: {
@@ -240,20 +244,21 @@ const AgentDetail: React.FC = () => {
   ]
 
   return (
-    <>
-      <FormProvider {...methods}>
-        <form onSubmit={methods.handleSubmit(onSubmit)}>
-          <Header submitLoading={loading} agentData={agentData} />
-          <SmoothScrollTo
-            components={componentScrollTo}
-            offsetAdjustment={200}
-            classNames={{
-              contentWrapper: "pt-5",
-            }}
-          />
-        </form>
-      </FormProvider>
-    </>
+    <FormProvider {...methods}>
+      <form onSubmit={methods.handleSubmit(onSubmit)}>
+        <div>
+          <AgentHeader isEdit isLoading={false} />
+          <div className="relative mx-auto flex max-w-[1206px] items-start gap-[40px] px-6 py-6">
+            <div className="w-[260px]">
+              <AgentNavTab isEdit />
+            </div>
+            <div className="flex-1">
+              <AgentContent agentData={agentData} />
+            </div>
+          </div>
+        </div>
+      </form>
+    </FormProvider>
   )
 }
 export default AgentDetail

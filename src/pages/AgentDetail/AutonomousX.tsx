@@ -1,18 +1,16 @@
 import ComingSoon from "@components/ComingSoon"
-import { BoltOutlineIcon, SettingIcon } from "@components/Icons"
+import { SettingIcon } from "@components/Icons"
 import { CloseFilledIcon } from "@components/Icons/DefiLens"
-import { TelegramOutlineIcon } from "@components/Icons/SocialLinkIcon"
 import { TablerPlusIcon } from "@components/Icons/TablerPlusIcon"
 import { TwitterIcon } from "@components/Icons/Twitter"
-import { Button, Divider, Input, Select, SelectItem } from "@nextui-org/react"
+import { Button, Input, Select, SelectItem } from "@nextui-org/react"
 import { isArray, uniq, uniqBy } from "lodash"
 import { useState } from "react"
 import { Controller, useFormContext } from "react-hook-form"
 import { toast } from "react-toastify"
 import { IAgentData } from "types/user"
 import BindYourAccount from "./BindXAccount/BindYourAccount"
-import BindYourBot from "./BindYourBot"
-import CategoryLabel, { FieldLabel } from "./CategoryLabel"
+import CategoryLabel from "./CategoryLabel"
 import RepliesDashboard from "./RepliesDashboard"
 import { AgentConfig } from "./useFetchAgentConfig"
 
@@ -64,7 +62,7 @@ const CATEGORIES = [
   "gamefi",
 ]
 
-const Functions: React.FC<{
+const AutonomousX: React.FC<{
   agentData: IAgentData
   agentConfigs: AgentConfig[]
   refetch: any
@@ -230,44 +228,8 @@ const Functions: React.FC<{
   return (
     <div className="">
       <CategoryLabel
-        text="Autonomous AI Agent"
-        icon={<BoltOutlineIcon color="#A2845E" />}
-      />
-
-      <FieldLabel
-        text={
-          <div className="my-6 flex items-center justify-between gap-3 max-sm:flex-col max-sm:items-start">
-            <div className="flex flex-wrap items-center gap-2">
-              <TelegramOutlineIcon size={24} />
-              <span className="text-base-sb text-mercury-950">
-                Autonomous Bot on Telegram Group
-              </span>
-              <Button className="text-base-14 h-auto rounded-full bg-brown-500 py-[2px] font-bold uppercase text-mercury-30 max-sm:text-12">
-                ai agent generate
-              </Button>
-            </div>
-            <div>
-              <BindYourBot botWebhooks={botWebhooks} refetch={refetch} />
-            </div>
-          </div>
-        }
-      />
-      <Divider className="my-6" />
-
-      <FieldLabel
-        text={
-          <div className="flex items-center justify-between gap-3 max-sm:flex-col max-sm:items-start">
-            <div className="flex flex-wrap items-center gap-2">
-              <TwitterIcon size={20} />
-              <span className="text-base-sb text-mercury-950">
-                Autonomous X Account
-              </span>
-              <Button className="text-base-14 h-auto rounded-full bg-brown-500 py-[2px] font-bold uppercase text-mercury-30 max-sm:text-12">
-                ai agent generate
-              </Button>
-            </div>
-          </div>
-        }
+        text="Autonomous X Account"
+        icon={<TwitterIcon size={24} color="#A2845E" />}
       />
 
       <div className="mb-4 mt-4 flex items-center justify-between rounded-lg bg-brown-50 p-4 max-md:flex-col max-md:items-start max-md:justify-start max-md:gap-2">
@@ -508,4 +470,4 @@ const Functions: React.FC<{
   )
 }
 
-export default Functions
+export default AutonomousX
