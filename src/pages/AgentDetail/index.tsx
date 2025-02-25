@@ -1,35 +1,21 @@
-import { BoltOutlineIcon, TargetIcon } from "@components/Icons"
-import { ClipboardTextIcon } from "@components/Icons/ClipboardTextIcon"
-import { DatabaseSettingIcon } from "@components/Icons/DatabaseImportIcon"
-import {
-  StarUserIconOutline,
-  UserHexagonIcon,
-} from "@components/Icons/UserIcon"
 import { BEHAVIORS_AGENT, STATUS_AGENT } from "@constants/index"
-import AgentType, {
-  TYPE_LLM_MODEL,
-} from "@pages/ChatPage/ChatContainer/RightContent/MyPrivateAgentContent/AgentInitialization/AgentType"
+import { TYPE_LLM_MODEL } from "@pages/ChatPage/ChatContainer/RightContent/MyPrivateAgentContent/AgentInitialization/AgentType"
 import AgentHeader from "@pages/CreateAgent/Header"
 import AgentNavTab from "@pages/CreateAgent/NavTab"
 import { refreshFetchMyAgent } from "@reducers/agentSlice"
 import { useEffect, useState } from "react"
 import { FormProvider, useForm } from "react-hook-form"
 import { useDispatch } from "react-redux"
-import { useParams, useSearchParams } from "react-router-dom"
+import { useParams } from "react-router-dom"
 import { toast } from "react-toastify"
 import { updateAgent, updateAgentConfig } from "services/agent"
 import { updateAvatarUser } from "services/user"
-import AgentBehaviors, { SelectedBehaviors } from "./AgentBehaviors"
+import { SelectedBehaviors } from "./AgentBehaviors"
 import {
   INTERACTION_FREQUENCY_KEY,
   RESPONSE_LENGTH_KEY,
 } from "./AgentBehaviors/constants"
 import AgentContent from "./AgentContent"
-import Functions from "./AutonomousX"
-import GeneralInfo from "./GeneralInfo"
-import KnowledgeAgent from "./Knowledge"
-import Monetization from "./Monetization"
-import TargetAudience from "./TargetAudience"
 import {
   getConfigAgentByDataForm,
   getConfigAgentValueByKeys,
@@ -66,11 +52,6 @@ const AgentDetail: React.FC = () => {
   const avatarData = agentData?.avatar
   const typeAgentData = agentData?.typeAgent
   const llmModelData = agentData?.llmModel
-  const botVersionData = agentData?.botVersion
-  const isDisabledLLMModel = BLACKLIST_BOT_VERSION.includes(botVersionData)
-
-  const [searchParams] = useSearchParams()
-  const tabKey = searchParams.get("tab")
 
   const methods = useForm<any>({
     defaultValues: {
@@ -94,12 +75,6 @@ const AgentDetail: React.FC = () => {
       llmModel: TYPE_LLM_MODEL.LLM_MODEL_BASIC,
     },
   })
-
-  const handleSelectBehaviors = (selected: SelectedBehaviors) => {
-    const { personality_traits, communication_style } = selected
-    methods.setValue("personality_traits", personality_traits)
-    methods.setValue("communication_style", communication_style)
-  }
 
   const updateCustomFields = (selectedBehaviors: SelectedBehaviors) => {
     const updatedFields: {
@@ -144,6 +119,7 @@ const AgentDetail: React.FC = () => {
   }, [agentData, methods.reset, agentConfigs])
 
   const onSubmit = async (data: any) => {
+    console.log("🚀 ~ onSubmit ~ data:", data)
     if (!isPassRuleAgentInfo(data) || !isActive) return
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { avatar, avatarFile, ...newData } = data
@@ -184,76 +160,21 @@ const AgentDetail: React.FC = () => {
     }
   }
 
-  const componentScrollTo = [
-    {
-      title: "Agent Type",
-      content: (
-        <AgentType
-          isDisabledTypeAgent
-          isDisabledLLMModel={isDisabledLLMModel}
-        />
-      ),
-      icon: <UserHexagonIcon />,
-    },
-    {
-      title: "Public Appearance",
-      content: <GeneralInfo agentData={agentData} />,
-      icon: <ClipboardTextIcon />,
-    },
-    {
-      title: "Behaviors",
-      content: (
-        <AgentBehaviors
-          onSelectBehaviors={handleSelectBehaviors}
-          selectedBehaviors={{
-            personality_traits: methods.watch("personality_traits"),
-            communication_style: methods.watch("communication_style"),
-          }}
-          valueCustomDefault={valueCustomDefault}
-        />
-      ),
-      icon: <StarUserIconOutline color="#A2845E" />,
-    },
-    {
-      title: "Autonomous AI Agent",
-      content: (
-        <Functions
-          agentData={agentData}
-          agentConfigs={agentConfigs}
-          refetch={refetch}
-        />
-      ),
-      isNew: true,
-      icon: <BoltOutlineIcon color="#A2845E" />,
-    },
-    {
-      title: "Knowledge",
-      content: <KnowledgeAgent />,
-      icon: <DatabaseSettingIcon />,
-    },
-    {
-      title: "Target Audience",
-      content: <TargetAudience />,
-      icon: <TargetIcon />,
-    },
-    {
-      title: "Monetization",
-      content: <Monetization />,
-      icon: <ClipboardTextIcon />,
-    },
-  ]
-
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onSubmit)}>
         <div>
-          <AgentHeader isEdit isLoading={false} />
+          <AgentHeader isEdit isLoading={loading} />
           <div className="relative mx-auto flex max-w-[1206px] items-start gap-[40px] px-6 py-6">
             <div className="w-[260px]">
               <AgentNavTab isEdit />
             </div>
             <div className="flex-1">
-              <AgentContent agentData={agentData} />
+              <AgentContent
+                agentData={agentData}
+                agentConfigs={agentConfigs}
+                refetch={refetch}
+              />
             </div>
           </div>
         </div>

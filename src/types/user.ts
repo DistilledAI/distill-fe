@@ -60,4 +60,5 @@ export interface IAgentData {
   botWebhooks?: any
   typeAgent?: AGENT_TYPE_KEY
   contractAddress?: string | null
+  botVersion?: string | null
 }

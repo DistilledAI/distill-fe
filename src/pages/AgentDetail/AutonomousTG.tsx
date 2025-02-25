@@ -213,19 +213,8 @@ const AutonomousTG: React.FC<{
 
       <FieldLabel
         text={
-          <div className="my-6 flex items-center justify-between gap-3 max-sm:flex-col max-sm:items-start">
-            <div className="flex flex-wrap items-center gap-2">
-              <TelegramOutlineIcon size={24} />
-              <span className="text-base-sb text-mercury-950">
-                Autonomous Bot on Telegram Group
-              </span>
-              <Button className="text-base-14 h-auto rounded-full bg-brown-500 py-[2px] font-bold uppercase text-mercury-30 max-sm:text-12">
-                ai agent generate
-              </Button>
-            </div>
-            <div>
-              <BindYourBot botWebhooks={botWebhooks} refetch={refetch} />
-            </div>
+          <div className="mt-6 flex items-center justify-between gap-3 rounded-lg bg-[#F6F4EC] p-4">
+            <BindYourBot botWebhooks={botWebhooks} refetch={refetch} />
           </div>
         }
       />
