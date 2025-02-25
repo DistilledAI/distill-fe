@@ -7,11 +7,15 @@ import {
 import { TYPE_LLM_MODEL } from "@pages/ChatPage/ChatContainer/RightContent/MyPrivateAgentContent/AgentInitialization/AgentType"
 import AgentNavTab from "@pages/CreateAgent/NavTab"
 import AgentContent from "./AgentContent"
-// import { useParams } from "react-router-dom"
-// import { editAgentClan, uploadImageAgentClan } from "services/group"
+import useFetchDetail from "./useFetchDetail"
+import { editAgentClan, uploadImageAgentClan } from "services/group"
+import { transformClanData } from "./AgentContent/ClanUtilities/helper"
 
 const AgentDetail = () => {
-  // const { agentId } = useParams()
+  const { agentData } = useFetchDetail()
+  const clanIdOfAgent = agentData?.botConfigs?.find(
+    (val: any) => val?.key === "clanOfAgent",
+  )?.value
 
   const methods = useForm<any>({
     defaultValues: {
@@ -35,26 +39,30 @@ const AgentDetail = () => {
       llmModel: TYPE_LLM_MODEL.LLM_MODEL_BASIC,
       clan: {
         description: "",
-        label: "",
+        name: "",
         imageLive: null,
-        videoLive: null,
-        isEnableClan: 0,
+        isEnableClan: 2,
       },
     },
   })
 
   const onSubmit = async (data: any) => {
-    // const formData = new FormData()
-    // formData.append("file", data.clan.imageLive || data.clan.videLive)
-    // formData.append("key", data.clan.imageLive ? "imageLive" : "videoLive")
-    // formData.append("groupId", agentId || "")
-    // formData.append("type", "clan")
-    // await uploadImageAgentClan(formData)
-    // const res = await editAgentClan({
-    //   groupId: Number(agentId),
-    //   data: transformClanData(data.clan),
-    // })
-    console.log({ data })
+    if (data.clan.imageLive instanceof File) {
+      const formData = new FormData()
+      formData.append("file", data.clan.imageLive)
+      formData.append("key", "imageLive")
+      formData.append("groupId", clanIdOfAgent || "")
+      formData.append("type", "clan")
+      await uploadImageAgentClan(formData)
+    }
+
+    await editAgentClan({
+      groupId: Number(clanIdOfAgent),
+      data: transformClanData({
+        ...data.clan,
+        label: data.clan.name,
+      }),
+    })
   }
 
   return (
@@ -67,7 +75,7 @@ const AgentDetail = () => {
               <AgentNavTab isEdit />
             </div>
             <div className="flex-1">
-              <AgentContent />
+              <AgentContent clanIdOfAgent={clanIdOfAgent} />
             </div>
           </div>
         </div>

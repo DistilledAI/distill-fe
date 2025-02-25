@@ -16,13 +16,8 @@ export enum CLAN_CONFIG_KEYS {
 
 export interface ClanData {
   description: string
-  label: string
-  // tradeLink: string
-  // contractAddress: string
-  // x: string
-  // telegram: string
+  name: string
   imageLive: File | null
-  videoLive: File | null
   isEnableClan: number
 }
 

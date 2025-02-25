@@ -1,12 +1,12 @@
 import ClanTitle from "./ClanTitle"
 import { CodesanboxIcon } from "@components/Icons/RewardsIcons"
 import ClanPublicChip from "./ClanPublicChip"
-import { Input } from "@nextui-org/react"
-import LabelRequired from "./LabelRequired"
-import { Controller, useFormContext } from "react-hook-form"
+// import { Input } from "@nextui-org/react"
+// import LabelRequired from "./LabelRequired"
+// import { Controller, useFormContext } from "react-hook-form"
 
 const TokenInfo = () => {
-  const { control } = useFormContext()
+  // const { control } = useFormContext()
 
   // const renderPasteButton = (field: FieldValues) => {
   //   return (
@@ -52,7 +52,7 @@ const TokenInfo = () => {
         )}
       /> */}
 
-      <div className="hidden items-center gap-4">
+      {/* <div className="flex items-center gap-4">
         <div className="flex-1 space-y-2">
           <LabelRequired label="Contract address" isRequired={false} />
           <Controller
@@ -68,20 +68,20 @@ const TokenInfo = () => {
                 }}
                 isDisabled
                 placeholder="Copy the exact capitalization to avoid errors."
-                // endContent={
-                //   <button
-                //     type="button"
-                //     className="rounded bg-brown-50 px-2 text-16 font-bold text-brown-600"
-                //     onClick={() => renderPasteButton(field)}
-                //   >
-                //     PASTE
-                //   </button>
-                // }
+                endContent={
+                  <button
+                    type="button"
+                    className="rounded bg-brown-50 px-2 text-16 font-bold text-brown-600"
+                    onClick={() => renderPasteButton(field)}
+                  >
+                    PASTE
+                  </button>
+                }
               />
             )}
           />
         </div>
-        {/* <div className="flex-1 space-y-2">
+        <div className="flex-1 space-y-2">
           <LabelRequired label="Trading link" />
           <Controller
             control={control}
@@ -107,8 +107,8 @@ const TokenInfo = () => {
               />
             )}
           />
-        </div> */}
-      </div>
+        </div>
+      </div> */}
     </div>
   )
 }

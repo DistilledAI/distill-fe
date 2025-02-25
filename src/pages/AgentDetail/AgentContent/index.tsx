@@ -8,7 +8,11 @@ const AutonomousTG = lazy(() => import("./AutonomousTG"))
 const AutonomousX = lazy(() => import("./AutonomousX"))
 const TypeAgent = lazy(() => import("./TypeAgent"))
 
-const AgentContent = () => {
+interface Props {
+  clanIdOfAgent: string
+}
+
+const AgentContent = ({ clanIdOfAgent }: Props) => {
   const [searchParams] = useSearchParams()
   const tab = searchParams.get("tab")
   const isActive = (key: TabKeyAgent) => tab === key
@@ -24,7 +28,7 @@ const AgentContent = () => {
         <AgentBasicInfo />
       </div>
       <div className={getClassName(TabKeyAgent.ClanUtilities)}>
-        <ClanUtilities />
+        <ClanUtilities clanIdOfAgent={clanIdOfAgent} />
       </div>
       <div className={getClassName(TabKeyAgent.Knowledge)}>
         <Knowledge />

@@ -1,59 +1,59 @@
-import { ClanOutlineIcon } from "@components/Icons/Sidebar"
-import ClanPublicChip from "./ClanPublicChip"
-import { Input, Switch, Textarea } from "@nextui-org/react"
-import ClanTitle from "./ClanTitle"
-import ChangeAvatarContainer from "@pages/AgentDetail/ChangeAvatarContainer"
-import { maxAvatarPlaceholder2 } from "@assets/images"
-import { BroadcastIcon } from "@components/Icons/Broadcast"
-import TotalMemberBadge from "@components/TotalMemberBadge"
-import { fileToBase64, isPassFileSize } from "@utils/index"
-import VideoCustom from "@components/VideoCustom"
-import { useEffect, useState } from "react"
-import LabelRequired from "./LabelRequired"
-import { toast } from "react-toastify"
+import { useEffect } from "react"
 import { Controller, useFormContext } from "react-hook-form"
+import { toast } from "react-toastify"
+import { Input, Switch, Textarea } from "@nextui-org/react"
+import { ClanOutlineIcon } from "@components/Icons/Sidebar"
+import { BroadcastIcon } from "@components/Icons/Broadcast"
+import ChangeAvatarContainer from "@pages/AgentDetail/ChangeAvatarContainer"
+import VideoCustom from "@components/VideoCustom"
+import TotalMemberBadge from "@components/TotalMemberBadge"
+import ClanPublicChip from "./ClanPublicChip"
+import ClanTitle from "./ClanTitle"
+import LabelRequired from "./LabelRequired"
+import { isPassFileSize } from "@utils/index"
+import { maxAvatarPlaceholder2 } from "@assets/images"
 
-type MediaPreview = {
-  src: string
-  type: "image" | "video" | null
-}
+const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5MB
+const VIDEO_EXTENSIONS = [
+  ".mp4",
+  ".mov",
+  ".avi",
+  ".mkv",
+  ".webm",
+  ".flv",
+  ".wmv",
+]
 
 const ClanAppearance: React.FC = () => {
-  const { control, setValue } = useFormContext()
-  const [mediaPreview, setMediaPreview] = useState<MediaPreview>({
-    src: "",
-    type: "image",
-  })
+  const { control, setValue, watch } = useFormContext()
+
+  const imageLive = watch("clan.imageLive")
+
+  const mediaSrc = (() => {
+    if (imageLive instanceof File) return URL.createObjectURL(imageLive)
+    if (typeof imageLive === "string") return imageLive
+    return maxAvatarPlaceholder2
+  })()
+
+  const isVideo =
+    (imageLive instanceof File && imageLive.type.startsWith("video/")) ||
+    (typeof imageLive === "string" &&
+      VIDEO_EXTENSIONS.some((ext) => imageLive.toLowerCase().endsWith(ext)))
 
   useEffect(() => {
     return () => {
-      if (mediaPreview.type === "video" && mediaPreview.src) {
-        URL.revokeObjectURL(mediaPreview.src)
+      if (imageLive instanceof File && mediaSrc.startsWith("blob:")) {
+        URL.revokeObjectURL(mediaSrc)
       }
     }
-  }, [mediaPreview])
+  }, [imageLive, mediaSrc])
 
-  const handleUpdateImageClan = async (file: File) => {
+  const handleMediaUpload = (file: File) => {
+    if (!isPassFileSize(file.size, MAX_FILE_SIZE)) return
+
     try {
-      const maxSize = 5 * 1024 * 1024
-      if (!isPassFileSize(file.size, maxSize)) return
-
-      if (file.type.startsWith("image/")) {
-        const fileBase64 = await fileToBase64(file)
-        setMediaPreview({
-          src: fileBase64 as string,
-          type: "image",
-        })
+      if (file.type.startsWith("image/") || file.type.startsWith("video/")) {
         setValue("clan.imageLive", file)
-        setValue("clan.videoLive", null)
-      } else if (file.type.startsWith("video/")) {
-        const videoSrc = URL.createObjectURL(file)
-        setMediaPreview({
-          src: videoSrc,
-          type: "video",
-        })
-        setValue("clan.videoLive", file)
-        setValue("clan.imageLive", null)
       } else {
         throw new Error("Unsupported file type")
       }
@@ -61,6 +61,11 @@ const ClanAppearance: React.FC = () => {
       console.error(error)
       toast.error(`${file.name} failed to upload.`)
     }
+  }
+
+  const inputClassNames = {
+    inputWrapper: "bg-mercury-70 rounded-lg border border-mercury-400 p-4",
+    input: "text-[15px] font-medium text-mercury-950",
   }
 
   return (
@@ -72,64 +77,53 @@ const ClanAppearance: React.FC = () => {
         />
         <ClanPublicChip />
       </div>
-      <div className="flex space-x-6">
-        <Controller
-          control={control}
-          name="clan.isEnableClan"
-          render={({ field }) => (
-            <Switch
-              isSelected={field.value}
-              onValueChange={(isSelected) => field.onChange(isSelected ? 1 : 0)}
-              classNames={{
-                label: "text-[16px] font-bold text-mercury-950",
-              }}
-            >
-              Enable Clan
-            </Switch>
-          )}
-        />
-      </div>
+
+      <Controller
+        control={control}
+        name="clan.isEnableClan"
+        render={({ field }) => (
+          <Switch
+            isSelected={field.value === 1}
+            onValueChange={(isSelected) => field.onChange(isSelected ? 1 : 0)}
+            classNames={{ label: "text-[16px] font-bold text-mercury-950" }}
+          >
+            Enable Clan
+          </Switch>
+        )}
+      />
 
       <div className="grid grid-cols-3 gap-4 rounded-[22px] border border-mercury-100 bg-mercury-30 p-6">
         <div className="col-span-1 flex flex-col items-center gap-4">
           <LabelRequired label="Streaming Photo or Video" />
           <ChangeAvatarContainer
             accept="image/*, video/*"
-            handleUpload={handleUpdateImageClan}
+            handleUpload={handleMediaUpload}
           >
-            <div
-              className={
-                "relative h-[200px] w-[160px] flex-shrink-0 cursor-pointer overflow-hidden rounded-lg bg-mercury-100"
-              }
-            >
-              {mediaPreview.type === "image" ? (
-                <div
-                  className="h-full w-full bg-cover bg-center bg-no-repeat"
-                  style={{
-                    backgroundImage: `url(${mediaPreview.src || maxAvatarPlaceholder2})`,
-                  }}
-                />
-              ) : (
+            <div className="relative h-[200px] w-[160px] flex-shrink-0 cursor-pointer overflow-hidden rounded-lg bg-mercury-100">
+              {isVideo ? (
                 <VideoCustom
-                  videoSrc={mediaPreview.src}
+                  videoSrc={mediaSrc}
                   classNames={{
                     wrapper: "w-full h-full bg-mercury-100",
                     video: "h-full w-full object-cover",
                   }}
                 />
+              ) : (
+                <div
+                  className="h-full w-full bg-cover bg-center bg-no-repeat"
+                  style={{ backgroundImage: `url(${mediaSrc})` }}
+                />
               )}
-
               <div className="absolute inset-0 z-10 rounded-lg border-[2px] border-white/20" />
               <div
-                className="absolute inset-0"
+                className="absolute inset-0 opacity-10"
                 style={{
                   background:
                     "linear-gradient(180deg, rgba(0, 0, 0, 0.70) 0%, #000 100%)",
-                  opacity: 0.1,
                 }}
               />
               <div
-                className="absolute inset-0 top-[21.05%] h-[78.95%] w-full"
+                className="absolute inset-0 top-[21.05%] h-[78.95%]"
                 style={{
                   background:
                     "linear-gradient(180deg, rgba(0, 0, 0, 0.00) 28.5%, #000 100%)",
@@ -152,20 +146,17 @@ const ClanAppearance: React.FC = () => {
             Max file size: 5MB
           </span>
         </div>
+
         <div className="col-span-2 space-y-4">
           <div className="space-y-2">
             <LabelRequired label="Clan name" />
             <Controller
               control={control}
-              name="clan.label"
+              name="clan.name"
               render={({ field }) => (
                 <Input
                   {...field}
-                  classNames={{
-                    inputWrapper:
-                      "bg-mercury-70 rounded-lg border border-mercury-400 p-4",
-                    input: "text-[15px] font-medium text-mercury-950",
-                  }}
+                  classNames={inputClassNames}
                   placeholder="Keep it unique and short."
                 />
               )}
@@ -179,11 +170,7 @@ const ClanAppearance: React.FC = () => {
               render={({ field }) => (
                 <Textarea
                   {...field}
-                  classNames={{
-                    inputWrapper:
-                      "bg-mercury-70 rounded-lg border border-mercury-400 p-4",
-                    input: "text-[15px] font-medium text-mercury-950",
-                  }}
+                  classNames={inputClassNames}
                   placeholder={`e.g., "A helpful customer service agent"`}
                 />
               )}
