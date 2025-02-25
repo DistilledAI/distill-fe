@@ -73,6 +73,7 @@ const endpoint = {
     withBaseURL(`/agent-conversation/message/${groupId}`),
   EDIT_AGENT_CLAN: withBaseURL(`/group/config`),
   UPLOAD_IMAGE_AGENT_CLAN: withBaseURL(`/group/upload-config`),
+  GET_FEATURED_AGENT_CLANS: () => withBaseURL("/dashboard/feature-agent-clan"),
 
   // my data
   UPLOAD_MY_DATA: withBaseURL("/my-data/upload"),

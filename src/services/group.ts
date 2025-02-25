@@ -91,3 +91,11 @@ export const uploadImageAgentClan = async (data: FormData) => {
     },
   })
 }
+
+export const getFeaturedAgentClans = async () => {
+  const res = await fetchApiAuth({
+    method: "GET",
+    url: endpoint.GET_FEATURED_AGENT_CLANS(),
+  })
+  return res?.data
+}
