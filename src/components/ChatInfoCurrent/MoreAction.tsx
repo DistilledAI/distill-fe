@@ -13,7 +13,7 @@ import {
 import {
   TypeGroup,
   UserGroup,
-} from "@pages/ChatPage/ChatBox/LeftBar/useFetchGroups"
+} from "@pages/ChatPage/ChatContainer/LeftBar/useFetchGroups"
 import { useQueryClient } from "@tanstack/react-query"
 import React, { useState } from "react"
 import { useNavigate } from "react-router-dom"

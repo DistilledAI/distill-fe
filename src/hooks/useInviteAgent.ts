@@ -1,7 +1,7 @@
 import { PATH_NAMES } from "@constants/index"
 import useFetchGroups, {
   UserGroup,
-} from "@pages/ChatPage/ChatBox/LeftBar/useFetchGroups"
+} from "@pages/ChatPage/ChatContainer/LeftBar/useFetchGroups"
 import { loginSuccessByAnonymous } from "@reducers/userSlice"
 import { useQueryClient } from "@tanstack/react-query"
 import { cachedSessionStorage, storageKey } from "@utils/storage"

@@ -14,6 +14,7 @@ interface ContractDisplayProps {
     icon?: string
     valueWrapper?: string
     value?: string
+    contentWrapper?: string
   }
 }
 
@@ -31,18 +32,21 @@ const ContractDisplay: React.FC<ContractDisplayProps> = ({
         classNames?.wrapper,
       )}
     >
-      <span
-        className={twMerge(
-          "text-[16px] font-bold text-mercury-950",
-          classNames?.label,
-        )}
-      >
-        {label}
-      </span>
+      {label && (
+        <span
+          className={twMerge(
+            "text-[16px] font-bold text-mercury-950",
+            classNames?.label,
+          )}
+        >
+          {label}
+        </span>
+      )}
       <div
         className={twMerge(
           "flex items-center gap-2 rounded-[22px] bg-mercury-30 px-2 py-[2px] hover:bg-mercury-50",
           !value && "bg-transparent hover:bg-transparent",
+          classNames?.contentWrapper,
         )}
       >
         {icon && <img src={icon} alt={`${label} icon`} />}

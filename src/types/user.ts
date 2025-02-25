@@ -1,4 +1,5 @@
 import { MY_DATA_STATUS, Publish } from "@constants/index"
+import { AGENT_TYPE_KEY } from "@pages/ChatPage/ChatContainer/RightContent/MyPrivateAgentContent/AgentInitialization/AgentType"
 import { BotDataTypeKey } from "@types"
 
 export interface IUserDetail {
@@ -57,4 +58,6 @@ export interface IAgentData {
   createdAt: string
   publish: Publish
   botWebhooks?: any
+  typeAgent?: AGENT_TYPE_KEY
+  contractAddress?: string | null
 }

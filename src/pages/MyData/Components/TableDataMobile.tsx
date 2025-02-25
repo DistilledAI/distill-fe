@@ -1,5 +1,5 @@
 import useLoadMoreByScroll from "@hooks/useLoadMoreByScroll"
-import { TYPE_DATA_KEY } from "@pages/ChatPage/ChatBox/RightContent/MyPrivateAgentContent/CreatePrivateAgent"
+import { TYPE_DATA_KEY } from "@pages/ChatPage/ChatContainer/RightContent/MyPrivateAgentContent/CreatePrivateAgent"
 import { BotDataTypeKey } from "@types"
 import { capitalizeFirstLetter } from "@utils/index"
 import moment from "moment"

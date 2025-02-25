@@ -1,4 +1,3 @@
-import { InfoCircleIcon } from "@components/Icons/InfoCircleIcon"
 import { MouseEvent, ReactNode } from "react"
 import { Link } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
@@ -30,12 +29,12 @@ const AlertBox = ({
   return (
     <div
       className={twMerge(
-        "flex flex-col justify-between gap-1 rounded-lg border border-brown-500 bg-brown-50 px-4 py-3 md:flex-row md:items-center md:gap-2",
+        "flex flex-col justify-between gap-1 rounded-lg bg-brown-50 px-4 py-3 md:flex-row md:items-center md:gap-2",
         className,
       )}
     >
       <div className="flex items-center gap-2">
-        <div>{icon || <InfoCircleIcon color="#83664B" size={16} />}</div>
+        {icon && icon}
         <div>
           {messages.map((message, index) => (
             <div key={index} className="text-16 font-medium text-brown-600">

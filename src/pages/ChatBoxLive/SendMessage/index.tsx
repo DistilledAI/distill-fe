@@ -1,7 +1,7 @@
 import ReCaptchaWraper from "@components/ReCaptchaWraper"
 import useAuthState from "@hooks/useAuthState"
 import useSubmitChat from "@hooks/useSubmitChat"
-import ChatInput from "@pages/ChatPage/ChatBox/ChatInput"
+import ChatInput from "@pages/ChatPage/ChatContainer/ChatInput"
 import React, { useRef } from "react"
 import SpeechRecognition from "react-speech-recognition"
 import { twMerge } from "tailwind-merge"

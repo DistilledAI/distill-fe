@@ -6,7 +6,7 @@ import {
 } from "@assets/images"
 import ChatWindow from "@components/ChatWindow"
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
-import useConversationSocket from "@pages/ChatPage/ChatBox/useConversationSocket"
+import useConversationSocket from "@pages/ChatPage/ChatContainer/useConversationSocket"
 import { twMerge } from "tailwind-merge"
 import useFetchConversation from "./useFetchConversation"
 import ReceiverMessage from "@components/ReceiverMessage"

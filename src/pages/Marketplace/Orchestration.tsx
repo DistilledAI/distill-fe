@@ -2,7 +2,7 @@ import { AvatarConversation } from "@components/AvatarContainer"
 import { MessageDots } from "@components/Icons/Message"
 import { PATH_NAMES } from "@constants/index"
 import { Button } from "@nextui-org/react"
-import { ORCHESTRATION_LIST } from "@pages/ChatPage/ChatBox/LeftBar/OrchestrationSlider"
+import { ORCHESTRATION_LIST } from "@pages/ChatPage/ChatContainer/LeftBar/OrchestrationSlider"
 import { useNavigate } from "react-router-dom"
 
 const Orchestration = () => {

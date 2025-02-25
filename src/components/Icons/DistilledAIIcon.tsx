@@ -5,15 +5,21 @@ import { twMerge } from "tailwind-merge"
 interface IProps {
   baseClassName?: string
   iconClassName?: string
+  onClick?: () => void
 }
 
-export const DistilledAIIcon = ({ baseClassName, iconClassName }: IProps) => {
+export const DistilledAIIcon = ({
+  baseClassName,
+  iconClassName,
+  onClick,
+}: IProps) => {
   return (
     <div
       className={twMerge(
         "flex h-8 w-8 items-center justify-center rounded-full border border-mercury-400",
         baseClassName,
       )}
+      onClick={onClick}
     >
       <Image
         src={distilledAIIcon}
