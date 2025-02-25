@@ -5,10 +5,10 @@ import { TabKeyAgent } from "@pages/CreateAgent/NavTab"
 import { defineElement } from "@utils/index"
 import { useSearchParams } from "react-router-dom"
 import { IAgentData } from "types/user"
-import AutonomousTG from "../AutonomousTG"
-import AutonomousX from "../AutonomousX"
-import KnowledgeAgent from "../Knowledge"
 import { AgentConfig } from "../useFetchAgentConfig"
+import AutonomousTG from "./AutonomousTG"
+import AutonomousX from "./AutonomousX"
+import Knowledge from "./Knowledge"
 
 export const BLACKLIST_BOT_VERSION = [
   "devorai/distilled-chat:0.0.6.4-cc",
@@ -38,20 +38,12 @@ const AgentContent: React.FC<{
     [TabKeyAgent.Basic]: <AgentBasicInfo />,
     [TabKeyAgent.ClanUtilities]: <ClanUtilities />,
     [TabKeyAgent.AutonomousX]: (
-      <AutonomousX
-        agentConfigs={agentConfigs}
-        refetch={refetch}
-        agentData={agentData}
-      />
+      <AutonomousX agentConfigs={agentConfigs} refetch={refetch} />
     ),
     [TabKeyAgent.AutonomousTG]: (
-      <AutonomousTG
-        agentConfigs={agentConfigs}
-        refetch={refetch}
-        agentData={agentData}
-      />
+      <AutonomousTG refetch={refetch} agentData={agentData} />
     ),
-    [TabKeyAgent.Knowledge]: <KnowledgeAgent />,
+    [TabKeyAgent.Knowledge]: <Knowledge />,
   } as any
 
   const component = mapAgnetContentToTabKey[tabKey]

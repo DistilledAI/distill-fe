@@ -1,6 +1,5 @@
 import { BEHAVIORS_AGENT, STATUS_AGENT } from "@constants/index"
 import { TYPE_LLM_MODEL } from "@pages/ChatPage/ChatContainer/RightContent/MyPrivateAgentContent/AgentInitialization/AgentType"
-import AgentHeader from "@pages/CreateAgent/Header"
 import AgentNavTab from "@pages/CreateAgent/NavTab"
 import { refreshFetchMyAgent } from "@reducers/agentSlice"
 import { useEffect, useState } from "react"
@@ -16,6 +15,7 @@ import {
   RESPONSE_LENGTH_KEY,
 } from "./AgentBehaviors/constants"
 import AgentContent from "./AgentContent"
+import HeaderDetailAgent from "./HeaderDetail"
 import {
   getConfigAgentByDataForm,
   getConfigAgentValueByKeys,
@@ -41,6 +41,7 @@ const AgentDetail: React.FC = () => {
   const dispatch = useDispatch()
   const [loading, setLoading] = useState(false)
   const [valueCustomDefault, setValueCustomDefault] = useState<any>()
+  console.log("🚀 ~ valueCustomDefault:", valueCustomDefault)
 
   const { agentConfigs } = useFetchAgentConfig()
   const { agentData, refetch } = useFetchDetail()
@@ -119,7 +120,6 @@ const AgentDetail: React.FC = () => {
   }, [agentData, methods.reset, agentConfigs])
 
   const onSubmit = async (data: any) => {
-    console.log("🚀 ~ onSubmit ~ data:", data)
     if (!isPassRuleAgentInfo(data) || !isActive) return
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { avatar, avatarFile, ...newData } = data
@@ -164,7 +164,7 @@ const AgentDetail: React.FC = () => {
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onSubmit)}>
         <div>
-          <AgentHeader isEdit isLoading={loading} />
+          <HeaderDetailAgent isLoading={loading} />
           <div className="relative mx-auto flex max-w-[1206px] items-start gap-[40px] px-6 py-6">
             <div className="w-[260px]">
               <AgentNavTab isEdit />
