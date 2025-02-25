@@ -1,6 +1,4 @@
 import { useState, useRef, useEffect } from "react"
-import { FilledSearchIcon } from "@components/Icons/SearchIcon"
-import { Input } from "@nextui-org/react"
 import SortAgents from "./SortAgents"
 import { twMerge } from "tailwind-merge"
 import { Swiper, SwiperRef, SwiperSlide } from "swiper/react"
@@ -8,6 +6,7 @@ import { Navigation } from "swiper/modules"
 import AgentClansStore from "./AgentClansStore"
 import AIAgentList from "./AIAgentList"
 import { useNavigate, useLocation } from "react-router-dom"
+import InputSearchAgent from "./InputSearchAgent"
 
 const CATEGORIES = {
   "agent-clans": {
@@ -70,14 +69,7 @@ const AgentStore = () => {
   return (
     <div className="mx-auto mt-8 max-w-[1024px] max-lg:px-4">
       <div className="flex items-center justify-between gap-2">
-        <Input
-          startContent={<FilledSearchIcon size={24} color="#363636" />}
-          placeholder="Search Agents.."
-          classNames={{
-            inputWrapper: "!bg-transparent shadow-none",
-            input: "text-[20px] text-mercury-950 placeholder:text-mercury-800",
-          }}
-        />
+        <InputSearchAgent />
         <button
           type="button"
           className="h-14 flex-shrink-0 rounded-full bg-mercury-950 px-6 text-16 font-bold text-mercury-30"

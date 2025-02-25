@@ -11,6 +11,7 @@ import VideoCustom from "@components/VideoCustom"
 import { useEffect, useState } from "react"
 import LabelRequired from "./LabelRequired"
 import { toast } from "react-toastify"
+import { Controller, useFormContext } from "react-hook-form"
 
 type MediaPreview = {
   src: string
@@ -18,6 +19,7 @@ type MediaPreview = {
 }
 
 const ClanAppearance: React.FC = () => {
+  const { control, setValue } = useFormContext()
   const [mediaPreview, setMediaPreview] = useState<MediaPreview>({
     src: "",
     type: "image",
@@ -35,19 +37,23 @@ const ClanAppearance: React.FC = () => {
     try {
       const maxSize = 5 * 1024 * 1024
       if (!isPassFileSize(file.size, maxSize)) return
+
       if (file.type.startsWith("image/")) {
         const fileBase64 = await fileToBase64(file)
         setMediaPreview({
           src: fileBase64 as string,
           type: "image",
         })
+        setValue("clan.imageLive", file)
+        setValue("clan.videoLive", null)
       } else if (file.type.startsWith("video/")) {
         const videoSrc = URL.createObjectURL(file)
         setMediaPreview({
           src: videoSrc,
           type: "video",
         })
-        console.log({ videoSrc })
+        setValue("clan.videoLive", file)
+        setValue("clan.imageLive", null)
       } else {
         throw new Error("Unsupported file type")
       }
@@ -67,22 +73,21 @@ const ClanAppearance: React.FC = () => {
         <ClanPublicChip />
       </div>
       <div className="flex space-x-6">
-        <Switch
-          defaultSelected
-          classNames={{
-            label: "text-[16px] font-bold text-mercury-950",
-          }}
-        >
-          Enable Clan
-        </Switch>
-        <Switch
-          defaultSelected
-          classNames={{
-            label: "text-[16px] font-bold text-mercury-950",
-          }}
-        >
-          Use Agent’s info
-        </Switch>
+        <Controller
+          control={control}
+          name="clan.isEnableClan"
+          render={({ field }) => (
+            <Switch
+              isSelected={field.value}
+              onValueChange={(isSelected) => field.onChange(isSelected ? 1 : 0)}
+              classNames={{
+                label: "text-[16px] font-bold text-mercury-950",
+              }}
+            >
+              Enable Clan
+            </Switch>
+          )}
+        />
       </div>
 
       <div className="grid grid-cols-3 gap-4 rounded-[22px] border border-mercury-100 bg-mercury-30 p-6">
@@ -150,24 +155,38 @@ const ClanAppearance: React.FC = () => {
         <div className="col-span-2 space-y-4">
           <div className="space-y-2">
             <LabelRequired label="Clan name" />
-            <Input
-              classNames={{
-                inputWrapper:
-                  "bg-mercury-70 rounded-lg border border-mercury-400 p-4",
-                input: "text-[15px] font-medium text-mercury-950",
-              }}
-              placeholder="Keep it unique and short."
+            <Controller
+              control={control}
+              name="clan.label"
+              render={({ field }) => (
+                <Input
+                  {...field}
+                  classNames={{
+                    inputWrapper:
+                      "bg-mercury-70 rounded-lg border border-mercury-400 p-4",
+                    input: "text-[15px] font-medium text-mercury-950",
+                  }}
+                  placeholder="Keep it unique and short."
+                />
+              )}
             />
           </div>
           <div className="space-y-2">
             <LabelRequired label="Clan Description" />
-            <Textarea
-              classNames={{
-                inputWrapper:
-                  "bg-mercury-70 rounded-lg border border-mercury-400 p-4",
-                input: "text-[15px] font-medium text-mercury-950",
-              }}
-              placeholder={`e.g., "A helpful customer service agent"`}
+            <Controller
+              control={control}
+              name="clan.description"
+              render={({ field }) => (
+                <Textarea
+                  {...field}
+                  classNames={{
+                    inputWrapper:
+                      "bg-mercury-70 rounded-lg border border-mercury-400 p-4",
+                    input: "text-[15px] font-medium text-mercury-950",
+                  }}
+                  placeholder={`e.g., "A helpful customer service agent"`}
+                />
+              )}
             />
           </div>
         </div>

@@ -1,10 +1,27 @@
 import ClanTitle from "./ClanTitle"
 import { CodesanboxIcon } from "@components/Icons/RewardsIcons"
 import ClanPublicChip from "./ClanPublicChip"
-import { Input, Switch } from "@nextui-org/react"
+import { Input } from "@nextui-org/react"
 import LabelRequired from "./LabelRequired"
+import { Controller, useFormContext } from "react-hook-form"
 
 const TokenInfo = () => {
+  const { control } = useFormContext()
+
+  // const renderPasteButton = (field: FieldValues) => {
+  //   return (
+  //     <button
+  //       type="button"
+  //       className="rounded bg-brown-50 px-2 text-16 font-bold text-brown-600"
+  //       onClick={() =>
+  //         navigator.clipboard.readText().then((text) => field.onChange(text))
+  //       }
+  //     >
+  //       PASTE
+  //     </button>
+  //   )
+  // }
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -19,48 +36,78 @@ const TokenInfo = () => {
         agent’s creation.
       </div>
 
-      <Switch
-        defaultSelected
-        classNames={{
-          label: "text-[16px] font-bold text-mercury-950",
-        }}
-      >
-        Mark as Tokenized
-      </Switch>
+      {/* <Controller
+        control={control}
+        name="clan.isPrediction"
+        render={({ field }) => (
+          <Switch
+            isSelected={field.value === "true" || field.value === true}
+            onValueChange={(value) => field.onChange(value.toString())}
+            classNames={{
+              label: "text-[16px] font-bold text-mercury-950",
+            }}
+          >
+            Mark as Tokenized
+          </Switch>
+        )}
+      /> */}
 
-      <div className="flex items-center gap-4">
+      <div className="hidden items-center gap-4">
         <div className="flex-1 space-y-2">
-          <LabelRequired label="Contract address" />
-          <Input
-            classNames={{
-              inputWrapper:
-                "bg-mercury-70 rounded-lg border border-mercury-400 p-4",
-              input: "text-[14px] font-medium text-mercury-950 ",
-            }}
-            placeholder="Copy the exact capitalization to avoid errors."
-            endContent={
-              <button className="rounded bg-brown-50 px-2 text-16 font-bold text-brown-600">
-                PASTE
-              </button>
-            }
+          <LabelRequired label="Contract address" isRequired={false} />
+          <Controller
+            control={control}
+            name="clan.contractAddress"
+            render={({ field }) => (
+              <Input
+                {...field}
+                classNames={{
+                  inputWrapper:
+                    "bg-mercury-70 rounded-lg border border-mercury-400 p-4",
+                  input: "text-[14px] font-medium text-mercury-950 ",
+                }}
+                isDisabled
+                placeholder="Copy the exact capitalization to avoid errors."
+                // endContent={
+                //   <button
+                //     type="button"
+                //     className="rounded bg-brown-50 px-2 text-16 font-bold text-brown-600"
+                //     onClick={() => renderPasteButton(field)}
+                //   >
+                //     PASTE
+                //   </button>
+                // }
+              />
+            )}
           />
         </div>
-        <div className="flex-1 space-y-2">
+        {/* <div className="flex-1 space-y-2">
           <LabelRequired label="Trading link" />
-          <Input
-            classNames={{
-              inputWrapper:
-                "bg-mercury-70 rounded-lg border border-mercury-400 px-4 py-2",
-              input: "text-[14px] font-medium text-mercury-950 ",
-            }}
-            placeholder="e.g. https://agents.land/trading/ABC"
-            endContent={
-              <button className="rounded bg-brown-50 px-2 text-16 font-bold text-brown-600">
-                PASTE
-              </button>
-            }
+          <Controller
+            control={control}
+            name="clan.tradeLink"
+            render={({ field }) => (
+              <Input
+                {...field}
+                classNames={{
+                  inputWrapper:
+                    "bg-mercury-70 rounded-lg border border-mercury-400 px-4 py-2",
+                  input: "text-[14px] font-medium text-mercury-950 ",
+                }}
+                placeholder="e.g. https://agents.land/trading/ABC"
+                endContent={
+                  <button
+                    type="button"
+                    className="rounded bg-brown-50 px-2 text-16 font-bold text-brown-600"
+                    onClick={() => renderPasteButton(field)}
+                  >
+                    PASTE
+                  </button>
+                }
+              />
+            )}
           />
-        </div>
+        </div> */}
       </div>
     </div>
   )

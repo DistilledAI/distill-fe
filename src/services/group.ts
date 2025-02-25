@@ -59,3 +59,35 @@ export const getAgentConversation = async ({
     },
   })
 }
+
+export const editAgentClan = async ({
+  groupId,
+  data,
+}: {
+  groupId: number
+  data: {
+    type: "clan"
+    key: string
+    value: any
+  }[]
+}) => {
+  return fetchApiAuth({
+    method: "POST",
+    url: endpoint.EDIT_AGENT_CLAN,
+    data: {
+      groupId,
+      data,
+    },
+  })
+}
+
+export const uploadImageAgentClan = async (data: FormData) => {
+  return fetchApiAuth({
+    method: "POST",
+    url: endpoint.UPLOAD_IMAGE_AGENT_CLAN,
+    data,
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  })
+}
