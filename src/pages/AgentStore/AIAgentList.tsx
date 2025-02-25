@@ -27,11 +27,12 @@ const AIAgentList = () => {
       role: RoleUser.BOT,
       publish: Publish.Published,
     }
-    const res = await searchUsers(
-      JSON.stringify(payloadData),
+
+    const res = await searchUsers({
+      filter: payloadData,
       limit,
-      (page - 1) * limit,
-    )
+      offset: (page - 1) * limit,
+    })
     return {
       agents: res?.data?.items as IUser[],
       total: res?.data?.total,

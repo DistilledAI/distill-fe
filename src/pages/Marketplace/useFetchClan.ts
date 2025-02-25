@@ -24,18 +24,27 @@ const useFetchClan = ({
     isFetchMore = false,
     fetchLimit = limit,
     fetchOffset = currentOffset,
+    sort,
   }: {
     hasLoading?: boolean
     isFetchMore?: boolean
     fetchLimit?: number
     fetchOffset?: number
+    sort?: {
+      [key: string]
+    }
   }) => {
     try {
       if (hasLoading) setLoading(true)
       const filter = userId
         ? JSON.stringify({ userId: userId.toString() })
         : undefined
-      const res = await getListGroupAgentPublic(filter, fetchLimit, fetchOffset)
+      const res = await getListGroupAgentPublic({
+        filter,
+        sort,
+        limit: fetchLimit,
+        offset: fetchOffset,
+      })
       const newData = res.data.items || []
 
       if (isFetchMore) {

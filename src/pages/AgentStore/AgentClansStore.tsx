@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useLocation } from "react-router-dom" // Thêm useLocation
 import { IGroupDetail } from "types/group"
 import useFetchClan from "@pages/Marketplace/useFetchClan"
 import { PATH_NAMES } from "@constants/index"
@@ -12,7 +12,7 @@ import { BroadcastIcon } from "@components/Icons/Broadcast"
 import { ClanIcon } from "@components/Icons/Clan"
 import { UsersGroupOutlineIcon } from "@components/Icons/UserIcon"
 import TotalMemberBadge from "@components/TotalMemberBadge"
-import { Pagination, Skeleton } from "@nextui-org/react" // Thêm Skeleton
+import { Pagination, Skeleton } from "@nextui-org/react"
 import PaginationItemCustom from "./PaginationItemCustom"
 
 const agentType = {
@@ -22,8 +22,8 @@ const agentType = {
 
 const AgentClansStore = () => {
   const navigate = useNavigate()
+  const location = useLocation()
   const limit = 10
-
   const [page, setPage] = useState(1)
 
   const { data, total, getList, loading } = useFetchClan({
@@ -33,13 +33,25 @@ const AgentClansStore = () => {
   })
 
   useEffect(() => {
+    const searchParams = new URLSearchParams(location.search)
+    const sortBy = searchParams.get("sortBy")
+
+    let sort: { [key: string]: "ASC" | "DESC" } = { totalMember: "DESC" }
+
+    if (sortBy === "newest") {
+      sort = { createdAt: "DESC" }
+    } else if (sortBy === "trending" || !sortBy) {
+      sort = { totalMember: "DESC" }
+    }
+
     getList({
       hasLoading: true,
       isFetchMore: false,
       fetchLimit: limit,
       fetchOffset: (page - 1) * limit,
+      sort,
     })
-  }, [page, limit])
+  }, [page, limit, location.search])
 
   const onPageChange = (newPage: number) => {
     setPage(newPage)
@@ -110,12 +122,10 @@ const AgentClansStore = () => {
 
         <div className="grid grid-cols-2 gap-4">
           {loading
-            ? // Hiển thị skeleton khi đang loading
-              Array.from({ length: limit }).map((_, index) => (
+            ? Array.from({ length: limit }).map((_, index) => (
                 <div key={index}>{renderSkeleton()}</div>
               ))
-            : // Hiển thị dữ liệu thực tế khi không loading
-              data.map((item: IGroupDetail) => {
+            : data.map((item: IGroupDetail) => {
                 const description = item?.groupConfig?.find(
                   (val) => val.key === "description" && val.type === "clan",
                 )

@@ -4,18 +4,49 @@ import {
   DropdownItem,
   DropdownMenu,
   DropdownTrigger,
+  SharedSelection,
 } from "@nextui-org/react"
-import React from "react"
+import React, { useEffect } from "react"
+import { useNavigate, useLocation } from "react-router-dom"
 
-const SortAgents = () => {
-  const [selectedKeys, setSelectedKeys] = React.useState<any>(
+const SortAgents: React.FC = () => {
+  const navigate = useNavigate()
+  const location = useLocation()
+  const [selectedKeys, setSelectedKeys] = React.useState<Set<string>>(
     new Set(["trending"]),
   )
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search)
+    const sortByFromUrl = searchParams.get("sortBy")
+    const validOptions = ["trending", "newest"]
+
+    if (sortByFromUrl && validOptions.includes(sortByFromUrl)) {
+      setSelectedKeys(new Set([sortByFromUrl]))
+    } else {
+      setSelectedKeys(new Set(["trending"]))
+    }
+  }, [location.search])
 
   const selectedValue = React.useMemo(
     () => Array.from(selectedKeys).join(", ").replace(/_/g, ""),
     [selectedKeys],
   )
+
+  const handleSelectionChange = (keys: SharedSelection) => {
+    const newSelectedKeys: Set<string> =
+      keys instanceof Set
+        ? new Set(Array.from(keys).map((key) => String(key)))
+        : new Set([String(keys)])
+
+    setSelectedKeys(newSelectedKeys)
+    const selectedSortBy = Array.from(newSelectedKeys)[0]
+    const searchParams = new URLSearchParams(location.search)
+    searchParams.set("sortBy", selectedSortBy)
+    navigate(`${location.pathname}?${searchParams.toString()}`, {
+      replace: true,
+    })
+  }
 
   return (
     <Dropdown
@@ -38,7 +69,7 @@ const SortAgents = () => {
         aria-label="Single selection example"
         selectedKeys={selectedKeys}
         selectionMode="single"
-        onSelectionChange={setSelectedKeys}
+        onSelectionChange={handleSelectionChange}
         itemClasses={{
           base: "aria-[checked=true]:!bg-brown-50 data-[hover=true]:!bg-brown-50 data-[selected=true]:!bg-brown-50 data-[focus=true]:!bg-brown-50",
           title: "text-[16px] font-bold text-mercury-900",

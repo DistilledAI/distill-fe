@@ -34,7 +34,7 @@ const AlertBox = ({
       )}
     >
       <div className="flex items-center gap-2">
-        {icon && icon}
+        {icon && <div>{icon}</div>}
         <div>
           {messages.map((message, index) => (
             <div key={index} className="text-16 font-medium text-brown-600">

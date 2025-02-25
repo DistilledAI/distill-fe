@@ -1,13 +1,12 @@
+import { CheckFilledIcon, CloseFilledIcon } from "@components/Icons/DefiLens"
 import { TablerPlusIcon } from "@components/Icons/TablerPlusIcon"
-import { TrashXIcon } from "@components/Icons/TrashXIcon"
 import { Spinner } from "@nextui-org/react"
-import useDeleteData from "@pages/MyData/DeleteData/useDelete"
 import { calculateFileSize } from "@utils/index"
 import type { UploadFile, UploadProps } from "antd"
 import { Upload } from "antd"
 import { UploadFileStatus } from "antd/es/upload/interface"
 import { useRef, useState } from "react"
-import { Link, useParams } from "react-router-dom"
+import { Link } from "react-router-dom"
 import { toast } from "react-toastify"
 import { uploadMyData } from "services/user"
 import { styled } from "styled-components"
@@ -45,10 +44,8 @@ const UploadCustom: React.FC<UploadCustomProps> = ({
   children,
   containerClassName,
 }) => {
-  const { botId } = useParams()
   const messagesEndRef = useRef<any>()
   const [fileListValue, setFileList] = useState<UploadFile[]>([])
-  const { onDelete } = useDeleteData()
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
@@ -124,23 +121,14 @@ const UploadCustom: React.FC<UploadCustomProps> = ({
 
   const mapIconFromStatus: Record<UploadFileStatus | string, JSX.Element> = {
     uploading: <Spinner size="sm" />,
-    done: <TrashXIcon />,
-    error: <TrashXIcon />,
-  }
-
-  const handleRemoveFile = async (record: any) => {
-    await onDelete({ botId: Number(botId), ids: [record?.response?.id] })
-    //set display value
-    const newFileList = fileListValue?.filter(
-      (item: any) => item.uid !== record?.uid,
-    )
-    setFileList(newFileList)
+    done: <CheckFilledIcon />,
+    error: <CloseFilledIcon size={16} />,
   }
 
   return (
     <div
       className={twMerge(
-        "h-fit !w-full rounded-[32px] border-[1px] border-mercury-200 bg-mercury-50 p-1",
+        "h-fit !w-full rounded-full bg-mercury-100 p-1",
         isComingSoon && "opacity-65",
         containerClassName,
       )}
@@ -162,7 +150,7 @@ const UploadCustom: React.FC<UploadCustomProps> = ({
         ) : (
           <div
             className={twMerge(
-              "flex h-[50px] w-full min-w-[130px] cursor-pointer items-center justify-between gap-2 rounded-full border border-mercury-70 bg-mercury-30 p-4 shadow-6",
+              "flex h-[50px] w-full min-w-[130px] cursor-pointer items-center justify-between gap-2 rounded-full bg-mercury-30 p-4",
               isComingSoon && "cursor-default",
             )}
           >
@@ -212,12 +200,7 @@ const UploadCustom: React.FC<UploadCustomProps> = ({
                   <div className="text-14">
                     {calculateFileSize(item?.response?.size)}
                   </div>
-                  <div
-                    className="cursor-pointer"
-                    onClick={() => handleRemoveFile(item)}
-                  >
-                    {mapIconFromStatus?.[item?.status]}
-                  </div>
+                  <div>{mapIconFromStatus?.[item?.status]}</div>
                 </div>
               </div>
             )
