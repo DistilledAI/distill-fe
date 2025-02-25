@@ -7,8 +7,12 @@ import {
 import { TYPE_LLM_MODEL } from "@pages/ChatPage/ChatContainer/RightContent/MyPrivateAgentContent/AgentInitialization/AgentType"
 import AgentNavTab from "@pages/CreateAgent/NavTab"
 import AgentContent from "./AgentContent"
+// import { useParams } from "react-router-dom"
+// import { editAgentClan, uploadImageAgentClan } from "services/group"
 
 const AgentDetail = () => {
+  // const { agentId } = useParams()
+
   const methods = useForm<any>({
     defaultValues: {
       username: "",
@@ -29,10 +33,29 @@ const AgentDetail = () => {
       category: "crypto",
       typeAgent: 0,
       llmModel: TYPE_LLM_MODEL.LLM_MODEL_BASIC,
+      clan: {
+        description: "",
+        label: "",
+        imageLive: null,
+        videoLive: null,
+        isEnableClan: 0,
+      },
     },
   })
 
-  const onSubmit = () => {}
+  const onSubmit = async (data: any) => {
+    // const formData = new FormData()
+    // formData.append("file", data.clan.imageLive || data.clan.videLive)
+    // formData.append("key", data.clan.imageLive ? "imageLive" : "videoLive")
+    // formData.append("groupId", agentId || "")
+    // formData.append("type", "clan")
+    // await uploadImageAgentClan(formData)
+    // const res = await editAgentClan({
+    //   groupId: Number(agentId),
+    //   data: transformClanData(data.clan),
+    // })
+    console.log({ data })
+  }
 
   return (
     <FormProvider {...methods}>
