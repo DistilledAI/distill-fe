@@ -6,6 +6,8 @@ import { STATUS_AGENT } from "@constants/index"
 import { useAppSelector } from "@hooks/useAppRedux"
 import useFetchMyData from "@pages/MyData/useFetch"
 import AddData from "./AddData"
+import { LockFilledIcon } from "@components/Icons/AgentDetailIcon"
+import TopicRestriction from "./TopicRestriction"
 
 const Knowledge = () => {
   const myAgent = useAppSelector((state) => state.agents.myAgent)
@@ -16,9 +18,17 @@ const Knowledge = () => {
 
   return (
     <div>
-      <div className="flex items-center gap-1">
-        <DatabaseImportIcon />
-        <span className="text-[22px] font-semibold">Connected Sources</span>
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-1">
+          <DatabaseImportIcon />
+          <span className="text-[22px] font-semibold">Connected Sources</span>
+        </div>
+        <div className="flex items-center gap-1 rounded-full bg-mercury-70 px-2">
+          <LockFilledIcon />
+          <span className="font-medium uppercase text-mercury-700">
+            private
+          </span>
+        </div>
       </div>
       <div className="mt-5">
         <AgentSetupStatus isAgentActive={isAgentActive} />
@@ -43,6 +53,7 @@ const Knowledge = () => {
         />
       )}
       <AddData />
+      <TopicRestriction />
     </div>
   )
 }
