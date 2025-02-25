@@ -47,8 +47,7 @@ const TableData: React.FC<{
       isHeaderSticky
       aria-label="table"
       classNames={{
-        wrapper:
-          "shadow-none bg-mercury-30 border-1 border-white rounded-[22px] px-6 gap-0",
+        wrapper: "shadow-none bg-mercury-30 rounded-[22px] px-4 gap-0",
         th: "bg-transparent h-5 p-0 pb-1 pr-4 text-base font-normal text-mercury-600",
         td: "pl-0 pr-4 py-2",
         thead:

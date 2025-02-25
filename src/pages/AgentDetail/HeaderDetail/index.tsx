@@ -20,7 +20,7 @@ const HeaderDetailAgent: React.FC<{
   const { onOpen, onClose, isOpen } = useDisclosure()
   const { watch } = useFormContext()
   const [isPublished, setIsPublished] = useState(
-    agent.publish === Publish.Published,
+    agent?.publish === Publish.Published,
   )
   const personality = watch("personality_traits")
   const agentName = watch("username")
@@ -30,8 +30,8 @@ const HeaderDetailAgent: React.FC<{
   const isAgentActive = agent && agent?.status === STATUS_AGENT.ACTIVE
 
   useEffect(() => {
-    setIsPublished(agent.publish === Publish.Published)
-  }, [agent.publish])
+    setIsPublished(agent?.publish === Publish.Published)
+  }, [agent?.publish])
 
   const onPublishMarketplace = async (botId: number) => {
     try {

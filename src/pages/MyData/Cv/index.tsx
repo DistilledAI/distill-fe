@@ -73,7 +73,7 @@ const CvData: React.FC<{
             <DeleteData
               botId={item.userId}
               ids={[item.id]}
-              category={category}
+              // category={category}
             />
           </div>
         )

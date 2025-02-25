@@ -18,10 +18,8 @@ import AgentSetupStatus from "./AgentSetupStatus"
 const ConnectData = () => {
   const navigate = useNavigate()
   const { botId } = useParams()
-  const { isAgentActive, agentDataList, isAgentDataFetched, currentAgent } =
-    useActiveAgent()
-  //@ts-ignore
-  const typeAgentData = currentAgent?.typeAgent
+  const { isAgentActive, agentDataList, isAgentDataFetched } = useActiveAgent()
+  // const typeAgentData = currentAgent?.typeAgent
   console.log("🚀 ~ ConnectData ~ isAgentActive:", isAgentActive)
 
   const onMoreCustomRequest = async (data: any) => {
