@@ -2,25 +2,17 @@ import { ChevronDownIcon } from "@components/Icons/ChevronDownIcon"
 import { DatabaseIcon } from "@components/Icons/DatabaseImportIcon"
 import { FilledShieldCheckedIcon } from "@components/Icons/FilledShieldCheck"
 import { borderGdImg } from "@assets/images"
-import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
+import AgentStatus from "@components/AgentStatus"
 
-const AgentSetupStatus = () => {
+interface AgentSetupStatusProps {
+  isAgentActive: boolean
+}
+
+const AgentSetupStatus = ({ isAgentActive }: AgentSetupStatusProps) => {
   return (
     <div className="relative mx-auto mb-4 flex max-w-[684px] items-center justify-between md:mb-6">
       {/* Agent Status */}
-      <div className="flex flex-1 flex-col items-center gap-1">
-        <div className="relative flex h-8 w-8 items-center justify-center rounded-full bg-[#FC0] md:h-10 md:w-10">
-          <FilledBrainAIIcon color="#363636" size={24} />
-        </div>
-        <div className="flex flex-col items-center">
-          <span className="text-14 font-semibold text-mercury-950 md:text-18">
-            Your Agent will be created
-          </span>
-          <span className="text-14 font-semibold text-mercury-950 md:text-18">
-            with Private Intelligence
-          </span>
-        </div>
-      </div>
+      <AgentStatus isAgentActive={isAgentActive} />
 
       {/* Chevron Divider */}
       <div className="absolute left-1/2 top-4 w-full max-w-[150px] -translate-x-1/2 md:max-w-[280px]">
@@ -40,7 +32,7 @@ const AgentSetupStatus = () => {
             <FilledShieldCheckedIcon color="#A2845E" />
           </div>
         </div>
-        <p className="max-w-[227px] text-center text-14 font-semibold text-mercury-950 max-md:text-center md:text-18">
+        <p className="max-w-[227px] text-center text-14 font-semibold text-mercury-950 md:text-18">
           Add anything you want the agent to learn
         </p>
       </div>

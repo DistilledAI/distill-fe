@@ -1,4 +1,4 @@
-import AgentHeader from "@pages/CreateAgent/Header"
+import AgentHeader from "./HeaderDetail"
 import { FormProvider, useForm } from "react-hook-form"
 import {
   INTERACTION_FREQUENCY_KEY,
@@ -38,7 +38,7 @@ const AgentDetail = () => {
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onSubmit)}>
         <div>
-          <AgentHeader isEdit isLoading={false} />
+          <AgentHeader isLoading={false} />
           <div className="relative mx-auto flex max-w-[1206px] items-start gap-[40px] px-6 py-6">
             <div className="w-[260px]">
               <AgentNavTab isEdit />

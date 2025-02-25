@@ -5,8 +5,7 @@ import { useFormContext } from "react-hook-form"
 
 const AgentHeader: React.FC<{
   isLoading: boolean
-  isEdit?: boolean
-}> = ({ isLoading, isEdit = false }) => {
+}> = ({ isLoading }) => {
   const { onOpen, onClose, isOpen } = useDisclosure()
   const { watch } = useFormContext()
   const personality = watch("personality_traits")
@@ -36,7 +35,7 @@ const AgentHeader: React.FC<{
           isDisabled={isDisabled}
           className="h-[50px] w-[140px] rounded-full bg-mercury-950 font-semibold text-white"
         >
-          {isEdit ? "Save" : "Save & Create"}
+          Save & Create
         </Button>
       </div>
       <CancelModal isOpen={isOpen} onClose={onClose} />
