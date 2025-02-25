@@ -14,18 +14,13 @@ const PageNotFound = lazy(() => import("@pages/NotFound"))
 const ChatDetailLoadingPage = lazy(() => import("@components/LoadingMobile"))
 const Account = lazy(() => import("@pages/Account"))
 const AddMyData = lazy(() => import("@pages/AddMyData"))
-const AgentDetail = lazy(() => import("@pages/AgentDetail"))
+const AgentDetail = lazy(() => import("@pages/AgentDetail/AgentDetail"))
 const AuthorProfile = lazy(() => import("@pages/AuthorProfile"))
 const ChatBoxLive = lazy(() => import("@pages/ChatBoxLive"))
 const HomePage = lazy(() => import("@pages/Home"))
 // const ChatMyAgent = lazy(() => import("@pages/ChatMyAgent"))
 const ChatBox = lazy(() => import("@pages/ChatPage/ChatContainer"))
-const AgentInitialization = lazy(
-  () =>
-    import(
-      "@pages/ChatPage/ChatContainer/RightContent/MyPrivateAgentContent/AgentInitialization"
-    ),
-)
+const CreateAgent = lazy(() => import("@pages/CreateAgent"))
 // const ChatPageMobile = lazy(() => import("@pages/ChatPage/Mobile"))
 const MyPrivateAgentContentMobile = lazy(
   () => import("@pages/ChatPage/Mobile/MyPrivateAgentContentMobile"),
@@ -131,10 +126,7 @@ const AppRouter = () => {
               path={`${PATH_NAMES.ADD_MY_DATA}/:botId`}
               element={<AddMyData />}
             />
-            <Route
-              path={PATH_NAMES.CREATE_AGENT}
-              element={<AgentInitialization />}
-            />
+            <Route path={PATH_NAMES.CREATE_AGENT} element={<CreateAgent />} />
             <Route path={PATH_NAMES.MY_AGENTS} element={<MyAgentPage />} />
             <Route path={PATH_NAMES.REWARDS} element={<RewardsPage />} />
           </Route>

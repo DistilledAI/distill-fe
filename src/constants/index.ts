@@ -180,13 +180,13 @@ export const PERSONALITY_LIST = [
 ]
 
 export const COMMUNICATION_STYLE_LIST = [
-  {
-    emoji: "⭐️",
-    label: "Custom",
-    selected: false,
-    value: "communication_style",
-    type: "custom",
-  },
+  // {
+  //   emoji: "⭐️",
+  //   label: "Custom",
+  //   selected: false,
+  //   value: "communication_style",
+  //   type: "custom",
+  // },
   {
     emoji: "👔",
     label: "Formal",

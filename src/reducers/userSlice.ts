@@ -26,6 +26,12 @@ export interface IUser {
   kycEmail?: string
   walletActive?: number
   totalMax?: number
+  ownerInfo?: {
+    avatar?: string
+    username?: string
+    id?: number
+    publicAddress?: string
+  }
 }
 
 interface LoginSuccessPayload {

@@ -1,9 +1,13 @@
-// import AlertBox from "@components/AlertBox"
+import AlertBox from "@components/AlertBox"
 import ContextCleared from "@components/ContextCleared"
 import ReCaptchaWraper from "@components/ReCaptchaWraper"
 import ReceiverMessage from "@components/ReceiverMessage"
 import SenderMessage from "@components/SenderMessage"
-import { CLEAR_CACHED_MESSAGE, STATUS_AGENT } from "@constants/index"
+import {
+  CLEAR_CACHED_MESSAGE,
+  PATH_NAMES,
+  STATUS_AGENT,
+} from "@constants/index"
 import { useAppSelector } from "@hooks/useAppRedux"
 import useSubmitChat from "@hooks/useSubmitChat"
 import useFetchMyData from "@pages/MyData/useFetch"
@@ -115,12 +119,7 @@ const ChatMyAgentBox: React.FC<{
         className="md:max-h-[calc(100%-110px)]"
         isChatActions={isChatActions}
       />
-      {/* <div
-        className={twMerge(
-          "absolute bottom-[70px] left-1/2 w-[calc(100%-32px)] -translate-x-1/2 bg-white pb-0 md:bottom-[95px] md:pb-2",
-          isChatActions && "bottom-[124px] md:bottom-[140px]",
-        )}
-      >
+      <div className="absolute bottom-[70px] left-1/2 w-[calc(100%-32px)] -translate-x-1/2 space-y-2 bg-white pb-0 md:bottom-[144px] md:pb-2">
         {!isBotActive ? (
           <AlertBox
             className="mx-auto max-w-[768px]"
@@ -144,7 +143,7 @@ const ChatMyAgentBox: React.FC<{
             links={[{ to: PATH_NAMES.ADD_MY_DATA, label: "Add Data" }]}
           />
         ) : null}
-      </div> */}
+      </div>
       {hasInputChat && (
         <>
           <ChatInput

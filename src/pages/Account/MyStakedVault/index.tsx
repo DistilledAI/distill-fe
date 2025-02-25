@@ -6,6 +6,9 @@ import { useEffect, useState } from "react"
 import useAuthState from "@hooks/useAuthState"
 import { LIST_TOKEN_STAKE, StakeTokenAddress } from "@pages/Stake"
 import { CoinGeckoId } from "@oraichain/oraidex-common"
+import { Web3SolanaLockingToken } from "@pages/Stake/web3Locking"
+import { SPL_DECIMAL } from "@pages/Stake/config"
+import { toBN } from "@utils/format"
 
 export interface IVaultData {
   totalStaked: number
@@ -20,6 +23,8 @@ export interface IVaultData {
   avatar2?: string
 }
 
+const web3Locking = new Web3SolanaLockingToken()
+
 const MyStakedVault = () => {
   const wallet = useWallet()
   const { isLogin, isAnonymous } = useAuthState()
@@ -30,18 +35,42 @@ const MyStakedVault = () => {
 
   const [list, setList] = useState<IVaultData[]>([])
 
-  const dataDefault = wallet.publicKey
-    ? (LIST_TOKEN_STAKE.filter(
-        (token) => token.address !== StakeTokenAddress.Usdc,
-      ).map((item) => ({
-        ...item,
-        totalStaked: 0,
-        myStaked: 0,
-      })) as any)
-    : []
+  const handleFetchData = async () => {
+    const results = LIST_TOKEN_STAKE.filter(
+      (token) => token.address !== StakeTokenAddress.Usdc,
+    ).map(async (item) => {
+      const dt = { ...item, myStaked: 0, totalStaked: 0 }
+
+      const resVault = await web3Locking.getVaultInfo(item.address, wallet)
+      if (resVault?.totalStaked) {
+        Object.assign(dt, {
+          totalStaked: toBN(resVault.totalStaked as any)
+            .div(10 ** SPL_DECIMAL)
+            .toNumber(),
+        })
+      }
+
+      if (!wallet.publicKey) return dt
+
+      const info = await web3Locking.getStakerInfo(wallet, item.address)
+      if (info?.totalStake) {
+        Object.assign(dt, {
+          myStaked: toBN(info?.totalStake as any)
+            .div(10 ** SPL_DECIMAL)
+            .toNumber(),
+        })
+      }
+
+      return dt
+    })
+
+    const finalResults = await Promise.all(results)
+    setList(finalResults as IVaultData[])
+  }
 
   useEffect(() => {
-    setList(dataDefault)
+    if (wallet.publicKey) handleFetchData()
+    else setList([])
   }, [wallet.publicKey])
 
   useEffect(() => {
@@ -65,7 +94,9 @@ const MyStakedVault = () => {
         )}
       </div>
       <div className="mt-5">
-        <StakedTable list={list} setList={setList} />
+        <StakedTable
+          list={isAllVault ? list : list.filter((item) => item.myStaked > 0)}
+        />
       </div>
     </div>
   )

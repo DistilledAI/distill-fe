@@ -11,6 +11,7 @@ interface TotalMemberBadgeProps {
   classname?: string
   textClassName?: string
   iconSize?: number
+  memberFixed?: number
 }
 
 const TotalMemberBadge = ({
@@ -18,6 +19,7 @@ const TotalMemberBadge = ({
   classname,
   textClassName,
   iconSize = 12,
+  memberFixed,
 }: TotalMemberBadgeProps) => {
   const queryClient = useQueryClient()
   const totalMemberCached = queryClient.getQueryData([
@@ -44,7 +46,9 @@ const TotalMemberBadge = ({
           textClassName,
         )}
       >
-        {shortenNumber(Number(data?.total?.total) || 0)}
+        {memberFixed
+          ? shortenNumber(memberFixed)
+          : shortenNumber(Number(data?.total?.total) || 0)}
       </span>
     </div>
   )

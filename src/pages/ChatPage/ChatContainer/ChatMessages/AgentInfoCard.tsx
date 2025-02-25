@@ -27,6 +27,7 @@ const AgentInfoCard = ({ messages, groupId }: AgentInfoCardProps) => {
   })
 
   const userBId = chatDetailResult?.data?.group?.userBId
+  const isAgent = chatDetailResult?.data?.group?.userB?.role === RoleUser.BOT
 
   const { data } = useQuery<any>({
     queryKey: [QueryDataKeys.USER_PUBLIC_DETAIL, userBId?.toString()],
@@ -36,23 +37,25 @@ const AgentInfoCard = ({ messages, groupId }: AgentInfoCardProps) => {
       )?.agentId
       return agentIdOfUserB ? await getUserPublicDetail(agentIdOfUserB) : {}
     },
-    enabled: !!userBId && messages.length > 0,
+    enabled: !!userBId && !isAgent && messages.length > 0,
     staleTime: 60 * 60 * 1000,
   })
 
-  const agentOwner = chatDetailResult?.data?.group?.userB
-  const agentInfo = data?.data
+  const agentOwner = isAgent
+    ? chatDetailResult?.data?.group?.userB?.ownerInfo
+    : chatDetailResult?.data?.group?.userB
+  const agentInfo = isAgent ? chatDetailResult?.data?.group?.userB : data?.data
 
   if (!agentInfo) {
     return (
-      <div className="md:p-4">
+      <div className="h-fit md:p-4">
         <Skeleton className="mx-auto min-h-[111px] max-w-[768px] md:rounded-[14px]" />
       </div>
     )
   }
 
   return (
-    <div className="md:px-4">
+    <div className="h-fit md:px-4">
       <div className="mx-auto min-h-[111px] max-w-[768px] border border-mercury-100 bg-mercury-50 p-2 max-md:border-x-0 md:rounded-[14px]">
         <div className="flex gap-x-3 md:gap-x-4">
           <AvatarCustom
@@ -96,13 +99,6 @@ const AgentInfoCard = ({ messages, groupId }: AgentInfoCardProps) => {
                 >
                   <ShareWithQrIcon />
                 </Button>
-                {/* <Button
-                  isDisabled
-                  isIconOnly
-                  className="rounded-full border border-mercury-50 bg-mercury-100 md:h-9 md:min-w-[52px]"
-                >
-                  <ThreeDotsCircleIcon />
-                </Button> */}
               </div>
             </div>
 

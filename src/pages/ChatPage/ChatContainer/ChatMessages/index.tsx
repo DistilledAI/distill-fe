@@ -119,7 +119,10 @@ const ChatMessages = () => {
 
   return (
     <>
-      <AgentInfoCard messages={messages} groupId={groupId} />
+      {!isLoading && isFetched && (
+        <AgentInfoCard messages={messages} groupId={groupId} />
+      )}
+
       <ChatWindowV2
         messages={messages}
         itemContent={renderMessage}

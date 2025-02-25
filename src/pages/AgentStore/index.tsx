@@ -1,4 +1,4 @@
-import React, { useState, useRef, Suspense } from "react"
+import { useState, useRef, Suspense } from "react"
 import { FilledSearchIcon } from "@components/Icons/SearchIcon"
 import { Input } from "@nextui-org/react"
 import SortAgents from "./SortAgents"
@@ -6,12 +6,12 @@ import { twMerge } from "tailwind-merge"
 import { Swiper, SwiperRef, SwiperSlide } from "swiper/react"
 import { Navigation } from "swiper/modules"
 import AgentClansStore from "./AgentClansStore"
+import AIAgentList from "./AIAgentList"
 
-// Chuyển CATEGORIES thành object, key là id của tab
 const CATEGORIES: {
   [key: string]: {
     name: string
-    component: JSX.Element
+    component: JSX.Element | null
     isComing: boolean
   }
 } = {
@@ -20,26 +20,31 @@ const CATEGORIES: {
     component: <AgentClansStore />,
     isComing: false,
   },
-  defai: {
-    name: "DeFAI Management",
-    component: <div>123</div>,
+  "ai-agents": {
+    name: "All AI Agents",
+    component: <AIAgentList />,
     isComing: false,
   },
-  "emotional-companion": {
-    name: "Emotional Companion",
-    component: <div>123</div>,
-    isComing: false,
-  },
-  research: {
-    name: "Research",
-    component: <div>123</div>,
-    isComing: false,
-  },
-  productivity: {
-    name: "Productivity",
-    component: <div>123</div>,
-    isComing: false,
-  },
+  // defai: {
+  //   name: "DeFAI Management",
+  //   component: null,
+  //   isComing: true,
+  // },
+  // "emotional-companion": {
+  //   name: "Emotional Companion",
+  //   component: null,
+  //   isComing: true,
+  // },
+  // research: {
+  //   name: "Research",
+  //   component: null,
+  //   isComing: true,
+  // },
+  // productivity: {
+  //   name: "Productivity",
+  //   component: null,
+  //   isComing: true,
+  // },
 }
 
 const AgentStore = () => {
@@ -56,7 +61,7 @@ const AgentStore = () => {
   const activeCategory = CATEGORIES[tabId]
 
   return (
-    <div className="mx-auto mt-8 max-w-[852px]">
+    <div className="mx-auto mt-8 max-w-[1024px] max-lg:px-4">
       <div className="flex items-center justify-between gap-2">
         <Input
           startContent={<FilledSearchIcon size={24} color="#363636" />}

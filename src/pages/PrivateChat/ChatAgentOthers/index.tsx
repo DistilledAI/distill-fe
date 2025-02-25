@@ -197,7 +197,7 @@ const ChatAgentOthers = () => {
                     isActive={isActive}
                     className={twMerge(
                       isBotLive ? "bg-lgd-code-hot-ramp" : groupItem.bgColor,
-                      "-left-[10px]",
+                      "-left-[13px]",
                     )}
                   />
                   <DotNotification groupId={groupItem.groupId} />

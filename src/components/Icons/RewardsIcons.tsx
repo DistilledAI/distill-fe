@@ -114,25 +114,25 @@ export const TelegramIcon = () => {
   )
 }
 
-export const CodesanboxIcon = () => {
+export const CodesanboxIcon = ({ color = "#545454", size = 20 }: IconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="20"
-      height="20"
+      width={size}
+      height={size}
       viewBox="0 0 20 20"
       fill="none"
     >
       <path
         d="M16.6654 6.25V13.75L13.332 15.625L9.9987 17.5M16.6654 6.25L13.332 4.375L9.9987 2.5L6.66536 4.375L3.33203 6.25M16.6654 6.25L13.332 8.125L9.9987 10M9.9987 17.5L6.66536 15.625L3.33203 13.75V6.25M9.9987 17.5V10M3.33203 6.25L6.66536 8.125L9.9987 10"
-        stroke="#545454"
+        stroke={color}
         strokeWidth="1.5"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
       <path
         d="M16.6654 10L13.332 11.6667V15.625M3.33203 10L6.66536 11.6667V15.625M6.66536 4.375L9.9987 6.25L13.332 4.375"
-        stroke="#545454"
+        stroke={color}
         strokeWidth="1.5"
         strokeLinecap="round"
         strokeLinejoin="round"

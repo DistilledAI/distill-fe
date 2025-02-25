@@ -8,7 +8,9 @@ import {
 import React from "react"
 
 const SortAgents = () => {
-  const [selectedKeys, setSelectedKeys] = React.useState<any>(new Set(["text"]))
+  const [selectedKeys, setSelectedKeys] = React.useState<any>(
+    new Set(["trending"]),
+  )
 
   const selectedValue = React.useMemo(
     () => Array.from(selectedKeys).join(", ").replace(/_/g, ""),
