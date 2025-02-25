@@ -23,6 +23,8 @@ import {
 } from "./helpers"
 import useFetchAgentConfig from "./useFetchAgentConfig"
 import useFetchDetail from "./useFetchDetail"
+import { editAgentClan, uploadImageAgentClan } from "services/group"
+import { transformClanData } from "./AgentContent/ClanUtilities/helper"
 
 export const BLACKLIST_BOT_VERSION = [
   "devorai/distilled-chat:0.0.6.4-cc",
@@ -42,6 +44,9 @@ const AgentDetail: React.FC = () => {
 
   const { agentConfigs } = useFetchAgentConfig()
   const { agentData, refetch } = useFetchDetail()
+  const clanIdOfAgent = agentData?.botConfigs?.find(
+    (val: any) => val?.key === "clanOfAgent",
+  )?.value
   const isActive = agentData?.status === STATUS_AGENT.ACTIVE
 
   const userNameData = agentData?.username
@@ -71,6 +76,12 @@ const AgentDetail: React.FC = () => {
       category: "crypto",
       typeAgent: 0,
       llmModel: TYPE_LLM_MODEL.LLM_MODEL_BASIC,
+      clan: {
+        description: "",
+        name: "",
+        imageLive: null,
+        isEnableClan: 2,
+      },
     },
   })
 
@@ -124,6 +135,23 @@ const AgentDetail: React.FC = () => {
         dispatch(refreshFetchMyAgent())
         toast.success("Updated successfully!")
       }
+
+      if (data.clan.imageLive instanceof File) {
+        const formData = new FormData()
+        formData.append("file", data.clan.imageLive)
+        formData.append("key", "imageLive")
+        formData.append("groupId", clanIdOfAgent || "")
+        formData.append("type", "clan")
+        await uploadImageAgentClan(formData)
+      }
+
+      await editAgentClan({
+        groupId: Number(clanIdOfAgent),
+        data: transformClanData({
+          ...data.clan,
+          label: data.clan.name,
+        }),
+      })
     } catch (error: any) {
       console.error("error", error)
       toast.error(error?.response?.data?.message)
@@ -146,6 +174,7 @@ const AgentDetail: React.FC = () => {
                 agentData={agentData}
                 agentConfigs={agentConfigs}
                 refetch={refetch}
+                clanIdOfAgent={clanIdOfAgent}
               />
             </div>
           </div>
