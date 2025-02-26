@@ -2,6 +2,10 @@ import ComingSoon from "@components/ComingSoon"
 import { SettingIcon } from "@components/Icons"
 import { WorldIcon } from "@components/Icons/AgentDetailIcon"
 import { CloseFilledIcon } from "@components/Icons/DefiLens"
+import {
+  PlayFilledIcon,
+  StopFilledIcon,
+} from "@components/Icons/SocialLinkIcon"
 import { TablerPlusIcon } from "@components/Icons/TablerPlusIcon"
 import { TwitterIcon } from "@components/Icons/Twitter"
 import { Button, Input, Select, SelectItem } from "@nextui-org/react"
@@ -57,12 +61,15 @@ const AutonomousX: React.FC<{
   const [inputValue, setInputValue] = useState<string>("")
   const xUserNameValues = JSON.parse(watch("x_user_names") || "[]")
   const xKeywordsValues = JSON.parse(watch("x_keywords") || "[]")
-
   const xBotData = agentConfigs?.find(
     (agent: any) => agent.key === "bindTwitterKey",
   )
   const bindTwitterValue = xBotData?.value ? JSON.parse(xBotData.value) : null
   const twitterUsername = bindTwitterValue?.info?.data?.username
+  const autonomouXStatusValue = bindTwitterValue?.status || 1
+  const [autonomouXStatus, setAutonomouXStatus] = useState<number | string>(
+    autonomouXStatusValue,
+  )
 
   const toggleShowInput = () => {
     setIsShowInput(!isShowInput)
@@ -177,7 +184,7 @@ const AutonomousX: React.FC<{
                     }}
                   >
                     <span className="text-base text-mercury-30 max-sm:text-[14px]">
-                      Save
+                      Add
                     </span>
                   </Button>
                 }
@@ -205,6 +212,38 @@ const AutonomousX: React.FC<{
     )
   }
 
+  const AutonomousMode = () => {
+    const onChangeStatus = (status: string | number) => {
+      setAutonomouXStatus(status)
+    }
+
+    if (autonomouXStatus === 1) {
+      return (
+        <div
+          className="flex cursor-pointer items-center gap-2"
+          onClick={() => onChangeStatus(0)}
+        >
+          <StopFilledIcon />
+          <span className="text-base-b text-brown-600">
+            Stop Autonomous Mode
+          </span>
+        </div>
+      )
+    }
+
+    return (
+      <div
+        className="flex cursor-pointer items-center gap-2"
+        onClick={() => onChangeStatus(1)}
+      >
+        <PlayFilledIcon />
+        <span className="text-base-b text-brown-600">
+          Start Autonomous Mode
+        </span>
+      </div>
+    )
+  }
+
   return (
     <div className="">
       <div className="flex items-center justify-between">
@@ -220,6 +259,7 @@ const AutonomousX: React.FC<{
 
       <div className="mb-4 mt-4 flex items-center justify-between rounded-lg bg-brown-50 p-4 max-md:flex-col max-md:items-start max-md:justify-start max-md:gap-2">
         <BindYourAccount agentConfigs={agentConfigs} refetch={refetch} />
+        {/* <AutonomousMode /> */}
         <RepliesDashboard isDisabled={!twitterUsername} />
       </div>
 
@@ -417,7 +457,7 @@ const AutonomousX: React.FC<{
                         }}
                       >
                         <span className="text-base text-mercury-30 max-sm:text-[14px]">
-                          Save
+                          Add
                         </span>
                       </Button>
                     }

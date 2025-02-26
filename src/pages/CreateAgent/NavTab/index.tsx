@@ -70,8 +70,8 @@ const AgentNavTab: React.FC<{
     {
       key: TabKeyAgent.AutonomousX,
       title: "Autonomous X",
-      icon: <TwitterIcon color="#545454" size={24} />,
-      iconActive: <TwitterIcon color="#83664B" size={24} />,
+      icon: <TwitterIcon color="#545454" size={18} />,
+      iconActive: <TwitterIcon color="#83664B" size={18} />,
       isEdit: true,
     },
     {
