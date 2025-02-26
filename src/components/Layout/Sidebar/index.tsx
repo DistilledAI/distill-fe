@@ -8,7 +8,7 @@ import { useAppDispatch, useAppSelector } from "@hooks/useAppRedux"
 import { twMerge } from "tailwind-merge"
 import { updateSidebarCollapsed } from "@reducers/sidebarCollapsedSlice"
 import { useLayoutEffect } from "react"
-import { PATH_NAMES } from "@constants/index"
+import { PATH_NAMES, STATUS_AGENT } from "@constants/index"
 import { EditFilledIcon } from "@components/Icons/DefiLens"
 
 const Sidebar = () => {
@@ -17,6 +17,7 @@ const Sidebar = () => {
   const { pathname } = useLocation()
   const navigate = useNavigate()
   const myAgent = useAppSelector((state) => state.agents.myAgent)
+  const isAgentActive = myAgent?.status === STATUS_AGENT.ACTIVE
 
   useLayoutEffect(() => {
     if (pathname) {
@@ -53,7 +54,9 @@ const Sidebar = () => {
               className={twMerge(
                 "group flex items-center gap-2",
                 sidebarCollapsed && "hidden",
+                !isAgentActive && !!myAgent && "opacity-50",
               )}
+              disabled={!isAgentActive && !!myAgent}
               onClick={() =>
                 navigate(
                   myAgent

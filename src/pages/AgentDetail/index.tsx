@@ -42,7 +42,7 @@ const AgentDetail: React.FC = () => {
   const dispatch = useDispatch()
   const [loading, setLoading] = useState(false)
 
-  const { agentConfigs } = useFetchAgentConfig()
+  const { agentConfigs, refetch: refetchConfig } = useFetchAgentConfig()
   const { agentData, refetch } = useFetchDetail()
   const clanIdOfAgent = agentData?.botConfigs?.find(
     (val: any) => val?.key === "clanOfAgent",
@@ -131,6 +131,7 @@ const AgentDetail: React.FC = () => {
         })
       }
       if (res.data) {
+        refetchConfig()
         refetch()
         dispatch(refreshFetchMyAgent())
         toast.success("Updated successfully!")
