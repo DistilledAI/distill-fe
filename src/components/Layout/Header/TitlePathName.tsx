@@ -15,7 +15,7 @@ const TitlePathName = () => {
 
   return (
     <div className="flex items-center gap-3">
-      <div className="h-[1px] w-10 bg-mercury-800" />
+      <div className="hidden h-[1px] w-10 bg-mercury-800 md:block" />
       <h2 className="whitespace-nowrap text-16 font-bold text-mercury-950">
         {title}
       </h2>

@@ -1,3 +1,4 @@
+import MainLayoutMobile from "@components/Layout/MainLayoutMobile"
 import LoadingFallback from "@components/LoadingFallback"
 import { PATH_NAMES } from "@constants/index"
 import useWindowSize from "@hooks/useWindowSize"
@@ -47,7 +48,7 @@ const AppRouter = () => {
       <Routes>
         <Route
           path={PATH_NAMES.HOME}
-          element={isMobile ? <MainLayout /> : <MainLayoutDesktop />}
+          element={isMobile ? <MainLayoutMobile /> : <MainLayoutDesktop />}
         >
           <Route path={PATH_NAMES.HOME} element={<HomePage />} />
           {/* <Route

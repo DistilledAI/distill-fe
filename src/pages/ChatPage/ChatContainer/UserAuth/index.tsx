@@ -53,13 +53,13 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
         <ChatInfoCurrent groupDetail={groupDetail} textColor={textColor} />
       </div>
       {isShowInfo ? (
-        <div className="inline-flex items-center gap-3">
+        <div className="inline-flex items-center gap-2 md:gap-3">
           <div
             className="relative flex cursor-pointer items-center gap-1"
             onClick={() => navigate(PATH_NAMES.REWARDS)}
           >
             <img src={xDSTL} width={24} height={24} />
-            <span className="text-base text-mercury-900">
+            <span className="text-13 text-mercury-900 md:text-16">
               <span className="font-bold">
                 {numberWithCommas(totalxDstlPoint)}
               </span>{" "}
@@ -72,12 +72,12 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
             <DropdownTrigger>
               <button
                 type="button"
-                className="flex h-12 w-12 items-center justify-center rounded-full border border-white bg-mercury-30 !outline-none"
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-white bg-mercury-30 !outline-none md:h-12 md:w-12"
               >
                 <AvatarCustom
                   publicAddress={user.publicAddress}
                   src={user.avatar}
-                  className="h-8 w-8"
+                  className="h-fit w-fit"
                 />
               </button>
             </DropdownTrigger>

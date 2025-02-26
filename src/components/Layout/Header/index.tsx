@@ -28,10 +28,11 @@ const Header = () => {
         "fixed right-0 top-0 z-40 flex w-[calc(100dvw-280px)] items-center justify-between bg-white p-4 pb-1 transition-all duration-200 ease-in-out",
         sidebarCollapsed && "w-[calc(100dvw-84px)]",
         isClanSidebar && "w-[calc(100dvw-334px)]",
+        "max-md:w-full max-md:py-[6px]",
       )}
     >
       <TitlePathName />
-      <div className="ml-auto w-full">
+      <div className="ml-auto md:w-full">
         <UserAuth connectWallet={connectMultipleWallet} />
       </div>
     </div>
