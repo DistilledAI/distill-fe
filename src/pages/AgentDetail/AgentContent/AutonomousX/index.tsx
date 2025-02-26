@@ -15,7 +15,6 @@ import { Controller, useFormContext } from "react-hook-form"
 import { toast } from "react-toastify"
 import BindYourAccount from "../../BindXAccount/BindYourAccount"
 import CategoryLabel from "../../CategoryLabel"
-import RepliesDashboard from "../../RepliesDashboard"
 import { AgentConfig } from "../../useFetchAgentConfig"
 
 const POST_INTERVAL = [
@@ -261,8 +260,7 @@ const AutonomousX: React.FC<{
 
       <div className="mb-4 mt-4 flex items-center justify-between rounded-lg bg-brown-50 p-4 max-md:flex-col max-md:items-start max-md:justify-start max-md:gap-2">
         <BindYourAccount agentConfigs={agentConfigs} refetch={refetch} />
-        {/* <AutonomousMode /> */}
-        <RepliesDashboard isDisabled={!twitterUsername} />
+        <AutonomousMode />
       </div>
 
       <span className="text-base-sb text-mercury-950">Feeds Configuration</span>
