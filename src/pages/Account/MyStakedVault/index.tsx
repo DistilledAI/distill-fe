@@ -81,12 +81,12 @@ const MyStakedVault = () => {
     <div className="mt-6">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <p className="font-bold">Show All Vaults</p>
+          <p className="font-bold max-md:text-15">Show All Vaults</p>
           <Switch isSelected={isAllVault} onValueChange={setIsAllVault} />
         </div>
         {!wallet.publicKey && (
           <Button
-            className="rounded-full bg-mercury-950 text-white"
+            className="rounded-full bg-mercury-950 text-white max-md:h-[40px]"
             onPress={() => setVisible(true)}
           >
             Connect Wallet

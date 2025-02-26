@@ -8,8 +8,10 @@ import { Button } from "@nextui-org/react"
 import { centerTextEllipsis, copyClipboard } from "@utils/index"
 import { useState } from "react"
 import EditProfile from "./EditProfile"
+import useWindowSize from "@hooks/useWindowSize"
 
 const AccountInfo = () => {
+  const { isMobile } = useWindowSize()
   const [isOpen, setIsOpen] = useState(false)
   const { user } = useAuthState()
 
@@ -19,34 +21,34 @@ const AccountInfo = () => {
         backgroundImage:
           "radial-gradient(102.52% 50% at 50% 50%, #383327 0%, #292929 100%)",
       }}
-      className="relative overflow-hidden rounded-[22px] px-6 py-8"
+      className="relative overflow-hidden rounded-[22px] px-6 py-8 max-md:flex max-md:items-center max-md:justify-between max-md:px-4 max-md:py-3"
     >
       <img
         src={creditBg}
         className="absolute left-0 top-0 h-full w-full object-cover"
       />
-      <div className="relative flex items-center gap-4 border-b-1 border-dashed border-mercury-800 pb-4">
+      <div className="relative flex items-center gap-4 border-b-1 border-dashed border-mercury-800 pb-4 max-md:border-none max-md:p-0">
         <AvatarCustom
-          className="h-[56px] w-[56px] rounded-full"
+          className="h-[56px] w-[56px] rounded-full max-md:h-[40px] max-md:w-[40px]"
           src={user.avatar}
           publicAddress={user.publicAddress}
         />
         <div>
-          <p className="line-clamp-1 text-20 font-bold text-white">
+          <p className="line-clamp-1 text-20 font-bold text-white max-md:text-16">
             {user.username}
           </p>
           {user.walletActive ? (
-            <div className="flex items-center gap-1 text-[#2CB34E]">
+            <div className="flex items-center gap-1 text-[#2CB34E] max-md:text-14">
               <CircleCheckFilled /> Activated
             </div>
           ) : (
-            <div className="flex items-center gap-1 text-[#F78500]">
+            <div className="flex items-center gap-1 text-[#F78500] max-md:text-14">
               <WarningIcon color="#F78500" /> Inactive
             </div>
           )}
         </div>
       </div>
-      <div className="relative border-b-1 border-dashed border-mercury-800 py-4">
+      <div className="relative border-b-1 border-dashed border-mercury-800 py-4 max-md:hidden">
         <div className="flex items-center justify-between">
           <p className="font-medium text-mercury-600">Address:</p>
           <div
@@ -68,13 +70,15 @@ const AccountInfo = () => {
           </div>
         </div>
       </div>
-      <div className="relative mt-4 flex justify-end">
+      <div className="relative mt-4 flex justify-end max-md:mt-0">
         <Button
           onPress={() => setIsOpen(true)}
-          className="bg-[rgba(84, 84, 84, 0.2)] rounded-full border-1 border-mercury-900 backdrop-blur-[2.5px]"
+          className="bg-[rgba(84, 84, 84, 0.2)] rounded-full border-1 border-mercury-900 backdrop-blur-[2.5px] max-md:px-2"
         >
-          <PenFullIcon />
-          <span className="font-bold text-white">Edit Profile</span>
+          <PenFullIcon size={isMobile ? 16 : 20} />
+          <span className="font-bold text-white max-md:text-13">
+            Edit Profile
+          </span>
         </Button>
       </div>
       {isOpen && (

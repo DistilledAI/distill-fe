@@ -63,7 +63,7 @@ const StakedTable: React.FC<{
         return (
           <div className="flex items-center justify-end">
             <Link
-              className="rounded-full bg-mercury-950 px-4 py-1 font-semibold text-white"
+              className="whitespace-nowrap rounded-full bg-mercury-950 px-4 py-1 font-semibold text-white max-md:px-3 max-md:text-13"
               to={`${PATH_NAMES.STAKING}?token=${item.address}`}
             >
               Go to Vault

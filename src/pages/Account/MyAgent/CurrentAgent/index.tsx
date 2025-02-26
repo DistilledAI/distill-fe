@@ -22,7 +22,7 @@ import useSend from "@pages/MyPrivateAgent/Send/useSend"
 import { useQueryClient } from "@tanstack/react-query"
 import { toBN } from "@utils/format"
 import { useEffect, useState } from "react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
 import { publishMarketplace } from "services/chat"
 import { QueryDataKeys } from "types/queryDataKeys"
@@ -37,6 +37,7 @@ const ADDRESS_PAYMENT_NETWORK_SOL = isStaging
 const CurrentAgent = () => {
   const { isPaid, checkPayment } = useGetPaymentHistory()
   const queryClient = useQueryClient()
+  const navigate = useNavigate()
   const [loading, setLoading] = useState(false)
   const agents = useAppSelector((state) => state.agents.myAgents)
   const agent = agents[0]
@@ -180,7 +181,9 @@ const CurrentAgent = () => {
       )}
       <div className="mb-2 mt-6">
         <div className="flex items-center justify-between">
-          <p className="text-base-b text-mercury-950">Preview:</p>
+          <p className="text-base-b text-mercury-950 max-md:text-15">
+            Preview:
+          </p>
           <Button
             isDisabled={!isAgentActive || loading}
             isLoading={loading}
@@ -195,25 +198,31 @@ const CurrentAgent = () => {
           <div className="flex gap-6">
             <div>
               <AvatarCustom
-                className="h-[72px] w-[72px] rounded-full border-none"
+                className="h-[72px] w-[72px] rounded-full border-none max-md:h-[50px] max-md:w-[50px]"
                 src={agent.avatar || avaMaxGray}
                 publicAddress={agent.publicAddress || agent.username}
               />
             </div>
             <div>
-              <p className="font-bold">{agent.username}</p>
+              <p className="line-clamp-1 font-bold max-md:text-14">
+                {agent.username}
+              </p>
               <div className="flex items-center gap-2">
-                <span className="font-medium text-mercury-600">Created by</span>
+                <span className="font-medium text-mercury-600 max-md:text-14">
+                  Created by
+                </span>
                 <div className="flex items-center gap-1">
                   <AvatarCustom
-                    className="h-[18px] w-[18px] rounded-full"
+                    className="h-[18px] w-[18px] rounded-full max-md:h-[15px] max-md:w-[15px]"
                     src={user.avatar}
                     publicAddress={user.publicAddress}
                   />
-                  <p className="font-bold text-[#A2845E]">@{user.username}</p>
+                  <p className="font-bold text-[#A2845E] max-md:text-14">
+                    @{user.username}
+                  </p>
                 </div>
               </div>
-              <p className="mt-2 max-h-[65px] overflow-y-auto text-14 font-medium text-mercury-600 scrollbar-hide">
+              <p className="mt-2 line-clamp-5 max-h-[65px] overflow-y-auto text-14 font-medium text-mercury-600 scrollbar-hide max-md:mt-1">
                 {agent.description}
               </p>
               <div className="mt-3 flex items-center gap-2">
@@ -237,14 +246,15 @@ const CurrentAgent = () => {
               </div>
             </div>
           </div>
-          <div className="my-6 w-full border-t-1 border-dashed border-mercury-400" />
+          <div className="my-6 w-full border-t-1 border-dashed border-mercury-400 max-md:my-3" />
           <div className="flex items-center justify-between">
             <Link to={`${PATH_NAMES.PRIVATE_AGENT}/${agent.id}`}>
               <MessagePlusIcon color="black" />
             </Link>
             <Button
+              onPress={() => navigate(`${PATH_NAMES.AGENT_DETAIL}/${agent.id}`)}
               isDisabled={!isAgentActive}
-              className="flex h-[50px] items-center gap-1 rounded-full bg-mercury-950 px-4 font-semibold text-white"
+              className="flex h-[50px] items-center gap-1 rounded-full bg-mercury-950 px-4 font-semibold text-white max-md:h-[44px]"
             >
               <PenFullIcon />
               <span>Edit Agent</span>
