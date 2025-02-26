@@ -14,6 +14,7 @@ import {
   maxAvatarPlaceholder,
   racksAvatar,
 } from "@assets/images"
+import { FilledSquareCircleIcon } from "@components/Icons/FilledSquareCircleIcon"
 
 interface MenuItem {
   id: string
@@ -21,6 +22,7 @@ interface MenuItem {
   name: string
   rightContent: ((avatarAgent?: string) => JSX.Element | null) | null
   pathname: string
+  isHidden?: boolean
 }
 
 const NavigationMenu = ({ isMobile = false }: { isMobile?: boolean }) => {
@@ -29,7 +31,7 @@ const NavigationMenu = ({ isMobile = false }: { isMobile?: boolean }) => {
   const sidebarCollapsed = useAppSelector((state) => state.sidebarCollapsed)
   const myAgent = useAppSelector((state) => state.agents.myAgent)
 
-  const MENU: MenuItem[] = [
+  const BASE_MENU: MenuItem[] = [
     {
       id: "home",
       icon: (color?: string) => <HomeOutlineIcon color={color} />,
@@ -97,22 +99,55 @@ const NavigationMenu = ({ isMobile = false }: { isMobile?: boolean }) => {
     {
       id: "vaults",
       icon: (color?: string) => <CoinsOutlineIcon color={color} />,
-      name: "Store",
+      name: "My Staked Vaults",
       rightContent: null,
       pathname: "/account?tab=my-vault-holdings",
     },
+    {
+      id: "marketplace",
+      icon: (color?: string) => (
+        <FilledSquareCircleIcon size={18} color={color} />
+      ),
+      name: "Store",
+      rightContent: null,
+      pathname: "/marketplace?tab=agent-clans",
+      isHidden: !isMobile,
+    },
   ]
 
-  const renderItem = (item: MenuItem, index: number) => {
+  const getMenuOrder = (isMobile: boolean): MenuItem[] => {
+    if (isMobile) {
+      return [
+        BASE_MENU[0], // Home
+        BASE_MENU[3], // Chats
+        BASE_MENU[5], // Store
+        BASE_MENU[2], // Clans
+        BASE_MENU[1], // My Agent
+      ]
+    }
+    return BASE_MENU
+  }
+
+  const menu = getMenuOrder(isMobile)
+
+  const isActive = (item: MenuItem): boolean => {
     const [itemBasePath, itemQuery] = item.pathname.split("?")
     const expectedSearch = itemQuery ? `?${itemQuery}` : ""
-
-    let isActive =
-      currentPath === itemBasePath && currentSearch === expectedSearch
-
     if (item.id === "agent-clan") {
-      isActive = currentPath.includes(item.pathname)
+      return currentPath.includes(item.pathname)
     }
+    return currentPath === itemBasePath && currentSearch === expectedSearch
+  }
+
+  const renderItem = (item: MenuItem, index: number) => {
+    const active = isActive(item)
+    const iconColor = active ? "#83664B" : isMobile ? "#999999" : "#545454"
+    const textColor = active
+      ? "text-brown-500"
+      : isMobile
+        ? "text-mercury-500"
+        : "text-mercury-900"
+    const fontSize = isMobile ? "text-[12px]" : "text-[16px]"
 
     if (isMobile) {
       return (
@@ -122,56 +157,50 @@ const NavigationMenu = ({ isMobile = false }: { isMobile?: boolean }) => {
           onClick={() => navigate(item.pathname)}
           className={twMerge(
             "flex h-full w-full flex-col items-center justify-center text-gray-600 hover:text-gray-800",
-            isActive && "text-brown-500",
+            active && "text-brown-500",
           )}
         >
           <div
             className={twMerge(
               "px-[14px] py-[3px]",
-              isActive && "rounded-full bg-brown-50",
+              active && "rounded-full bg-brown-50",
             )}
           >
-            {item.icon(isActive ? "#83664B" : "#999999")}
+            {item.icon(iconColor)}
           </div>
-          <span
-            className={twMerge(
-              "text-[12px] font-medium text-mercury-500",
-              isActive && "text-brown-500",
-            )}
-          >
+          <span className={twMerge(fontSize, "mt-1 font-medium", textColor)}>
             {item.name}
           </span>
         </button>
       )
-    } else {
-      return (
-        <div
-          key={index}
-          className={twMerge(
-            "group/item flex cursor-pointer items-center gap-2 rounded-full border-[2px] border-white bg-mercury-30 px-4 py-[10px] transition-all duration-200 ease-in-out hover:bg-brown-50",
-            isActive && "h-12 border-brown-500 bg-brown-50",
-            sidebarCollapsed && "h-12 justify-center",
-          )}
-          onClick={() => navigate(item.pathname)}
-        >
-          <div>{item.icon(isActive ? "#83664B" : "#545454")}</div>
-          <span
-            className={twMerge(
-              "flex-1 whitespace-nowrap text-[16px] font-bold text-mercury-900",
-              isActive && "text-brown-600",
-              sidebarCollapsed && "hidden",
-            )}
-          >
-            {item.name}
-          </span>
-          <div
-            className={twMerge("flex-shrink-0", sidebarCollapsed && "hidden")}
-          >
-            {item.rightContent && item.rightContent(myAgent?.avatar || "")}
-          </div>
-        </div>
-      )
     }
+
+    return (
+      <div
+        key={index}
+        className={twMerge(
+          "group/item flex cursor-pointer items-center gap-2 rounded-full border-[2px] border-white bg-mercury-30 px-4 py-[10px] transition-all duration-200 ease-in-out hover:bg-brown-50",
+          active && "h-12 border-brown-500 bg-brown-50",
+          sidebarCollapsed && "h-12 justify-center",
+        )}
+        onClick={() => navigate(item.pathname)}
+      >
+        <div>{item.icon(iconColor)}</div>
+        <span
+          className={twMerge(
+            "flex-1 whitespace-nowrap font-bold",
+            fontSize,
+            textColor,
+            sidebarCollapsed && "hidden",
+          )}
+        >
+          {item.name}
+        </span>
+        <div className={twMerge("flex-shrink-0", sidebarCollapsed && "hidden")}>
+          {item.rightContent && item.rightContent(myAgent?.avatar || "")}
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -179,12 +208,12 @@ const NavigationMenu = ({ isMobile = false }: { isMobile?: boolean }) => {
       {isMobile ? (
         <div className="fixed bottom-0 left-0 z-50 w-full bg-white">
           <div className="flex h-[52px] items-center justify-around">
-            {MENU.map((item, index) => renderItem(item, index))}
+            {menu.map((item, index) => renderItem(item, index))}
           </div>
         </div>
       ) : (
         <nav className="space-y-2">
-          {MENU.map((item, index) => renderItem(item, index))}
+          {menu.map((item, index) => renderItem(item, index))}
         </nav>
       )}
     </>

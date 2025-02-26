@@ -10,7 +10,7 @@ const MainLayoutMobile = () => {
     return (
       <>
         <Header />
-        <div className="pt-[52px]">
+        <div className="pb-[60px] pt-[52px]">
           <Outlet />
         </div>
         <NavigationMenu isMobile={true} />

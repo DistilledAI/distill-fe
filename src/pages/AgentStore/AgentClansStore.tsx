@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { useNavigate, useLocation } from "react-router-dom" // Thêm useLocation
+import { useNavigate, useLocation } from "react-router-dom"
 import { IGroupDetail } from "types/group"
 import useFetchClan from "@pages/Marketplace/useFetchClan"
 import { PATH_NAMES } from "@constants/index"
@@ -92,6 +92,15 @@ const AgentClansStore = () => {
     </div>
   )
 
+  const getConfigValue = (
+    item: IGroupDetail,
+    key: string,
+    defaultValue: string = maxAvatarPlaceholder2,
+  ) => {
+    const config = item?.groupConfig?.find((val) => val.key === key)
+    return config?.value || defaultValue
+  }
+
   return (
     <div className="space-y-10">
       <div className="space-y-2">
@@ -126,9 +135,9 @@ const AgentClansStore = () => {
                 <div key={index}>{renderSkeleton()}</div>
               ))
             : data.map((item: IGroupDetail) => {
-                const description = item?.groupConfig?.find(
-                  (val) => val.key === "description" && val.type === "clan",
-                )
+                const imageUrl = getConfigValue(item, "imageLive")
+                const description = getConfigValue(item, "description", "-")
+
                 return (
                   <div key={item.id} className="w-full">
                     <div
@@ -139,7 +148,7 @@ const AgentClansStore = () => {
                         <div
                           className="relative h-[120px] w-[100px] flex-shrink-0 overflow-hidden rounded-lg bg-cover bg-center bg-no-repeat"
                           style={{
-                            backgroundImage: `url(${item.image || maxAvatarPlaceholder2})`,
+                            backgroundImage: `url(${imageUrl})`,
                           }}
                         >
                           <div className="absolute inset-0 z-10 rounded-lg border-[2px] border-white/20" />
@@ -179,11 +188,11 @@ const AgentClansStore = () => {
                               {renderAgentType()}
                             </div>
                             <p className="text-13 font-medium text-mercury-800">
-                              {description?.value || "-"}
+                              {description}
                             </p>
                           </div>
                           <div>
-                            <div className="border-brown-400 w-fit rounded-[4px] border bg-brown-50 px-2 text-14 font-medium text-brown-600">
+                            <div className="w-fit rounded-[4px] border border-brown-400 bg-brown-50 px-2 text-14 font-medium text-brown-600">
                               AI Agent Clan
                             </div>
                           </div>
