@@ -1,10 +1,10 @@
+import MainLayoutMobile from "@components/Layout/MainLayoutMobile"
 import LoadingFallback from "@components/LoadingFallback"
 import { PATH_NAMES } from "@constants/index"
 import useWindowSize from "@hooks/useWindowSize"
 import { Suspense, lazy } from "react"
 import { Route, Routes } from "react-router-dom"
 
-const MainLayout = lazy(() => import("@components/Layout/MainLayout"))
 const MainLayoutDesktop = lazy(
   () => import("@components/Layout/MainLayoutDesktop"),
 )
@@ -47,7 +47,7 @@ const AppRouter = () => {
       <Routes>
         <Route
           path={PATH_NAMES.HOME}
-          element={isMobile ? <MainLayout /> : <MainLayoutDesktop />}
+          element={isMobile ? <MainLayoutMobile /> : <MainLayoutDesktop />}
         >
           <Route path={PATH_NAMES.HOME} element={<HomePage />} />
           {/* <Route

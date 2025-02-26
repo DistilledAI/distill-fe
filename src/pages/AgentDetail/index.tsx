@@ -93,6 +93,7 @@ const AgentDetail: React.FC = () => {
       avatar: avatarData,
       typeAgent: typeAgentData,
       llmModel: llmModelData,
+      clan: methods.getValues("clan"),
       ...getConfigAgentValueByKeys(agentConfigs, LIST_AGENT_CONFIG_KEYS),
     }
     const selectedBehaviors = {
@@ -137,6 +138,7 @@ const AgentDetail: React.FC = () => {
         toast.success("Updated successfully!")
       }
 
+      // edit agent clan
       if (data.clan.imageLive instanceof File) {
         const formData = new FormData()
         formData.append("file", data.clan.imageLive)

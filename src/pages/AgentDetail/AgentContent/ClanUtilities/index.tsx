@@ -23,6 +23,7 @@ const ClanUtilities = ({ clanIdOfAgent }: Props) => {
 
   useEffect(() => {
     if (groupDetail) {
+      console.log({ groupDetail })
       const { group } = groupDetail
 
       setValue("clan.name", group.name.replace(".Clan", "") || "")

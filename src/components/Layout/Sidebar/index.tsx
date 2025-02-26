@@ -1,7 +1,6 @@
 import { DistilledAIIcon } from "@components/Icons/DistilledAIIcon"
 import { PlusIcon } from "@components/Icons/Plus"
 import { useLocation, useNavigate } from "react-router-dom"
-import Menu from "./Menu"
 import Socials from "./Socials"
 import { ChevronDownIcon } from "@components/Icons/ChevronDownIcon"
 import { useAppDispatch, useAppSelector } from "@hooks/useAppRedux"
@@ -10,6 +9,7 @@ import { updateSidebarCollapsed } from "@reducers/sidebarCollapsedSlice"
 import { useLayoutEffect } from "react"
 import { PATH_NAMES, STATUS_AGENT } from "@constants/index"
 import { EditFilledIcon } from "@components/Icons/DefiLens"
+import NavigationMenu from "./NavigationMenu"
 
 const Sidebar = () => {
   const dispatch = useAppDispatch()
@@ -90,7 +90,7 @@ const Sidebar = () => {
               </span>
             </button>
           </div>
-          <Menu />
+          <NavigationMenu />
         </div>
         <Socials />
       </div>
