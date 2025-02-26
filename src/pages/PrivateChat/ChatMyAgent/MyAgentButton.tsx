@@ -18,7 +18,7 @@ const MyPrivateAgent = () => {
       type="button"
       className={twMerge(
         "relative flex h-14 w-full items-center gap-3 rounded-full px-2 hover:bg-mercury-100",
-        isSelected && "bg-mercury-100",
+        isSelected && "md:bg-mercury-100",
       )}
       onClick={() =>
         myAgentId
@@ -41,7 +41,7 @@ const MyPrivateAgent = () => {
       </span>
       <ActiveEffect
         isActive={isSelected}
-        className="-left-3 bg-lgd-code-agent-3"
+        className="-left-3 hidden bg-lgd-code-agent-3 md:block"
       />
     </button>
   )

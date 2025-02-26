@@ -116,10 +116,10 @@ const ChatMyAgentBox: React.FC<{
         style={{
           paddingBottom: `${spacing}px`,
         }}
-        className="md:max-h-[calc(100%-110px)]"
+        className="h-[calc(100dvh-152px)] max-h-full md:max-h-[calc(100%-110px)]"
         isChatActions={isChatActions}
       />
-      <div className="absolute bottom-[70px] left-1/2 w-[calc(100%-32px)] -translate-x-1/2 space-y-2 bg-white pb-0 md:bottom-[144px] md:pb-2">
+      {/* <div className="absolute bottom-[104px] left-1/2 w-[calc(100%-32px)] -translate-x-1/2 space-y-2 bg-white pb-0 md:bottom-[144px] md:pb-2">
         {!isBotActive ? (
           <AlertBox
             className="mx-auto max-w-[768px]"
@@ -143,13 +143,13 @@ const ChatMyAgentBox: React.FC<{
             links={[{ to: PATH_NAMES.ADD_MY_DATA, label: "Add Data" }]}
           />
         ) : null}
-      </div>
+      </div> */}
       {hasInputChat && (
         <>
           <ChatInput
             onSubmit={onChatSubmit}
             isDisabledInput={isChatting}
-            wrapperClassName="md:bottom-12 flex-col items-end md:py-3 rounded-3xl justify-end w-[calc(100%-32px)] left-1/2 -translate-x-1/2 max-md:left-4"
+            wrapperClassName="bottom-8 md:bottom-12 flex-col items-end md:py-3 md:rounded-3xl justify-end md:w-[calc(100%-32px)] left-1/2 -translate-x-1/2 max-md:fixed w-[calc(100%-16px)] rounded-2xl"
           />
           <ReCaptchaWraper reCaptchaRef={reCaptchaRef} />
         </>
@@ -157,7 +157,7 @@ const ChatMyAgentBox: React.FC<{
       <ChatActions
         isClearContextBtn
         isDelegateBtn={false}
-        className="justify-end md:bottom-3"
+        className="fixed bottom-0 justify-end md:absolute md:bottom-3"
       />
     </>
   )

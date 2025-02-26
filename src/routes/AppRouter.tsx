@@ -2,6 +2,9 @@ import MainLayoutMobile from "@components/Layout/MainLayoutMobile"
 import LoadingFallback from "@components/LoadingFallback"
 import { PATH_NAMES } from "@constants/index"
 import useWindowSize from "@hooks/useWindowSize"
+import ChatsAgent from "@pages/PrivateChat/Mobile/ChatsAgent"
+import AgentChats from "@pages/PrivateChat/Mobile/ChatsAgent"
+import PrivateChatBox from "@pages/PrivateChat/PrivateChatBox"
 import { Suspense, lazy } from "react"
 import { Route, Routes } from "react-router-dom"
 
@@ -97,21 +100,21 @@ const AppRouter = () => {
 
           <Route
             path={PATH_NAMES.PRIVATE_AGENT}
-            element={<PrivateChatPage />}
+            element={isMobile ? <ChatsAgent /> : <PrivateChatPage />}
           />
           <Route
             path={`${PATH_NAMES.PRIVATE_AGENT}/:privateChatId`}
-            element={<PrivateChatPage />}
+            element={isMobile ? <PrivateChatBox /> : <PrivateChatPage />}
           />
 
-          <Route path={PATH_NAMES.CHAT_DETAIL} element={<PrivateChatPage />} />
+          <Route
+            path={PATH_NAMES.CHAT_DETAIL}
+            element={isMobile ? <PrivateChatBox /> : <PrivateChatPage />}
+          />
 
-          {isMobile && (
-            <Route
-              path={PATH_NAMES.PRIVATE_AGENT}
-              element={<MyPrivateAgentContentMobile />}
-            />
-          )}
+          {/* {isMobile && (
+            <Route path={PATH_NAMES.PRIVATE_AGENT} element={<AgentChats />} />
+          )} */}
           {/* <Route path={PATH_NAMES.TRENDING} element={<TrendingPage />} /> */}
 
           {/* Route Protected By Auth */}

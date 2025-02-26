@@ -246,10 +246,12 @@ const ChatInput = ({
           onClick={handleSubmit}
           disabled={isDisabledInput || !message}
           className={twMerge(
-            "h-9 w-[52px] min-w-[52px] rounded-full border border-mercury-900 bg-mercury-950 px-4 py-2 disabled:border-transparent disabled:bg-mercury-950/60",
+            "flex h-8 w-12 items-center justify-center rounded-full border border-mercury-900 bg-mercury-950 px-4 py-2 disabled:border-transparent disabled:bg-mercury-950/60 md:h-9 md:w-[52px] md:min-w-[52px]",
           )}
         >
-          <ArrowUpFilledIcon bgColor={"#FAFAFA"} />
+          <div>
+            <ArrowUpFilledIcon bgColor={"#FAFAFA"} />
+          </div>
         </button>
       </div>
     </div>

@@ -6,6 +6,7 @@ import { Image } from "@nextui-org/react"
 import React, { useEffect, useState } from "react"
 import type SpeechRecognition from "react-speech-recognition"
 import { toast } from "react-toastify"
+import { twMerge } from "tailwind-merge"
 import { match } from "ts-pattern"
 
 const VoiceChat: React.FC<{
@@ -92,19 +93,19 @@ const VoiceChat: React.FC<{
           type="button"
           onClick={startVoice}
           disabled={isDisabled}
-          className="h-9 rounded-full bg-mercury-200 disabled:bg-mercury-200/60"
+          className="h-8 rounded-full bg-mercury-200 disabled:bg-mercury-200/60 md:h-9"
         >
           <MicrophoneFilledIcon />
         </button>
       )}
       {isMobile && (
         <>
-          {isOpen && (
-            <div className="fixed left-0 top-0 h-dvh w-full bg-[rgba(0,0,0,0.25)] backdrop-blur-[10px]"></div>
-          )}
           <DrawerBottom
             classNames={{
-              base: "max-h-[calc(100dvh-200px)] bg-mercury-30 rounded-b-none",
+              base: twMerge(
+                "max-h-[calc(100dvh-200px)] bg-mercury-30 rounded-b-none w-dvw -bottom-[28px]",
+                !isOpen && "h-0",
+              ),
             }}
             isOpen={isOpen}
             onClose={() => setIsOpen(false)}
