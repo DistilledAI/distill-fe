@@ -114,7 +114,7 @@ const UploadCommon: React.FC<UploadCustomProps> = ({
       showUploadList={false}
       className="w-full"
     >
-      <div className="flex h-[56px] w-full cursor-pointer items-center justify-between rounded-full bg-mercury-100 px-4 font-bold text-mercury-950">
+      <div className="flex h-[56px] w-full cursor-pointer items-center justify-between rounded-full bg-mercury-100 px-4 font-bold text-mercury-950 max-md:h-[40px]">
         <div className="flex items-center gap-1">
           {icon} <span>{label}</span>
         </div>

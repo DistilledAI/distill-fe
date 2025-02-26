@@ -21,11 +21,13 @@ const Knowledge = () => {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-1">
           <DatabaseImportIcon />
-          <span className="text-[22px] font-semibold">Connected Sources</span>
+          <span className="text-[22px] font-semibold max-md:text-18">
+            Connected Sources
+          </span>
         </div>
         <div className="flex items-center gap-1 rounded-full bg-mercury-70 px-2">
           <LockFilledIcon />
-          <span className="font-medium uppercase text-mercury-700">
+          <span className="font-medium uppercase text-mercury-700 max-md:text-14">
             private
           </span>
         </div>

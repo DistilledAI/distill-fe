@@ -141,7 +141,7 @@ const FileData: React.FC<{
             }))}
             loadMore={fetchNextPage}
             hasMore={hasNextPage}
-            category={category}
+            // category={category}
             botId={botId}
           />
         ) : (

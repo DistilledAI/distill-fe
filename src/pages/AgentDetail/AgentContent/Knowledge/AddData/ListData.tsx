@@ -7,6 +7,10 @@ import DeleteData from "@pages/MyData/DeleteData"
 import moment from "moment"
 import React from "react"
 import { IBotData } from "types/user"
+import useWindowSize from "@hooks/useWindowSize"
+import TableDataMobile from "@pages/MyData/Components/TableDataMobile"
+import { TYPE_DATA_KEY } from "@pages/ChatPage/ChatContainer/RightContent/MyPrivateAgentContent/CreatePrivateAgent"
+import { capitalizeFirstLetter } from "@utils/index"
 
 enum ColumnKey {
   Name = "name",
@@ -39,6 +43,7 @@ const ListData: React.FC<{
   hasNextPage: boolean
   fetchNextPage: () => void
 }> = ({ data, hasNextPage, fetchNextPage }) => {
+  const { isMobile } = useWindowSize()
   const { agentId } = useParams()
 
   const getTdClassName = (key: string) => {
@@ -60,17 +65,20 @@ const ListData: React.FC<{
 
   const renderCell = (item: Record<string, any>, columnKey: string) => {
     const dataId = item?.id
+    const isSocialMediaType = item?.key === TYPE_DATA_KEY.SOCIAL_MEDIA
 
     switch (columnKey) {
       case ColumnKey.Type:
         return (
           <span className="line-clamp-1 max-w-[100px] text-base text-mercury-600">
-            {item[columnKey]}
+            {isSocialMediaType
+              ? capitalizeFirstLetter(item.name)
+              : item[columnKey]}
           </span>
         )
       case ColumnKey.Date:
         return (
-          <span className="line-clamp-1 text-base text-mercury-600">
+          <span className="line-clamp-1 text-base text-mercury-600 max-md:line-clamp-none max-md:whitespace-nowrap">
             {moment(item[columnKey]).format("ll")}
           </span>
         )
@@ -90,7 +98,7 @@ const ListData: React.FC<{
           <div className="flex flex-row items-center gap-1">
             {hasSyncDataByStatus(item.status) && <InfoCircleIcon />}
             <a
-              className="line-clamp-1 max-w-[120px] hover:underline"
+              className="line-clamp-1 max-w-[120px] hover:underline max-md:max-w-full"
               href={item.value}
               target="_blank"
             >
@@ -110,7 +118,21 @@ const ListData: React.FC<{
     }
   }
 
-  return (
+  return isMobile ? (
+    <TableDataMobile
+      data={data.map((item) => ({
+        type: item.type,
+        value: item.name,
+        createdAt: item.createdAt,
+        id: item.id,
+        key: item.key,
+        name: item.name,
+      }))}
+      loadMore={fetchNextPage}
+      hasMore={hasNextPage}
+      botId={Number(agentId)}
+    />
+  ) : (
     <TableData
       tdClassName={getTdClassName}
       thClassName={getThClassName}

@@ -6,7 +6,9 @@ const ClanPublicChip = () => {
       <div>
         <WorldGlobalIcon size={12} color="#007AFF" />
       </div>
-      <span className="text-13 font-medium text-[#007AFF]">PUBLIC</span>
+      <span className="text-13 font-medium text-[#007AFF] max-md:text-12">
+        PUBLIC
+      </span>
     </div>
   )
 }

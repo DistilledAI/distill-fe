@@ -267,7 +267,9 @@ const AgentType: React.FC<{
         </span>
       </div>
 
-      <FieldLabel text="LLM Model" />
+      <div className="max-md:mt-5">
+        <FieldLabel text="LLM Model" />
+      </div>
       <div className="mt-2 flex w-full gap-3 max-md:flex-wrap">
         {LLM_MODEL_OPTIONS.map((record) => {
           return (

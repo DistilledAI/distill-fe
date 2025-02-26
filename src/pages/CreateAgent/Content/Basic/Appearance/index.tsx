@@ -35,10 +35,10 @@ const Appearance = () => {
         <CategoryLabel text="Public Appearance" icon={<ClipboardTextIcon />} />
         <ClanPublicChip />
       </div>
-      <div className="mt-6 flex flex-wrap gap-4 rounded-[22px] border-1 border-mercury-100 bg-mercury-30 p-6">
-        <div className="flex w-[240px] flex-col items-center justify-center">
+      <div className="mt-6 flex flex-wrap gap-4 rounded-[22px] border-1 border-mercury-100 bg-mercury-30 p-6 max-md:p-4">
+        <div className="flex w-[240px] flex-col items-center justify-center max-md:w-full">
           <ChangeAvatarContainer handleUpload={handleUploadAvatar}>
-            <div className="group relative h-[140px] w-[140px] cursor-pointer overflow-hidden rounded-full border-1 border-mercury-100">
+            <div className="group relative h-[140px] w-[140px] cursor-pointer overflow-hidden rounded-full border-1 border-mercury-100 max-md:h-[80px] max-md:w-[80px]">
               <img
                 className="h-full w-full object-cover"
                 src={avatarWatch || maxAvatarPlaceholder2}
@@ -48,7 +48,7 @@ const Appearance = () => {
               </div>
             </div>
           </ChangeAvatarContainer>
-          <p className="mt-4 text-center text-13 font-medium text-mercury-800">
+          <p className="mt-4 text-center text-13 font-medium text-mercury-800 max-md:mt-2">
             Max file size: 5MB
           </p>
         </div>
@@ -109,9 +109,11 @@ const Appearance = () => {
           </div>
           <div className="mt-4">
             <div className="mb-2">
-              <h4 className="text-16 font-semibold text-mercury-950">Links</h4>
+              <h4 className="text-16 font-semibold text-mercury-950 max-md:text-14">
+                Links
+              </h4>
             </div>
-            <div className="grid grid-cols-3 gap-2">
+            <div className="grid grid-cols-3 gap-2 max-md:grid-cols-1">
               <Controller
                 name="x_link"
                 control={control}

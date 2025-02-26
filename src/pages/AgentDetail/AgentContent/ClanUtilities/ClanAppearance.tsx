@@ -85,14 +85,16 @@ const ClanAppearance: React.FC = () => {
           <Switch
             isSelected={field.value === 1}
             onValueChange={(isSelected) => field.onChange(isSelected ? 1 : 0)}
-            classNames={{ label: "text-[16px] font-bold text-mercury-950" }}
+            classNames={{
+              label: "text-[16px] max-md:text-15 font-bold text-mercury-950",
+            }}
           >
             Enable Clan
           </Switch>
         )}
       />
 
-      <div className="grid grid-cols-3 gap-4 rounded-[22px] border border-mercury-100 bg-mercury-30 p-6">
+      <div className="grid grid-cols-3 gap-4 rounded-[22px] border border-mercury-100 bg-mercury-30 p-6 max-md:grid-cols-1 max-md:p-4">
         <div className="col-span-1 flex flex-col items-center gap-4">
           <LabelRequired label="Streaming Photo or Video" />
           <ChangeAvatarContainer

@@ -7,7 +7,7 @@ interface Props {
 
 const LabelRequired = ({ label, isRequired = true }: Props) => {
   return (
-    <label className="text-16 font-semibold text-mercury-950">
+    <label className="text-16 font-semibold text-mercury-950 max-md:text-15">
       {label}{" "}
       <span className={twMerge("text-[#FF3B30]", !isRequired && "hidden")}>
         *

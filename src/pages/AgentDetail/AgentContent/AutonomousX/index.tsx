@@ -214,7 +214,9 @@ const AutonomousX: React.FC<{
         />
         <div className="flex items-center gap-1 rounded-full bg-[rgba(0,122,255,0.15)] px-2">
           <WorldIcon size={20} color="#007AFF" />
-          <span className="font-medium uppercase text-[#007AFF]">public</span>
+          <span className="font-medium uppercase text-[#007AFF] max-md:text-14">
+            public
+          </span>
         </div>
       </div>
 
@@ -226,7 +228,7 @@ const AutonomousX: React.FC<{
       <span className="text-base-sb text-mercury-950">Feeds Configuration</span>
 
       <ComingSoon
-        childrenClassName={!!twitterUsername ? "" : "opacity-50"}
+        childrenClassName={twitterUsername ? "" : "opacity-50"}
         content="You need to bind an X account to use this feature"
         isOffComing={!!twitterUsername}
       >
@@ -341,7 +343,7 @@ const AutonomousX: React.FC<{
         </div>
 
         <ComingSoon
-          childrenClassName={!!twitterUsername ? "" : "opacity-50"}
+          childrenClassName={twitterUsername ? "" : "opacity-50"}
           content="You need to bind an X account to use this feature"
           isOffComing={!!twitterUsername}
         >

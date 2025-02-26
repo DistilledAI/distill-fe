@@ -19,7 +19,9 @@ const AutonomousTG: React.FC<{
         />
         <div className="flex items-center gap-1 rounded-full bg-[rgba(0,122,255,0.15)] px-2">
           <WorldIcon size={20} color="#007AFF" />
-          <span className="font-medium uppercase text-[#007AFF]">public</span>
+          <span className="font-medium uppercase text-[#007AFF] max-md:text-14">
+            public
+          </span>
         </div>
       </div>
 

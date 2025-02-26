@@ -168,8 +168,8 @@ const AgentDetail: React.FC = () => {
       <form onSubmit={methods.handleSubmit(onSubmit)}>
         <div>
           <HeaderDetailAgent isLoading={loading} />
-          <div className="relative mx-auto flex max-w-[1206px] items-start gap-[40px] px-6 py-6">
-            <div className="w-[260px]">
+          <div className="relative mx-auto flex max-w-[1206px] items-start gap-[40px] px-6 py-6 max-md:flex-col max-md:gap-[20px] max-md:px-4">
+            <div className="w-[260px] max-md:w-full">
               <AgentNavTab isEdit />
             </div>
             <div className="flex-1">

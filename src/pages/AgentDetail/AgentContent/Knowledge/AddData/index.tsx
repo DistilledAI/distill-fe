@@ -57,8 +57,8 @@ const AddData = () => {
   }
 
   return (
-    <div className="mt-6 flex gap-6">
-      <div className="flex w-[230px] flex-col items-stretch gap-2 rounded-[22px] border-1 border-dashed border-mercury-700 bg-mercury-50 p-4">
+    <div className="mt-6 flex gap-6 max-md:flex-col">
+      <div className="flex w-[230px] flex-col items-stretch gap-2 rounded-[22px] border-1 border-dashed border-mercury-700 bg-mercury-50 p-4 max-md:w-full">
         <UploadCommon
           moreCustomRequest={onMoreCustomRequest}
           fileKey={TYPE_DATA_KEY.TXT_FILE}
@@ -83,8 +83,8 @@ const AddData = () => {
           Max file size: 20MB
         </p>
       </div>
-      <div className="flex-1">
-        <div className="h-full rounded-[22px] border-1 border-mercury-100 bg-mercury-30">
+      <div className="flex-1 max-md:w-full">
+        <div className="h-full rounded-[22px] border-1 border-mercury-100 bg-mercury-30 max-md:w-full">
           <ListData
             data={data}
             fetchNextPage={fetchNextPage}

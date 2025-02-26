@@ -9,7 +9,9 @@ const ClanTitle = ({ title, icon }: Props) => {
   return (
     <div className="flex items-center gap-2">
       {icon}
-      <h2 className="text-22 font-bold text-mercury-950">{title}</h2>
+      <h2 className="text-22 font-bold text-mercury-950 max-md:text-18">
+        {title}
+      </h2>
     </div>
   )
 }

@@ -73,7 +73,7 @@ const TxtData: React.FC<{
             <DeleteData
               botId={item.userId}
               ids={[item.id]}
-              category={category}
+              // category={category}
             />
           </div>
         )
@@ -141,7 +141,7 @@ const TxtData: React.FC<{
             }))}
             loadMore={fetchNextPage}
             hasMore={hasNextPage}
-            category={category}
+            // category={category}
             botId={botId}
           />
         ) : (

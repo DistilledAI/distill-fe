@@ -1,6 +1,5 @@
 import useLoadMoreByScroll from "@hooks/useLoadMoreByScroll"
 import { TYPE_DATA_KEY } from "@pages/ChatPage/ChatContainer/RightContent/MyPrivateAgentContent/CreatePrivateAgent"
-import { BotDataTypeKey } from "@types"
 import { capitalizeFirstLetter } from "@utils/index"
 import moment from "moment"
 import React, { useRef } from "react"
@@ -18,8 +17,7 @@ const TableDataMobile: React.FC<{
   loadMore: () => void
   hasMore: boolean
   botId: number
-  category: BotDataTypeKey
-}> = ({ data, loadMore, hasMore, botId, category }) => {
+}> = ({ data, loadMore, hasMore, botId }) => {
   const isEmpty = data.length === 0
   const tableRef = useRef<any>(null)
   useLoadMoreByScroll(tableRef, loadMore, hasMore)
@@ -42,14 +40,14 @@ const TableDataMobile: React.FC<{
             >
               <div className="flex max-w-[calc(100%-50px)] flex-col gap-1">
                 {item.type && (
-                  <p className="m-0 text-base text-mercury-600">
+                  <p className="m-0 line-clamp-1 max-w-[200px] text-base text-mercury-600">
                     {isSocialMediaType
                       ? capitalizeFirstLetter(item?.name)
                       : item.type}
                   </p>
                 )}
                 <a
-                  className="m-0 line-clamp-1 text-14 text-base text-mercury-950"
+                  className="m-0 line-clamp-1 max-w-[200px] text-14 text-base text-mercury-950"
                   href={item.value}
                   target="_blank"
                 >
@@ -60,11 +58,7 @@ const TableDataMobile: React.FC<{
                 </p>
               </div>
               <div className="flex w-[50px] justify-end">
-                <ActionMoreTableMobile
-                  data={item}
-                  botId={botId}
-                  category={category}
-                />
+                <ActionMoreTableMobile data={item} botId={botId} />
               </div>
             </div>
           )

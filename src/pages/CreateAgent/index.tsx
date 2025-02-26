@@ -126,7 +126,7 @@ const CreateAgent = () => {
       <form onSubmit={methods.handleSubmit(onSubmit)}>
         <div className="pt-[70px]">
           <AgentHeader isLoading={isLoading} />
-          <div className="relative mx-auto flex max-w-[1206px] items-start gap-[40px] px-6 py-6">
+          <div className="relative mx-auto flex max-w-[1206px] items-start gap-[40px] px-6 py-6 max-md:flex-col">
             <div className="w-[260px]">
               <AgentNavTab />
             </div>

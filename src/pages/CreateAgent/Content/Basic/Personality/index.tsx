@@ -11,7 +11,7 @@ import { LockFilledIcon } from "@components/Icons/AgentDetailIcon"
 import { StarUserIconOutline } from "@components/Icons/UserIcon"
 import { Checkbox, Textarea, useDisclosure } from "@nextui-org/react"
 import CategoryLabel from "@pages/AgentDetail/CategoryLabel"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useFormContext } from "react-hook-form"
 import CommunicationStylePreset from "./CommunicationStylePreset"
 
@@ -83,6 +83,16 @@ const Personality = () => {
     communication_style: watch("communication_style"),
   }
 
+  useEffect(() => {
+    const isCustomData =
+      selectedBehaviors.personality_traits[0] &&
+      selectedBehaviors.personality_traits[0] !== "" &&
+      !PERSONALITY_LIST.find(
+        (item) => item.value === selectedBehaviors.personality_traits[0],
+      )
+    if (isCustomData) setIsCustom(true)
+  }, [selectedBehaviors.personality_traits])
+
   const handleSelectBehaviors = (selected: SelectedBehaviors) => {
     const { personality_traits, communication_style } = selected
     setValue("personality_traits", personality_traits)
@@ -108,7 +118,7 @@ const Personality = () => {
         />
         <div className="flex items-center gap-1 rounded-full bg-mercury-70 px-2">
           <LockFilledIcon />
-          <span className="font-medium uppercase text-mercury-700">
+          <span className="font-medium uppercase text-mercury-700 max-md:text-14">
             private
           </span>
         </div>
@@ -117,12 +127,12 @@ const Personality = () => {
         <p className="font-semibold">
           Templates<span className="text-red-500">*</span>
         </p>
-        <p className="font-medium text-mercury-700">
+        <p className="font-medium text-mercury-700 max-md:text-14">
           Select the trait that best describe your agent's personality.
         </p>
       </div>
-      <div className="mt-5 rounded-[22px] bg-[#E9E3D8] p-3">
-        <div className="grid grid-cols-3 gap-4">
+      <div className="mt-5 rounded-[22px] bg-[#E9E3D8] p-3 max-md:p-2">
+        <div className="grid grid-cols-3 gap-4 max-md:grid-cols-2 max-md:gap-2">
           {PERSONALITY_LIST.map((item) => (
             <div
               key={item.value}
@@ -131,17 +141,20 @@ const Personality = () => {
                 if (item.type === "custom") setIsCustom((prev) => !prev)
                 else setIsCustom(false)
               }}
-              className="flex cursor-pointer items-center justify-between rounded-[14px] border-1 border-white bg-mercury-30 p-3"
+              className="flex cursor-pointer items-center justify-between rounded-[14px] border-1 border-white bg-mercury-30 p-3 max-md:p-2"
             >
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-3 max-md:gap-2">
                 <img
                   className="h-10 w-10 rounded-[8px] object-cover"
                   src={item.icon}
                   alt="avatar"
                 />
-                <p className="text-14 font-medium">{item.label}</p>
+                <p className="max-w-[70px] truncate text-14 font-medium">
+                  {item.label}
+                </p>
               </div>
               <Checkbox
+                className="max-md:p-0"
                 radius="full"
                 onValueChange={(check) => {
                   if (item.type === "custom") {
@@ -161,11 +174,13 @@ const Personality = () => {
         {(selectedBehaviors.personality_traits[0] || isCustom) && (
           <>
             <div className="mt-5">
-              <p className="mb-1 font-semibold">Agent's Purpose</p>
+              <p className="mb-1 font-semibold max-md:text-14">
+                Agent's Purpose
+              </p>
               <Textarea
                 classNames={{
                   inputWrapper: "!bg-mercury-30  border-1 border-mercury-400",
-                  input: "text-15 font-semibold !text-brown-600",
+                  input: "text-15 max-md:text-14 font-semibold !text-brown-600",
                 }}
                 onValueChange={(val) => {
                   setValue("personality_traits", [val])
@@ -178,13 +193,15 @@ const Personality = () => {
             </div>
             <div className="mt-4">
               <div className="flex items-center justify-between">
-                <p className="mb-1 font-semibold">Communication Style</p>
+                <p className="mb-1 font-semibold max-md:text-14">
+                  Communication Style
+                </p>
                 <div
                   onClick={onOpen}
                   className="flex cursor-pointer items-center gap-1 hover:opacity-70"
                 >
                   <BookDownloadIcon />
-                  <span className="font-semibold text-brown-600">
+                  <span className="font-semibold text-brown-600 max-md:text-14">
                     More Presets
                   </span>
                 </div>
@@ -192,7 +209,7 @@ const Personality = () => {
               <Textarea
                 classNames={{
                   inputWrapper: "!bg-mercury-30  border-1 border-mercury-400",
-                  input: "text-15 font-semibold !text-brown-600",
+                  input: "text-15 max-md:text-14 font-semibold !text-brown-600",
                 }}
                 onValueChange={(val) =>
                   handleSelect("communication_style", val)

@@ -18,10 +18,12 @@ const TopicRestriction: React.FC = () => {
           className="flex cursor-pointer items-center gap-1 hover:opacity-70"
         >
           <CursorIcon />
-          <span className="text-[22px] font-semibold">Topic Restrictions</span>
+          <span className="text-[22px] font-semibold max-md:text-18">
+            Topic Restrictions
+          </span>
           <div
             className={twMerge(
-              "mt-1 rotate-[90deg]",
+              "mt-1 rotate-[90deg] max-md:mt-[2px]",
               visible && "rotate-[-90deg]",
             )}
           >
@@ -30,7 +32,7 @@ const TopicRestriction: React.FC = () => {
         </div>
         <div className="flex items-center gap-1 rounded-full bg-mercury-70 px-2">
           <LockFilledIcon />
-          <span className="font-medium uppercase text-mercury-700">
+          <span className="font-medium uppercase text-mercury-700 max-md:text-14">
             private
           </span>
         </div>
