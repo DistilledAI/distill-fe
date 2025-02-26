@@ -235,12 +235,12 @@ export const BookDownloadIcon = () => {
   )
 }
 
-export const LeafIcon = () => {
+export const LeafIcon = ({ size = 28 }: IconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="28"
-      height="28"
+      width={size}
+      height={size}
       viewBox="0 0 28 28"
       fill="none"
     >
@@ -252,12 +252,12 @@ export const LeafIcon = () => {
   )
 }
 
-export const MagicIcon = () => {
+export const MagicIcon = ({ size = 28 }: IconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="28"
-      height="28"
+      width={size}
+      height={size}
       viewBox="0 0 28 28"
       fill="none"
     >

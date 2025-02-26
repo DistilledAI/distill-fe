@@ -7,6 +7,7 @@ import { shortenNumber } from "@utils/index"
 import { Link } from "react-router-dom"
 import FeaturedSkeleton from "./Skeleton"
 import useWindowSize from "@hooks/useWindowSize"
+import { AGENT_TYPE_KEY } from "@pages/ChatPage/ChatContainer/RightContent/MyPrivateAgentContent/AgentInitialization/AgentType"
 
 const FeaturedAgent = () => {
   const { isMobile } = useWindowSize()
@@ -59,7 +60,11 @@ const FeaturedAgent = () => {
                       {item.name}
                     </p>
                     <p className="mt-[2px] w-fit rounded-full bg-mercury-900 px-[6px] py-[1px] text-[11px] font-medium italic text-white max-md:text-[10px]">
-                      Prototype AI Agent
+                      {item.owner?.typeAgent
+                        ? item.owner.typeAgent === AGENT_TYPE_KEY.DEFAI
+                          ? "DeFAI Agent"
+                          : "AI Agent"
+                        : "AI Agent"}
                     </p>
                   </div>
                 </div>
