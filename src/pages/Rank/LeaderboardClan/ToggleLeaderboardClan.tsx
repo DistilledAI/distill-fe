@@ -22,7 +22,7 @@ const ToggleLeaderboardClan = () => {
     <button
       type="button"
       className={twMerge(
-        "fixed inset-y-1/2 right-0 z-[49] flex h-[148px] w-8 -translate-y-1/2 items-center justify-center bg-cover bg-center bg-no-repeat text-white transition-all duration-300 ease-in-out",
+        "fixed inset-y-1/2 right-0 z-[49] flex h-[148px] w-8 items-center justify-center bg-cover bg-center bg-no-repeat text-white transition-all duration-300 ease-in-out",
         isToggleLeaderboard && "right-[380px]",
       )}
       style={{

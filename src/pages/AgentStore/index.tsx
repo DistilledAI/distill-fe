@@ -67,18 +67,18 @@ const AgentStore = () => {
   }
 
   return (
-    <div className="mx-auto mt-8 max-w-[1024px] max-lg:px-4">
+    <div className="mx-auto mt-8 max-w-[1024px] max-lg:px-4 max-md:pb-16">
       <div className="flex items-center justify-between gap-2">
         <InputSearchAgent />
-        <button
+        {/* <button
           type="button"
           className="h-14 flex-shrink-0 rounded-full bg-mercury-950 px-6 text-16 font-bold text-mercury-30"
         >
           My Agent’s Publication
-        </button>
+        </button> */}
       </div>
 
-      <div className="relative my-6 flex items-center pr-[160px]">
+      <div className="relative my-6 flex items-center md:pr-[160px]">
         <Swiper
           ref={swiperRef}
           spaceBetween={8}

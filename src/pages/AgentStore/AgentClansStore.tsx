@@ -129,7 +129,7 @@ const AgentClansStore = () => {
           title: "Clans",
         })}
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-3 md:grid-cols-2 md:gap-4">
           {loading
             ? Array.from({ length: limit }).map((_, index) => (
                 <div key={index}>{renderSkeleton()}</div>

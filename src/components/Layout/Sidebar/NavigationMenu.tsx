@@ -142,6 +142,10 @@ const NavigationMenu = ({ isMobile = false }: { isMobile?: boolean }) => {
     if (item.id === "agent-clan") {
       return currentPath.includes(item.pathname)
     }
+
+    if (item.id === "marketplace") {
+      return normalizedCurrentPath === "/marketplace"
+    }
     return (
       normalizedCurrentPath === normalizedItemBasePath &&
       currentSearch === expectedSearch

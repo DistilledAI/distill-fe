@@ -6,6 +6,7 @@ const TITLE_BY_PATH_NAMES = {
   [PATH_NAMES.ACCOUNT]: "My Profile",
   [PATH_NAMES.MARKETPLACE]: "Agent Store",
   [PATH_NAMES.PRIVATE_AGENT]: "Chats",
+  [PATH_NAMES.CLAN]: "Clans",
 }
 
 const TitlePathName = () => {

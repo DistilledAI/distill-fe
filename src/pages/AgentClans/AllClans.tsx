@@ -1,6 +1,6 @@
 import { maxAvatarPlaceholder } from "@assets/images"
 import { AvatarClanByList } from "@components/AvatarContainer"
-import { IconSearch } from "@components/Icons/DefiLens"
+// import { IconSearch } from "@components/Icons/DefiLens"
 import { PATH_NAMES } from "@constants/index"
 import useAuthState from "@hooks/useAuthState"
 import useFetchClan from "@pages/Marketplace/useFetchClan"
@@ -19,9 +19,9 @@ const AllClans = () => {
     <div className="-mx-3 mt-6 max-h-[calc(100dvh-180px)] space-y-3 overflow-y-auto overflow-x-hidden px-3 pb-4">
       <div className="flex items-center justify-between">
         <span className="text-14 font-medium text-mercury-800">All Clans</span>
-        <div>
+        {/* <div>
           <IconSearch color="#676767" />
-        </div>
+        </div> */}
       </div>
       <div>
         {data.map((item) => (

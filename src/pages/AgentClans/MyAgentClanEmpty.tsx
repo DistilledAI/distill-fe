@@ -20,14 +20,14 @@ const MyAgentClanEmpty = () => {
   const renderContent = () => {
     if (!agent) {
       return (
-        <p className="text-18 font-semibold text-mercury-950">
+        <p className="text-16 font-semibold text-mercury-950 md:text-18">
           Please <span className="text-brown-500">Create Your First Agent</span>
         </p>
       )
     }
 
     return (
-      <p className="text-18 font-semibold text-mercury-950">
+      <p className="text-16 font-semibold text-mercury-950 md:text-18">
         Please enable Clan on the{" "}
         <span className="text-brown-500">Edit Agent</span> page.
       </p>
@@ -36,14 +36,14 @@ const MyAgentClanEmpty = () => {
 
   return (
     <div className="flex h-[calc(100dvh-68px)] w-full flex-col items-center justify-center">
-      <p className="text-18 font-semibold text-mercury-950">
+      <p className="text-16 font-semibold text-mercury-950 md:text-18">
         Your Agent Clan is not enabled yet.
       </p>
       {renderContent()}
 
       <img
         src={agent?.avatar || maxAvatarPlaceholder2}
-        className="mb-4 mt-10 h-[419px] w-auto rounded-3xl object-cover"
+        className="my-4 h-[419px] w-auto rounded-3xl object-cover px-3 md:mt-10"
         alt="avatar placeholder"
       />
 

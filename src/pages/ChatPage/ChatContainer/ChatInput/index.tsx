@@ -231,7 +231,7 @@ const ChatInput = ({
         />
       </MentionsInputAny>
       <div
-        className={twMerge("flex items-center gap-3", actionsWrapperClassName)}
+        className={twMerge("flex items-center gap-2", actionsWrapperClassName)}
       >
         <VoiceChat
           resetTranscript={resetTranscript}

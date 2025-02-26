@@ -2,8 +2,8 @@ import MainLayoutMobile from "@components/Layout/MainLayoutMobile"
 import LoadingFallback from "@components/LoadingFallback"
 import { PATH_NAMES } from "@constants/index"
 import useWindowSize from "@hooks/useWindowSize"
+import ChatClanBox from "@pages/AgentClans/ChatClanBox"
 import ChatsAgent from "@pages/PrivateChat/Mobile/ChatsAgent"
-import AgentChats from "@pages/PrivateChat/Mobile/ChatsAgent"
 import PrivateChatBox from "@pages/PrivateChat/PrivateChatBox"
 import { Suspense, lazy } from "react"
 import { Route, Routes } from "react-router-dom"
@@ -25,9 +25,9 @@ const HomePage = lazy(() => import("@pages/Home"))
 const ChatBox = lazy(() => import("@pages/ChatPage/ChatContainer"))
 const CreateAgent = lazy(() => import("@pages/CreateAgent"))
 // const ChatPageMobile = lazy(() => import("@pages/ChatPage/Mobile"))
-const MyPrivateAgentContentMobile = lazy(
-  () => import("@pages/ChatPage/Mobile/MyPrivateAgentContentMobile"),
-)
+// const MyPrivateAgentContentMobile = lazy(
+//   () => import("@pages/ChatPage/Mobile/MyPrivateAgentContentMobile"),
+// )
 // const Marketplace = lazy(() => import("@pages/Marketplace"))
 const MyAgentPage = lazy(() => import("@pages/MyAgents"))
 const MyData = lazy(() => import("@pages/MyData"))
@@ -37,9 +37,12 @@ const StakePage = lazy(() => import("@pages/Stake"))
 const CreateProposal = lazy(() => import("@pages/Dao/CreateProposal"))
 const DaoPage = lazy(() => import("@pages/Dao"))
 const ProposalsDetailPage = lazy(() => import("@pages/Dao/ProposalsDetail"))
-const AgentClanPage = lazy(() => import("@pages/AgentClan"))
+const AgentClansPage = lazy(() => import("@pages/AgentClans"))
 const PrivateChatPage = lazy(() => import("@pages/PrivateChat"))
 const AgentStorePage = lazy(() => import("@pages/AgentStore"))
+const AgentClansMobilePage = lazy(
+  () => import("@pages/AgentClans/Mobile/AgentClansMobile"),
+)
 // const TrendingPage = lazy(() => import("@pages/Trending"))
 
 const AppRouter = () => {
@@ -57,11 +60,15 @@ const AppRouter = () => {
             path={PATH_NAMES.CHAT_DETAIL}
             element={isMobile ? <ChatPageMobile /> : <ChatBox />}
           /> */}
-          <Route path={`${PATH_NAMES.CLAN}`} element={<AgentClanPage />} />
+          <Route
+            path={`${PATH_NAMES.CLAN}`}
+            element={isMobile ? <AgentClansMobilePage /> : <AgentClansPage />}
+          />
           <Route
             path={`${PATH_NAMES.CLAN}/:chatId`}
-            element={<AgentClanPage />}
+            element={isMobile ? <ChatClanBox /> : <AgentClansPage />}
           />
+
           <Route path={`${PATH_NAMES.STAKING}`} element={<StakePage />} />
           <Route
             path={`${PATH_NAMES.LIVE}/:chatId`}

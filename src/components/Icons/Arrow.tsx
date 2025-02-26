@@ -165,6 +165,29 @@ export const ArrowsMaximizeIcon = ({
   )
 }
 
+export const ArrowsMinimizeIcon = ({
+  size = 24,
+  color = "#545454",
+}: IconProps) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+    >
+      <path
+        d="M5 9H9M9 9V5M9 9L3 3M5 15H9M9 15V19M9 15L3 21M19 9H15M15 9V5M15 9L21 3M19 15H15M15 15V19M15 15L21 21"
+        stroke={color}
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}
+
 export const ArrowRightIcon = ({ size = 20, color = "#545454" }: IconProps) => {
   return (
     <svg

@@ -9,15 +9,16 @@ import useGetChatId from "@pages/ChatPage/hooks/useGetChatId"
 
 const MainLayoutMobile = () => {
   const { pathname } = useLocation()
-  const { chatId } = useGetChatId()
-  const { privateChatId } = useParams()
+  const { originalChatId } = useGetChatId()
+  const { privateChatId, chatId } = useParams()
 
   const ignoreLayout = useMemo(
     () => [
       `${PATH_NAMES.CHAT}/${chatId}`,
       `${PATH_NAMES.PRIVATE_AGENT}/${privateChatId}`,
+      `${PATH_NAMES.CLAN}/${originalChatId}`,
     ],
-    [chatId, privateChatId],
+    [chatId, privateChatId, originalChatId],
   )
 
   const isHideBottomBar = useMemo(
@@ -29,7 +30,7 @@ const MainLayoutMobile = () => {
     return (
       <>
         <Header />
-        <div className="pb-[60px] pt-[52px]">
+        <div className="pt-[52px]">
           <Outlet />
         </div>
         {!isHideBottomBar ? <NavigationMenu isMobile={true} /> : null}

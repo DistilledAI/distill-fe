@@ -17,8 +17,8 @@ const MyAgentClan = () => {
     <button
       type="button"
       className={twMerge(
-        "relative flex h-[64px] w-full items-center gap-4 rounded-full px-4 hover:bg-mercury-100",
-        isSelected && "bg-mercury-100",
+        "relative flex h-[64px] w-full items-center gap-4 rounded-full px-3 hover:bg-mercury-100",
+        isSelected && "md:bg-mercury-100",
       )}
       onClick={() =>
         // agentNameJoin
@@ -38,7 +38,7 @@ const MyAgentClan = () => {
       </span>
       <ActiveEffect
         isActive={isSelected}
-        className="-left-3 bg-lgd-code-hot-ramp"
+        className="-left-3 hidden bg-lgd-code-hot-ramp md:block"
       />
     </button>
   )

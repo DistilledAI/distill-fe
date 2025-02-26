@@ -66,7 +66,7 @@ const ClanShortInfo = () => {
 
   return (
     <>
-      <div className="w-full pb-1 max-md:my-1 max-md:px-4">
+      <div className="hidden w-full pb-1 max-md:my-1 max-md:px-4 md:block">
         <div
           ref={rewardRef}
           onClick={handleOpenLeaderboard}
