@@ -55,11 +55,19 @@ const MyAgentHome = () => {
       </h4>
       {myAgent ? (
         <div className="mt-[24px] grid w-full grid-cols-2 gap-3">
-          <Button className="h-[56px] w-full rounded-full bg-mercury-100 text-[16px] font-semibold text-mercury-950">
+          <Button
+            onPress={() =>
+              navigate(`${PATH_NAMES.PRIVATE_AGENT}/${myAgent.id}`)
+            }
+            className="h-[56px] w-full rounded-full bg-mercury-100 text-[16px] font-semibold text-mercury-950"
+          >
             <MessagePlusIcon color="#363636" />
             Chat
           </Button>
-          <Button className="h-[56px] w-full rounded-full bg-mercury-950 text-[16px] font-semibold text-mercury-30">
+          <Button
+            onPress={() => navigate(`${PATH_NAMES.AGENT_DETAIL}/${myAgent.id}`)}
+            className="h-[56px] w-full rounded-full bg-mercury-950 text-[16px] font-semibold text-mercury-30"
+          >
             <EditFilledIcon color="white" />
             Edit Agent
           </Button>

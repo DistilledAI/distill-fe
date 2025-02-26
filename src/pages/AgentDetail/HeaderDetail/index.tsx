@@ -26,8 +26,9 @@ const HeaderDetailAgent: React.FC<{
   const agentName = watch("username")
   const agentDesc = watch("description")
 
-  const isDisabled = personality.length === 0 || !agentName || !agentDesc
   const isAgentActive = agent && agent?.status === STATUS_AGENT.ACTIVE
+  const isDisabled =
+    personality.length === 0 || !agentName || !agentDesc || !isAgentActive
 
   useEffect(() => {
     setIsPublished(agent?.publish === Publish.Published)

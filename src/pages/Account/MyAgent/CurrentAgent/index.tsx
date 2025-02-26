@@ -188,7 +188,7 @@ const CurrentAgent = () => {
             className="h-[32px] rounded-full bg-mercury-100 font-semibold"
           >
             {!isPublished ? <PublishIcon color="black" /> : <CloudXIcon />}
-            <span>{!isAgentActive ? "Publish" : "Unpublish"}</span>
+            <span>{!isPublished ? "Publish" : "Unpublish"}</span>
           </Button>
         </div>
         <div className="mt-2 rounded-[14px] border-1 border-mercury-100 bg-mercury-50 p-4">
