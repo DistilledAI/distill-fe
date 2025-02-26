@@ -1,6 +1,5 @@
 import AgentType from "@pages/ChatPage/ChatContainer/RightContent/MyPrivateAgentContent/AgentInitialization/AgentType"
 import AgentBasicInfo from "@pages/CreateAgent/Content/Basic"
-import ClanUtilities from "@pages/CreateAgent/Content/ClanUtilities"
 import { TabKeyAgent } from "@pages/CreateAgent/NavTab"
 import { defineElement } from "@utils/index"
 import { useSearchParams } from "react-router-dom"
@@ -9,6 +8,8 @@ import { AgentConfig } from "../useFetchAgentConfig"
 import AutonomousTG from "./AutonomousTG"
 import AutonomousX from "./AutonomousX"
 import Knowledge from "./Knowledge"
+import React from "react"
+import ClanUtilities from "./ClanUtilities"
 
 export const BLACKLIST_BOT_VERSION = [
   "devorai/distilled-chat:0.0.6.4-cc",
@@ -25,7 +26,8 @@ const AgentContent: React.FC<{
   agentData: IAgentData
   agentConfigs: AgentConfig[]
   refetch: any
-}> = ({ agentData, agentConfigs, refetch }) => {
+  clanIdOfAgent: string
+}> = ({ clanIdOfAgent, agentData, agentConfigs, refetch }) => {
   const [searchParams] = useSearchParams()
   const tabKey = searchParams.get("tab") as any
   const botVersionData = agentData?.botVersion || ""
@@ -36,7 +38,9 @@ const AgentContent: React.FC<{
       <AgentType isDisabledTypeAgent isDisabledLLMModel={isDisabledLLMModel} />
     ),
     [TabKeyAgent.Basic]: <AgentBasicInfo />,
-    [TabKeyAgent.ClanUtilities]: <ClanUtilities />,
+    [TabKeyAgent.ClanUtilities]: (
+      <ClanUtilities clanIdOfAgent={clanIdOfAgent} />
+    ),
     [TabKeyAgent.AutonomousX]: (
       <AutonomousX agentConfigs={agentConfigs} refetch={refetch} />
     ),

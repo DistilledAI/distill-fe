@@ -82,6 +82,7 @@ const Personality = () => {
     personality_traits: watch("personality_traits"),
     communication_style: watch("communication_style"),
   }
+
   const handleSelectBehaviors = (selected: SelectedBehaviors) => {
     const { personality_traits, communication_style } = selected
     setValue("personality_traits", personality_traits)
@@ -196,7 +197,7 @@ const Personality = () => {
                 onValueChange={(val) =>
                   handleSelect("communication_style", val)
                 }
-                value={selectedBehaviors.communication_style}
+                value={selectedBehaviors.communication_style[0]}
               />
             </div>
           </>

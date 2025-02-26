@@ -1,4 +1,4 @@
-import { BEHAVIORS_AGENT, STATUS_AGENT } from "@constants/index"
+import { STATUS_AGENT } from "@constants/index"
 import { TYPE_LLM_MODEL } from "@pages/ChatPage/ChatContainer/RightContent/MyPrivateAgentContent/AgentInitialization/AgentType"
 import AgentNavTab from "@pages/CreateAgent/NavTab"
 import { refreshFetchMyAgent } from "@reducers/agentSlice"
@@ -9,7 +9,6 @@ import { useParams } from "react-router-dom"
 import { toast } from "react-toastify"
 import { updateAgent, updateAgentConfig } from "services/agent"
 import { updateAvatarUser } from "services/user"
-import { SelectedBehaviors } from "./AgentBehaviors"
 import {
   INTERACTION_FREQUENCY_KEY,
   RESPONSE_LENGTH_KEY,
@@ -24,6 +23,8 @@ import {
 } from "./helpers"
 import useFetchAgentConfig from "./useFetchAgentConfig"
 import useFetchDetail from "./useFetchDetail"
+import { editAgentClan, uploadImageAgentClan } from "services/group"
+import { transformClanData } from "./AgentContent/ClanUtilities/helper"
 
 export const BLACKLIST_BOT_VERSION = [
   "devorai/distilled-chat:0.0.6.4-cc",
@@ -40,11 +41,12 @@ const AgentDetail: React.FC = () => {
   const { agentId } = useParams()
   const dispatch = useDispatch()
   const [loading, setLoading] = useState(false)
-  const [valueCustomDefault, setValueCustomDefault] = useState<any>()
-  console.log("🚀 ~ valueCustomDefault:", valueCustomDefault)
 
-  const { agentConfigs } = useFetchAgentConfig()
+  const { agentConfigs, refetch: refetchConfig } = useFetchAgentConfig()
   const { agentData, refetch } = useFetchDetail()
+  const clanIdOfAgent = agentData?.botConfigs?.find(
+    (val: any) => val?.key === "clanOfAgent",
+  )?.value
   const isActive = agentData?.status === STATUS_AGENT.ACTIVE
 
   const userNameData = agentData?.username
@@ -74,32 +76,14 @@ const AgentDetail: React.FC = () => {
       category: "crypto",
       typeAgent: 0,
       llmModel: TYPE_LLM_MODEL.LLM_MODEL_BASIC,
+      clan: {
+        description: "",
+        name: "",
+        imageLive: null,
+        isEnableClan: 2,
+      },
     },
   })
-
-  const updateCustomFields = (selectedBehaviors: SelectedBehaviors) => {
-    const updatedFields: {
-      [key: string]: { value: string; isFocused: boolean }
-    } = {}
-
-    Object.keys(selectedBehaviors).forEach((key) => {
-      const value = selectedBehaviors[key as keyof SelectedBehaviors]?.[0]
-      const validList = BEHAVIORS_AGENT[key as keyof typeof BEHAVIORS_AGENT]
-
-      if (
-        validList &&
-        value &&
-        !validList.some((item) => item.value === value)
-      ) {
-        updatedFields[key] = {
-          value,
-          isFocused: true,
-        }
-      }
-    })
-
-    setValueCustomDefault(updatedFields)
-  }
 
   useEffect(() => {
     const defaults: any = {
@@ -115,8 +99,7 @@ const AgentDetail: React.FC = () => {
       personality_traits: [defaults?.personality_traits],
       communication_style: [defaults?.communication_style],
     }
-    updateCustomFields(selectedBehaviors)
-    methods.reset(defaults)
+    methods.reset({ ...defaults, ...selectedBehaviors })
   }, [agentData, methods.reset, agentConfigs])
 
   const onSubmit = async (data: any) => {
@@ -148,10 +131,28 @@ const AgentDetail: React.FC = () => {
         })
       }
       if (res.data) {
+        refetchConfig()
         refetch()
         dispatch(refreshFetchMyAgent())
         toast.success("Updated successfully!")
       }
+
+      if (data.clan.imageLive instanceof File) {
+        const formData = new FormData()
+        formData.append("file", data.clan.imageLive)
+        formData.append("key", "imageLive")
+        formData.append("groupId", clanIdOfAgent || "")
+        formData.append("type", "clan")
+        await uploadImageAgentClan(formData)
+      }
+
+      await editAgentClan({
+        groupId: Number(clanIdOfAgent),
+        data: transformClanData({
+          ...data.clan,
+          label: data.clan.name,
+        }),
+      })
     } catch (error: any) {
       console.error("error", error)
       toast.error(error?.response?.data?.message)
@@ -174,6 +175,7 @@ const AgentDetail: React.FC = () => {
                 agentData={agentData}
                 agentConfigs={agentConfigs}
                 refetch={refetch}
+                clanIdOfAgent={clanIdOfAgent}
               />
             </div>
           </div>
