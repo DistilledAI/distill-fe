@@ -92,9 +92,12 @@ const NavigationMenu = ({ isMobile = false }: { isMobile?: boolean }) => {
     {
       id: "private-agent",
       icon: (color?: string) => <MessageAIOutlineIcon color={color} />,
-      name: "Chats",
+      name: !isMobile ? "Private Chat" : "Chats",
       rightContent: null,
-      pathname: myAgent ? `/private-agent/${myAgent.id}` : "/private-agent",
+      pathname:
+        myAgent && !isMobile
+          ? `/private-agent/${myAgent.id}`
+          : "/private-agent",
     },
     {
       id: "vaults",
@@ -133,10 +136,16 @@ const NavigationMenu = ({ isMobile = false }: { isMobile?: boolean }) => {
   const isActive = (item: MenuItem): boolean => {
     const [itemBasePath, itemQuery] = item.pathname.split("?")
     const expectedSearch = itemQuery ? `?${itemQuery}` : ""
+    const normalizedCurrentPath = currentPath.replace(/\/$/, "")
+    const normalizedItemBasePath = itemBasePath.replace(/\/$/, "")
+
     if (item.id === "agent-clan") {
       return currentPath.includes(item.pathname)
     }
-    return currentPath === itemBasePath && currentSearch === expectedSearch
+    return (
+      normalizedCurrentPath === normalizedItemBasePath &&
+      currentSearch === expectedSearch
+    )
   }
 
   const renderItem = (item: MenuItem, index: number) => {
@@ -182,6 +191,7 @@ const NavigationMenu = ({ isMobile = false }: { isMobile?: boolean }) => {
           "group/item flex cursor-pointer items-center gap-2 rounded-full border-[2px] border-white bg-mercury-30 px-4 py-[10px] transition-all duration-200 ease-in-out hover:bg-brown-50",
           active && "h-12 border-brown-500 bg-brown-50",
           sidebarCollapsed && "h-12 justify-center",
+          item.isHidden && "hidden",
         )}
         onClick={() => navigate(item.pathname)}
       >

@@ -146,12 +146,12 @@ const useFetchMessages = () => {
     }
   }, [groupId])
 
-  useEffect(() => {
-    if (error) {
-      console.error(error)
-      navigate(PATH_NAMES.HOME)
-    }
-  }, [error])
+  // useEffect(() => {
+  //   if (error) {
+  //     console.error(error)
+  //     navigate(PATH_NAMES.HOME)
+  //   }
+  // }, [error])
 
   const onLoadPrevMessages = async () => {
     try {

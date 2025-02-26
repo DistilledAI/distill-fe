@@ -134,11 +134,9 @@ const ChatAgentOthers = () => {
 
   return (
     <>
-      <div className="mt-6">
+      <div className="mt-4 md:mt-6">
         <div className="flex items-center justify-between">
-          <span className="text-14 font-medium text-mercury-800">
-            All Messages
-          </span>
+          <h3 className="text-14 font-medium text-mercury-800">All Messages</h3>
           {/* <button type="button">
             <PlusIcon color="#676767" size={20} />
           </button> */}
@@ -146,7 +144,7 @@ const ChatAgentOthers = () => {
       </div>
 
       <div
-        className="-mx-3 mt-3 h-full max-h-[calc(100%-250px)] w-[250px] overflow-y-auto"
+        className="-mx-3 mt-3 h-full w-full overflow-y-auto md:max-h-[calc(100%-250px)] md:w-[250px]"
         ref={containerRef}
         onScroll={() => {
           const scrollElement = containerRef.current
