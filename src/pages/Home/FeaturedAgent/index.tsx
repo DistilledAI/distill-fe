@@ -1,14 +1,14 @@
+import AvatarCustom from "@components/AvatarCustom"
 import { LiveIcon, TablerClainIcon } from "@components/Icons"
 import { FilledUserIcon } from "@components/Icons/UserIcon"
-import useFetchClan from "@pages/Marketplace/useFetchClan"
+import { PATH_NAMES } from "@constants/index"
+import useFetchFeaturedAgentClan from "@pages/Marketplace/useFetchFeaturedAgentClan"
 import { shortenNumber } from "@utils/index"
 import { Link } from "react-router-dom"
 import FeaturedSkeleton from "./Skeleton"
-import { PATH_NAMES } from "@constants/index"
-import AvatarCustom from "@components/AvatarCustom"
 
 const FeaturedAgent = () => {
-  const { data, loading } = useFetchClan({ limit: 6 })
+  const { data, loading } = useFetchFeaturedAgentClan()
 
   return (
     <div>
@@ -28,13 +28,6 @@ const FeaturedAgent = () => {
           {data.map((item) => (
             <Link key={item.id} to={`${PATH_NAMES.CLAN}/${item.label}`}>
               <div className="group relative h-[180px] overflow-hidden rounded-[8px] bg-mercury-70 p-3">
-                {/* {item.image && (
-                  <img
-                    loading="lazy"
-                    className="absolute left-0 top-0 h-full w-full object-cover transition-all duration-1000 group-hover:scale-110"
-                    src={item.image}
-                  />
-                )} */}
                 <AvatarCustom
                   className="absolute left-0 top-0 h-full w-full rounded-none border-none object-cover transition-all duration-1000 group-hover:scale-110"
                   src={item?.image || undefined}
