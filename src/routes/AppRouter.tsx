@@ -5,7 +5,6 @@ import useWindowSize from "@hooks/useWindowSize"
 import { Suspense, lazy } from "react"
 import { Route, Routes } from "react-router-dom"
 
-const MainLayout = lazy(() => import("@components/Layout/MainLayout"))
 const MainLayoutDesktop = lazy(
   () => import("@components/Layout/MainLayoutDesktop"),
 )
