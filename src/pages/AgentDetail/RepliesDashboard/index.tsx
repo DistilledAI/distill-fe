@@ -344,7 +344,7 @@ const RepliesDashboard: React.FC<{ isDisabled: boolean }> = ({
         isDisabled={isDisabled}
       >
         <ViewIcon />
-        <span className="text-base-md text-white">View X Dashboard</span>
+        <span className="text-base-md text-white">X Dashboard</span>
       </Button>
 
       <Modal
