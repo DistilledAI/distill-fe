@@ -137,8 +137,7 @@ const AgentDetail: React.FC = () => {
 
   const onSubmit = async (data: any) => {
     if (!isPassRuleAgentInfo(data) || !isActive) return
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { avatar, avatarFile, ...newData } = data
+    const { avatar, avatarFile, clan, ...newData } = data
     const agentIdNumber = Number(agentId)
     const configData = getConfigAgentByDataForm(data)
 
@@ -195,13 +194,27 @@ const AgentDetail: React.FC = () => {
     }
   }
 
+  const dataAgentConfig = getConfigAgentValueByKeys(
+    agentConfigs,
+    LIST_AGENT_CONFIG_KEYS,
+  )
+
+  const isChangePersonality =
+    methods.getValues("personality_traits")[0] !==
+      dataAgentConfig["personality_traits"] ||
+    methods.getValues("communication_style")[0] !==
+      dataAgentConfig["communication_style"]
+
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onSubmit)}>
         <div>
-          <HeaderDetailAgent isLoading={loading} />
-          <div className="relative mx-auto flex max-w-[1440px] items-start gap-[40px] px-6 py-6">
-            <div className="w-[260px]">
+          <HeaderDetailAgent
+            isChangePersonality={isChangePersonality}
+            isLoading={loading}
+          />
+          <div className="relative mx-auto flex max-w-[1536px] items-start gap-[40px] px-6 py-6 max-md:flex-col max-md:gap-[20px] max-md:px-4 max-md:pb-[80px]">
+            <div className="w-[260px] max-md:w-full">
               <AgentNavTab isEdit />
             </div>
             <div className="flex-1">
@@ -211,7 +224,7 @@ const AgentDetail: React.FC = () => {
                 refetch={refetch}
               />
             </div>
-            <div className="w-[330px]">
+            <div className="w-[330px] max-md:hidden">
               {twitterUsername && (
                 <div className="flex items-center justify-between rounded-lg bg-brown-50 p-4">
                   <span className="text-base-b text-mercury-950">
