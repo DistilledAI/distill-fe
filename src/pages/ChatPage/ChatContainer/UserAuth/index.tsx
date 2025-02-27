@@ -1,8 +1,13 @@
 import { xDSTL } from "@assets/images"
 import AvatarCustom from "@components/AvatarCustom"
 import ChatInfoCurrent from "@components/ChatInfoCurrent"
+import { CopyIcon } from "@components/Icons/Copy"
+import { LogoutIcon } from "@components/Icons/OutputIcon"
+import { CoinsOutlineIcon } from "@components/Icons/Sidebar"
+import { UserIcon } from "@components/Icons/UserIcon"
 import { WalletIcon } from "@components/Icons/Wallet"
 import { PATH_NAMES, RoleUser } from "@constants/index"
+import useAuthAction from "@hooks/useAuthAction"
 import useAuthState from "@hooks/useAuthState"
 import {
   Button,
@@ -12,6 +17,7 @@ import {
   DropdownTrigger,
 } from "@nextui-org/react"
 import useGroupDetail from "@pages/ChatPage/hooks/useGroupDetail"
+import { numberWithCommas } from "@utils/format"
 import {
   centerTextEllipsis,
   copyClipboard,
@@ -19,11 +25,6 @@ import {
 } from "@utils/index"
 import { useLocation, useNavigate } from "react-router-dom"
 import LoginPhantom from "./LoginPhantom"
-import { numberWithCommas } from "@utils/format"
-import { CopyIcon } from "@components/Icons/Copy"
-import { LogoutIcon } from "@components/Icons/OutputIcon"
-import { UserIcon } from "@components/Icons/UserIcon"
-import useAuthAction from "@hooks/useAuthAction"
 
 interface UserAuthProps {
   connectWallet: any
@@ -68,7 +69,7 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
             <div className="absolute -right-2 -top-2 h-3 w-3 rounded-full bg-[#FF3B30] max-md:hidden" />
           </div>
 
-          <Dropdown placement="bottom">
+          <Dropdown placement="bottom" className="w-[250px]">
             <DropdownTrigger>
               <button
                 type="button"
@@ -122,6 +123,20 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
                   <UserIcon />
                   <span className="text-16 font-bold text-mercury-900">
                     My Profile
+                  </span>
+                </div>
+              </DropdownItem>
+              <DropdownItem
+                key="my-profile"
+                onPress={() => {
+                  navigate("/account?tab=my-vault-holdings")
+                }}
+                className="p-0 hover:!bg-transparent"
+              >
+                <div className="mb-2 flex w-full cursor-pointer items-center gap-2 rounded-lg p-2 hover:bg-mercury-70">
+                  <CoinsOutlineIcon />
+                  <span className="text-16 font-bold text-mercury-900">
+                    My Staked Vaults
                   </span>
                 </div>
               </DropdownItem>
