@@ -82,7 +82,7 @@ const CreateAgent = () => {
       const isUpdateAvatar = botId && data.avatarFile
       if (res && botId) {
         toast.success("Created agent successfully")
-        navigate(`${PATH_NAMES.AGENT_DETAIL}/${botId}`)
+        navigate(PATH_NAMES.ACCOUNT)
       }
 
       if (botId) {
