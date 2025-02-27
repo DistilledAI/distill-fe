@@ -130,7 +130,7 @@ const ChatMessages = () => {
         isFetchingPreviousPage={isFetchingPreviousPage}
         onLoadPrevMessages={onLoadPrevMessages}
         chatId={groupId}
-        className="h-[calc(100dvh-265px)] max-h-full md:h-dvh md:max-h-[calc(100%-260px)]"
+        className="h-[calc(100dvh-262px)] max-h-full md:h-dvh md:max-h-[calc(100%-260px)]"
         msgBoxClassName="p-0 md:px-4 "
         style={{
           paddingBottom: `${spacing}px`,

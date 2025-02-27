@@ -47,7 +47,7 @@ const NavigationMenu = ({ isMobile = false }: { isMobile?: boolean }) => {
         <img
           src={avatarAgent || maxAvatarPlaceholder}
           alt="avatar placeholder"
-          className="h-8 w-8 rounded-full"
+          className="h-8 w-8 rounded-full object-cover"
         />
       ),
       pathname: "/account?tab=my-agent",
@@ -94,10 +94,7 @@ const NavigationMenu = ({ isMobile = false }: { isMobile?: boolean }) => {
       icon: (color?: string) => <MessageAIOutlineIcon color={color} />,
       name: !isMobile ? "Private Chat" : "Chats",
       rightContent: null,
-      pathname:
-        myAgent && !isMobile
-          ? `/private-agent/${myAgent.id}`
-          : "/private-agent",
+      pathname: "/private-agent",
     },
     {
       id: "vaults",
@@ -139,8 +136,12 @@ const NavigationMenu = ({ isMobile = false }: { isMobile?: boolean }) => {
     const normalizedCurrentPath = currentPath.replace(/\/$/, "")
     const normalizedItemBasePath = itemBasePath.replace(/\/$/, "")
 
-    if (item.id === "agent-clan") {
+    if (item.id === "agent-clan" || item.id === "private-agent") {
       return currentPath.includes(item.pathname)
+    }
+
+    if (item.id === "marketplace") {
+      return normalizedCurrentPath === "/marketplace"
     }
     return (
       normalizedCurrentPath === normalizedItemBasePath &&

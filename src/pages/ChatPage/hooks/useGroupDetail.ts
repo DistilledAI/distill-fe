@@ -13,7 +13,9 @@ const useGroupDetail = (groupIdExternal: string = "") => {
   const groupId = groupIdExternal || chatId
 
   const { data, isLoading, refetch, isFetched } = useQuery({
-    queryKey: [`${QueryDataKeys.GROUP_DETAIL}-${originalChatId}`],
+    queryKey: [
+      `${QueryDataKeys.GROUP_DETAIL}-${groupIdExternal || originalChatId}`,
+    ],
     queryFn: () =>
       getGroupChatDetail({
         filter: groupId?.includes("@")

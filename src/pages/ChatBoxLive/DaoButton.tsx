@@ -23,7 +23,7 @@ const DaoButton = ({ address }: Props) => {
           state: { isHistory: "true" },
         })
       }
-      className="h-11 w-full rounded-full bg-mercury-70 text-mercury-950"
+      className="h-11 w-full rounded-full bg-mercury-100 text-mercury-950"
     >
       <div>
         <img src={daoIcon} />

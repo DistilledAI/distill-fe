@@ -82,7 +82,7 @@ const AIAgentList = () => {
 
   return (
     <>
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4">
         {isLoading
           ? Array.from({ length: limit }).map((_, index) => (
               <div key={index}>{renderSkeleton()}</div>
@@ -90,7 +90,7 @@ const AIAgentList = () => {
           : data?.agents.map((item) => (
               <div
                 key={item.id}
-                className="flex cursor-pointer flex-col justify-between gap-2 rounded-[22px] border border-mercury-100 bg-mercury-50 p-4 hover:bg-mercury-100"
+                className="flex cursor-pointer flex-col justify-between gap-2 rounded-[22px] border border-mercury-100 bg-mercury-50 p-2 hover:bg-mercury-100 md:p-4"
                 onClick={() => handleChatWithAgent(item)}
               >
                 <div className="flex flex-col items-center">
@@ -102,15 +102,15 @@ const AIAgentList = () => {
                     />
                   </div>
 
-                  <span className="text-16 font-bold text-mercury-950">
+                  <span className="text-14 font-bold text-mercury-950 md:text-16">
                     {item.username}
                   </span>
 
-                  <p className="line-clamp-3 text-center text-14 font-medium text-mercury-800">
+                  <p className="line-clamp-3 text-center text-12 font-medium text-mercury-800 md:text-14">
                     {item.description || "-"}
                   </p>
                 </div>
-                <div className="line-clamp-1 flex items-center justify-center gap-2 text-14 font-medium text-mercury-600">
+                <div className="line-clamp-1 flex items-center justify-center gap-2 text-12 font-medium text-mercury-600 md:text-14">
                   Created by{" "}
                   <img
                     src={item?.ownerInfo?.avatar || maxAvatarPlaceholder}

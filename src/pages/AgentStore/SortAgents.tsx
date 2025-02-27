@@ -55,8 +55,8 @@ const SortAgents: React.FC = () => {
       }}
     >
       <DropdownTrigger>
-        <button className="flex h-14 w-[180px] items-center justify-center gap-2 rounded-full bg-mercury-30 !outline-[0px]">
-          <span className="text-16 font-bold text-mercury-700">
+        <button className="flex h-14 items-center justify-center gap-1 rounded-full bg-mercury-30 !outline-[0px] max-md:px-2 md:w-[180px] md:gap-2">
+          <span className="text-14 font-bold text-mercury-700 md:text-16">
             Sort by: <span className="text-mercury-950">{selectedValue}</span>
           </span>
           <div className="rotate-180">

@@ -47,7 +47,6 @@ const ClanAppearance: React.FC = () => {
           src: videoSrc,
           type: "video",
         })
-        console.log({ videoSrc })
       } else {
         throw new Error("Unsupported file type")
       }

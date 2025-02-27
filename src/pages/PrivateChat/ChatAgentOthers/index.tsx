@@ -144,7 +144,7 @@ const ChatAgentOthers = () => {
       </div>
 
       <div
-        className="-mx-3 mt-3 h-full w-full overflow-y-auto md:max-h-[calc(100%-250px)] md:w-[250px]"
+        className="-mx-3 mt-3 max-h-[calc(100dvh-250px)] w-full overflow-y-auto scrollbar-hide md:max-h-[calc(100%-250px)] md:w-[250px]"
         ref={containerRef}
         onScroll={() => {
           const scrollElement = containerRef.current
@@ -183,7 +183,7 @@ const ChatAgentOthers = () => {
                   aria-selected={isActive}
                   onClick={() => handleGroupClick(groupItem, isBotLive)}
                   className={twMerge(
-                    "hover-light-effect group/item group relative mb-2 flex h-14 items-center justify-between gap-2 rounded-full p-2",
+                    "group/item group relative mb-2 flex h-14 cursor-pointer items-center justify-between gap-2 rounded-full p-2 hover:bg-mercury-100",
                     isActive && "bg-mercury-100",
                     isActive &&
                       isBotLive &&
