@@ -71,7 +71,7 @@ const AppRouter = () => {
           {/* Chat Routes */}
           <Route
             path={PATH_NAMES.CHAT_DETAIL}
-            element={isMobile ? <PrivateChatBox /> : <ChatBox />}
+            element={isMobile ? <PrivateChatBox /> : <PrivateChatPage />}
           />
           <Route
             path={`${PATH_NAMES.LIVE}/:chatId`}
@@ -79,7 +79,7 @@ const AppRouter = () => {
           />
           <Route
             path={`${PATH_NAMES.INVITE}/:inviteAgentId`}
-            element={isMobile ? <ChatDetailLoadingPage /> : <ChatBox />}
+            element={isMobile ? <ChatDetailLoadingPage /> : <PrivateChatBox />}
           />
           {/* Private Chat Routes */}
           <Route path={PATH_NAMES.PRIVATE_AGENT}>
