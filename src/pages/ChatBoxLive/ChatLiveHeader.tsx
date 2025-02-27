@@ -5,10 +5,7 @@
 // import { PATH_NAMES } from "@constants/index"
 // import { Button } from "@nextui-org/react"
 import ClanShortInfo from "@pages/Rank/ClanShortInfo"
-import {
-  GroupConfig,
-  UserGroup,
-} from "@pages/ChatPage/ChatContainer/LeftBar/useFetchGroups"
+import { UserGroup } from "@pages/ChatPage/ChatContainer/LeftBar/useFetchGroups"
 import React from "react"
 // import { useNavigate } from "react-router-dom"
 // import { twMerge } from "tailwind-merge"
@@ -16,6 +13,7 @@ import AgentLiveInfo from "./AgentLiveInfo"
 import VaultButton from "./VaultButton"
 import { StakeTokenAddress } from "@pages/Stake"
 import DaoButton from "./DaoButton"
+import { useGroupConfig } from "./useGroupConfig"
 // import TradeTokenButton from "./TradeTokenButton"
 // import { getInfoTokenByAddress } from "@pages/Stake/helpers"
 
@@ -26,9 +24,7 @@ const ChatLiveHeader: React.FC<{
   // const isLive = groupDetail ? groupDetail.group.live === 1 : false
   // const groupId = groupDetail?.groupId as any
 
-  const groupConfig: GroupConfig | null = groupDetail?.group?.config
-    ? JSON.parse(groupDetail.group.config)
-    : null
+  const groupConfig = useGroupConfig(groupDetail?.group)
 
   return (
     <>

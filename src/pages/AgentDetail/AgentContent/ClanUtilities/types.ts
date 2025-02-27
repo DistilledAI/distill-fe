@@ -10,8 +10,7 @@ export enum CLAN_CONFIG_KEYS {
   AUDIO_LIVE = "audioLive",
   IS_PREDICTION = "isPrediction",
   IS_ENABLE_CLAN = "isEnableClan",
-  UTILITY_VAULT = "utilityVault",
-  UTILITY_DAO = "utilityDao",
+  WEBSITE = "website",
 }
 
 export interface ClanData {

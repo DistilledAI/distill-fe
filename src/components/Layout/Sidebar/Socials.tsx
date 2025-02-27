@@ -39,16 +39,14 @@ const SOCIALS = [
 
 const Socials = () => {
   const navigate = useNavigate()
-  const { pathname: currentPath, search: currentSearch } = useLocation()
+  const { pathname: currentPath } = useLocation()
   const sidebarCollapsed = useAppSelector((state) => state.sidebarCollapsed)
 
   return (
     <ul>
       {SOCIALS.map((item, index) => {
-        const [itemBasePath, itemQuery] = item.link.split("?")
-        const expectedSearch = itemQuery ? `?${itemQuery}` : ""
-        const isActive =
-          currentPath === itemBasePath && currentSearch === expectedSearch
+        const [itemBasePath] = item.link.split("?")
+        const isActive = currentPath === itemBasePath
 
         return (
           <li key={index} className="cursor-pointer">

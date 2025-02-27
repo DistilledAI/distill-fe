@@ -1,6 +1,6 @@
+import { IGroup } from "@pages/ChatPage/ChatContainer/LeftBar/useFetchGroups"
 import { useEffect, useState } from "react"
 import { getListGroupAgentPublic } from "services/group"
-import { IGroupDetail } from "types/group"
 
 const useFetchClan = ({
   isFetchNow = true,
@@ -14,7 +14,7 @@ const useFetchClan = ({
   offset?: number
 }) => {
   const [loading, setLoading] = useState(false)
-  const [data, setData] = useState<IGroupDetail[]>([])
+  const [data, setData] = useState<IGroup[]>([])
   const [hasMore, setHasMore] = useState(true)
   const [currentOffset, setCurrentOffset] = useState(offset)
   const [total, setTotal] = useState<number>(0)
