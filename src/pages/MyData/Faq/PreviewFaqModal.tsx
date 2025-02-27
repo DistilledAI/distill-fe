@@ -1,5 +1,5 @@
 import { Button, Modal, ModalBody, ModalContent } from "@nextui-org/react"
-import { FaqSample } from "@pages/ChatPage/ChatBox/RightContent/MyPrivateAgentContent/UploadFAQ/AddFAQModal"
+import { FaqSample } from "@pages/ChatPage/ChatContainer/RightContent/MyPrivateAgentContent/UploadFAQ/AddFAQModal"
 
 interface Props {
   faqSelected: FaqSample

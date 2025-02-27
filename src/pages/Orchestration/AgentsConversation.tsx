@@ -6,7 +6,7 @@ import {
 } from "@assets/images"
 import ChatWindow from "@components/ChatWindow"
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
-import useConversationSocket from "@pages/ChatPage/ChatBox/useConversationSocket"
+import useConversationSocket from "@pages/ChatPage/ChatContainer/useConversationSocket"
 import { twMerge } from "tailwind-merge"
 import useFetchConversation from "./useFetchConversation"
 import ReceiverMessage from "@components/ReceiverMessage"
@@ -71,7 +71,7 @@ const AgentsConversation = () => {
       isChatActions={false}
       msgBoxClassName="p-0 "
       className="max-h-[calc(100dvh-250px)] pt-1 md:max-h-[calc(100dvh-135px)]"
-      scrollBottomClassName="max-md:fixed !bottom-[11.7%] h-32 md:h-40 md:!bottom-24"
+      scrollBottomClassName="max-md:fixed !bottom-[11.7%] h-32 md:h-32 md:!bottom-14"
       increaseViewportBy={1000}
     />
   )

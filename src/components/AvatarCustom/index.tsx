@@ -65,9 +65,9 @@ const AvatarCustom: React.FC<AvatarCustomProps> = ({
       >
         <div
           className={twMerge(
-            "box-content h-10 w-10 overflow-hidden rounded-full border-1 border-mercury-400 bg-mercury-100",
+            "box-border h-10 w-10 overflow-hidden rounded-full border-[2px] border-mercury-400 bg-mercury-100",
             isLive &&
-              "relative h-[38px] w-[38px] border-white outline outline-2 outline-[#FF075A]",
+              "relative h-9 w-9 border-white outline outline-2 outline-[#FF3B30]",
             className,
           )}
         >
@@ -100,9 +100,8 @@ const AvatarCustom: React.FC<AvatarCustomProps> = ({
   return (
     <div
       className={twMerge(
-        "box-content h-10 w-10 overflow-hidden rounded-full border-1 border-mercury-400 bg-mercury-100",
-        isLive &&
-          "border-white outline outline-2 outline-[#FF075A] md:h-[38px] md:w-[38px]",
+        "box-border h-10 w-10 overflow-hidden rounded-full border-[2px] border-mercury-400 bg-mercury-100",
+        isLive && "h-9 w-9 border-white outline outline-2 outline-[#FF3B30]",
         className,
       )}
     >

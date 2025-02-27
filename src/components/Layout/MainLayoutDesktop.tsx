@@ -4,12 +4,12 @@ import { PATH_NAMES } from "@constants/index"
 import { useAppSelector } from "@hooks/useAppRedux"
 import useFetchMe from "@hooks/useFetchMe"
 import useInviteAgent from "@hooks/useInviteAgent"
-import LeftBar from "@pages/ChatPage/ChatBox/LeftBar"
-import useMessageSocket from "@pages/ChatPage/ChatBox/useMessageSocket"
-import UserAuthWrapper from "@pages/ChatPage/ChatBox/UserAuth/UserAuthWrapper"
+import useMessageSocket from "@pages/ChatPage/ChatContainer/useMessageSocket"
 import { StyleSpacingProvider } from "providers/StyleSpacingProvider"
 import { Outlet, useLocation, useParams } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
+import Header from "./Header"
+import Sidebar from "./Sidebar"
 
 const MainLayoutDesktop = () => {
   const { pathname } = useLocation()
@@ -19,42 +19,37 @@ const MainLayoutDesktop = () => {
   useFetchMe()
   useMessageSocket()
 
-  const isHideLeftBar = useMemo(() => {
+  const isHideSideBar = useMemo(() => {
     return (
       pathname === PATH_NAMES.TRENDING ||
       pathname === PATH_NAMES.STAKING ||
+      pathname === PATH_NAMES.CREATE_AGENT ||
       pathname.startsWith(PATH_NAMES.DAO) ||
       pathname === `${PATH_NAMES.AGENT_DETAIL}/${agentId}`
     )
   }, [pathname, agentId])
 
-  const renderContent = useMemo(() => {
-    if (isHideLeftBar) {
-      return (
-        <div className="flex bg-white font-barlow">
-          <div className="relative w-full pt-[68px]">
-            <UserAuthWrapper />
-            <Outlet />
-          </div>
-        </div>
-      )
-    }
+  const isHideHeader = useMemo(() => {
+    return pathname === PATH_NAMES.CREATE_AGENT
+  }, [pathname])
 
+  const renderContent = useMemo(() => {
     return (
       <div className="flex bg-white font-barlow">
-        <LeftBar />
+        {!isHideSideBar && <Sidebar />}
         <div
           className={twMerge(
-            "relative w-[calc(100%-329px)] pt-[68px] transition-all duration-300 ease-in-out",
-            sidebarCollapsed && "w-[calc(100%-104px)]",
+            "ml-auto w-[calc(100dvw-84px)] pt-[68px] transition-all duration-200 ease-in-out",
+            isHideSideBar && "w-full",
+            isHideHeader && "pt-0",
           )}
         >
-          <UserAuthWrapper />
+          {!isHideHeader && <Header />}
           <Outlet />
         </div>
       </div>
     )
-  }, [isHideLeftBar, sidebarCollapsed])
+  }, [isHideSideBar, sidebarCollapsed])
 
   return (
     <>

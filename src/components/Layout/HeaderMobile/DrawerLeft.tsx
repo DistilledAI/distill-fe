@@ -6,7 +6,7 @@ import ComingSoon from "@components/ComingSoon"
 import { DatabaseSearchIcon } from "@components/Icons/DatabaseImportIcon"
 import { SearchUserIconOutline } from "@components/Icons/UserIcon"
 import { PATH_NAMES } from "@constants/index"
-import AnalyticsInfoWrap from "@pages/ChatPage/ChatBox/LeftBar/AnalyticsInfoWrap"
+import AnalyticsInfoWrap from "@pages/ChatPage/ChatContainer/LeftBar/AnalyticsInfoWrap"
 import { useNavigate } from "react-router-dom"
 import { useAppSelector } from "@hooks/useAppRedux"
 

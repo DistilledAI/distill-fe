@@ -11,7 +11,7 @@ const useFetchMyData = () => {
   const botId = myAgent?.id as number
 
   const { data, isLoading, isFetched, refetch } = useQuery({
-    queryKey: [`${QueryDataKeys.MY_BOT_DATA}-${botId}`],
+    queryKey: [`${QueryDataKeys.MY_BOT_DATA}-${botId}-check`],
     queryFn: () => getMyBotData(botId, { limit: 1, offset: 0 }),
     enabled: !!botId && isLogin,
     refetchOnWindowFocus: false,

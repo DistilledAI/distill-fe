@@ -3,7 +3,7 @@ import HeadSectionData from "../Components/HeadSectionData"
 // import { EditPenFilledIcon } from "@components/Icons/Edit"
 import { InfoCircleIcon } from "@components/Icons/InfoCircleIcon"
 import useWindowSize from "@hooks/useWindowSize"
-import { TYPE_DATA_KEY } from "@pages/ChatPage/ChatBox/RightContent/MyPrivateAgentContent/CreatePrivateAgent"
+import { TYPE_DATA_KEY } from "@pages/ChatPage/ChatContainer/RightContent/MyPrivateAgentContent/CreatePrivateAgent"
 import { BotDataTypeKey } from "@types"
 import { capitalizeFirstLetter } from "@utils/index"
 import moment from "moment"
@@ -80,7 +80,7 @@ const LinkData: React.FC<{
             <DeleteData
               botId={item.userId}
               ids={[item.id]}
-              category={category}
+              // category={category}
             />
           </div>
         )
@@ -149,7 +149,7 @@ const LinkData: React.FC<{
             }))}
             loadMore={fetchNextPage}
             hasMore={hasNextPage}
-            category={category}
+            // category={category}
             botId={botId}
           />
         ) : (

@@ -13,7 +13,7 @@ import {
 import {
   GroupConfig,
   UserGroup,
-} from "@pages/ChatPage/ChatBox/LeftBar/useFetchGroups"
+} from "@pages/ChatPage/ChatContainer/LeftBar/useFetchGroups"
 import React from "react"
 import AgentDescription from "./AgentDescription"
 import AgentSocials from "./AgentSocials"
@@ -31,7 +31,7 @@ const AgentLiveInfo: React.FC<{
   return (
     <>
       <Button
-        className="h-7 w-7 min-w-7 rounded-full bg-mercury-70 p-0"
+        className="h-11 w-11 min-w-11 rounded-full bg-mercury-100 p-0"
         onPress={onOpen}
       >
         <InfoCircleOutlineIcon size={20} />

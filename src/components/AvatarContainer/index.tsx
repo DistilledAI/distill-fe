@@ -124,13 +124,22 @@ export const AvatarClanByList: React.FC<{
   publicAddress?: string
   member?: number
   isNameDisplay?: boolean
-}> = ({ avatarUrl, name, publicAddress, member, isNameDisplay = true }) => {
+  className?: string
+}> = ({
+  avatarUrl,
+  name,
+  publicAddress,
+  member,
+  isNameDisplay = true,
+  className,
+}) => {
   return (
     <div className="flex flex-col items-center">
       <div className="flex flex-col items-center">
         <AvatarCustom
           src={avatarUrl}
           publicAddress={publicAddress}
+          className={className}
           badgeClassName="bg-lgd-code-hot-ramp"
           isLive={true}
         />

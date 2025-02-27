@@ -1,10 +1,13 @@
+import MainLayoutMobile from "@components/Layout/MainLayoutMobile"
 import LoadingFallback from "@components/LoadingFallback"
 import { PATH_NAMES } from "@constants/index"
 import useWindowSize from "@hooks/useWindowSize"
+import ChatClanBox from "@pages/AgentClans/ChatClanBox"
+import PrivateChatMobile from "@pages/PrivateChat/Mobile/PrivateChatMobile"
+import PrivateChatBox from "@pages/PrivateChat/PrivateChatBox"
 import { Suspense, lazy } from "react"
 import { Route, Routes } from "react-router-dom"
 
-const MainLayout = lazy(() => import("@components/Layout/MainLayout"))
 const MainLayoutDesktop = lazy(
   () => import("@components/Layout/MainLayoutDesktop"),
 )
@@ -17,19 +20,15 @@ const AddMyData = lazy(() => import("@pages/AddMyData"))
 const AgentDetail = lazy(() => import("@pages/AgentDetail"))
 const AuthorProfile = lazy(() => import("@pages/AuthorProfile"))
 const ChatBoxLive = lazy(() => import("@pages/ChatBoxLive"))
-const ChatMyAgent = lazy(() => import("@pages/ChatMyAgent"))
-const ChatBox = lazy(() => import("@pages/ChatPage/ChatBox"))
-const AgentInitialization = lazy(
-  () =>
-    import(
-      "@pages/ChatPage/ChatBox/RightContent/MyPrivateAgentContent/AgentInitialization"
-    ),
-)
-const ChatPageMobile = lazy(() => import("@pages/ChatPage/Mobile"))
-const MyPrivateAgentContentMobile = lazy(
-  () => import("@pages/ChatPage/Mobile/MyPrivateAgentContentMobile"),
-)
-const Marketplace = lazy(() => import("@pages/Marketplace"))
+const HomePage = lazy(() => import("@pages/Home"))
+// const ChatMyAgent = lazy(() => import("@pages/ChatMyAgent"))
+const ChatBox = lazy(() => import("@pages/ChatPage/ChatContainer"))
+const CreateAgent = lazy(() => import("@pages/CreateAgent"))
+// const ChatPageMobile = lazy(() => import("@pages/ChatPage/Mobile"))
+// const MyPrivateAgentContentMobile = lazy(
+//   () => import("@pages/ChatPage/Mobile/MyPrivateAgentContentMobile"),
+// )
+// const Marketplace = lazy(() => import("@pages/Marketplace"))
 const MyAgentPage = lazy(() => import("@pages/MyAgents"))
 const MyData = lazy(() => import("@pages/MyData"))
 const Orchestration = lazy(() => import("@pages/Orchestration"))
@@ -38,6 +37,12 @@ const StakePage = lazy(() => import("@pages/Stake"))
 const CreateProposal = lazy(() => import("@pages/Dao/CreateProposal"))
 const DaoPage = lazy(() => import("@pages/Dao"))
 const ProposalsDetailPage = lazy(() => import("@pages/Dao/ProposalsDetail"))
+const AgentClansPage = lazy(() => import("@pages/AgentClans"))
+const PrivateChatPage = lazy(() => import("@pages/PrivateChat"))
+const AgentStorePage = lazy(() => import("@pages/AgentStore"))
+const AgentClansMobilePage = lazy(
+  () => import("@pages/AgentClans/Mobile/AgentClansMobile"),
+)
 // const TrendingPage = lazy(() => import("@pages/Trending"))
 
 const AppRouter = () => {
@@ -48,20 +53,27 @@ const AppRouter = () => {
       <Routes>
         <Route
           path={PATH_NAMES.HOME}
-          element={isMobile ? <MainLayout /> : <MainLayoutDesktop />}
+          element={isMobile ? <MainLayoutMobile /> : <MainLayoutDesktop />}
         >
-          <Route
-            path={PATH_NAMES.HOME}
-            element={isMobile ? <ChatPageMobile /> : <ChatBox />}
-          />
-          <Route
+          <Route path={PATH_NAMES.HOME} element={<HomePage />} />
+          {/* <Route
             path={PATH_NAMES.CHAT_DETAIL}
             element={isMobile ? <ChatPageMobile /> : <ChatBox />}
+          /> */}
+          <Route
+            path={`${PATH_NAMES.CLAN}`}
+            element={isMobile ? <AgentClansMobilePage /> : <AgentClansPage />}
           />
           <Route
             path={`${PATH_NAMES.CLAN}/:chatId`}
-            element={<ChatBoxLive />}
+            element={isMobile ? <ChatClanBox /> : <AgentClansPage />}
           />
+
+          <Route
+            path={PATH_NAMES.CLAN_AGENT_EMPTY}
+            element={isMobile ? <ChatClanBox /> : <AgentClansPage />}
+          />
+
           <Route path={`${PATH_NAMES.STAKING}`} element={<StakePage />} />
           <Route
             path={`${PATH_NAMES.LIVE}/:chatId`}
@@ -71,11 +83,11 @@ const AppRouter = () => {
             path={`${PATH_NAMES.INVITE}/:inviteAgentId`}
             element={isMobile ? <ChatDetailLoadingPage /> : <ChatBox />}
           />
-          <Route
+          {/* <Route
             path={`${PATH_NAMES.PRIVATE_AGENT}/:privateChatId`}
             element={isMobile ? <ChatPageMobile /> : <ChatMyAgent />}
-          />
-          <Route path={PATH_NAMES.MARKETPLACE} element={<Marketplace />} />
+          /> */}
+          <Route path={PATH_NAMES.MARKETPLACE} element={<AgentStorePage />} />
           <Route path={PATH_NAMES.ADD_MY_DATA} element={<AddMyData />} />
           <Route
             path={`${PATH_NAMES.AUTHOR_PROFILE}/:authorId`}
@@ -97,12 +109,29 @@ const AppRouter = () => {
             path={`${PATH_NAMES.DAO}/:agentAddress/proposals/:proposalId`}
             element={<ProposalsDetailPage />}
           />
-          {isMobile && (
-            <Route
-              path={PATH_NAMES.PRIVATE_AGENT}
-              element={<MyPrivateAgentContentMobile />}
-            />
-          )}
+
+          <Route
+            path={PATH_NAMES.PRIVATE_AGENT}
+            element={isMobile ? <PrivateChatMobile /> : <PrivateChatPage />}
+          />
+          <Route
+            path={`${PATH_NAMES.PRIVATE_AGENT}/:privateChatId`}
+            element={isMobile ? <PrivateChatBox /> : <PrivateChatPage />}
+          />
+
+          <Route
+            path={PATH_NAMES.CHAT_DETAIL}
+            element={isMobile ? <PrivateChatBox /> : <PrivateChatPage />}
+          />
+
+          <Route
+            path={PATH_NAMES.PRIVATE_AGENT_EMPTY}
+            element={isMobile ? <PrivateChatBox /> : <PrivateChatPage />}
+          />
+
+          {/* {isMobile && (
+            <Route path={PATH_NAMES.PRIVATE_AGENT} element={<AgentChats />} />
+          )} */}
           {/* <Route path={PATH_NAMES.TRENDING} element={<TrendingPage />} /> */}
 
           {/* Route Protected By Auth */}
@@ -117,10 +146,7 @@ const AppRouter = () => {
               path={`${PATH_NAMES.ADD_MY_DATA}/:botId`}
               element={<AddMyData />}
             />
-            <Route
-              path={PATH_NAMES.CREATE_AGENT}
-              element={<AgentInitialization />}
-            />
+            <Route path={PATH_NAMES.CREATE_AGENT} element={<CreateAgent />} />
             <Route path={PATH_NAMES.MY_AGENTS} element={<MyAgentPage />} />
             <Route path={PATH_NAMES.REWARDS} element={<RewardsPage />} />
           </Route>

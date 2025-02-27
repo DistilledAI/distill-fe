@@ -7,7 +7,8 @@ const maxSizeUpload = 50
 const ChangeAvatarContainer: React.FC<{
   children: React.ReactNode
   handleUpload: (file: File) => void
-}> = ({ children, handleUpload }) => {
+  accept?: string
+}> = ({ children, handleUpload, accept = "image/*" }) => {
   const [fileList, setFileList] = useState<UploadFile[]>([])
 
   const handleChange: UploadProps["onChange"] = ({ fileList }) => {
@@ -53,7 +54,7 @@ const ChangeAvatarContainer: React.FC<{
     showUploadList: false,
   }
   return (
-    <Upload {...props} accept="image/*">
+    <Upload {...props} accept={accept}>
       {children}
     </Upload>
   )

@@ -1,10 +1,10 @@
 import { useAppSelector } from "@hooks/useAppRedux"
 import useWindowSize from "@hooks/useWindowSize"
-import { IMessageBox } from "@pages/ChatPage/ChatBox/ChatMessages/helpers"
+import { IMessageBox } from "@pages/ChatPage/ChatContainer/ChatMessages/helpers"
 import {
   GroupConfig,
   UserGroup,
-} from "@pages/ChatPage/ChatBox/LeftBar/useFetchGroups"
+} from "@pages/ChatPage/ChatContainer/LeftBar/useFetchGroups"
 import useGetChatId from "@pages/ChatPage/hooks/useGetChatId"
 import { useQuery } from "@tanstack/react-query"
 import React, { lazy, useState } from "react"
@@ -13,9 +13,9 @@ import { QueryDataKeys } from "types/queryDataKeys"
 import ListMessage from "./ListMessage"
 import SendMessage from "./SendMessage"
 
-const ClanShortInfo = lazy(() => import("@pages/AgentClan/ClanShortInfo"))
+const ClanShortInfo = lazy(() => import("@pages/Rank/ClanShortInfo"))
 const ToggleActionsMobile = lazy(() => import("./ToggleActionsMobile"))
-const InstructionBanner = lazy(() => import("./InstructionBanner"))
+// const InstructionBanner = lazy(() => import("./InstructionBanner"))
 
 const RightContent: React.FC<{
   isClan?: boolean
@@ -23,7 +23,7 @@ const RightContent: React.FC<{
 }> = ({ isClan = false, groupDetail }) => {
   const { isMobile } = useWindowSize()
   const sidebarCollapsed = useAppSelector((state) => state.sidebarCollapsed)
-  const instructBanner = useAppSelector((state) => state.instructBanner)
+  // const instructBanner = useAppSelector((state) => state.instructBanner)
   const { chatId } = useGetChatId()
   const [replyUsername, setReplyUsername] = useState<string>("")
   const [replyId, setReplyId] = useState<number>(NaN)
@@ -43,10 +43,10 @@ const RightContent: React.FC<{
     queryKey: [QueryDataKeys.CLOSE_LIVE_CHAT],
     staleTime: 0,
   })
-  const { data: isExpandLiveChat } = useQuery<boolean>({
-    queryKey: [QueryDataKeys.EXPAND_LIVE_CHAT],
-    staleTime: 0,
-  })
+  // const { data: isExpandLiveChat } = useQuery<boolean>({
+  //   queryKey: [QueryDataKeys.EXPAND_LIVE_CHAT],
+  //   staleTime: 0,
+  // })
 
   return (
     <div
@@ -55,12 +55,13 @@ const RightContent: React.FC<{
         "z-[11] bg-white max-md:rounded-[14px] max-md:border-t max-md:border-t-white max-md:shadow-7",
         "md:px-5",
         "max-2xl:px-0",
-        !isExpandLiveChat ? "max-md:h-[27%]" : "max-md:h-[89%]",
-        isCloseLiveChat &&
-          "w-full flex-none max-md:absolute max-md:bottom-0 max-md:h-[115px] md:flex-1",
+        "max-md:h-full",
+        // !isExpandLiveChat ? "max-md:h-[27%]" : "max-md:h-[89%]",
+        // isCloseLiveChat &&
+        //   "w-full flex-none max-md:absolute max-md:bottom-0 max-md:h-[115px] md:flex-1",
       )}
     >
-      {isMobile && <ToggleActionsMobile />}
+      {isMobile && <ToggleActionsMobile groupDetail={groupDetail} />}
       {!isMobile && isClan && <ClanShortInfo />}
       <ListMessage
         onReply={(message: IMessageBox) => {
@@ -87,7 +88,7 @@ const RightContent: React.FC<{
         hasFocus={hasFocus}
         setHasFocus={setHasFocus}
       />
-      {instructBanner && <InstructionBanner />}
+      {/* {instructBanner && <InstructionBanner />} */}
     </div>
   )
 }

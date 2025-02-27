@@ -57,7 +57,9 @@ enum ColumnKey {
   tweetedUrl = "tweetedUrl",
 }
 
-const RepliesDashboard: React.FC = () => {
+const RepliesDashboard: React.FC<{ isDisabled: boolean }> = ({
+  isDisabled,
+}) => {
   const today = new Date()
   const last30Days = new Date()
   const last60Days = new Date()
@@ -340,6 +342,7 @@ const RepliesDashboard: React.FC = () => {
       <Button
         className="flex h-[32px] min-w-[90px] cursor-pointer items-center gap-2 rounded-full bg-mercury-950 text-[15px] font-medium text-white"
         onPress={() => onOpen()}
+        isDisabled={isDisabled}
       >
         <ViewIcon />
         <span className="text-base-md text-white">View X Dashboard</span>

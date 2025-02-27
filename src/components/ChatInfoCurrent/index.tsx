@@ -10,12 +10,12 @@ import {
   getAvatarGroupChat,
   getNameGroup,
   getPublicAddressGroupChat,
-} from "@pages/ChatPage/ChatBox/LeftBar/helpers"
-import { ORCHESTRATION_LIST } from "@pages/ChatPage/ChatBox/LeftBar/OrchestrationSlider"
+} from "@pages/ChatPage/ChatContainer/LeftBar/helpers"
+import { ORCHESTRATION_LIST } from "@pages/ChatPage/ChatContainer/LeftBar/OrchestrationSlider"
 import {
   TypeGroup,
   UserGroup,
-} from "@pages/ChatPage/ChatBox/LeftBar/useFetchGroups"
+} from "@pages/ChatPage/ChatContainer/LeftBar/useFetchGroups"
 import React from "react"
 import { useLocation, useParams } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
@@ -109,11 +109,10 @@ const ChatInfoCurrent: React.FC<{
               groupDetail.group.userA,
               groupDetail.group.userB,
             )}
-            className="h-9 w-9 md:h-10 md:w-10"
           />
           <span
             className={twMerge(
-              "line-clamp-1 max-w-[150px] text-[14px] font-semibold md:max-w-[250px] md:text-[16px]",
+              "line-clamp-1 max-w-[150px] text-[14px] font-bold md:max-w-[250px] md:text-[16px]",
               textColor,
             )}
           >

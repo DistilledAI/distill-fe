@@ -29,13 +29,13 @@ const useFetchAgentConfig = () => {
     }
   }
 
-  const { data } = useQuery({
+  const { data, refetch } = useQuery({
     queryKey: [QueryDataKeys.AGENT_DETAIL_CONFIG],
     queryFn: fetchAgentDetailConfig,
     refetchOnWindowFocus: false,
   })
 
-  return { agentConfigs: data || [] }
+  return { agentConfigs: data || [], refetch }
 }
 
 export default useFetchAgentConfig

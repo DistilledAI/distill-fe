@@ -4,15 +4,18 @@ import useGetChatId from "./useGetChatId"
 import useAuthState from "@hooks/useAuthState"
 import { QueryDataKeys } from "types/queryDataKeys"
 
-const useGroupDetail = () => {
-  const { chatId: groupId, originalChatId } = useGetChatId()
+const useGroupDetail = (groupIdExternal: string = "") => {
+  const { chatId, originalChatId } = useGetChatId()
   const { isLogin } = useAuthState()
   const { data: hasJoinedGroup } = useQuery<boolean>({
     queryKey: [QueryDataKeys.HAS_JOINED_GROUP],
   })
+  const groupId = groupIdExternal || chatId
 
   const { data, isLoading, refetch, isFetched } = useQuery({
-    queryKey: [`${QueryDataKeys.GROUP_DETAIL}-${originalChatId}`],
+    queryKey: [
+      `${QueryDataKeys.GROUP_DETAIL}-${groupIdExternal || originalChatId}`,
+    ],
     queryFn: () =>
       getGroupChatDetail({
         filter: groupId?.includes("@")
