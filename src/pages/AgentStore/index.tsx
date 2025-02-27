@@ -67,7 +67,7 @@ const AgentStore = () => {
   }
 
   return (
-    <div className="mx-auto mt-8 max-w-[1024px] max-lg:px-4 max-md:pb-16">
+    <div className="mx-auto mt-3 max-w-[1024px] max-lg:px-3 max-md:pb-16 md:mt-8">
       <div className="flex items-center justify-between gap-2">
         <InputSearchAgent />
         {/* <button
@@ -109,7 +109,7 @@ const AgentStore = () => {
         {tabId !== "ai-agents" && (
           <>
             <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-[30%] bg-gradient-to-l from-white via-white to-transparent" />
-            <div className="absolute right-0 top-0 z-10">
+            <div className="absolute right-0 top-[-70px] z-10 md:top-0">
               <SortAgents />
             </div>
           </>

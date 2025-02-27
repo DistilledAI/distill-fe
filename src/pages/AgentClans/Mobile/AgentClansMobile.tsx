@@ -1,4 +1,3 @@
-import React from "react"
 import MyAgentClan from "../MyAgentClan"
 import AllClans from "../AllClans"
 

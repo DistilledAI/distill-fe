@@ -22,9 +22,9 @@ import {
   LIST_AGENT_CONFIG_KEYS,
 } from "./helpers"
 import useFetchAgentConfig from "./useFetchAgentConfig"
-import useFetchDetail from "./useFetchDetail"
 import { editAgentClan, uploadImageAgentClan } from "services/group"
 import { transformClanData } from "./AgentContent/ClanUtilities/helper"
+import useFetchAgentDetail from "./useFetchAgentDetail"
 
 export const BLACKLIST_BOT_VERSION = [
   "devorai/distilled-chat:0.0.6.4-cc",
@@ -43,7 +43,7 @@ const AgentDetail: React.FC = () => {
   const [loading, setLoading] = useState(false)
 
   const { agentConfigs, refetch: refetchConfig } = useFetchAgentConfig()
-  const { agentData, refetch } = useFetchDetail()
+  const { agentData, refetch } = useFetchAgentDetail()
   const clanIdOfAgent = agentData?.botConfigs?.find(
     (val: any) => val?.key === "clanOfAgent",
   )?.value

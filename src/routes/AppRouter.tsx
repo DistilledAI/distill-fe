@@ -3,7 +3,7 @@ import LoadingFallback from "@components/LoadingFallback"
 import { PATH_NAMES } from "@constants/index"
 import useWindowSize from "@hooks/useWindowSize"
 import ChatClanBox from "@pages/AgentClans/ChatClanBox"
-import ChatsAgent from "@pages/PrivateChat/Mobile/ChatsAgent"
+import PrivateChatMobile from "@pages/PrivateChat/Mobile/PrivateChatMobile"
 import PrivateChatBox from "@pages/PrivateChat/PrivateChatBox"
 import { Suspense, lazy } from "react"
 import { Route, Routes } from "react-router-dom"
@@ -69,6 +69,11 @@ const AppRouter = () => {
             element={isMobile ? <ChatClanBox /> : <AgentClansPage />}
           />
 
+          <Route
+            path={PATH_NAMES.CLAN_AGENT_EMPTY}
+            element={isMobile ? <ChatClanBox /> : <AgentClansPage />}
+          />
+
           <Route path={`${PATH_NAMES.STAKING}`} element={<StakePage />} />
           <Route
             path={`${PATH_NAMES.LIVE}/:chatId`}
@@ -107,7 +112,7 @@ const AppRouter = () => {
 
           <Route
             path={PATH_NAMES.PRIVATE_AGENT}
-            element={isMobile ? <ChatsAgent /> : <PrivateChatPage />}
+            element={isMobile ? <PrivateChatMobile /> : <PrivateChatPage />}
           />
           <Route
             path={`${PATH_NAMES.PRIVATE_AGENT}/:privateChatId`}
@@ -116,6 +121,11 @@ const AppRouter = () => {
 
           <Route
             path={PATH_NAMES.CHAT_DETAIL}
+            element={isMobile ? <PrivateChatBox /> : <PrivateChatPage />}
+          />
+
+          <Route
+            path={PATH_NAMES.PRIVATE_AGENT_EMPTY}
             element={isMobile ? <PrivateChatBox /> : <PrivateChatPage />}
           />
 

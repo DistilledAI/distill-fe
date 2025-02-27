@@ -64,7 +64,7 @@ const AgentInfoCard = ({ messages, groupId }: AgentInfoCardProps) => {
             badgeClassName={getBadgeColor(RoleUser.BOT)}
             badgeIcon={<FilledBrainAIIcon />}
           />
-          <div className="flex-1 space-y-1">
+          <div className="flex-1">
             <div className="flex justify-between gap-x-2 md:gap-x-4">
               <div>
                 <h4 className="text-16 font-bold text-mercury-950">
@@ -83,7 +83,7 @@ const AgentInfoCard = ({ messages, groupId }: AgentInfoCardProps) => {
                       src={agentOwner?.avatar}
                       className="h-[18px] w-[18px]"
                     />
-                    <span className="line-clamp-1 text-16 font-bold text-brown-10 group-hover/item:text-brown-10/70">
+                    <span className="line-clamp-1 text-14 font-bold text-brown-10 group-hover/item:text-brown-10/70 md:text-16">
                       {agentOwner?.username}
                     </span>
                   </Link>
@@ -103,7 +103,7 @@ const AgentInfoCard = ({ messages, groupId }: AgentInfoCardProps) => {
             </div>
 
             <div className="flex items-center justify-between gap-x-2 md:gap-x-4">
-              <p className="line-clamp-3 text-14 font-medium text-mercury-600">
+              <p className="line-clamp-2 text-14 font-medium text-mercury-600 md:line-clamp-3">
                 {agentInfo?.description || "Distilled AI Agent"}
               </p>
             </div>

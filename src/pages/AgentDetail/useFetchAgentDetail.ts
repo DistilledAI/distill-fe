@@ -5,9 +5,10 @@ import { toast } from "react-toastify"
 import { getAgentDetail } from "services/agent"
 import { QueryDataKeys } from "types/queryDataKeys"
 
-const useFetchDetail = () => {
-  const { agentId } = useParams()
+const useFetchAgentDetail = (agentIdExternal: number = 0) => {
+  const { agentId: agentIdParams } = useParams()
   const navigate = useNavigate()
+  const agentId = agentIdExternal || agentIdParams
 
   const fetchAgentDetail = async () => {
     try {
@@ -21,13 +22,18 @@ const useFetchDetail = () => {
     }
   }
 
-  const { data: agentData, refetch } = useQuery({
-    queryKey: [QueryDataKeys.AGENT_DETAIL],
+  const {
+    data: agentData,
+    refetch,
+    isLoading,
+  } = useQuery({
+    queryKey: [`${QueryDataKeys.AGENT_DETAIL}-${agentId}`],
     queryFn: fetchAgentDetail,
     refetchOnWindowFocus: false,
+    enabled: !!agentId,
   })
 
-  return { agentData, refetch }
+  return { agentData, refetch, isLoading }
 }
 
-export default useFetchDetail
+export default useFetchAgentDetail

@@ -3,10 +3,13 @@ import { AvatarClanByList } from "@components/AvatarContainer"
 // import { IconSearch } from "@components/Icons/DefiLens"
 import { PATH_NAMES } from "@constants/index"
 import useAuthState from "@hooks/useAuthState"
+import { getConfigClanValue } from "@pages/AgentStore/AgentClansStore"
 import useFetchClan from "@pages/Marketplace/useFetchClan"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
+import { twMerge } from "tailwind-merge"
 
 const AllClans = () => {
+  const { chatId } = useParams()
   const { user, isLogin } = useAuthState()
   const navigate = useNavigate()
   const { data } = useFetchClan({
@@ -23,27 +26,34 @@ const AllClans = () => {
           <IconSearch color="#676767" />
         </div> */}
       </div>
-      <div>
-        {data.map((item) => (
-          <div
-            key={item.id}
-            className="flex cursor-pointer items-center gap-2 rounded-full px-3 py-2 hover:bg-mercury-100"
-            onClick={() => navigate(`${PATH_NAMES.CLAN}/${item.label}`)}
-          >
-            <AvatarClanByList
-              key={item.id}
-              avatarUrl={item.image || maxAvatarPlaceholder}
-              isNameDisplay={false}
-              name=""
-              className="h-8 w-8"
-              member={item.groupMemberStats?.total}
-            />
+      <div className="space-y-2">
+        {data.map((item) => {
+          const imageUrl = getConfigClanValue(item, "imageLive")
 
-            <span className="line-clamp-1 text-16 font-bold text-mercury-950">
-              {item.name}
-            </span>
-          </div>
-        ))}
+          return (
+            <div
+              key={item.id}
+              className={twMerge(
+                "flex cursor-pointer items-center gap-4 rounded-full px-3 py-2 hover:bg-mercury-100",
+                chatId === item.label && "md:bg-mercury-100",
+              )}
+              onClick={() => navigate(`${PATH_NAMES.CLAN}/${item.label}`)}
+            >
+              <AvatarClanByList
+                key={item.id}
+                avatarUrl={imageUrl || maxAvatarPlaceholder}
+                isNameDisplay={false}
+                name=""
+                className="h-8 w-8"
+                member={item.groupMemberStats?.total}
+              />
+
+              <span className="line-clamp-1 text-16 font-bold text-mercury-950">
+                {item.name}
+              </span>
+            </div>
+          )
+        })}
       </div>
     </div>
   )

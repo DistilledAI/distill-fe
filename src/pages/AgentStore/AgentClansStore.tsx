@@ -20,6 +20,15 @@ const agentType = {
   [AGENT_TYPE_KEY.DEFAI]: <FilledBrainAIIcon size={14} />,
 }
 
+export const getConfigClanValue = (
+  item: IGroupDetail,
+  key: string,
+  defaultValue: string = maxAvatarPlaceholder2,
+) => {
+  const config = item?.groupConfig?.find((val) => val.key === key)
+  return config?.value || defaultValue
+}
+
 const AgentClansStore = () => {
   const navigate = useNavigate()
   const location = useLocation()
@@ -92,17 +101,8 @@ const AgentClansStore = () => {
     </div>
   )
 
-  const getConfigValue = (
-    item: IGroupDetail,
-    key: string,
-    defaultValue: string = maxAvatarPlaceholder2,
-  ) => {
-    const config = item?.groupConfig?.find((val) => val.key === key)
-    return config?.value || defaultValue
-  }
-
   return (
-    <div className="space-y-10">
+    <div className="space-y-5 md:space-y-10">
       <div className="space-y-2">
         {title({
           icon: <UsersGroupOutlineIcon />,
@@ -135,8 +135,8 @@ const AgentClansStore = () => {
                 <div key={index}>{renderSkeleton()}</div>
               ))
             : data.map((item: IGroupDetail) => {
-                const imageUrl = getConfigValue(item, "imageLive")
-                const description = getConfigValue(item, "description", "-")
+                const imageUrl = getConfigClanValue(item, "imageLive")
+                const description = getConfigClanValue(item, "description", "-")
 
                 return (
                   <div key={item.id} className="w-full">

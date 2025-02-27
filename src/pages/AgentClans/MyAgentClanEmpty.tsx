@@ -9,7 +9,11 @@ import useConnectWallet from "@hooks/useConnectWallet"
 import { Button } from "@nextui-org/react"
 import { useNavigate } from "react-router-dom"
 
-const MyAgentClanEmpty = () => {
+interface Props {
+  imageUrl?: string
+}
+
+const MyAgentClanEmpty = ({ imageUrl }: Props) => {
   const navigate = useNavigate()
   const agent = useAppSelector((state) => state.agents.myAgent)
   const { user } = useAuthState()
@@ -42,8 +46,8 @@ const MyAgentClanEmpty = () => {
       {renderContent()}
 
       <img
-        src={agent?.avatar || maxAvatarPlaceholder2}
-        className="my-4 h-[419px] w-auto rounded-3xl object-cover px-3 md:mt-10"
+        src={imageUrl || maxAvatarPlaceholder2}
+        className="my-4 h-[300px] w-auto rounded-3xl object-cover px-3 md:mt-10 md:h-[419px]"
         alt="avatar placeholder"
       />
 
@@ -73,7 +77,11 @@ const MyAgentClanEmpty = () => {
             <Button
               className="h-14 rounded-full bg-brown-50 text-[16px] font-bold text-brown-600"
               isLoading={loading}
-              onPress={() => navigate(`${PATH_NAMES.AGENT_DETAIL}/${agent.id}`)}
+              onPress={() =>
+                navigate(
+                  `${PATH_NAMES.AGENT_DETAIL}/${agent.id}?tab=clan_utilities`,
+                )
+              }
             >
               <EditPenOutlineIcon color="#83664B" size={20} />
               Edit Agent
