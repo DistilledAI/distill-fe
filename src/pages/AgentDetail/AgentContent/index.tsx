@@ -26,8 +26,7 @@ const AgentContent: React.FC<{
   agentData: IAgentData
   agentConfigs: AgentConfig[]
   refetch: any
-  clanIdOfAgent: string
-}> = ({ clanIdOfAgent, agentData, agentConfigs, refetch }) => {
+}> = ({ agentData, agentConfigs, refetch }) => {
   const [searchParams] = useSearchParams()
   const tabKey = searchParams.get("tab") as any
   const botVersionData = agentData?.botVersion || ""
@@ -38,9 +37,7 @@ const AgentContent: React.FC<{
       <AgentType isDisabledTypeAgent isDisabledLLMModel={isDisabledLLMModel} />
     ),
     [TabKeyAgent.Basic]: <AgentBasicInfo />,
-    [TabKeyAgent.ClanUtilities]: (
-      <ClanUtilities clanIdOfAgent={clanIdOfAgent} />
-    ),
+    [TabKeyAgent.ClanUtilities]: <ClanUtilities />,
     [TabKeyAgent.AutonomousX]: (
       <AutonomousX agentConfigs={agentConfigs} refetch={refetch} />
     ),

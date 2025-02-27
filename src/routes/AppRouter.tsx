@@ -1,80 +1,78 @@
-import MainLayoutMobile from "@components/Layout/MainLayoutMobile"
-import LoadingFallback from "@components/LoadingFallback"
-import { PATH_NAMES } from "@constants/index"
-import useWindowSize from "@hooks/useWindowSize"
-import ChatClanBox from "@pages/AgentClans/ChatClanBox"
-import PrivateChatMobile from "@pages/PrivateChat/Mobile/PrivateChatMobile"
-import PrivateChatBox from "@pages/PrivateChat/PrivateChatBox"
 import { Suspense, lazy } from "react"
 import { Route, Routes } from "react-router-dom"
+import LoadingFallback from "@components/LoadingFallback"
+import ProtectedByAuth from "@components/Layout/ProtectedByAuth"
+import useWindowSize from "@hooks/useWindowSize"
+import { PATH_NAMES } from "@constants/index"
 
+// Lazy-loaded components
+const PageNotFound = lazy(() => import("@pages/NotFound"))
+const MainLayoutMobile = lazy(
+  () => import("@components/Layout/MainLayoutMobile"),
+)
 const MainLayoutDesktop = lazy(
   () => import("@components/Layout/MainLayoutDesktop"),
 )
-const ProtectedByAuth = lazy(() => import("@components/Layout/ProtectedByAuth"))
-const PageNotFound = lazy(() => import("@pages/NotFound"))
-
-const ChatDetailLoadingPage = lazy(() => import("@components/LoadingMobile"))
-const Account = lazy(() => import("@pages/Account"))
-const AddMyData = lazy(() => import("@pages/AddMyData"))
-const AgentDetail = lazy(() => import("@pages/AgentDetail"))
-const AuthorProfile = lazy(() => import("@pages/AuthorProfile"))
-const ChatBoxLive = lazy(() => import("@pages/ChatBoxLive"))
 const HomePage = lazy(() => import("@pages/Home"))
-// const ChatMyAgent = lazy(() => import("@pages/ChatMyAgent"))
 const ChatBox = lazy(() => import("@pages/ChatPage/ChatContainer"))
-const CreateAgent = lazy(() => import("@pages/CreateAgent"))
-// const ChatPageMobile = lazy(() => import("@pages/ChatPage/Mobile"))
-// const MyPrivateAgentContentMobile = lazy(
-//   () => import("@pages/ChatPage/Mobile/MyPrivateAgentContentMobile"),
-// )
-// const Marketplace = lazy(() => import("@pages/Marketplace"))
-const MyAgentPage = lazy(() => import("@pages/MyAgents"))
-const MyData = lazy(() => import("@pages/MyData"))
-const Orchestration = lazy(() => import("@pages/Orchestration"))
-const RewardsPage = lazy(() => import("@pages/Rewards"))
-const StakePage = lazy(() => import("@pages/Stake"))
-const CreateProposal = lazy(() => import("@pages/Dao/CreateProposal"))
-const DaoPage = lazy(() => import("@pages/Dao"))
-const ProposalsDetailPage = lazy(() => import("@pages/Dao/ProposalsDetail"))
+const ChatBoxLive = lazy(() => import("@pages/ChatBoxLive"))
+const ChatClanBox = lazy(() => import("@pages/AgentClans/ChatClanBox"))
 const AgentClansPage = lazy(() => import("@pages/AgentClans"))
-const PrivateChatPage = lazy(() => import("@pages/PrivateChat"))
-const AgentStorePage = lazy(() => import("@pages/AgentStore"))
 const AgentClansMobilePage = lazy(
   () => import("@pages/AgentClans/Mobile/AgentClansMobile"),
 )
-// const TrendingPage = lazy(() => import("@pages/Trending"))
+const AgentStorePage = lazy(() => import("@pages/AgentStore"))
+const PrivateChatPage = lazy(() => import("@pages/PrivateChat"))
+const PrivateChatMobile = lazy(
+  () => import("@pages/PrivateChat/Mobile/PrivateChatMobile"),
+)
+const PrivateChatBox = lazy(() => import("@pages/PrivateChat/PrivateChatBox"))
+const ChatDetailLoadingPage = lazy(() => import("@components/LoadingMobile"))
+const AuthorProfile = lazy(() => import("@pages/AuthorProfile"))
+const Orchestration = lazy(() => import("@pages/Orchestration"))
+const StakePage = lazy(() => import("@pages/Stake"))
+const DaoPage = lazy(() => import("@pages/Dao"))
+const CreateProposal = lazy(() => import("@pages/Dao/CreateProposal"))
+const ProposalsDetailPage = lazy(() => import("@pages/Dao/ProposalsDetail"))
+const Account = lazy(() => import("@pages/Account"))
+const AddMyData = lazy(() => import("@pages/AddMyData"))
+const AgentDetail = lazy(() => import("@pages/AgentDetail"))
+const CreateAgent = lazy(() => import("@pages/CreateAgent"))
+const MyAgentPage = lazy(() => import("@pages/MyAgents"))
+const MyData = lazy(() => import("@pages/MyData"))
+const RewardsPage = lazy(() => import("@pages/Rewards"))
 
 const AppRouter = () => {
   const { isMobile } = useWindowSize()
+  const Layout = isMobile ? MainLayoutMobile : MainLayoutDesktop
 
   return (
     <Suspense fallback={<LoadingFallback />}>
       <Routes>
-        <Route
-          path={PATH_NAMES.HOME}
-          element={isMobile ? <MainLayoutMobile /> : <MainLayoutDesktop />}
-        >
-          <Route path={PATH_NAMES.HOME} element={<HomePage />} />
-          {/* <Route
-            path={PATH_NAMES.CHAT_DETAIL}
-            element={isMobile ? <ChatPageMobile /> : <ChatBox />}
-          /> */}
-          <Route
-            path={`${PATH_NAMES.CLAN}`}
-            element={isMobile ? <AgentClansMobilePage /> : <AgentClansPage />}
-          />
-          <Route
-            path={`${PATH_NAMES.CLAN}/:chatId`}
-            element={isMobile ? <ChatClanBox /> : <AgentClansPage />}
-          />
-
+        {/* Root Layout Route */}
+        <Route path={PATH_NAMES.HOME} element={<Layout />}>
+          {/* Public Routes */}
+          <Route index element={<HomePage />} /> {/* Home Page */}
+          {/* Clan Routes */}
+          <Route path={PATH_NAMES.CLAN}>
+            <Route
+              index
+              element={isMobile ? <AgentClansMobilePage /> : <AgentClansPage />}
+            />
+            <Route
+              path=":chatId"
+              element={isMobile ? <ChatClanBox /> : <AgentClansPage />}
+            />
+          </Route>
           <Route
             path={PATH_NAMES.CLAN_AGENT_EMPTY}
             element={isMobile ? <ChatClanBox /> : <AgentClansPage />}
           />
-
-          <Route path={`${PATH_NAMES.STAKING}`} element={<StakePage />} />
+          {/* Chat Routes */}
+          <Route
+            path={PATH_NAMES.CHAT_DETAIL}
+            element={isMobile ? <PrivateChatBox /> : <ChatBox />}
+          />
           <Route
             path={`${PATH_NAMES.LIVE}/:chatId`}
             element={<ChatBoxLive />}
@@ -83,10 +81,22 @@ const AppRouter = () => {
             path={`${PATH_NAMES.INVITE}/:inviteAgentId`}
             element={isMobile ? <ChatDetailLoadingPage /> : <ChatBox />}
           />
-          {/* <Route
-            path={`${PATH_NAMES.PRIVATE_AGENT}/:privateChatId`}
-            element={isMobile ? <ChatPageMobile /> : <ChatMyAgent />}
-          /> */}
+          {/* Private Chat Routes */}
+          <Route path={PATH_NAMES.PRIVATE_AGENT}>
+            <Route
+              index
+              element={isMobile ? <PrivateChatMobile /> : <PrivateChatPage />}
+            />
+            <Route
+              path=":privateChatId"
+              element={isMobile ? <PrivateChatBox /> : <PrivateChatPage />}
+            />
+          </Route>
+          <Route
+            path={PATH_NAMES.PRIVATE_AGENT_EMPTY}
+            element={isMobile ? <PrivateChatBox /> : <PrivateChatPage />}
+          />
+          {/* General Feature Routes */}
           <Route path={PATH_NAMES.MARKETPLACE} element={<AgentStorePage />} />
           <Route path={PATH_NAMES.ADD_MY_DATA} element={<AddMyData />} />
           <Route
@@ -97,45 +107,18 @@ const AppRouter = () => {
             path={`${PATH_NAMES.ORCHESTRATION}/:chatId`}
             element={<Orchestration />}
           />
-          <Route
-            path={`${PATH_NAMES.DAO}/:agentAddress/proposals`}
-            element={<DaoPage />}
-          />
-          <Route
-            path={`${PATH_NAMES.DAO}/:agentAddress/proposals/create`}
-            element={<CreateProposal />}
-          />
-          <Route
-            path={`${PATH_NAMES.DAO}/:agentAddress/proposals/:proposalId`}
-            element={<ProposalsDetailPage />}
-          />
-
-          <Route
-            path={PATH_NAMES.PRIVATE_AGENT}
-            element={isMobile ? <PrivateChatMobile /> : <PrivateChatPage />}
-          />
-          <Route
-            path={`${PATH_NAMES.PRIVATE_AGENT}/:privateChatId`}
-            element={isMobile ? <PrivateChatBox /> : <PrivateChatPage />}
-          />
-
-          <Route
-            path={PATH_NAMES.CHAT_DETAIL}
-            element={isMobile ? <PrivateChatBox /> : <PrivateChatPage />}
-          />
-
-          <Route
-            path={PATH_NAMES.PRIVATE_AGENT_EMPTY}
-            element={isMobile ? <PrivateChatBox /> : <PrivateChatPage />}
-          />
-
-          {/* {isMobile && (
-            <Route path={PATH_NAMES.PRIVATE_AGENT} element={<AgentChats />} />
-          )} */}
-          {/* <Route path={PATH_NAMES.TRENDING} element={<TrendingPage />} /> */}
-
-          {/* Route Protected By Auth */}
-          <Route path={PATH_NAMES.HOME} element={<ProtectedByAuth />}>
+          <Route path={PATH_NAMES.STAKING} element={<StakePage />} />
+          {/* DAO Routes */}
+          <Route path={`${PATH_NAMES.DAO}/:agentAddress`}>
+            <Route path="proposals" element={<DaoPage />} />
+            <Route path="proposals/create" element={<CreateProposal />} />
+            <Route
+              path="proposals/:proposalId"
+              element={<ProposalsDetailPage />}
+            />
+          </Route>
+          {/* Protected Routes (Requires Authentication) */}
+          <Route element={<ProtectedByAuth />}>
             <Route path={PATH_NAMES.MY_DATA} element={<MyData />} />
             <Route path={PATH_NAMES.ACCOUNT} element={<Account />} />
             <Route
@@ -151,6 +134,8 @@ const AppRouter = () => {
             <Route path={PATH_NAMES.REWARDS} element={<RewardsPage />} />
           </Route>
         </Route>
+
+        {/* Fallback Route for 404 */}
         <Route path="*" element={<PageNotFound />} />
       </Routes>
     </Suspense>

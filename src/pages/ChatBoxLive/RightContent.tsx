@@ -1,10 +1,7 @@
 import { useAppSelector } from "@hooks/useAppRedux"
 import useWindowSize from "@hooks/useWindowSize"
 import { IMessageBox } from "@pages/ChatPage/ChatContainer/ChatMessages/helpers"
-import {
-  GroupConfig,
-  UserGroup,
-} from "@pages/ChatPage/ChatContainer/LeftBar/useFetchGroups"
+import { UserGroup } from "@pages/ChatPage/ChatContainer/LeftBar/useFetchGroups"
 import useGetChatId from "@pages/ChatPage/hooks/useGetChatId"
 import { useQuery } from "@tanstack/react-query"
 import React, { lazy, useState } from "react"
@@ -12,6 +9,7 @@ import { twMerge } from "tailwind-merge"
 import { QueryDataKeys } from "types/queryDataKeys"
 import ListMessage from "./ListMessage"
 import SendMessage from "./SendMessage"
+import { useGroupConfig } from "./useGroupConfig"
 
 const ClanShortInfo = lazy(() => import("@pages/Rank/ClanShortInfo"))
 const ToggleActionsMobile = lazy(() => import("./ToggleActionsMobile"))
@@ -29,9 +27,7 @@ const RightContent: React.FC<{
   const [replyId, setReplyId] = useState<number>(NaN)
   const [replyTxt, setReplyTxt] = useState<string>("")
   const [hasFocus, setHasFocus] = useState(false)
-  const groupConfig: GroupConfig | null = groupDetail?.group?.config
-    ? JSON.parse(groupDetail.group.config)
-    : null
+  const groupConfig = useGroupConfig(groupDetail?.group)
 
   const resetReply = () => {
     setReplyId(NaN)
