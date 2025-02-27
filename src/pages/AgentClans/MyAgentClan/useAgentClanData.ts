@@ -16,7 +16,7 @@ interface UseAgentClanDataReturn {
   nameAgentClan: string
   isSelected: boolean
   isLoading: boolean
-  group: IGroupDetail
+  group: IGroupDetail | undefined
 }
 
 const useAgentClanData = (): UseAgentClanDataReturn => {
@@ -32,8 +32,11 @@ const useAgentClanData = (): UseAgentClanDataReturn => {
       )?.value,
     [agentData?.botConfigs],
   )
-  const { groupDetail, isLoading: groupLoading } = useGroupDetail(clanIdOfAgent)
-  const group = groupDetail?.group
+
+  const { groupDetail, isLoading: groupLoading } = useGroupDetail(
+    clanIdOfAgent || null,
+  )
+  const group = clanIdOfAgent ? groupDetail?.group : undefined
 
   const [initialDataLoaded, setInitialDataLoaded] = useState(false)
 
@@ -44,11 +47,11 @@ const useAgentClanData = (): UseAgentClanDataReturn => {
   }, [agentLoading, groupLoading, initialDataLoaded])
 
   const imageUrl = useMemo(
-    () => getConfigClanValue(group, "imageLive"),
+    () => (group ? getConfigClanValue(group, "imageLive") : undefined),
     [group],
   )
   const nameAgentClan = useMemo(
-    () => group?.label?.split(" ")?.join("") || "",
+    () => (group?.label ? group.label.split(" ").join("") : ""),
     [group?.label],
   )
   const isSelected = useMemo(
@@ -60,7 +63,13 @@ const useAgentClanData = (): UseAgentClanDataReturn => {
     [initialDataLoaded, agentLoading, groupLoading],
   )
 
-  return { imageUrl, nameAgentClan, isSelected, isLoading, group }
+  return {
+    imageUrl,
+    nameAgentClan,
+    isSelected,
+    isLoading,
+    group,
+  }
 }
 
 export default useAgentClanData

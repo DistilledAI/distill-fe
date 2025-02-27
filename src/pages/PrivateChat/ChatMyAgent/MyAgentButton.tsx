@@ -23,7 +23,7 @@ const MyPrivateAgent = () => {
       onClick={() =>
         myAgentId
           ? navigate(`${PATH_NAMES.PRIVATE_AGENT}/${myAgentId}`)
-          : navigate(PATH_NAMES.PRIVATE_AGENT_EMPTY)
+          : navigate(`${PATH_NAMES.PRIVATE_AGENT}/empty`)
       }
     >
       <div className="relative flex-shrink-0">

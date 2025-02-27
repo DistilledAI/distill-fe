@@ -1,5 +1,5 @@
-import MyAgentClan from "../MyAgentClan"
-import AllClans from "../AllClans"
+import MyAgentClan from "../MyAgentClan/MyAgentClanButton"
+import AllClans from "../OtherAgentClans/AllClans"
 
 const AgentClansMobile = () => {
   return (

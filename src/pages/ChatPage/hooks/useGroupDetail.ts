@@ -22,7 +22,7 @@ const useGroupDetail = (groupIdExternal: string = "") => {
           ? `{"label":"${groupId}"}`
           : `{"groupId":${groupId}}`,
       }),
-    enabled: !!groupId && isLogin && hasJoinedGroup,
+    enabled: (!!groupId && isLogin && hasJoinedGroup) || !!groupIdExternal,
   })
 
   return { groupDetail: data?.data, isLoading, refetch, isFetched, groupId }

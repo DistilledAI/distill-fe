@@ -15,7 +15,6 @@ const MainLayoutDesktop = lazy(
 )
 const HomePage = lazy(() => import("@pages/Home"))
 const ChatBoxLive = lazy(() => import("@pages/ChatBoxLive"))
-const ChatClanBox = lazy(() => import("@pages/AgentClans/ChatClanBox"))
 const AgentClansPage = lazy(() => import("@pages/AgentClans"))
 const AgentClansMobilePage = lazy(
   () => import("@pages/AgentClans/Mobile/AgentClansMobile"),
@@ -26,7 +25,6 @@ const PrivateChatMobile = lazy(
   () => import("@pages/PrivateChat/Mobile/PrivateChatMobile"),
 )
 const PrivateChatBox = lazy(() => import("@pages/PrivateChat/PrivateChatBox"))
-const ChatDetailLoadingPage = lazy(() => import("@components/LoadingMobile"))
 const AuthorProfile = lazy(() => import("@pages/AuthorProfile"))
 const Orchestration = lazy(() => import("@pages/Orchestration"))
 const StakePage = lazy(() => import("@pages/Stake"))
@@ -40,6 +38,9 @@ const CreateAgent = lazy(() => import("@pages/CreateAgent"))
 const MyAgentPage = lazy(() => import("@pages/MyAgents"))
 const MyData = lazy(() => import("@pages/MyData"))
 const RewardsPage = lazy(() => import("@pages/Rewards"))
+const ChatAgentClanBox = lazy(
+  () => import("@pages/AgentClans/ChatAgentClanBox"),
+)
 
 const AppRouter = () => {
   const { isMobile } = useWindowSize()
@@ -52,6 +53,21 @@ const AppRouter = () => {
         <Route path={PATH_NAMES.HOME} element={<Layout />}>
           {/* Public Routes */}
           <Route index element={<HomePage />} /> {/* Home Page */}
+          {/*My Clan Routes */}
+          <Route path={PATH_NAMES.MY_AGENT_CLAN}>
+            <Route
+              index
+              element={isMobile ? <AgentClansMobilePage /> : <AgentClansPage />}
+            />
+            <Route
+              path=":chatId"
+              element={isMobile ? <ChatAgentClanBox /> : <AgentClansPage />}
+            />
+            <Route
+              path="empty"
+              element={isMobile ? <ChatAgentClanBox /> : <AgentClansPage />}
+            />
+          </Route>
           {/* Clan Routes */}
           <Route path={PATH_NAMES.CLAN}>
             <Route
@@ -60,13 +76,9 @@ const AppRouter = () => {
             />
             <Route
               path=":chatId"
-              element={isMobile ? <ChatClanBox /> : <AgentClansPage />}
+              element={isMobile ? <ChatAgentClanBox /> : <AgentClansPage />}
             />
           </Route>
-          <Route
-            path={PATH_NAMES.CLAN_AGENT_EMPTY}
-            element={isMobile ? <ChatClanBox /> : <AgentClansPage />}
-          />
           {/* Chat Routes */}
           <Route
             path={PATH_NAMES.CHAT_DETAIL}
@@ -78,7 +90,7 @@ const AppRouter = () => {
           />
           <Route
             path={`${PATH_NAMES.INVITE}/:inviteAgentId`}
-            element={isMobile ? <ChatDetailLoadingPage /> : <PrivateChatBox />}
+            element={isMobile ? <PrivateChatBox /> : <PrivateChatPage />}
           />
           {/* Private Chat Routes */}
           <Route path={PATH_NAMES.PRIVATE_AGENT}>
@@ -90,11 +102,11 @@ const AppRouter = () => {
               path=":privateChatId"
               element={isMobile ? <PrivateChatBox /> : <PrivateChatPage />}
             />
+            <Route
+              path="empty"
+              element={isMobile ? <PrivateChatBox /> : <PrivateChatPage />}
+            />
           </Route>
-          <Route
-            path={PATH_NAMES.PRIVATE_AGENT_EMPTY}
-            element={isMobile ? <PrivateChatBox /> : <PrivateChatPage />}
-          />
           {/* General Feature Routes */}
           <Route path={PATH_NAMES.MARKETPLACE} element={<AgentStorePage />} />
           <Route path={PATH_NAMES.ADD_MY_DATA} element={<AddMyData />} />

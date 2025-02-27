@@ -17,6 +17,8 @@ const MainLayoutMobile = () => {
       `${PATH_NAMES.CHAT}/${chatId}`,
       `${PATH_NAMES.PRIVATE_AGENT}/${privateChatId}`,
       `${PATH_NAMES.CLAN}/${originalChatId}`,
+      `${PATH_NAMES.MY_AGENT_CLAN}/${originalChatId}`,
+      `${PATH_NAMES.MY_AGENT_CLAN}/empty`,
     ],
     [chatId, privateChatId, originalChatId],
   )

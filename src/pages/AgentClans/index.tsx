@@ -1,6 +1,6 @@
-import AllClans from "./AllClans"
-import MyAgentClan from "./MyAgentClan"
-import ChatClanBox from "./ChatClanBox"
+import MyAgentClanButton from "./MyAgentClan/MyAgentClanButton"
+import ChatAgentClanBox from "./ChatAgentClanBox"
+import AllClans from "./OtherAgentClans/AllClans"
 
 const AgentClans = () => {
   return (
@@ -12,13 +12,13 @@ const AgentClans = () => {
             <h3 className="text-14 font-medium text-mercury-800">
               My Agent Clan
             </h3>
-            <MyAgentClan />
+            <MyAgentClanButton />
             <AllClans />
           </div>
         </div>
       </aside>
       <main className="flex-1">
-        <ChatClanBox />
+        <ChatAgentClanBox />
       </main>
     </div>
   )

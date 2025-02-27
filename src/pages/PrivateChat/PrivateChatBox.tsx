@@ -19,11 +19,11 @@ const PrivateChatBox = () => {
 
   useEffect(() => {
     if (!myAgent?.id && !isChatAgentOther) {
-      if (isMobile) {
-        navigate(PATH_NAMES.PRIVATE_AGENT_EMPTY)
-      } else {
-        navigate(PATH_NAMES.PRIVATE_AGENT)
-      }
+      navigate(
+        isMobile
+          ? `${PATH_NAMES.PRIVATE_AGENT}/empty`
+          : PATH_NAMES.PRIVATE_AGENT,
+      )
     } else if (isChatMyAgent) {
       navigate(`${PATH_NAMES.PRIVATE_AGENT}/${myAgent?.id}`)
     }

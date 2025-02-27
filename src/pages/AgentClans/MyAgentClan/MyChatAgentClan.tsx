@@ -6,16 +6,20 @@ import useWindowSize from "@hooks/useWindowSize"
 import useAgentClanData from "./useAgentClanData"
 import { useEffect } from "react"
 
-const ChatClanBox = () => {
+const MyChatAgentClan = () => {
   const navigate = useNavigate()
   const { isMobile } = useWindowSize()
   const { nameAgentClan, isLoading, imageUrl, group } = useAgentClanData()
 
   useEffect(() => {
     if (!isLoading && !nameAgentClan) {
-      navigate(isMobile ? PATH_NAMES.CLAN_AGENT_EMPTY : PATH_NAMES.CLAN)
+      navigate(
+        isMobile
+          ? `${PATH_NAMES.MY_AGENT_CLAN}/empty`
+          : PATH_NAMES.MY_AGENT_CLAN,
+      )
     } else if (!isLoading && nameAgentClan) {
-      navigate(`${PATH_NAMES.CLAN}/${nameAgentClan}`)
+      navigate(`${PATH_NAMES.MY_AGENT_CLAN}/${nameAgentClan}`)
     }
   }, [nameAgentClan, isMobile, isLoading])
 
@@ -30,4 +34,4 @@ const ChatClanBox = () => {
   )
 }
 
-export default ChatClanBox
+export default MyChatAgentClan

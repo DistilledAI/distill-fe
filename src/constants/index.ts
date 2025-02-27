@@ -21,8 +21,8 @@ export const PATH_NAMES = {
   ORCHESTRATION: "/orchestration",
   STAKING: "/staking",
   DAO: "/dao",
-  PRIVATE_AGENT_EMPTY: "/private-agent-empty",
-  CLAN_AGENT_EMPTY: "/clan-agent-empty",
+  CLAN_AGENT_EMPTY: "/agent-clan-empty",
+  MY_AGENT_CLAN: "/my-agent-clan",
 }
 
 export const MIX_PANEL_TRACK_EVENT = {

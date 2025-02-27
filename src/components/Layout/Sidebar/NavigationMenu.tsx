@@ -8,13 +8,13 @@ import {
   MessageAIOutlineIcon,
   CoinsOutlineIcon,
 } from "@components/Icons/Sidebar"
+import { FilledSquareCircleIcon } from "@components/Icons/FilledSquareCircleIcon"
 import {
   gnrtAvatar,
   maxAvatar,
   maxAvatarPlaceholder,
   racksAvatar,
 } from "@assets/images"
-import { FilledSquareCircleIcon } from "@components/Icons/FilledSquareCircleIcon"
 
 interface MenuItem {
   id: string
@@ -34,16 +34,16 @@ const NavigationMenu = ({ isMobile = false }: { isMobile?: boolean }) => {
   const BASE_MENU: MenuItem[] = [
     {
       id: "home",
-      icon: (color?: string) => <HomeOutlineIcon color={color} />,
+      icon: (color) => <HomeOutlineIcon color={color} />,
       name: "Home",
       rightContent: null,
       pathname: "/",
     },
     {
       id: "my-agent",
-      icon: (color?: string) => <BrainOutlineIcon color={color} />,
+      icon: (color) => <BrainOutlineIcon color={color} />,
       name: "My Agent",
-      rightContent: (avatarAgent?: string) => (
+      rightContent: (avatarAgent) => (
         <img
           src={avatarAgent || maxAvatarPlaceholder}
           alt="avatar placeholder"
@@ -54,7 +54,7 @@ const NavigationMenu = ({ isMobile = false }: { isMobile?: boolean }) => {
     },
     {
       id: "agent-clan",
-      icon: (color?: string) => <ClanOutlineIcon color={color} />,
+      icon: (color) => <ClanOutlineIcon color={color} />,
       name: "Clans",
       rightContent: () => (
         <div className="flex items-center">
@@ -87,27 +87,25 @@ const NavigationMenu = ({ isMobile = false }: { isMobile?: boolean }) => {
           </div>
         </div>
       ),
-      pathname: "/clan",
+      pathname: "/my-agent-clan",
     },
     {
       id: "private-agent",
-      icon: (color?: string) => <MessageAIOutlineIcon color={color} />,
+      icon: (color) => <MessageAIOutlineIcon color={color} />,
       name: !isMobile ? "Private Chat" : "Chats",
       rightContent: null,
       pathname: "/private-agent",
     },
     {
       id: "vaults",
-      icon: (color?: string) => <CoinsOutlineIcon color={color} />,
+      icon: (color) => <CoinsOutlineIcon color={color} />,
       name: "My Staked Vaults",
       rightContent: null,
       pathname: "/account?tab=my-vault-holdings",
     },
     {
       id: "marketplace",
-      icon: (color?: string) => (
-        <FilledSquareCircleIcon size={18} color={color} />
-      ),
+      icon: (color) => <FilledSquareCircleIcon size={18} color={color} />,
       name: "Store",
       rightContent: null,
       pathname: "/marketplace?tab=agent-clans",
@@ -115,40 +113,46 @@ const NavigationMenu = ({ isMobile = false }: { isMobile?: boolean }) => {
     },
   ]
 
-  const getMenuOrder = (isMobile: boolean): MenuItem[] => {
-    if (isMobile) {
-      return [
-        BASE_MENU[0], // Home
-        BASE_MENU[3], // Chats
-        BASE_MENU[5], // Store
-        BASE_MENU[2], // Clans
-        BASE_MENU[1], // My Agent
-      ]
-    }
-    return BASE_MENU
-  }
+  // Determine menu order based on device type
+  const getMenuOrder = (isMobile: boolean): MenuItem[] =>
+    isMobile
+      ? [BASE_MENU[0], BASE_MENU[3], BASE_MENU[5], BASE_MENU[2], BASE_MENU[1]]
+      : BASE_MENU
 
   const menu = getMenuOrder(isMobile)
 
+  // Check if a menu item is active based on current path and query
   const isActive = (item: MenuItem): boolean => {
     const [itemBasePath, itemQuery] = item.pathname.split("?")
     const expectedSearch = itemQuery ? `?${itemQuery}` : ""
     const normalizedCurrentPath = currentPath.replace(/\/$/, "")
     const normalizedItemBasePath = itemBasePath.replace(/\/$/, "")
 
-    if (item.id === "agent-clan" || item.id === "private-agent") {
-      return currentPath.includes(item.pathname)
+    // Special handling for specific menu items
+    switch (item.id) {
+      case "agent-clan":
+        return (
+          normalizedCurrentPath.includes("/clan") ||
+          normalizedCurrentPath.includes("/my-agent-clan")
+        )
+      case "private-agent":
+        // Match both /private-agent and /chat/:id paths
+        return (
+          normalizedCurrentPath.includes("/private-agent") ||
+          normalizedCurrentPath.startsWith("/chat")
+        )
+      case "marketplace":
+        return normalizedCurrentPath === "/marketplace"
+      default:
+        // Default case: exact match of path and query
+        return (
+          normalizedCurrentPath === normalizedItemBasePath &&
+          currentSearch === expectedSearch
+        )
     }
-
-    if (item.id === "marketplace") {
-      return normalizedCurrentPath === "/marketplace"
-    }
-    return (
-      normalizedCurrentPath === normalizedItemBasePath &&
-      currentSearch === expectedSearch
-    )
   }
 
+  // Render a single menu item
   const renderItem = (item: MenuItem, index: number) => {
     const active = isActive(item)
     const iconColor = active ? "#83664B" : isMobile ? "#999999" : "#545454"
@@ -166,7 +170,7 @@ const NavigationMenu = ({ isMobile = false }: { isMobile?: boolean }) => {
           type="button"
           onClick={() => navigate(item.pathname)}
           className={twMerge(
-            "flex h-full w-full flex-col items-center justify-center text-gray-600 hover:text-gray-800",
+            "flex h-full w-full flex-col items-center justify-center",
             active && "text-brown-500",
           )}
         >
@@ -219,13 +223,11 @@ const NavigationMenu = ({ isMobile = false }: { isMobile?: boolean }) => {
       {isMobile ? (
         <div className="fixed bottom-0 left-0 z-50 w-full bg-white">
           <div className="flex h-[52px] items-center justify-around">
-            {menu.map((item, index) => renderItem(item, index))}
+            {menu.map(renderItem)}
           </div>
         </div>
       ) : (
-        <nav className="space-y-2">
-          {menu.map((item, index) => renderItem(item, index))}
-        </nav>
+        <nav className="space-y-2">{menu.map(renderItem)}</nav>
       )}
     </>
   )

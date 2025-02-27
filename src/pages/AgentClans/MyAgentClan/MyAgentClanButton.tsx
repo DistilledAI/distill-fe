@@ -7,19 +7,19 @@ import { useNavigate } from "react-router-dom"
 import useAgentClanData from "./useAgentClanData"
 import useWindowSize from "@hooks/useWindowSize"
 
-const MyAgentClan = () => {
+const MyAgentClanButton = () => {
   const navigate = useNavigate()
-  const { isMobile } = useWindowSize()
   const { imageUrl, nameAgentClan, isSelected, group } = useAgentClanData()
+  const { isMobile } = useWindowSize()
 
   const handleClick = () => {
     if (nameAgentClan) {
-      navigate(`${PATH_NAMES.CLAN}/${nameAgentClan}`)
+      navigate(`${PATH_NAMES.MY_AGENT_CLAN}/${nameAgentClan}`)
     } else {
       if (!isMobile) {
-        navigate(PATH_NAMES.CLAN)
+        navigate(PATH_NAMES.MY_AGENT_CLAN)
       } else {
-        navigate(PATH_NAMES.CLAN_AGENT_EMPTY)
+        navigate(`${PATH_NAMES.MY_AGENT_CLAN}/empty`)
       }
     }
   }
@@ -38,6 +38,7 @@ const MyAgentClan = () => {
         isNameDisplay={false}
         name=""
         className="h-8 w-8"
+        member={group?.groupMemberStats?.total || 0}
       />
       <span className="line-clamp-2 text-left text-16 font-bold text-mercury-950">
         {group?.name || "Clan name"}
@@ -50,4 +51,4 @@ const MyAgentClan = () => {
   )
 }
 
-export default MyAgentClan
+export default MyAgentClanButton
