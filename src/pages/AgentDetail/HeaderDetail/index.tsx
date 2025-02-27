@@ -11,6 +11,8 @@ import { toast } from "react-toastify"
 import { CheckedIcon } from "@components/Icons/Checked"
 import useWindowSize from "@hooks/useWindowSize"
 import { ArrowsLeftIcon } from "@components/Icons/Arrow"
+import { useDispatch } from "react-redux"
+import { refreshFetchMyAgent } from "@reducers/agentSlice"
 
 const HeaderDetailAgent: React.FC<{
   isLoading: boolean
@@ -19,6 +21,7 @@ const HeaderDetailAgent: React.FC<{
   const [loading, setLoading] = useState(false)
   const queryClient = useQueryClient()
   const agents = useAppSelector((state) => state.agents.myAgents)
+  const dispatch = useDispatch()
   const agent = agents[0]
   const { onOpen, onClose, isOpen } = useDisclosure()
   const { watch } = useFormContext()
@@ -48,6 +51,7 @@ const HeaderDetailAgent: React.FC<{
       const res = await publishMarketplace(botId)
       if (res) {
         setIsPublished(!isPublished)
+        dispatch(refreshFetchMyAgent())
         queryClient.refetchQueries({
           queryKey: [QueryDataKeys.PRIVATE_AGENTS_MKL],
         })
@@ -61,7 +65,7 @@ const HeaderDetailAgent: React.FC<{
 
   return (
     <div className="fixed left-0 top-0 z-50 w-full border-b-1 border-mercury-100 bg-mercury-70">
-      <div className="mx-auto flex max-w-[1536px] items-center justify-between px-6 py-2 max-md:justify-start max-md:px-4">
+      <div className="mx-auto flex max-h-[66px] max-w-[1536px] items-center justify-between px-6 py-2 max-md:justify-start max-md:px-4">
         {isMobile ? (
           <div
             onClick={onOpen}
@@ -95,12 +99,13 @@ const HeaderDetailAgent: React.FC<{
         </div>
         <div className="flex gap-2 max-md:flex-1 max-md:justify-end">
           <Button
+            isLoading={loading}
             onPress={() => onPublishMarketplace(agent.id)}
             isDisabled={!isAgentActive || loading}
             className="h-[50px] w-[120px] rounded-full bg-mercury-100 font-semibold max-md:h-[40px] max-md:w-[90px]"
           >
             <span className="max-md:text-[13px]">
-              {!isAgentActive ? "Publish" : "Unpublish"}
+              {!isPublished ? "Publish" : "Unpublish"}
             </span>
           </Button>
           <Button

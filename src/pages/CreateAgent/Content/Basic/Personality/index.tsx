@@ -6,14 +6,12 @@ import {
   TemProfessional,
   TemSupportive,
 } from "@assets/images"
-import { BookDownloadIcon } from "@components/Icons"
 import { LockFilledIcon } from "@components/Icons/AgentDetailIcon"
 import { StarUserIconOutline } from "@components/Icons/UserIcon"
-import { Checkbox, Textarea, useDisclosure } from "@nextui-org/react"
+import { Checkbox, Textarea } from "@nextui-org/react"
 import CategoryLabel from "@pages/AgentDetail/CategoryLabel"
 import { useEffect, useState } from "react"
 import { useFormContext } from "react-hook-form"
-import CommunicationStylePreset from "./CommunicationStylePreset"
 
 const PERSONALITY_LIST = [
   {
@@ -22,40 +20,51 @@ const PERSONALITY_LIST = [
     selected: false,
     value: `Friendly: "Connects with users through warmth, empathy, and approachable communication."`,
     desc: "Connects with users through warmth, empathy, and approachable communication.",
+    communication:
+      "Engages in a relaxed and conversational tone, keeping interactions light and approachable.",
   },
   {
     icon: TemProfessional,
     label: "Professional",
     selected: false,
-    value: `Professional: "Delivers precise, insightful, and high-quality responses with confidence."`,
+    value: `Professional: "Provides users with clear, precise, and reliable information while maintaining a courteous and professional demeanor."`,
     desc: "Delivers precise, insightful, and high-quality responses with confidence.",
+    communication:
+      "Engages in a formal and structured tone, ensuring interactions are concise, respectful, and informative.",
   },
   {
     icon: TemHumorous,
     label: "Humorous",
     selected: false,
-    value: `Humorous: "Sprinkles humor into conversations while staying helpful and engaging."`,
+    value: `Humorous: "Engages users with wit, playfulness, and a lighthearted approach making interactions fun and entertaining while still being helpful."`,
     desc: "Sprinkles humor into conversations while staying helpful and engaging.",
+    communication:
+      "Uses a casual and clever tone, incorporating jokes, puns, and playful banter to keep conversations engaging and enjoyable.",
   },
   {
     icon: TemSupportive,
     label: "Supportive",
     selected: false,
-    value: `Supportive: "Guides users with patience, encouragement, and unwavering care."`,
+    value: `Supportive: "Creates a safe, understanding, and encouraging space for users, offering guidance, reassurance, and positivity in every interaction."`,
     desc: "Guides users with patience, encouragement, and unwavering care.",
+    communication:
+      "Engages in a compassionate and uplifting tone, ensuring conversations feel empathetic, patient, and deeply supportive.",
   },
   {
     icon: TemAdventurous,
     label: "Adventurous",
     selected: false,
-    value: `Adventurous: "Sparks excitement and curiosity, inspiring users to explore new ideas."`,
+    value: `Adventurous: "Inspires users to explore, take risks, and embrace new challenges with enthusiasm and curiosity."`,
     desc: "Sparks excitement and curiosity, inspiring users to explore new ideas.",
+    communication:
+      "Engages in a bold and energetic tone, using exciting, dynamic, and adventurous language to make every interaction feel like a new journey or quest.",
   },
   {
     icon: TemCustom,
     label: "Custom",
     selected: false,
     value: "",
+    communication: "",
     type: "custom",
   },
 ]
@@ -76,7 +85,6 @@ export interface SelectedBehaviors {
 const Personality = () => {
   const { watch, setValue } = useFormContext()
   const [isCustom, setIsCustom] = useState(false)
-  const { onOpen, isOpen, onClose } = useDisclosure()
 
   const selectedBehaviors = {
     personality_traits: watch("personality_traits"),
@@ -137,8 +145,9 @@ const Personality = () => {
             <div
               key={item.value}
               onClick={() => {
-                handleSelect("personality_traits", item.value)
-                if (item.type === "custom") setIsCustom((prev) => !prev)
+                setValue("personality_traits", [item.value])
+                setValue("communication_style", [item.communication])
+                if (item.type === "custom") setIsCustom(true)
                 else setIsCustom(false)
               }}
               className="flex cursor-pointer items-center justify-between rounded-[14px] border-1 border-white bg-mercury-30 p-3 max-md:p-2"
@@ -149,7 +158,7 @@ const Personality = () => {
                   src={item.icon}
                   alt="avatar"
                 />
-                <p className="max-w-[70px] truncate text-14 font-medium">
+                <p className="truncate text-14 font-medium max-md:max-w-[70px]">
                   {item.label}
                 </p>
               </div>
@@ -157,10 +166,14 @@ const Personality = () => {
                 className="max-md:p-0"
                 radius="full"
                 onValueChange={(check) => {
+                  if (!check) return
                   if (item.type === "custom") {
-                    setIsCustom(check ? true : false)
+                    setIsCustom(true)
+                  } else {
+                    setIsCustom(false)
                   }
-                  setValue("personality_traits", check ? [item.value] : [])
+                  setValue("personality_traits", [item.value])
+                  setValue("communication_style", [item.communication])
                 }}
                 isSelected={
                   (selectedBehaviors.personality_traits[0] === item.value &&
@@ -196,15 +209,6 @@ const Personality = () => {
                 <p className="mb-1 font-semibold max-md:text-14">
                   Communication Style
                 </p>
-                <div
-                  onClick={onOpen}
-                  className="flex cursor-pointer items-center gap-1 hover:opacity-70"
-                >
-                  <BookDownloadIcon />
-                  <span className="font-semibold text-brown-600 max-md:text-14">
-                    More Presets
-                  </span>
-                </div>
               </div>
               <Textarea
                 classNames={{
@@ -220,14 +224,6 @@ const Personality = () => {
           </>
         )}
       </div>
-      {isOpen && (
-        <CommunicationStylePreset
-          handleSelect={handleSelect}
-          selectedBehaviors={selectedBehaviors}
-          isOpen={isOpen}
-          onClose={onClose}
-        />
-      )}
     </div>
   )
 }
