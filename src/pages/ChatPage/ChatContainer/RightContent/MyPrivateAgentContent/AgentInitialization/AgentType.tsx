@@ -8,10 +8,9 @@ import {
   DeepSeekIcon,
   DistilledIconNoText,
 } from "@components/Icons/DistilledAIIcon"
-import { UserHexagonIcon } from "@components/Icons/UserIcon"
 import useAuthState from "@hooks/useAuthState"
 import { Button, Checkbox } from "@nextui-org/react"
-import CategoryLabel, { FieldLabel } from "@pages/AgentDetail/CategoryLabel"
+import { FieldLabel } from "@pages/AgentDetail/CategoryLabel"
 import { findTokenByAddress } from "@pages/MyPrivateAgent/helpers"
 import { Network } from "@pages/MyPrivateAgent/interface"
 import useSend from "@pages/MyPrivateAgent/Send/useSend"
@@ -73,7 +72,7 @@ const LLM_MODEL_OPTIONS = [
         <DeepSeekIcon />
       </div>
     ),
-    description: "Activate for Private Chat (not available for Clans)",
+    description: "Not available for Clans",
   },
 ]
 
@@ -153,11 +152,9 @@ const AgentType: React.FC<{
 
   return (
     <div>
-      <CategoryLabel text="Agent Type" icon={<UserHexagonIcon />} />
       <div className="mb-2 mt-4 flex items-center gap-3 max-md:flex-wrap">
         {AGENT_TYPE_OPTIONS.map((item: any) => {
           const isDefaiType = item.key === AGENT_TYPE_KEY.DEFAI
-
           return (
             <Controller
               name="typeAgent"
@@ -166,7 +163,7 @@ const AgentType: React.FC<{
                 const isSelected = value === item.key || typeAgent === item.key
                 return (
                   <div
-                    className="flex h-[200px] items-start justify-between gap-3 rounded-[14px] border-[2px] border-transparent bg-mercury-30 p-4 hover:cursor-pointer aria-checked:opacity-60 aria-selected:border-brown-500 max-md:h-auto"
+                    className="flex h-fit items-start justify-between gap-3 rounded-[14px] border-[2px] border-transparent bg-mercury-30 p-4 hover:cursor-pointer aria-checked:opacity-60 aria-selected:border-brown-500 max-md:h-auto"
                     key={item.key}
                     aria-selected={isSelected}
                     aria-checked={isDisabledTypeAgent}
@@ -182,22 +179,23 @@ const AgentType: React.FC<{
                       <span className="text-base-b text-mercury-900">
                         {item.title}
                       </span>
-
-                      <div className="mt-2">
+                      <div className="ml-4 mt-1">
                         {item.desc.map((record: any, index: number) => {
                           return (
-                            <div key={index}>
-                              <span
-                                className={twMerge(
-                                  "text-14-base text-mercury-700",
-                                  isDefaiType &&
-                                    index === 0 &&
-                                    "font-semibold text-[#7EB000]",
-                                )}
-                              >
-                                {record}
-                              </span>
-                            </div>
+                            <ul key={index} className="list-disc">
+                              <li>
+                                <span
+                                  className={twMerge(
+                                    "text-[13px] font-medium text-mercury-700",
+                                    isDefaiType &&
+                                      index === 0 &&
+                                      "font-semibold text-[#7EB000]",
+                                  )}
+                                >
+                                  {record}
+                                </span>
+                              </li>
+                            </ul>
                           )
                         })}
                       </div>
@@ -262,7 +260,7 @@ const AgentType: React.FC<{
       </div>
 
       <div className="flex justify-end">
-        <span className="text-[13px] italic text-mercury-700">
+        <span className="text-base-sb italic text-mercury-900">
           *Note: You can pay later to activate the agent type.
         </span>
       </div>
@@ -281,7 +279,7 @@ const AgentType: React.FC<{
                   value == record.value || llmModel === record.value
                 return (
                   <div
-                    className="flex h-[100px] w-1/2 items-start justify-between gap-3 rounded-[14px] border-[2px] border-transparent bg-mercury-30 p-4 hover:cursor-pointer aria-checked:opacity-50 aria-selected:border-brown-500 max-md:h-auto max-md:w-full"
+                    className="flex h-[80px] w-1/2 items-start justify-between gap-3 rounded-[14px] border-[2px] border-transparent bg-mercury-30 p-4 hover:cursor-pointer aria-checked:opacity-50 aria-selected:border-brown-500 max-md:h-auto max-md:w-full"
                     key={record.value}
                     aria-selected={isSelected}
                     aria-checked={isDisabledLLMModel}
@@ -297,11 +295,10 @@ const AgentType: React.FC<{
                         <span className="text-base-b text-mercury-900">
                           {record.label}
                         </span>
-                        <div className="max-w-[250px]">
-                          <span className="text-[13px] font-medium text-[#F78500]">
-                            {record.description}
-                          </span>
-                        </div>
+                        <br />
+                        <span className="text-[13px] font-medium text-[#F78500]">
+                          {record.description}
+                        </span>
                       </div>
                     </div>
                     <Checkbox

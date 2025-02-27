@@ -61,7 +61,7 @@ const CreateAgentModal: React.FC<{
       <ModalContent>
         <div className="px-4">
           <div className="relative flex items-center justify-center">
-            <p className="mb-2 text-20 font-semibold">Select Agent Type</p>
+            <p className="mb-2 text-24 font-semibold">Select Agent Type</p>
             {isCanClose && (
               <div
                 onClick={onClose}
