@@ -13,18 +13,22 @@ import useWindowSize from "@hooks/useWindowSize"
 import { ArrowsLeftIcon } from "@components/Icons/Arrow"
 import { useDispatch } from "react-redux"
 import { refreshFetchMyAgent } from "@reducers/agentSlice"
+import { useNavigate } from "react-router-dom"
 
 const HeaderDetailAgent: React.FC<{
   isLoading: boolean
-}> = ({ isLoading }) => {
+  isChangePersonality: boolean
+}> = ({ isLoading, isChangePersonality }) => {
   const { isMobile } = useWindowSize()
+  const navigate = useNavigate()
   const [loading, setLoading] = useState(false)
   const queryClient = useQueryClient()
   const agents = useAppSelector((state) => state.agents.myAgents)
   const dispatch = useDispatch()
   const agent = agents[0]
   const { onOpen, onClose, isOpen } = useDisclosure()
-  const { watch } = useFormContext()
+  const { watch, formState } = useFormContext()
+  const { isDirty } = formState
   const [isPublished, setIsPublished] = useState(
     agent?.publish === Publish.Published,
   )
@@ -34,11 +38,13 @@ const HeaderDetailAgent: React.FC<{
 
   const isAgentActive = agent && agent?.status === STATUS_AGENT.ACTIVE
   const isDisabled =
-    personality.length === 0 ||
-    personality[0] === "" ||
-    !agentName ||
-    !agentDesc ||
-    !isAgentActive
+    (personality.length === 0 ||
+      personality[0] === "" ||
+      !agentName ||
+      !agentDesc ||
+      !isAgentActive ||
+      !isDirty) &&
+    !isChangePersonality
 
   useEffect(() => {
     setIsPublished(agent?.publish === Publish.Published)
@@ -63,19 +69,27 @@ const HeaderDetailAgent: React.FC<{
     }
   }
 
+  const handleExit = () => {
+    if (isDisabled) {
+      navigate("/")
+    } else {
+      onOpen()
+    }
+  }
+
   return (
     <div className="fixed left-0 top-0 z-50 w-full border-b-1 border-mercury-100 bg-mercury-70">
       <div className="mx-auto flex max-h-[66px] max-w-[1536px] items-center justify-between px-6 py-2 max-md:justify-start max-md:px-4">
         {isMobile ? (
           <div
-            onClick={onOpen}
+            onClick={handleExit}
             className="-ml-2 flex h-6 w-6 items-center justify-center"
           >
             <ArrowsLeftIcon color="black" />
           </div>
         ) : (
           <Button
-            onPress={onOpen}
+            onPress={handleExit}
             className="h-[50px] w-[120px] rounded-full bg-mercury-100 font-semibold text-[#FF3B30]"
           >
             Exit
@@ -84,7 +98,7 @@ const HeaderDetailAgent: React.FC<{
         <div className="text-center">
           <p
             onClick={() => {
-              if (isMobile) onOpen()
+              if (isMobile) handleExit()
             }}
             className="text-20 font-semibold max-md:text-14"
           >
