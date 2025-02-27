@@ -21,6 +21,7 @@ import { useLocation, useParams } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
 import MoreAction from "./MoreAction"
 import OrchestrationHeader from "./OrchestrationHeader"
+import { getConfigClanValue } from "@pages/AgentStore/AgentClansStore"
 
 const ChatInfoCurrent: React.FC<{
   groupDetail: UserGroup | null
@@ -65,7 +66,7 @@ const ChatInfoCurrent: React.FC<{
       <div className="flex items-center gap-2">
         <AvatarContainer
           badgeIcon={<LiveIcon />}
-          avatarUrl={groupDetail.group.image}
+          avatarUrl={getConfigClanValue(groupDetail.group, "imageLive")}
           publicAddress={groupDetail.group.name}
           userName={groupDetail.group.name}
           badgeClassName={isLive ? "bg-lgd-code-hot-ramp" : ""}

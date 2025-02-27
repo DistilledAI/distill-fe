@@ -25,6 +25,7 @@ import useFetchAgentConfig from "./useFetchAgentConfig"
 import { editAgentClan, uploadImageAgentClan } from "services/group"
 import { transformClanData } from "./AgentContent/ClanUtilities/helper"
 import useFetchAgentDetail from "./useFetchAgentDetail"
+import useGroupDetail from "@pages/ChatPage/hooks/useGroupDetail"
 
 export const BLACKLIST_BOT_VERSION = [
   "devorai/distilled-chat:0.0.6.4-cc",
@@ -84,6 +85,30 @@ const AgentDetail: React.FC = () => {
       },
     },
   })
+
+  const { groupDetail } = useGroupDetail(clanIdOfAgent)
+
+  useEffect(() => {
+    if (groupDetail) {
+      const { group } = groupDetail
+
+      methods.setValue("clan.name", group.name.replace(".Clan", "") || "")
+      methods.setValue("clan.isEnableClan", group.status || 2)
+
+      group.groupConfig?.forEach((config: any) => {
+        switch (config.key) {
+          case "description":
+            methods.setValue("clan.description", config.value || "")
+            break
+          case "imageLive":
+            methods.setValue("clan.imageLive", config.value || null)
+            break
+          default:
+            break
+        }
+      })
+    }
+  }, [groupDetail])
 
   useEffect(() => {
     const defaults: any = {
@@ -177,7 +202,6 @@ const AgentDetail: React.FC = () => {
                 agentData={agentData}
                 agentConfigs={agentConfigs}
                 refetch={refetch}
-                clanIdOfAgent={clanIdOfAgent}
               />
             </div>
           </div>

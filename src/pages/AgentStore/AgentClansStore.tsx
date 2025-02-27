@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react"
 import { useNavigate, useLocation } from "react-router-dom"
-import { IGroupDetail } from "types/group"
 import useFetchClan from "@pages/Marketplace/useFetchClan"
 import { PATH_NAMES } from "@constants/index"
 import { ORCHESTRATION_LIST } from "@pages/ChatPage/ChatContainer/LeftBar/OrchestrationSlider"
@@ -14,6 +13,7 @@ import { UsersGroupOutlineIcon } from "@components/Icons/UserIcon"
 import TotalMemberBadge from "@components/TotalMemberBadge"
 import { Pagination, Skeleton } from "@nextui-org/react"
 import PaginationItemCustom from "./PaginationItemCustom"
+import { IGroup } from "@pages/ChatPage/ChatContainer/LeftBar/useFetchGroups"
 
 const agentType = {
   [AGENT_TYPE_KEY.DEFAULT]: <FilledBrainAIIcon size={14} />,
@@ -21,7 +21,7 @@ const agentType = {
 }
 
 export const getConfigClanValue = (
-  item: IGroupDetail,
+  item: IGroup,
   key: string,
   defaultValue: string = maxAvatarPlaceholder2,
 ) => {
@@ -66,7 +66,7 @@ const AgentClansStore = () => {
     setPage(newPage)
   }
 
-  const handleChatAgentClan = (clan: IGroupDetail) => {
+  const handleChatAgentClan = (clan: IGroup) => {
     const clanPathname = `${PATH_NAMES.CLAN}/${clan.label}`
     navigate(clanPathname)
   }
@@ -134,7 +134,7 @@ const AgentClansStore = () => {
             ? Array.from({ length: limit }).map((_, index) => (
                 <div key={index}>{renderSkeleton()}</div>
               ))
-            : data.map((item: IGroupDetail) => {
+            : data.map((item: IGroup) => {
                 const imageUrl = getConfigClanValue(item, "imageLive")
                 const description = getConfigClanValue(item, "description", "-")
 
