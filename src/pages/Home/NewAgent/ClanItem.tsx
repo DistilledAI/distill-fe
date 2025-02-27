@@ -1,15 +1,15 @@
 import { AvatarClanByList } from "@components/AvatarContainer"
 import { PlusIcon } from "@components/Icons/Plus"
 import { PATH_NAMES } from "@constants/index"
+import { IGroup } from "@pages/ChatPage/ChatContainer/LeftBar/useFetchGroups"
 import { useQueryClient } from "@tanstack/react-query"
 import React from "react"
 import { useLocation, useNavigate, useParams } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
-import { IGroupDetail } from "types/group"
 import { QueryDataKeys } from "types/queryDataKeys"
 
 const ClanItem: React.FC<{
-  group: IGroupDetail
+  group: IGroup
   isJoined?: boolean
 }> = ({ isJoined = false, group }) => {
   const queryClient = useQueryClient()

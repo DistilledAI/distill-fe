@@ -10,24 +10,19 @@ import {
   ModalHeader,
   useDisclosure,
 } from "@nextui-org/react"
-import {
-  GroupConfig,
-  UserGroup,
-} from "@pages/ChatPage/ChatContainer/LeftBar/useFetchGroups"
+import { UserGroup } from "@pages/ChatPage/ChatContainer/LeftBar/useFetchGroups"
 import React from "react"
 import AgentDescription from "./AgentDescription"
 import AgentSocials from "./AgentSocials"
 import ContractDisplay from "./ContractDisplay"
 import { PATH_NAMES } from "@constants/index"
+import { useGroupConfig } from "./useGroupConfig"
 
 const AgentLiveInfo: React.FC<{
   groupDetail: UserGroup | null
 }> = ({ groupDetail }) => {
   const { isOpen, onClose, onOpen } = useDisclosure()
-  const groupConfig: GroupConfig | null = groupDetail?.group?.config
-    ? JSON.parse(groupDetail.group.config)
-    : null
-
+  const groupConfig = useGroupConfig(groupDetail?.group)
   return (
     <>
       <Button
@@ -73,7 +68,7 @@ const AgentLiveInfo: React.FC<{
                 wrapper: "mt-3",
               }}
               icon={groupConfig?.contractAddress ? solanaCircleIcon : ""}
-              value={groupConfig?.contractAddress}
+              value={groupConfig?.contractAddress || ""}
             />
             <AgentDescription description={groupConfig?.description} />
           </ModalBody>

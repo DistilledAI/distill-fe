@@ -14,7 +14,6 @@ const MainLayoutDesktop = lazy(
   () => import("@components/Layout/MainLayoutDesktop"),
 )
 const HomePage = lazy(() => import("@pages/Home"))
-const ChatBox = lazy(() => import("@pages/ChatPage/ChatContainer"))
 const ChatBoxLive = lazy(() => import("@pages/ChatBoxLive"))
 const ChatClanBox = lazy(() => import("@pages/AgentClans/ChatClanBox"))
 const AgentClansPage = lazy(() => import("@pages/AgentClans"))
