@@ -55,20 +55,6 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
       </div>
       {isShowInfo ? (
         <div className="inline-flex items-center gap-2 md:gap-3">
-          <div
-            className="relative flex cursor-pointer items-center gap-1"
-            onClick={() => navigate(PATH_NAMES.REWARDS)}
-          >
-            <img src={xDSTL} width={24} height={24} />
-            <span className="text-13 text-mercury-900 md:text-16">
-              <span className="font-bold">
-                {numberWithCommas(totalxDstlPoint)}
-              </span>{" "}
-              xDSTL
-            </span>
-            <div className="absolute -right-2 -top-2 h-3 w-3 rounded-full bg-[#FF3B30] max-md:hidden" />
-          </div>
-
           <Dropdown placement="bottom" className="w-[250px]">
             <DropdownTrigger>
               <button
@@ -109,9 +95,23 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
                     </div>
                   </div>
                 </div>
-
-                <div className="my-4 h-[1px] w-full bg-mercury-200" />
               </DropdownItem>
+
+              <DropdownItem
+                key="x-dstl"
+                className="mb-4 mt-2 h-12 bg-[#F6F4EC] p-2"
+              >
+                <div className="flex gap-3">
+                  <img src={xDSTL} width={24} height={24} />
+                  <span className="text-13 text-mercury-900 md:text-16">
+                    <span className="font-bold">
+                      {numberWithCommas(totalxDstlPoint)}
+                    </span>{" "}
+                    xDSTL
+                  </span>
+                </div>
+              </DropdownItem>
+
               <DropdownItem
                 key="my-profile"
                 onPress={() => {
@@ -126,6 +126,7 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
                   </span>
                 </div>
               </DropdownItem>
+
               <DropdownItem
                 key="my-profile"
                 onPress={() => {
