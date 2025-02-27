@@ -1,4 +1,3 @@
-import { PATH_NAMES } from "@constants/index"
 import useAuthState from "@hooks/useAuthState"
 import useGetChatId from "@pages/ChatPage/hooks/useGetChatId"
 import { IUser } from "@reducers/userSlice"
@@ -9,7 +8,7 @@ import {
   useQueryClient,
 } from "@tanstack/react-query"
 import { useEffect } from "react"
-import { useNavigate, useParams } from "react-router-dom"
+import { useParams } from "react-router-dom"
 import { getChatHistoryById } from "services/chat"
 import { QueryDataKeys } from "types/queryDataKeys"
 import { IGroup } from "../LeftBar/useFetchGroups"
@@ -73,7 +72,6 @@ const useFetchMessages = () => {
   const { user, isLogin } = useAuthState()
   const { chatId } = useGetChatId()
   const { privateChatId } = useParams()
-  const navigate = useNavigate()
   const groupId = chatId || privateChatId || ""
   const queryClient = useQueryClient()
   const { data: hasJoinedGroup } = useQuery<boolean>({
@@ -99,7 +97,6 @@ const useFetchMessages = () => {
 
   const {
     data,
-    error,
     fetchPreviousPage,
     hasPreviousPage,
     isFetched,

@@ -1,13 +1,8 @@
-import AlertBox from "@components/AlertBox"
 import ContextCleared from "@components/ContextCleared"
 import ReCaptchaWraper from "@components/ReCaptchaWraper"
 import ReceiverMessage from "@components/ReceiverMessage"
 import SenderMessage from "@components/SenderMessage"
-import {
-  CLEAR_CACHED_MESSAGE,
-  PATH_NAMES,
-  STATUS_AGENT,
-} from "@constants/index"
+import { CLEAR_CACHED_MESSAGE, STATUS_AGENT } from "@constants/index"
 import { useAppSelector } from "@hooks/useAppRedux"
 import useSubmitChat from "@hooks/useSubmitChat"
 import useFetchMyData from "@pages/MyData/useFetch"

@@ -140,7 +140,6 @@ const MediaData: React.FC<{
             }))}
             loadMore={fetchNextPage}
             hasMore={hasNextPage}
-            category={category}
             botId={botId}
           />
         ) : (
