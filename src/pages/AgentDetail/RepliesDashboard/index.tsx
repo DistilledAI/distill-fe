@@ -233,6 +233,7 @@ const RepliesDashboard: React.FC<{ isDisabled: boolean }> = ({
         const tweetedUrl = item?.tweetedUrl
         const match = tweetedUrl?.match(/status\/(\d+)/)
         const tweetId = match?.[1]
+        console.log("🚀 ~ renderCell ~ tweetId:", tweetId)
 
         if (!tweetId) return <div />
 
@@ -344,7 +345,7 @@ const RepliesDashboard: React.FC<{ isDisabled: boolean }> = ({
         isDisabled={isDisabled}
       >
         <ViewIcon />
-        <span className="text-base-md text-white">View X Dashboard</span>
+        <span className="text-base-md text-white">X Dashboard</span>
       </Button>
 
       <Modal

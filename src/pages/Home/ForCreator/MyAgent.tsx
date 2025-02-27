@@ -77,16 +77,12 @@ const MyAgentHome = () => {
           className="mt-4 h-[56px] w-full rounded-full bg-mercury-950 text-[16px] font-semibold text-mercury-30 max-md:h-[44px] max-md:text-15 md:mt-6"
           onPress={handleCreateAgent}
         >
-          {isLogin && !isAnonymous ? (
-            <>
-              <span className="-mt-[2px] text-[24px] font-medium leading-none">
-                +
-              </span>
-              Create Agent
-            </>
-          ) : (
-            "Connect Wallet"
-          )}
+          <>
+            <span className="-mt-[2px] text-[24px] font-medium leading-none">
+              +
+            </span>
+            Create Agent
+          </>
         </Button>
       )}
     </div>

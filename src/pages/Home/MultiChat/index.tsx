@@ -10,7 +10,7 @@ const MultiChat = () => {
   return (
     <div
       className={twMerge(
-        "fixed bottom-0 left-[84px] right-0 flex items-center gap-4 bg-[#FC0] px-4 py-1 duration-300",
+        "fixed bottom-0 left-[84px] right-0 flex items-center gap-4 bg-[#F6F4EC] px-4 py-1 duration-300",
         !sidebarCollapsed && "left-[280px]",
       )}
     >
@@ -36,7 +36,9 @@ const MultiChat = () => {
                   alt="ava"
                 />
               </div>
-              <p className="text-nowrap text-14 font-semibold">{item.topic}</p>
+              <p className="text-nowrap text-14 font-medium text-mercury-950">
+                {item.topic}
+              </p>
             </Link>
           ))}
         </div>

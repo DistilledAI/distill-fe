@@ -63,6 +63,10 @@ const BindYourAccount: React.FC<{
   }
 
   const onBindYourAccount = async (data: any) => {
+    const newData = {
+      ...data,
+      status: 1,
+    }
     try {
       setLoading(true)
       const agentIdNumber = Number(agentId)
@@ -71,7 +75,7 @@ const BindYourAccount: React.FC<{
         data: [
           {
             key: "bindTwitterKey",
-            value: JSON.stringify(data),
+            value: JSON.stringify(newData),
           },
         ],
       }
@@ -108,7 +112,7 @@ const BindYourAccount: React.FC<{
           onClick={onOpen}
         >
           <LinkAccountIcon />
-          <span className="text-base-md text-brown-500">Bind your Account</span>
+          <span className="text-base-b text-brown-500">Bind your Account</span>
         </div>
       )}
 

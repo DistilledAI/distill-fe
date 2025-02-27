@@ -31,7 +31,7 @@ const useFetchClan = ({
     fetchLimit?: number
     fetchOffset?: number
     sort?: {
-      [key: string]
+      [key: string]: any
     }
   }) => {
     try {

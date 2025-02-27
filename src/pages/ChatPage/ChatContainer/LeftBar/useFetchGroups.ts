@@ -3,7 +3,6 @@ import { IUser } from "@reducers/userSlice"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { useState } from "react"
 import { getGroupList } from "services/chat"
-import { IGroupDetail } from "types/group"
 import { QueryDataKeys } from "types/queryDataKeys"
 
 export enum TypeGroup {
@@ -28,6 +27,13 @@ export interface IGroup {
   label?: string
   description?: string
   groupConfig?: any[]
+  groupMemberStats?: {
+    id: number
+    groupId: number
+    total: number
+    createdAt: string
+  }
+  groupUser?: Array<any>
 }
 
 export interface GroupConfig {

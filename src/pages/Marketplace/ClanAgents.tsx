@@ -4,18 +4,18 @@ import { MessageDots } from "@components/Icons/Message"
 import { PATH_NAMES } from "@constants/index"
 import { Button } from "@nextui-org/react"
 import { useNavigate } from "react-router-dom"
-import { IGroupDetail } from "types/group"
 import useFetchClan from "./useFetchClan"
 import { useQueryClient } from "@tanstack/react-query"
 import { QueryDataKeys } from "types/queryDataKeys"
 import AgentSkeleton from "./AgentSkeleton"
+import { IGroup } from "@pages/ChatPage/ChatContainer/LeftBar/useFetchGroups"
 
 const ClanAgents = () => {
   const navigate = useNavigate()
   const { data, loading } = useFetchClan({ limit: 40 })
   const queryClient = useQueryClient()
 
-  const handleChatWithClan = async (clan: IGroupDetail) => {
+  const handleChatWithClan = async (clan: IGroup) => {
     const inviteUrl = `${PATH_NAMES.CLAN}/${clan.label}`
     navigate(inviteUrl)
     setTimeout(() => {
@@ -38,7 +38,7 @@ const ClanAgents = () => {
       </>
     )
 
-  return data.map((clan: IGroupDetail, index: number) => (
+  return data.map((clan: IGroup, index: number) => (
     <div
       className="flex h-fit cursor-pointer justify-between gap-2 rounded-[22px] border-b border-b-mercury-70 p-2 last:border-none hover:bg-mercury-200 md:border-b-[0px]"
       key={index}
