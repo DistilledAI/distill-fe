@@ -1,12 +1,12 @@
 import AgentSetupStatus from "@components/AgentSetupStatus"
 import AlertBox from "@components/AlertBox"
 import { CheckProtectedIcon } from "@components/Icons"
+import { LockFilledIcon } from "@components/Icons/AgentDetailIcon"
 import { DatabaseImportIcon } from "@components/Icons/DatabaseImportIcon"
 import { STATUS_AGENT } from "@constants/index"
 import { useAppSelector } from "@hooks/useAppRedux"
 import useFetchMyData from "@pages/MyData/useFetch"
 import AddData from "./AddData"
-import { LockFilledIcon } from "@components/Icons/AgentDetailIcon"
 import TopicRestriction from "./TopicRestriction"
 
 const Knowledge = () => {
@@ -37,7 +37,7 @@ const Knowledge = () => {
       </div>
       {isFetched && (
         <AlertBox
-          className="mx-auto max-w-[768px]"
+          className="!mx-0 w-full"
           isVisible={true}
           icon={<CheckProtectedIcon />}
           messages={[
