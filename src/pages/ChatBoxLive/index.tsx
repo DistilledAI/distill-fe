@@ -36,19 +36,17 @@ const ChatBoxLive = () => {
         "relative w-full bg-mercury-30 max-md:overflow-hidden md:z-[22] md:h-[calc(100dvh-68px)] md:bg-white md:px-6",
       )}
     >
-      <div>
-        <HeaderBack onBack={() => navigate(PATH_NAMES.MY_AGENT_CLAN)}>
-          <span className="line-clamp-1 text-16 font-bold text-mercury-950">
-            {groupDetail?.group?.name}
-          </span>
-          {user?.id !== groupDetail?.group?.createBy && (
-            <MoreAction
-              groupId={Number(chatId)}
-              groupType={groupDetail?.group?.typeGroup as TypeGroup}
-            />
-          )}
-        </HeaderBack>
-      </div>
+      <HeaderBack onBack={() => navigate(PATH_NAMES.MY_AGENT_CLAN)}>
+        <span className="line-clamp-1 text-16 font-bold text-mercury-950">
+          {groupDetail?.group?.name}
+        </span>
+        {user?.id !== groupDetail?.group?.createBy && (
+          <MoreAction
+            groupId={Number(chatId)}
+            groupType={groupDetail?.group?.typeGroup as TypeGroup}
+          />
+        )}
+      </HeaderBack>
 
       {isMobile ? <ChatLiveHeader groupDetail={groupDetail} /> : null}
 

@@ -1,4 +1,5 @@
-import { avaMaxGray } from "@assets/images"
+import { maxAvatarPlaceholder } from "@assets/images"
+import AvatarCustom from "@components/AvatarCustom"
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { EditFilledIcon } from "@components/Icons/DefiLens"
 import { MessagePlusIcon } from "@components/Icons/Message"
@@ -28,16 +29,13 @@ const MyAgentHome = () => {
         <span className="text-[40px] font-bold text-mercury-200">1</span>
       </div>
       <div className="flex items-center gap-2 md:flex-col">
-        <div className="relative h-10 w-10 rounded-full border-1 border-mercury-400 max-md:h-8 max-md:w-8">
-          <img
-            className="h-full w-full rounded-full object-cover"
-            src={myAgent?.avatar ? myAgent.avatar : avaMaxGray}
-            alt="ava"
-          />
-          <div className="absolute -right-[6px] bottom-0 flex h-[18px] w-[18px] items-center justify-center rounded-full bg-[#FC0] max-md:h-[14px] max-md:w-[14px]">
-            <FilledBrainAIIcon color="#363636" size={14} />
-          </div>
-        </div>
+        <AvatarCustom
+          src={myAgent?.avatar || maxAvatarPlaceholder}
+          alt="avatar"
+          badgeIcon={<FilledBrainAIIcon color="#363636" size={14} />}
+          badgeClassName="bg-[#FC0] "
+          className="h-8 w-8 md:h-10 md:w-10"
+        />
         <h3 className="my-2 text-18 font-semibold text-mercury-950 md:text-24">
           {myAgent?.username ? myAgent.username : "Create your new Agent"}
         </h3>

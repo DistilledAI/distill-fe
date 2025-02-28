@@ -18,7 +18,7 @@ const HeaderBack = ({ name, onBack, children }: Props) => {
     }
   }
   return (
-    <div className="fixed left-3 top-2 z-50 flex w-full items-center gap-2 md:hidden">
+    <div className="fixed left-3 top-2 z-[51] flex w-full items-center gap-2 md:hidden">
       <button
         onClick={handleBack}
         className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-mercury-70"
