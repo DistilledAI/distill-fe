@@ -25,6 +25,8 @@ import {
 } from "@utils/index"
 import { useLocation, useNavigate } from "react-router-dom"
 import LoginPhantom from "./LoginPhantom"
+import useWindowSize from "@hooks/useWindowSize"
+import SidebarMobile from "@components/Layout/SidebarMobile"
 
 interface UserAuthProps {
   connectWallet: any
@@ -33,6 +35,7 @@ interface UserAuthProps {
 const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
   const { user } = useAuthState()
   const navigate = useNavigate()
+  const { isMobile } = useWindowSize()
   const { pathname } = useLocation()
   const { groupDetail, groupId } = useGroupDetail()
   const { logout } = useAuthAction()
@@ -55,108 +58,112 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
       </div>
       {isShowInfo ? (
         <div className="inline-flex items-center gap-2 md:gap-3">
-          <Dropdown placement="bottom" className="w-[250px]">
-            <DropdownTrigger>
-              <button
-                type="button"
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-white bg-mercury-30 !outline-none md:h-12 md:w-12"
-              >
-                <AvatarCustom
-                  publicAddress={user.publicAddress}
-                  src={user.avatar}
-                  className="h-fit w-fit"
-                />
-              </button>
-            </DropdownTrigger>
-            <DropdownMenu className="items-start p-4">
-              <DropdownItem
-                key="user-info"
-                className="p-0 hover:!bg-transparent"
-              >
-                <div className="flex gap-3">
+          {isMobile ? (
+            <SidebarMobile />
+          ) : (
+            <Dropdown placement="bottom" className="w-[250px]">
+              <DropdownTrigger>
+                <button
+                  type="button"
+                  className="flex h-10 w-10 items-center justify-center rounded-full border border-white bg-mercury-30 !outline-none md:h-12 md:w-12"
+                >
                   <AvatarCustom
                     publicAddress={user.publicAddress}
                     src={user.avatar}
+                    className="h-fit w-fit"
                   />
-                  <div>
-                    <span className="text-14 font-bold text-mercury-950">
-                      {user.username}
-                    </span>
-                    <div
-                      onClick={(e) => {
-                        copyClipboard(e, user?.publicAddress ?? "")
-                      }}
-                      className="flex cursor-pointer items-center gap-1"
-                    >
-                      <span className="text-16 text-mercury-900">
-                        {centerTextEllipsis(user?.publicAddress ?? "", 4)}
+                </button>
+              </DropdownTrigger>
+              <DropdownMenu className="items-start p-4">
+                <DropdownItem
+                  key="user-info"
+                  className="p-0 hover:!bg-transparent"
+                >
+                  <div className="flex gap-3">
+                    <AvatarCustom
+                      publicAddress={user.publicAddress}
+                      src={user.avatar}
+                    />
+                    <div>
+                      <span className="text-14 font-bold text-mercury-950">
+                        {user.username}
                       </span>
-                      <CopyIcon color="#545454" size={20} />
+                      <div
+                        onClick={(e) => {
+                          copyClipboard(e, user?.publicAddress ?? "")
+                        }}
+                        className="flex cursor-pointer items-center gap-1"
+                      >
+                        <span className="text-16 text-mercury-900">
+                          {centerTextEllipsis(user?.publicAddress ?? "", 4)}
+                        </span>
+                        <CopyIcon color="#545454" size={20} />
+                      </div>
                     </div>
                   </div>
-                </div>
-              </DropdownItem>
+                </DropdownItem>
 
-              <DropdownItem
-                key="x-dstl"
-                className="mb-4 mt-2 h-12 bg-[#F6F4EC] p-2"
-              >
-                <div className="flex gap-3">
-                  <img src={xDSTL} width={24} height={24} />
-                  <span className="text-13 text-mercury-900 md:text-16">
-                    <span className="font-bold">
-                      {numberWithCommas(totalxDstlPoint)}
-                    </span>{" "}
-                    xDSTL
-                  </span>
-                </div>
-              </DropdownItem>
+                <DropdownItem
+                  key="x-dstl"
+                  className="mb-4 mt-2 h-12 bg-[#F6F4EC] p-2"
+                >
+                  <div className="flex gap-3">
+                    <img src={xDSTL} width={24} height={24} />
+                    <span className="text-13 text-mercury-900 md:text-16">
+                      <span className="font-bold">
+                        {numberWithCommas(totalxDstlPoint)}
+                      </span>{" "}
+                      xDSTL
+                    </span>
+                  </div>
+                </DropdownItem>
 
-              <DropdownItem
-                key="my-profile"
-                onPress={() => {
-                  navigate(PATH_NAMES.ACCOUNT)
-                }}
-                className="p-0 hover:!bg-transparent"
-              >
-                <div className="mb-2 flex w-full cursor-pointer items-center gap-2 rounded-lg p-2 hover:bg-mercury-70">
-                  <UserIcon />
-                  <span className="text-16 font-bold text-mercury-900">
-                    My Profile
-                  </span>
-                </div>
-              </DropdownItem>
+                <DropdownItem
+                  key="my-profile"
+                  onPress={() => {
+                    navigate(PATH_NAMES.ACCOUNT)
+                  }}
+                  className="p-0 hover:!bg-transparent"
+                >
+                  <div className="mb-2 flex w-full cursor-pointer items-center gap-2 rounded-lg p-2 hover:bg-mercury-70">
+                    <UserIcon />
+                    <span className="text-16 font-bold text-mercury-900">
+                      My Profile
+                    </span>
+                  </div>
+                </DropdownItem>
 
-              <DropdownItem
-                key="my-profile"
-                onPress={() => {
-                  navigate("/account?tab=my-vault-holdings")
-                }}
-                className="p-0 hover:!bg-transparent"
-              >
-                <div className="mb-2 flex w-full cursor-pointer items-center gap-2 rounded-lg p-2 hover:bg-mercury-70">
-                  <CoinsOutlineIcon />
-                  <span className="text-16 font-bold text-mercury-900">
-                    My Staked Vaults
-                  </span>
-                </div>
-              </DropdownItem>
-              <DropdownItem
-                key="logout"
-                onPress={() => {
-                  logout()
-                }}
-                className="p-0 hover:!bg-transparent"
-              >
-                <div className="flex w-full cursor-pointer items-center gap-2 rounded-lg p-2 hover:bg-mercury-70">
-                  <LogoutIcon color="#FF3B30" />
-                  <span className="text-16 font-bold text-[#FF3B30]">
-                    Log out
-                  </span>
-                </div>
-              </DropdownItem>
-            </DropdownMenu>
-          </Dropdown>
+                <DropdownItem
+                  key="my-profile"
+                  onPress={() => {
+                    navigate("/account?tab=my-vault-holdings")
+                  }}
+                  className="p-0 hover:!bg-transparent"
+                >
+                  <div className="mb-2 flex w-full cursor-pointer items-center gap-2 rounded-lg p-2 hover:bg-mercury-70">
+                    <CoinsOutlineIcon />
+                    <span className="text-16 font-bold text-mercury-900">
+                      My Staked Vaults
+                    </span>
+                  </div>
+                </DropdownItem>
+                <DropdownItem
+                  key="logout"
+                  onPress={() => {
+                    logout()
+                  }}
+                  className="p-0 hover:!bg-transparent"
+                >
+                  <div className="flex w-full cursor-pointer items-center gap-2 rounded-lg p-2 hover:bg-mercury-70">
+                    <LogoutIcon color="#FF3B30" />
+                    <span className="text-16 font-bold text-[#FF3B30]">
+                      Log out
+                    </span>
+                  </div>
+                </DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+          )}
         </div>
       ) : (
         <div className="flex items-center gap-1">
