@@ -20,7 +20,7 @@ interface ChatWindowProps {
   className?: string
   isLoading?: boolean
   onLoadPrevMessages: () => Promise<number | undefined>
-  chatId: string | undefined
+  chatId?: string
   msgBoxClassName?: string
   isFetched?: boolean
   hasPreviousMore?: boolean
@@ -30,43 +30,47 @@ interface ChatWindowProps {
   scrollBottomClassName?: string
 }
 
-const DEFAULT_LIMIT = 20
-const DEFAULT_AT_BOTTOM_THRESHOLD = 200
+const CONSTANTS = {
+  DEFAULT_LIMIT: 20,
+  AT_BOTTOM_THRESHOLD: 200,
+  ESTIMATED_ITEM_SIZE: 72,
+  OVERSCAN: 5,
+} as const
 
 const ChatWindowV2: React.FC<ChatWindowProps> = ({
   messages,
   itemContent,
   className,
-  isLoading,
-  chatId,
+  isLoading = false,
   onLoadPrevMessages,
+  chatId,
   msgBoxClassName,
   isFetched = false,
-  hasPreviousMore,
-  isFetchingPreviousPage,
+  hasPreviousMore = false,
+  isFetchingPreviousPage = false,
   isChatActions = false,
   style,
   scrollBottomClassName,
 }) => {
   const parentRef = useRef<HTMLDivElement>(null)
   const [isScrollBottom, setIsScrollBottom] = useState(true)
-  const lastMessageLength = messages?.[messages.length - 1]?.content?.length
   const previousMessagesLength = useRef(messages.length)
+  const lastMessageLength = messages?.[messages.length - 1]?.content?.length
 
-  const showHeader = isFetchingPreviousPage && messages.length >= DEFAULT_LIMIT
+  const showHeader =
+    isFetchingPreviousPage && messages.length >= CONSTANTS.DEFAULT_LIMIT
   const itemCount = showHeader ? messages.length + 1 : messages.length
 
   const virtualizer = useVirtualizer({
     count: itemCount,
     getScrollElement: () => parentRef.current,
-    estimateSize: () => 72,
-    overscan: 5,
+    estimateSize: () => CONSTANTS.ESTIMATED_ITEM_SIZE,
+    overscan: CONSTANTS.OVERSCAN,
     getItemKey: useCallback(
-      (index: number) => {
-        if (showHeader && index === 0) return "header"
-        const adjIndex = showHeader ? index - 1 : index
-        return messages[adjIndex]?.id || index
-      },
+      (index: number) =>
+        showHeader && index === 0
+          ? "header"
+          : (messages[showHeader ? index - 1 : index]?.id ?? index),
       [messages, showHeader],
     ),
   })
@@ -77,20 +81,23 @@ const ChatWindowV2: React.FC<ChatWindowProps> = ({
     async (e: UIEvent<HTMLDivElement>) => {
       const { scrollTop, scrollHeight, clientHeight } = e.currentTarget
       const isNearBottom =
-        scrollHeight - clientHeight - scrollTop <= DEFAULT_AT_BOTTOM_THRESHOLD
+        scrollHeight - clientHeight - scrollTop <= CONSTANTS.AT_BOTTOM_THRESHOLD
       setIsScrollBottom(!isNearBottom)
 
-      if (scrollTop === 0 && hasPreviousMore) {
+      if (scrollTop === 0 && hasPreviousMore && !isFetchingPreviousPage) {
+        const currentScrollHeight = parentRef.current?.scrollHeight ?? 0
+        const currentScrollTop = parentRef.current?.scrollTop ?? 0
+
         const newMessagesIndex = await onLoadPrevMessages()
-        if (newMessagesIndex) {
-          virtualizer.scrollToIndex(newMessagesIndex, {
-            align: "end",
-            behavior: "auto",
-          })
+
+        if (newMessagesIndex && parentRef.current) {
+          const newScrollHeight = parentRef.current.scrollHeight
+          const heightDiff = newScrollHeight - currentScrollHeight
+          parentRef.current.scrollTop = currentScrollTop + heightDiff
         }
       }
     },
-    [hasPreviousMore, onLoadPrevMessages, virtualizer],
+    [hasPreviousMore, onLoadPrevMessages, isFetchingPreviousPage],
   )
 
   useEffect(() => {
@@ -153,14 +160,14 @@ const ChatWindowV2: React.FC<ChatWindowProps> = ({
             top: virtualItem.start,
             left: 0,
             width: "100%",
-            minHeight: 72,
+            minHeight: CONSTANTS.ESTIMATED_ITEM_SIZE,
           }}
         >
           {itemContent(messageIndex, message)}
         </div>
       )
     },
-    [showHeader, messages, msgBoxClassName, virtualizer],
+    [showHeader, messages, msgBoxClassName, virtualizer, itemContent],
   )
 
   const emptyState = useMemo(
@@ -183,23 +190,19 @@ const ChatWindowV2: React.FC<ChatWindowProps> = ({
       )}
       style={style}
       ref={parentRef}
-      onScroll={messages.length >= DEFAULT_LIMIT ? handleScroll : undefined}
+      onScroll={
+        messages.length >= CONSTANTS.DEFAULT_LIMIT ? handleScroll : undefined
+      }
     >
       {!isFetched && <MessagesSkeleton />}
-
       {!isLoading && messages.length > 0 && (
         <div
-          style={{
-            height: virtualizer.getTotalSize(),
-            position: "relative",
-          }}
+          style={{ height: virtualizer.getTotalSize(), position: "relative" }}
         >
           {virtualItems.map(renderItem)}
         </div>
       )}
-
       {emptyState}
-
       <ScrollBottomChat
         scrollBottomClassName={scrollBottomClassName}
         isScrollBottom={isScrollBottom}
@@ -208,7 +211,6 @@ const ChatWindowV2: React.FC<ChatWindowProps> = ({
             align: "end",
             behavior: "auto",
           })
-
           if (parentRef.current) {
             parentRef.current.scrollTop = parentRef.current.scrollHeight
           }
