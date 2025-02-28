@@ -27,11 +27,15 @@ const MyChatAgentClan = () => {
     return null
   }
 
-  return group?.status === 1 && nameAgentClan ? (
-    <ChatBoxLive />
-  ) : (
-    <MyAgentClanEmpty imageUrl={imageUrl} />
-  )
+  const renderContent = () => {
+    return group?.status === 1 && nameAgentClan ? (
+      <ChatBoxLive />
+    ) : (
+      <MyAgentClanEmpty imageUrl={imageUrl} />
+    )
+  }
+
+  return renderContent()
 }
 
 export default MyChatAgentClan

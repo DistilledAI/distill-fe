@@ -30,4 +30,5 @@ export enum QueryDataKeys {
   LEAVE_GROUP_STATE = "leave_group_state",
   MESSAGE_EMOJI_REACTIONS = "message-emoji-reactions",
   HAS_JOINED_GROUP = "has-joined-group",
+  IS_LOGGED_OUT = "is-logged-out",
 }

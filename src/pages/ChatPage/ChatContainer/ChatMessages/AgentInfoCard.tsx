@@ -62,7 +62,7 @@ const AgentInfoCard = ({ messages, groupId }: AgentInfoCardProps) => {
             publicAddress={agentInfo?.publicAddress}
             src={agentInfo?.avatar}
             badgeClassName={getBadgeColor(RoleUser.BOT)}
-            badgeIcon={<FilledBrainAIIcon />}
+            badgeIcon={<FilledBrainAIIcon size={14} />}
           />
           <div className="flex-1">
             <div className="flex justify-between gap-x-2 md:gap-x-4">

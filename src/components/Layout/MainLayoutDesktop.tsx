@@ -30,7 +30,10 @@ const MainLayoutDesktop = () => {
   }, [pathname, agentId])
 
   const isHideHeader = useMemo(() => {
-    return pathname === PATH_NAMES.CREATE_AGENT
+    return (
+      pathname === PATH_NAMES.CREATE_AGENT ||
+      pathname === `${PATH_NAMES.AGENT_DETAIL}/${agentId}`
+    )
   }, [pathname])
 
   const renderContent = useMemo(() => {
@@ -41,7 +44,6 @@ const MainLayoutDesktop = () => {
           className={twMerge(
             "ml-auto w-[calc(100dvw-84px)] pt-[68px] transition-all duration-200 ease-in-out",
             isHideSideBar && "w-full",
-            isHideHeader && "pt-0",
           )}
         >
           {!isHideHeader && <Header />}

@@ -55,9 +55,9 @@ const AvatarCustom: React.FC<AvatarCustomProps> = ({
         variant="solid"
         isOneChar
         classNames={{
-          base: twMerge("h-fit", badgeBaseClassName),
+          base: twMerge("box-border", badgeBaseClassName),
           badge: twMerge(
-            "w-[18px] h-[18px] right-[15%] bottom-[15%] z-1",
+            "min-w-fit min-h-fit w-[18px] h-[18px] right-[15%] bottom-[15%] z-1",
             badgeClassName,
           ),
         }}

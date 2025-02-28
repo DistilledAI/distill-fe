@@ -16,6 +16,9 @@ const useAuthAction = () => {
     )
     removeList.forEach((key) => queryClient.removeQueries({ queryKey: [key] }))
     dispatch(updateFirstLogin(false))
+    queryClient.setQueryData([QueryDataKeys.IS_LOGGED_OUT], () => true)
+
+    queryClient.setQueryData([QueryDataKeys.IS_LOGGED_OUT], () => false)
   }
 
   return { logout }

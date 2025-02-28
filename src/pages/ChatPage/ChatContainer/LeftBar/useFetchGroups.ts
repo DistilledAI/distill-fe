@@ -11,6 +11,7 @@ export enum TypeGroup {
   PUBLIC_GROUP = "PUBLIC_GROUP",
   PUBLIC_GROUP_CONVERSATION = "PUBLIC_GROUP_CONVERSATION",
 }
+
 export interface IGroup {
   id: number
   name: string
@@ -62,30 +63,40 @@ interface FetchConfig {
   offset?: number
   limit?: number
   isLoadMore?: boolean
+  filter?: {
+    [key: string]: any
+  }
 }
 
 export const LIMIT = 10
 
-const useFetchGroups = () => {
+interface UseFetchGroupsOptions {
+  initialLimit?: number
+  initialOffset?: number
+  initialFilter?: { [key: string]: any }
+}
+
+const useFetchGroups = (options: UseFetchGroupsOptions = {}) => {
+  const { initialLimit = 10, initialOffset = 0, initialFilter } = options
   const { isLogin } = useAuthState()
   const [hasMore, setHasMore] = useState(true)
-  const [offset, setOffset] = useState(LIMIT)
+  const [offset, setOffset] = useState(initialOffset)
   const [isFetched, setIsFetched] = useState(false)
   const queryClient = useQueryClient()
 
   const fetchGroups = async ({
-    offset,
-    limit,
+    offset = 0,
+    limit = initialLimit,
     isLoadMore = false,
-  }: FetchConfig) => {
+    filter = initialFilter,
+  }: FetchConfig = {}) => {
     try {
       setIsFetched(true)
-      const res = await getGroupList(offset, limit)
+      const res = await getGroupList(offset, limit, filter)
       if (res.data.items && !isLoadMore) {
         return res.data.items
       }
 
-      // load more new groups
       if (res.data.items.length && isLoadMore) {
         queryClient.setQueryData(
           [QueryDataKeys.MY_LIST_CHAT],
@@ -100,8 +111,13 @@ const useFetchGroups = () => {
   }
 
   const { data, refetch, isFetching } = useQuery({
-    queryKey: [QueryDataKeys.MY_LIST_CHAT],
-    queryFn: () => fetchGroups({}),
+    queryKey: [QueryDataKeys.MY_LIST_CHAT, initialFilter],
+    queryFn: () =>
+      fetchGroups({
+        offset: 0,
+        limit: initialLimit,
+        filter: initialFilter,
+      }),
     enabled: isLogin,
     staleTime: 5 * 60 * 1000,
     refetchOnWindowFocus: false,
@@ -111,18 +127,18 @@ const useFetchGroups = () => {
     if (hasMore) {
       const newGroups = await fetchGroups({
         offset,
+        limit: initialLimit,
+        filter: initialFilter,
         isLoadMore: true,
       })
-      if (!newGroups.length) return setHasMore(false)
-      setOffset((prev) => prev + LIMIT)
+      if (!newGroups?.length) return setHasMore(false)
+      setOffset((prev) => prev + initialLimit)
     }
   }
 
   const dataByPrivateMsg = data?.filter(
     (item: any) =>
-      ![TypeGroup.PUBLIC_GROUP, TypeGroup.PUBLIC_GROUP_CONVERSATION].includes(
-        item?.group?.typeGroup,
-      ),
+      ![TypeGroup.PUBLIC_GROUP_CONVERSATION].includes(item?.group?.typeGroup),
   )
 
   return {

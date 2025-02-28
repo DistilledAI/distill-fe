@@ -2,13 +2,20 @@ import { IUser } from "@reducers/userSlice"
 import endpoint from "./endpoint"
 import { fetchApiAuth } from "./fetchApi"
 
-export const getGroupList = async (offset: number = 0, limit: number = 10) => {
+export const getGroupList = async (
+  offset: number = 0,
+  limit: number = 10,
+  filter?: {
+    [key: string]: any
+  },
+) => {
   return fetchApiAuth({
     method: "get",
     url: endpoint.GET_MY_CHAT_GROUP_LIST,
     params: {
       offset,
       limit,
+      filter: JSON.stringify(filter),
     },
   })
 }

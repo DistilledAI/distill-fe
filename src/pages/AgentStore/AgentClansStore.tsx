@@ -103,26 +103,6 @@ const AgentClansStore = () => {
 
   return (
     <div className="space-y-5 md:space-y-10">
-      <div className="space-y-2">
-        {title({
-          icon: <UsersGroupOutlineIcon />,
-          title: "Multi-agent Chatrooms",
-        })}
-        <div className="flex items-center gap-2">
-          {ORCHESTRATION_LIST.map((item: any, index) => (
-            <div
-              key={item.conversationId}
-              className="w-[200px]"
-              onClick={() =>
-                navigate(`${PATH_NAMES.ORCHESTRATION}/${item.conversationId}`)
-              }
-            >
-              <OrchestrationCard item={item} index={index} />
-            </div>
-          ))}
-        </div>
-      </div>
-
       <div>
         {title({
           icon: <ClanIcon />,
@@ -219,6 +199,25 @@ const AgentClansStore = () => {
             page={page}
           />
         )}
+      </div>
+      <div className="space-y-2 pb-5 md:pb-10">
+        {title({
+          icon: <UsersGroupOutlineIcon />,
+          title: "Multi-agent Chatrooms",
+        })}
+        <div className="flex items-center gap-2">
+          {ORCHESTRATION_LIST.map((item: any, index) => (
+            <div
+              key={item.conversationId}
+              className="w-[200px]"
+              onClick={() =>
+                navigate(`${PATH_NAMES.ORCHESTRATION}/${item.conversationId}`)
+              }
+            >
+              <OrchestrationCard item={item} index={index} />
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   )

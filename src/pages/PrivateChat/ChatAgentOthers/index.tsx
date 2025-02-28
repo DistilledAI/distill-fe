@@ -32,7 +32,10 @@ import React from "react"
 import { useVirtualizer } from "@tanstack/react-virtual"
 
 const ChatAgentOthers = () => {
-  const { groups, handleLoadMore } = useFetchGroups()
+  const { groups, handleLoadMore } = useFetchGroups({
+    initialLimit: 100,
+    initialFilter: { typeGroup: TypeGroup.DIRECT },
+  })
   const { user } = useAuthState()
   const navigate = useNavigate()
   const { chatId } = useGetChatId()
