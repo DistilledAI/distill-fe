@@ -64,8 +64,6 @@ const PrivateChatBox: FC = () => {
     return isChatAgentOther ? userB?.username : myAgent?.username
   }
 
-  console.log({ groupDetail })
-
   const renderHeaderContent = () => {
     if (!isChatAgentOther && !isChatMyAgent) return null
 

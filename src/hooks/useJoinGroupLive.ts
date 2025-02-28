@@ -20,10 +20,16 @@ const useJoinGroupLive = () => {
     queryKey: [QueryDataKeys.HAS_JOINED_GROUP],
   })
 
+  const { data: isLoggedOut } = useQuery<boolean>({
+    initialData: false,
+    queryKey: [QueryDataKeys.IS_LOGGED_OUT],
+  })
+
   useLayoutEffect(() => {
-    if (originalChatId)
+    if (originalChatId) {
       queryClient.setQueryData([QueryDataKeys.HAS_JOINED_GROUP], () => false)
-  }, [originalChatId])
+    }
+  }, [groupId, originalChatId])
 
   const joinGroupLive = async (user: IUser, accessToken: string = "") => {
     const payload = { groupId: Number(groupId), member: [user?.id] }
@@ -64,10 +70,10 @@ const useJoinGroupLive = () => {
   }
 
   useEffect(() => {
-    if (groupId && !isLogin) {
+    if (groupId && !isLogin && !user?.id && !isLoggedOut) {
       anonymousJoinGroupLive()
     }
-  }, [groupId, isLogin])
+  }, [groupId, isLogin, user?.id, isLoggedOut])
 
   useEffect(() => {
     if (isLogin && !hasJoinedGroup && groupId) {

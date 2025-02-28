@@ -55,7 +55,7 @@ const JoinCreatorGroupAnnounce = () => {
   return (
     <div
       className={twMerge(
-        "fixed right-4 top-0 z-[49] flex w-[calc(100%-114px)] flex-col gap-2 rounded-b-[22px] border border-t-0 border-brown-500 bg-orange-100 px-2 py-1 duration-300 max-sm:right-0 max-sm:w-full md:flex-row md:px-6",
+        "fixed right-4 top-0 z-[51] flex w-[calc(100%-114px)] flex-col gap-2 rounded-b-[22px] border border-t-0 border-brown-500 bg-orange-100 px-2 py-1 duration-300 max-sm:right-0 max-sm:w-full md:flex-row md:px-6",
       )}
     >
       <div className="flex-1">

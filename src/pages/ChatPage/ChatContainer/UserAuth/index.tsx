@@ -105,9 +105,9 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
 
                 <DropdownItem
                   key="x-dstl"
-                  className="mb-4 mt-2 h-12 bg-[#F6F4EC] p-2"
+                  className="mb-2 mt-2 h-12 bg-[#F6F4EC] p-2"
                 >
-                  <div className="flex gap-3">
+                  <div className="flex items-center gap-2">
                     <img src={xDSTL} width={24} height={24} />
                     <span className="text-13 text-mercury-900 md:text-16">
                       <span className="font-bold">

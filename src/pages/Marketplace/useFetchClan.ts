@@ -1,65 +1,91 @@
 import { IGroup } from "@pages/ChatPage/ChatContainer/LeftBar/useFetchGroups"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useCallback, useMemo } from "react"
 import { getListGroupAgentPublic } from "services/group"
+
+// Types
+interface Filter {
+  [key: string]: any
+}
+
+interface UseFetchClanParams {
+  isFetchNow?: boolean
+  limit?: number
+  offset?: number
+  filter?: Filter
+}
+
+interface GetListParams {
+  hasLoading?: boolean
+  isFetchMore?: boolean
+  fetchLimit?: number
+  fetchOffset?: number
+  sort?: Record<string, any>
+  filter?: Filter
+}
 
 const useFetchClan = ({
   isFetchNow = true,
-  userId,
   limit = 10,
   offset = 0,
-}: {
-  isFetchNow?: boolean
-  userId?: number
-  limit?: number
-  offset?: number
-}) => {
+  filter: externalFilter,
+}: UseFetchClanParams = {}) => {
   const [loading, setLoading] = useState(false)
   const [data, setData] = useState<IGroup[]>([])
   const [hasMore, setHasMore] = useState(true)
   const [currentOffset, setCurrentOffset] = useState(offset)
   const [total, setTotal] = useState<number>(0)
 
-  const getList = async ({
-    hasLoading = true,
-    isFetchMore = false,
-    fetchLimit = limit,
-    fetchOffset = currentOffset,
-    sort,
-  }: {
-    hasLoading?: boolean
-    isFetchMore?: boolean
-    fetchLimit?: number
-    fetchOffset?: number
-    sort?: {
-      [key: string]: any
-    }
-  }) => {
-    try {
-      if (hasLoading) setLoading(true)
-      const filter = userId
-        ? JSON.stringify({ userId: userId.toString() })
-        : undefined
-      const res = await getListGroupAgentPublic({
-        filter,
-        sort,
-        limit: fetchLimit,
-        offset: fetchOffset,
-      })
-      const newData = res.data.items || []
+  // Memoize the filter to prevent unnecessary re-renders
+  const memoizedFilter = useMemo(
+    () => externalFilter,
+    [JSON.stringify(externalFilter)],
+  )
 
-      if (isFetchMore) {
-        setData((prev) => [...prev, ...newData])
-      } else {
-        setData(newData)
+  const getList = useCallback(
+    async ({
+      hasLoading = true,
+      isFetchMore = false,
+      fetchLimit = limit,
+      fetchOffset = currentOffset,
+      sort,
+      filter: overrideFilter,
+    }: GetListParams = {}) => {
+      try {
+        if (hasLoading) setLoading(true)
+
+        const combinedFilter = {
+          ...memoizedFilter,
+          ...overrideFilter,
+        }
+
+        const filter = Object.keys(combinedFilter).length
+          ? combinedFilter
+          : undefined
+
+        const res = await getListGroupAgentPublic({
+          filter,
+          sort,
+          limit: fetchLimit,
+          offset: fetchOffset,
+        })
+
+        const newData = res.data.items || []
+
+        if (isFetchMore) {
+          setData((prev) => [...prev, ...newData])
+        } else {
+          setData(newData)
+        }
+        setTotal(res?.data?.total || 0)
+        setHasMore(newData.length === fetchLimit)
+      } catch (error: any) {
+        console.error("Error fetching clan data:", error)
+      } finally {
+        setLoading(false)
       }
-      setTotal(res?.data?.total)
-      setHasMore(newData.length === fetchLimit)
-    } catch (error: any) {
-      console.error(error)
-    } finally {
-      setLoading(false)
-    }
-  }
+    },
+    [limit, currentOffset, memoizedFilter],
+  )
 
   useEffect(() => {
     if (isFetchNow) {
@@ -70,9 +96,9 @@ const useFetchClan = ({
         fetchOffset: offset,
       })
     }
-  }, [isFetchNow, userId, limit, offset])
+  }, [isFetchNow, limit, offset, getList])
 
-  const fetchMore = () => {
+  const fetchMore = useCallback(() => {
     if (!hasMore || loading) return
     const newOffset = currentOffset + limit
     setCurrentOffset(newOffset)
@@ -82,7 +108,7 @@ const useFetchClan = ({
       fetchLimit: limit,
       fetchOffset: newOffset,
     })
-  }
+  }, [hasMore, loading, currentOffset, limit, getList])
 
   return { data, loading, hasMore, fetchMore, getList, total }
 }

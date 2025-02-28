@@ -14,8 +14,11 @@ const AllClans = () => {
   const navigate = useNavigate()
   const { data } = useFetchClan({
     isFetchNow: true,
-    userId: isLogin ? user.id : undefined,
-    limit: 30,
+    limit: 10,
+    filter: {
+      typeGroup: "PUBLIC_GROUP",
+      userId: isLogin ? user.id : undefined,
+    },
   })
 
   return (

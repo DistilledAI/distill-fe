@@ -27,7 +27,9 @@ const ChatClans = () => {
   })
   const { data, loading, getList } = useFetchClan({
     isFetchNow: false,
-    userId: isLogin ? user.id : undefined,
+    filter: {
+      userId: isLogin ? user.id : undefined,
+    },
   })
 
   const dataSorted = useMemo(() => {

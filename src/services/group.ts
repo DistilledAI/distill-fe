@@ -22,7 +22,9 @@ export const getListGroupAgentPublic = async ({
   limit = 10,
   offset = 0,
 }: {
-  filter?: string
+  filter?: {
+    [key: string]: any
+  }
   sort?: {
     [key: string]: any
   }
@@ -33,7 +35,7 @@ export const getListGroupAgentPublic = async ({
     method: "GET",
     url: endpoint.GET_LIST_GROUP_PUBLIC,
     params: {
-      filter,
+      filter: JSON.stringify(filter),
       sort: JSON.stringify(sort),
       limit,
       offset,
