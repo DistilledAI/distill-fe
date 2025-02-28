@@ -1,4 +1,3 @@
-import ChatWindow from "@components/ChatWindow"
 import ChatWindowV2 from "@components/ChatWindowV2"
 import { ChevronDownIcon } from "@components/Icons/ChevronDownIcon"
 import ReCaptchaWraper from "@components/ReCaptchaWraper"
