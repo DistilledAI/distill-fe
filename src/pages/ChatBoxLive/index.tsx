@@ -7,6 +7,10 @@ import useJoinGroupLive from "@hooks/useJoinGroupLive"
 import { lazy, useLayoutEffect } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { PATH_NAMES } from "@constants/index"
+import HeaderBack from "@components/Layout/Header/HeaderBack"
+import MoreAction from "@components/ChatInfoCurrent/MoreAction"
+import { TypeGroup } from "@pages/ChatPage/ChatContainer/LeftBar/useFetchGroups"
+import useAuthState from "@hooks/useAuthState"
 
 const ChatLiveHeader = lazy(() => import("./ChatLiveHeader"))
 
@@ -14,6 +18,7 @@ const ChatBoxLive = () => {
   const { isMobile } = useWindowSize()
   const { chatId } = useParams()
   const navigate = useNavigate()
+  const { user } = useAuthState()
 
   useJoinGroupLive()
   const { groupDetail, isFetched } = useGroupDetail()
@@ -31,6 +36,20 @@ const ChatBoxLive = () => {
         "relative w-full bg-mercury-30 max-md:overflow-hidden md:z-[22] md:h-[calc(100dvh-68px)] md:bg-white md:px-6",
       )}
     >
+      <div>
+        <HeaderBack onBack={() => navigate(PATH_NAMES.MY_AGENT_CLAN)}>
+          <span className="line-clamp-1 text-16 font-bold text-mercury-950">
+            {groupDetail?.group?.name}
+          </span>
+          {user?.id !== groupDetail?.group?.createBy && (
+            <MoreAction
+              groupId={Number(chatId)}
+              groupType={groupDetail?.group?.typeGroup as TypeGroup}
+            />
+          )}
+        </HeaderBack>
+      </div>
+
       {isMobile ? <ChatLiveHeader groupDetail={groupDetail} /> : null}
 
       <div className="relative flex h-[calc(100dvh-120px)] w-full gap-2 max-lg:flex-col md:h-full md:gap-5 md:pb-4">
