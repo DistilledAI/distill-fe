@@ -61,7 +61,7 @@ const AddData = () => {
         <UploadCommon
           moreCustomRequest={onMoreCustomRequest}
           fileKey={TYPE_DATA_KEY.TXT_FILE}
-          label="Text files"
+          label="Plain text files"
           description="PDF, TXT"
         />
         <UploadFAQ onMoreCustomRequest={onMoreCustomRequest} />
