@@ -1,5 +1,4 @@
 import { UploadIcon } from "@components/Icons"
-import { SocialLinkIcon } from "@components/Icons/SocialLinkIcon"
 import { Button } from "@nextui-org/react"
 import CreatPrivateAgentModal from "@pages/ChatPage/ChatContainer/RightContent/Modal/CreatPrivateAgentModal"
 import React, { useState } from "react"
@@ -18,12 +17,15 @@ const UploadSocial: React.FC<{
     <>
       <Button
         onPress={() => setOpenPopup(true)}
-        className="flex h-[56px] w-full items-center justify-between rounded-full bg-mercury-100 font-bold text-mercury-950"
+        className="flex h-16 w-full items-center justify-between rounded-[14px] bg-mercury-950 px-6 font-bold text-mercury-950"
       >
-        <div className="flex items-center gap-1">
-          <SocialLinkIcon color="#363636" /> <span>Social Media</span>
+        <div className="flex flex-col items-start">
+          <span className="text-base-b text-mercury-30">Social Media</span>
+          <span className="text-[13px] font-medium text-mercury-500">
+            X account link
+          </span>
         </div>
-        <UploadIcon />
+        <UploadIcon color="#FFFF" />
       </Button>
       <CreatPrivateAgentModal
         openPopup={openPopup}

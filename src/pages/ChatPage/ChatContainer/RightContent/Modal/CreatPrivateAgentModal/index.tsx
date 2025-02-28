@@ -52,7 +52,7 @@ const CreatPrivateAgentModal: React.FC<{
         <div className="h-full w-full bg-cover bg-center bg-no-repeat">
           <div className="flex-items-center relative left-0 top-4 z-10 w-full justify-center px-4">
             <span className="text-18 font-semibold text-mercury-950">
-              Create Private Agent
+              Add Social profile
             </span>
             <div
               className="absolute right-4 z-20 cursor-pointer"
@@ -83,7 +83,7 @@ const CreatPrivateAgentModal: React.FC<{
       >
         <div className="flex-items-center absolute left-0 top-4 z-10 w-full justify-between px-4">
           <span className="text-[24px] font-semibold text-mercury-950">
-            Create Private Agent
+            Add Social profile
           </span>
           <div className="z-20 cursor-pointer" onClick={onOpenChange}>
             <CloseFilledIcon color="#545454" />

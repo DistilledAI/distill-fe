@@ -1,8 +1,8 @@
+import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
+import { CheckFilledIcon } from "@components/Icons/DefiLens"
+import { Spinner } from "@nextui-org/react"
 import React from "react"
 import { twMerge } from "tailwind-merge"
-import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
-import { Spinner } from "@nextui-org/react"
-import { CheckFilledIcon } from "@components/Icons/DefiLens"
 
 const AgentStatus: React.FC<{
   isAgentActive: boolean
@@ -46,10 +46,10 @@ const AgentStatus: React.FC<{
         )}
       >
         <span className="text-14 font-semibold text-mercury-950 md:text-18">
-          {isAgentActive ? "Created your" : "Creating your"}
+          {isAgentActive ? "Your Agent created" : "Creating your"}
         </span>
         <span className="text-14 font-semibold text-mercury-950 md:text-18">
-          {isAgentActive ? "Private Agent" : "Private Agent..."}
+          {isAgentActive ? "with Private Intelligence" : "Private Agent..."}
         </span>
       </div>
     </div>

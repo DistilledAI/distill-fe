@@ -1,15 +1,13 @@
-import { PDFTypeIcon } from "@components/Icons/PDFTypeIcon"
-import { TxtIcon } from "@components/Icons/TextIcon"
+import { CheckedIcon } from "@components/Icons/Checked"
+import { TYPE_DATA_KEY } from "@pages/ChatPage/ChatContainer/RightContent/MyPrivateAgentContent/CreatePrivateAgent"
+import { useParams } from "react-router-dom"
+import { toast } from "react-toastify"
+import { mapMyDataToBot } from "services/user"
+import ListData from "./ListData"
+import UploadCommon from "./UploadCommon"
 import UploadFAQ from "./UploadFAQ"
 import UploadSocial from "./UploadSocial"
-import ListData from "./ListData"
-import { useParams } from "react-router-dom"
-import { mapMyDataToBot } from "services/user"
-import { toast } from "react-toastify"
-import { CheckedIcon } from "@components/Icons/Checked"
 import useFetchData from "./useFetchData"
-import UploadCommon from "./UploadCommon"
-import { TYPE_DATA_KEY } from "@pages/ChatPage/ChatContainer/RightContent/MyPrivateAgentContent/CreatePrivateAgent"
 
 const AddData = () => {
   const { agentId } = useParams()
@@ -58,27 +56,15 @@ const AddData = () => {
 
   return (
     <div className="mt-6 flex gap-6 max-md:flex-col">
-      <div className="flex w-[230px] flex-col items-stretch gap-2 rounded-[22px] border-1 border-dashed border-mercury-700 bg-mercury-50 p-4 max-md:w-full">
+      <div className="flex h-fit w-[230px] flex-col items-stretch gap-2 rounded-[22px] border-1 border-dashed border-mercury-700 bg-mercury-50 p-4 max-md:w-full">
+        <UploadSocial onMoreCustomRequest={onMoreCustomRequest} />
         <UploadCommon
           moreCustomRequest={onMoreCustomRequest}
           fileKey={TYPE_DATA_KEY.TXT_FILE}
-          icon={<TxtIcon color="#363636" />}
           label="Text files"
+          description="PDF, TXT"
         />
         <UploadFAQ onMoreCustomRequest={onMoreCustomRequest} />
-        <UploadCommon
-          moreCustomRequest={onMoreCustomRequest}
-          fileKey={TYPE_DATA_KEY.PDF_FILE}
-          icon={<PDFTypeIcon color="#363636" />}
-          label="PDFs"
-        />
-        <UploadCommon
-          moreCustomRequest={onMoreCustomRequest}
-          fileKey={TYPE_DATA_KEY.CV_FILE}
-          icon={<PDFTypeIcon color="#363636" />}
-          label="CV"
-        />
-        <UploadSocial onMoreCustomRequest={onMoreCustomRequest} />
         <p className="mt-2 text-center text-13 font-medium text-mercury-800">
           Max file size: 20MB
         </p>

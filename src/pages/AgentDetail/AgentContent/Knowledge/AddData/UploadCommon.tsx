@@ -1,7 +1,7 @@
 import { UploadIcon } from "@components/Icons"
 import { Spinner } from "@nextui-org/react"
-import { Upload } from "antd"
 import type { UploadFile, UploadProps } from "antd"
+import { Upload } from "antd"
 import React, { useState } from "react"
 import { toast } from "react-toastify"
 import { uploadMyData } from "services/user"
@@ -17,6 +17,7 @@ interface UploadCustomProps {
   moreCustomRequest?: any
   children?: React.ReactNode
   containerClassName?: string
+  description?: string
 }
 
 const maxSizeUpload = 20
@@ -29,11 +30,11 @@ const FILE_UPLOAD_STATUS = {
 
 const UploadCommon: React.FC<UploadCustomProps> = ({
   fileKey,
-  icon,
   label,
   accept = ".doc,.docx,application/pdf",
   multiple,
   moreCustomRequest,
+  description,
 }) => {
   const [loading, setLoading] = useState(false)
   const [fileListValue, setFileList] = useState<UploadFile[]>([])
@@ -114,11 +115,14 @@ const UploadCommon: React.FC<UploadCustomProps> = ({
       showUploadList={false}
       className="w-full"
     >
-      <div className="flex h-[56px] w-full cursor-pointer items-center justify-between rounded-full bg-mercury-100 px-4 font-bold text-mercury-950 max-md:h-[40px]">
-        <div className="flex items-center gap-1">
-          {icon} <span>{label}</span>
+      <div className="flex h-16 w-full cursor-pointer items-center justify-between rounded-2xl bg-mercury-950 px-6">
+        <div className="flex flex-col items-start">
+          <span className="text-base-b text-mercury-30">{label}</span>
+          <span className="text-[13px] font-medium text-mercury-500">
+            {description}
+          </span>
         </div>
-        {loading ? <Spinner size="sm" /> : <UploadIcon />}
+        {loading ? <Spinner size="sm" /> : <UploadIcon color="#FFFF" />}
       </div>
     </StyledUpload>
   )

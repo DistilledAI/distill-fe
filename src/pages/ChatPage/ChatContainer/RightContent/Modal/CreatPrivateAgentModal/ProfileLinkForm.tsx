@@ -1,7 +1,5 @@
-import { BrandLinkedInIcon } from "@components/Icons/BrandLinkedInIcon"
-import { TwitterIcon } from "@components/Icons/Twitter"
 import useWindowSize from "@hooks/useWindowSize"
-import { Button, Checkbox, Input } from "@nextui-org/react"
+import { Button, Input } from "@nextui-org/react"
 import { useState } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { toast } from "react-toastify"
@@ -18,26 +16,12 @@ export const PROFILE_TYPE = {
   TWITTER: "x",
 }
 
-const SOCIAL = [
-  {
-    key: PROFILE_TYPE.LINKEDIN,
-    label: "LinkedIn",
-    icon: <BrandLinkedInIcon size={24} />,
-  },
-  {
-    key: PROFILE_TYPE.TWITTER,
-    label: "Twitter",
-    icon: <TwitterIcon />,
-  },
-]
-
 const ProfileLinkForm: React.FC<{
   setContentStep: any
   setCollectedData: any
 }> = ({ setContentStep, setCollectedData }) => {
-  const { register, handleSubmit, watch, setValue, getValues } =
-    useForm<Inputs>()
-  const [selectedKey, setSelectedKey] = useState<string>(PROFILE_TYPE.LINKEDIN)
+  const { register, handleSubmit, watch, getValues } = useForm<Inputs>()
+  const [selectedKey, _] = useState<string>(PROFILE_TYPE.TWITTER)
   const inputValue = watch(selectedKey as any)
   const [loading, setLoading] = useState<boolean>(false)
   const { isMobile } = useWindowSize()
@@ -45,19 +29,10 @@ const ProfileLinkForm: React.FC<{
   const getUserName = (url: string) => {
     if (!url) return null
 
-    if (selectedKey === PROFILE_TYPE.LINKEDIN) {
-      const match = url.match(/linkedin\.com\/in\/([^/]+)/)
-      return match ? match[1] : null
+    const match = url.match(/x\.com\/([^/]+)/)
+    if (match && match[1] !== "home") {
+      return match[1]
     }
-
-    if (selectedKey === PROFILE_TYPE.TWITTER) {
-      const match = url.match(/x\.com\/([^/]+)/)
-      if (match && match[1] !== "home") {
-        return match[1]
-      }
-      return null
-    }
-
     return null
   }
 
@@ -96,37 +71,6 @@ const ProfileLinkForm: React.FC<{
     if (data) callGetProfileInfo(data)
   }
 
-  const onChangeProfileType = (record: any) => {
-    setSelectedKey(record.key)
-    setValue(record.key, "")
-  }
-
-  const renderSocialSelect = () => {
-    return (
-      <div className="flex items-center gap-4 py-2">
-        {SOCIAL.map((record) => {
-          const isSelected = record.key === selectedKey
-          return (
-            <div
-              key={record.key}
-              onClick={() => onChangeProfileType(record)}
-              aria-selected={isSelected}
-              className="flex w-full cursor-pointer items-center justify-between rounded-lg p-2 delay-100 duration-500 hover:bg-white aria-selected:bg-white aria-selected:max-md:bg-mercury-100"
-            >
-              <div className="flex items-center gap-2">
-                {record.icon}
-                <span className="text-base-md text-mercury-900">
-                  {record.label}
-                </span>
-              </div>
-              <Checkbox radius="full" isSelected={isSelected} />
-            </div>
-          )
-        })}
-      </div>
-    )
-  }
-
   if (loading) {
     if (isMobile)
       return (
@@ -144,11 +88,15 @@ const ProfileLinkForm: React.FC<{
       <>
         <IntroVideo />
         <h3 className="flex items-center justify-center text-center text-[24px] font-semibold text-mercury-950">
-          Website Links/Social Media
+          X account links:
         </h3>
-        {renderSocialSelect()}
+        <span className="text-14 font-medium text-mercury-900">
+          Provide the X (Twitter) account links from which your agents can
+          consistently learn. Once saved, your agents will mimic and absorb data
+          from these sources.
+        </span>
         <Input
-          placeholder="Enter your profile link"
+          placeholder="https://x.com/username"
           labelPlacement="outside"
           classNames={{
             inputWrapper:
@@ -175,11 +123,15 @@ const ProfileLinkForm: React.FC<{
   return (
     <div className="min-w-[400px]">
       <h3 className="text-[24px] font-semibold text-mercury-950">
-        Website Links/Social Media
+        X account links:
       </h3>
-      {renderSocialSelect()}
+      <span className="text-14 font-medium text-mercury-900">
+        Provide the X (Twitter) account links from which your agents can
+        consistently learn. Once saved, your agents will mimic and absorb <br />{" "}
+        data from these sources.
+      </span>
       <Input
-        placeholder="Enter your profile link"
+        placeholder="https://x.com/username"
         labelPlacement="outside"
         classNames={{
           inputWrapper:
@@ -197,7 +149,7 @@ const ProfileLinkForm: React.FC<{
         onClick={handleSubmit(onSubmit)}
         isDisabled={!inputValue || loading}
       >
-        <span className="text-18 text-mercury-30">Connect</span>
+        <span className="text-base-b text-mercury-300">Connect</span>
       </Button>
     </div>
   )

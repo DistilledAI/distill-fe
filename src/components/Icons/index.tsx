@@ -144,7 +144,7 @@ export const CameraIcon = () => {
   )
 }
 
-export const UploadIcon = () => {
+export const UploadIcon = ({ color = "#545454" }: IconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -155,7 +155,7 @@ export const UploadIcon = () => {
     >
       <path
         d="M3.33301 14.1663V15.833C3.33301 16.275 3.5086 16.699 3.82116 17.0115C4.13372 17.3241 4.55765 17.4997 4.99967 17.4997H14.9997C15.4417 17.4997 15.8656 17.3241 16.1782 17.0115C16.4907 16.699 16.6663 16.275 16.6663 15.833V14.1663M5.83301 7.49967L9.99967 3.33301M9.99967 3.33301L14.1663 7.49967M9.99967 3.33301V13.333"
-        stroke="#545454"
+        stroke={color}
         stroke-width="2"
         stroke-linecap="round"
         stroke-linejoin="round"

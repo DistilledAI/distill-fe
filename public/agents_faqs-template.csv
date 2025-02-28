@@ -1,2 +1,11 @@
 question,answer
-What is your wallet id,ajsdfoi234
+"How does Web3 differ from Web2?","Web3 is decentralized and powered by blockchain, while Web2 relies on centralized platforms controlled by big tech companies."
+"Why is blockchain considered secure?","Blockchain uses cryptographic hashing and decentralized consensus mechanisms, making it resistant to tampering and fraud."
+"Can I create my own cryptocurrency?","Yes, you can create a cryptocurrency using platforms like Ethereum, Binance Smart Chain, or by developing your own blockchain."
+"Who invented Bitcoin?","Bitcoin was created by an anonymous person or group known as Satoshi Nakamoto in 2008."
+"Is every blockchain public?","No, while blockchains like Bitcoin and Ethereum are public, some are private and restricted to authorized users."
+"How do I store my crypto safely?","Use a combination of hardware wallets, secure passwords, and offline storage to protect your assets from hacks."
+"Why do crypto prices fluctuate so much?","Crypto markets are highly volatile due to speculation, supply and demand, regulations, and overall market sentiment."
+"Are NFTs only for digital art?","No, NFTs can represent ownership of various assets, including music, real estate, collectibles, and even virtual identities."
+"How do smart contracts execute transactions?","Smart contracts run on blockchain networks and automatically execute transactions when predefined conditions are met."
+"What happens if I lose my crypto wallet's private key?","If you lose your private key and don't have a backup, you lose access to your funds permanently."
