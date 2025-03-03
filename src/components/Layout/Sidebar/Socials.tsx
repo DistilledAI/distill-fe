@@ -33,7 +33,7 @@ const SOCIALS = [
   {
     name: "X (Twitter)",
     icon: (color?: string) => <XIcon size={18} color={color} />,
-    link: "https://dune.com/distilled_ai_team/distilledaistats",
+    link: "https://x.com/distilled_AI",
     type: "external",
   },
 ]
