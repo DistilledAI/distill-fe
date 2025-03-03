@@ -36,6 +36,7 @@ export const LIST_AGENT_CONFIG_KEYS = [
   "agent_describe",
   "x_user_names",
   "x_keywords",
+  "autonomous_reply",
 ]
 
 export const getConfigAgentByDataForm = (data: any) => {
