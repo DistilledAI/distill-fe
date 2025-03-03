@@ -10,10 +10,12 @@ import { Outlet, useLocation, useParams } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
 import Header from "./Header"
 import Sidebar from "./Sidebar"
+import useAuthState from "@hooks/useAuthState"
 
 const MainLayoutDesktop = () => {
   const { pathname } = useLocation()
   const { agentId } = useParams()
+  const { isLogin, isAnonymous } = useAuthState()
   const sidebarCollapsed = useAppSelector((state) => state.sidebarCollapsed)
   useInviteAgent()
   useFetchMe()
@@ -23,18 +25,18 @@ const MainLayoutDesktop = () => {
     return (
       pathname === PATH_NAMES.TRENDING ||
       pathname === PATH_NAMES.STAKING ||
-      pathname === PATH_NAMES.CREATE_AGENT ||
+      (pathname === PATH_NAMES.CREATE_AGENT && isLogin && !isAnonymous) ||
       pathname.startsWith(PATH_NAMES.DAO) ||
       pathname === `${PATH_NAMES.AGENT_DETAIL}/${agentId}`
     )
-  }, [pathname, agentId])
+  }, [pathname, agentId, isLogin, isAnonymous])
 
   const isHideHeader = useMemo(() => {
     return (
-      pathname === PATH_NAMES.CREATE_AGENT ||
+      (pathname === PATH_NAMES.CREATE_AGENT && isLogin && !isAnonymous) ||
       pathname === `${PATH_NAMES.AGENT_DETAIL}/${agentId}`
     )
-  }, [pathname])
+  }, [pathname, isLogin, isAnonymous])
 
   const renderContent = useMemo(() => {
     return (
