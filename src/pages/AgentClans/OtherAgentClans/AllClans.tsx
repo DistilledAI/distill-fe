@@ -21,7 +21,7 @@ const AllClans = () => {
 
   const { groups, isLoading, isLoadingMore, handleLoadMore, hasMore } =
     useFetchGroups({
-      initialLimit: 10,
+      initialLimit: 15,
       initialFilter: { typeGroup: TypeGroup.PUBLIC_GROUP },
     })
 
@@ -35,7 +35,7 @@ const AllClans = () => {
         ? filteredGroups.length + 1
         : filteredGroups.length,
     getScrollElement: () => parentRef.current,
-    estimateSize: () => 56,
+    estimateSize: () => 72,
     overscan: 5,
   })
 
@@ -59,7 +59,6 @@ const AllClans = () => {
         ref={parentRef}
         className="h-[calc(100dvh-240px)] overflow-y-auto scrollbar-hide md:h-[calc(100dvh-212px)]"
         onScroll={debouncedHandleScroll}
-        style={{ position: "relative" }}
       >
         <div
           style={{
@@ -77,16 +76,13 @@ const AllClans = () => {
                   key={virtualItem.key}
                   data-index={virtualItem.index}
                   ref={virtualizer.measureElement}
-                  className="absolute left-0 top-0 w-full py-2 text-center text-14 text-mercury-800"
+                  className="absolute left-0 top-0 w-full text-center text-14 text-mercury-800"
                   style={{
                     transform: `translateY(${virtualItem.start}px)`,
+                    height: 64,
                   }}
                 >
-                  {isLoading || isLoadingMore
-                    ? "Loading..."
-                    : !hasMore
-                      ? "No more clans"
-                      : null}
+                  {isLoadingMore ? "Loading..." : null}
                 </div>
               )
             }

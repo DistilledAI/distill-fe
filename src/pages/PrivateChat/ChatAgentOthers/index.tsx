@@ -125,14 +125,6 @@ const ChatAgentOthers = () => {
 
   const items = virtualizer.getVirtualItems()
 
-  useEffect(() => {
-    if (itemRef.current) {
-      const height = itemRef.current.offsetHeight
-      virtualizer.options.estimateSize = () => height
-      virtualizer.measure()
-    }
-  }, [newGroups.length, virtualizer])
-
   const debouncedLoadMore = useDebounce(handleLoadMore, 10)
 
   const handleScroll = () => {
@@ -160,7 +152,7 @@ const ChatAgentOthers = () => {
         onScroll={handleScroll}
       >
         <div
-          className="relative h-full w-full"
+          className="relative w-full"
           style={{ height: virtualizer.getTotalSize() }}
         >
           {items.map((virtualItem) => {
@@ -178,11 +170,7 @@ const ChatAgentOthers = () => {
                     height: 64,
                   }}
                 >
-                  {isLoadingMore
-                    ? "Loading..."
-                    : !hasMore
-                      ? "No more messages"
-                      : null}
+                  {isLoadingMore ? "Loading..." : null}
                 </div>
               )
             }
@@ -207,7 +195,7 @@ const ChatAgentOthers = () => {
                   aria-selected={isActive}
                   onClick={() => handleGroupClick(groupItem, isBotLive)}
                   className={twMerge(
-                    "group/item group relative flex h-14 cursor-pointer items-center justify-between gap-2 rounded-full p-2 hover:bg-mercury-100",
+                    "group/item group relative flex cursor-pointer items-center justify-between gap-2 rounded-full p-2 hover:bg-mercury-100",
                     isActive && "bg-mercury-100",
                     isActive &&
                       isBotLive &&
