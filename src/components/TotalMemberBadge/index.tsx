@@ -6,7 +6,7 @@ import { twMerge } from "tailwind-merge"
 import { QueryDataKeys } from "types/queryDataKeys"
 
 interface TotalMemberBadgeProps {
-  groupId: string
+  groupId?: string
   isQuery?: boolean
   classname?: string
   textClassName?: string
@@ -15,7 +15,7 @@ interface TotalMemberBadgeProps {
 }
 
 const TotalMemberBadge = ({
-  groupId,
+  groupId = "",
   classname,
   textClassName,
   iconSize = 12,

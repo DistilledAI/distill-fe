@@ -134,7 +134,6 @@ const ClanAppearance: React.FC = () => {
               </div>
               <div className="absolute bottom-[10px] left-[10px] z-10">
                 <TotalMemberBadge
-                  groupId="123"
                   iconSize={10}
                   textClassName="text-[11px] leading-[110%]"
                   memberFixed={999}
