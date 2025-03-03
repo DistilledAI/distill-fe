@@ -29,7 +29,7 @@ const useJoinGroupLive = () => {
     if (originalChatId) {
       queryClient.setQueryData([QueryDataKeys.HAS_JOINED_GROUP], () => false)
     }
-  }, [groupId, originalChatId])
+  }, [groupId, originalChatId, queryClient])
 
   const joinGroupLive = async (user: IUser, accessToken: string = "") => {
     const payload = { groupId: Number(groupId), member: [user?.id] }
@@ -40,6 +40,11 @@ const useJoinGroupLive = () => {
     const res = await inviteUserJoinGroup(payload, headers)
     if (res?.data) {
       queryClient.setQueryData([QueryDataKeys.HAS_JOINED_GROUP], () => true)
+
+      queryClient.invalidateQueries({
+        queryKey: [QueryDataKeys.MY_LIST_CHAT],
+      })
+      await fetchGroups()
       return true
     }
     return false
@@ -63,7 +68,7 @@ const useJoinGroupLive = () => {
             }),
           )
           queryClient.setQueryData([QueryDataKeys.HAS_JOINED_GROUP], () => true)
-          await fetchGroups()
+          await fetchGroups() // Đảm bảo fetchGroups được gọi
         }, 10)
       }
     }
@@ -76,13 +81,12 @@ const useJoinGroupLive = () => {
   }, [groupId, isLogin, user?.id, isLoggedOut])
 
   useEffect(() => {
-    if (isLogin && !hasJoinedGroup && groupId) {
+    if (isLogin && !hasJoinedGroup && groupId && user?.id) {
       joinGroupLive(user)
-      fetchGroups()
     }
   }, [isLogin, user?.id, hasJoinedGroup, groupId])
 
-  return
+  return {}
 }
 
 export default useJoinGroupLive
