@@ -7,7 +7,7 @@ import { STATUS_AGENT } from "@constants/index"
 import { useAppSelector } from "@hooks/useAppRedux"
 import useFetchMyData from "@pages/MyData/useFetch"
 import AddData from "./AddData"
-import TopicRestriction from "./TopicRestriction"
+// import TopicRestriction from "./TopicRestriction"
 
 const Knowledge = () => {
   const myAgent = useAppSelector((state) => state.agents.myAgent)
@@ -55,7 +55,7 @@ const Knowledge = () => {
         />
       )}
       <AddData />
-      <TopicRestriction />
+      {/* <TopicRestriction /> */}
     </div>
   )
 }

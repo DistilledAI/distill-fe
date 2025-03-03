@@ -87,14 +87,18 @@ const AutonomousX: React.FC<{
     const newUserNameValues = xUserNameValues.filter(
       (item: any) => item?.user_name !== userName,
     )
-    setValue("x_user_names", JSON.stringify(newUserNameValues))
+    setValue("x_user_names", JSON.stringify(newUserNameValues), {
+      shouldDirty: true,
+    })
   }
 
   const removeKeyword = (keywordValue: string) => {
     const newKeywordsValues = xKeywordsValues.filter(
       (keyword: string) => keyword !== keywordValue,
     )
-    setValue("x_keywords", JSON.stringify(newKeywordsValues))
+    setValue("x_keywords", JSON.stringify(newKeywordsValues), {
+      shouldDirty: true,
+    })
   }
 
   const getUserName = (url: string) => {
@@ -178,6 +182,7 @@ const AutonomousX: React.FC<{
                       setValue(
                         "x_user_names",
                         JSON.stringify(uniqueNewXUserNames),
+                        { shouldDirty: true },
                       )
                       setInputValue("")
                       toggleShowInput()
@@ -456,6 +461,7 @@ const AutonomousX: React.FC<{
                           setValue(
                             "x_keywords",
                             JSON.stringify(uniqueNewXKeywords),
+                            { shouldDirty: true },
                           )
                           setInputValue("")
                           toggleShowKeywordInput()
