@@ -4,6 +4,7 @@ import { Link } from "react-router-dom"
 import ClanItem from "./ClanItem"
 import ClanSkeleton from "./ClanSkeleton"
 import useWindowSize from "@hooks/useWindowSize"
+import { PATH_NAMES } from "@constants/index"
 
 const NewAgent = () => {
   const { isMobile } = useWindowSize()
@@ -20,7 +21,7 @@ const NewAgent = () => {
         </div>
         <Link
           className="inline-flex h-[40px] items-center rounded-full bg-brown-50 px-5 font-bold text-brown-600 max-md:h-[36px] max-md:text-[14px]"
-          to={"#"}
+          to={PATH_NAMES.MARKETPLACE}
         >
           View All
         </Link>
