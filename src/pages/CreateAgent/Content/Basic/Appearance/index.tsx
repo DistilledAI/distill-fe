@@ -20,9 +20,9 @@ const Appearance = () => {
     try {
       const maxSize = 5 * 1024 * 1024
       if (!isPassFileSize(file.size, maxSize)) return
-      setValue("avatarFile", file)
+      setValue("avatarFile", file, { shouldDirty: true })
       const fileBase64 = await fileToBase64(file)
-      if (fileBase64) setValue("avatar", fileBase64)
+      if (fileBase64) setValue("avatar", fileBase64, { shouldDirty: true })
     } catch (error) {
       console.error(error)
       toast.error(`${file.name} failed to upload.`)

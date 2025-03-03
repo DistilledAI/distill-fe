@@ -17,8 +17,7 @@ import { useNavigate } from "react-router-dom"
 
 const HeaderDetailAgent: React.FC<{
   isLoading: boolean
-  isChangePersonality: boolean
-}> = ({ isLoading, isChangePersonality }) => {
+}> = ({ isLoading }) => {
   const { isMobile } = useWindowSize()
   const navigate = useNavigate()
   const [loading, setLoading] = useState(false)
@@ -38,13 +37,12 @@ const HeaderDetailAgent: React.FC<{
 
   const isAgentActive = agent && agent?.status === STATUS_AGENT.ACTIVE
   const isDisabled =
-    (personality.length === 0 ||
-      personality[0] === "" ||
-      !agentName ||
-      !agentDesc ||
-      !isAgentActive ||
-      !isDirty) &&
-    !isChangePersonality
+    personality.length === 0 ||
+    personality[0] === "" ||
+    !agentName ||
+    !agentDesc ||
+    !isAgentActive ||
+    !isDirty
 
   useEffect(() => {
     setIsPublished(agent?.publish === Publish.Published)
