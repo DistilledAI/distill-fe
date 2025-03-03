@@ -111,7 +111,7 @@ const useFetchGroups = (options: UseFetchGroupsOptions = {}) => {
   }
 
   const { data, refetch, isFetching } = useQuery({
-    queryKey: [QueryDataKeys.MY_LIST_CHAT],
+    queryKey: [QueryDataKeys.MY_LIST_CHAT, initialFilter],
     queryFn: () =>
       fetchGroups({
         offset: 0,

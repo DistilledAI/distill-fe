@@ -89,7 +89,7 @@ const LeftContent: React.FC<{
         videoSrc={groupConfig[CLAN_CONFIG_KEYS.IMAGES_LIVE] ?? ""}
         classNames={{
           video: twMerge(
-            "h-full w-full rounded-lg md:rounded-[32px] object-cover md:max-h-[400px] md:h-auto",
+            "h-full w-full rounded-lg md:rounded-[32px] object-cover md:max-h-[400px] md:h-[400px]",
           ),
         }}
         skeletonPreview={
