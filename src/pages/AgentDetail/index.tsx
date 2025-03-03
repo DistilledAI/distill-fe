@@ -194,25 +194,11 @@ const AgentDetail: React.FC = () => {
     }
   }
 
-  const dataAgentConfig = getConfigAgentValueByKeys(
-    agentConfigs,
-    LIST_AGENT_CONFIG_KEYS,
-  )
-
-  const isChangePersonality =
-    methods.getValues("personality_traits")[0] !==
-      dataAgentConfig["personality_traits"] ||
-    methods.getValues("communication_style")[0] !==
-      dataAgentConfig["communication_style"]
-
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onSubmit)}>
         <div>
-          <HeaderDetailAgent
-            isChangePersonality={isChangePersonality}
-            isLoading={loading}
-          />
+          <HeaderDetailAgent isLoading={loading} />
           <div className="relative mx-auto flex max-w-[1536px] items-start gap-[40px] px-6 py-6 max-md:flex-col max-md:gap-[20px] max-md:px-4 max-md:pb-[80px]">
             <div className="w-[260px] max-md:w-full">
               <AgentNavTab isEdit />

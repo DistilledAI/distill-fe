@@ -53,7 +53,7 @@ const ClanAppearance: React.FC = () => {
 
     try {
       if (file.type.startsWith("image/") || file.type.startsWith("video/")) {
-        setValue("clan.imageLive", file)
+        setValue("clan.imageLive", file, { shouldDirty: true })
       } else {
         throw new Error("Unsupported file type")
       }

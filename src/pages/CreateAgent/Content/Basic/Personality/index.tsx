@@ -103,8 +103,8 @@ const Personality = () => {
 
   const handleSelectBehaviors = (selected: SelectedBehaviors) => {
     const { personality_traits, communication_style } = selected
-    setValue("personality_traits", personality_traits)
-    setValue("communication_style", communication_style)
+    setValue("personality_traits", personality_traits, { shouldDirty: true })
+    setValue("communication_style", communication_style, { shouldDirty: true })
   }
 
   const handleSelect = (type: keyof SelectedBehaviors, item: string) => {
@@ -145,8 +145,12 @@ const Personality = () => {
             <div
               key={item.value}
               onClick={() => {
-                setValue("personality_traits", [item.value])
-                setValue("communication_style", [item.communication])
+                setValue("personality_traits", [item.value], {
+                  shouldDirty: true,
+                })
+                setValue("communication_style", [item.communication], {
+                  shouldDirty: true,
+                })
                 if (item.type === "custom") setIsCustom(true)
                 else setIsCustom(false)
               }}
@@ -172,8 +176,12 @@ const Personality = () => {
                   } else {
                     setIsCustom(false)
                   }
-                  setValue("personality_traits", [item.value])
-                  setValue("communication_style", [item.communication])
+                  setValue("personality_traits", [item.value], {
+                    shouldDirty: true,
+                  })
+                  setValue("communication_style", [item.communication], {
+                    shouldDirty: true,
+                  })
                 }}
                 isSelected={
                   (selectedBehaviors.personality_traits[0] === item.value &&
@@ -196,7 +204,7 @@ const Personality = () => {
                   input: "text-15 max-md:text-14 font-semibold !text-brown-600",
                 }}
                 onValueChange={(val) => {
-                  setValue("personality_traits", [val])
+                  setValue("personality_traits", [val], { shouldDirty: true })
                   if (PERSONALITY_LIST.find((item) => item.value === val))
                     setIsCustom(false)
                   else setIsCustom(true)
