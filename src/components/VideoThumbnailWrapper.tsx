@@ -4,7 +4,11 @@ interface VideoThumbnailWrapperProps {
   videoUrl: string | null | undefined
   size?: number
   time?: number
-  children: (thumbnail: string | null, loading: boolean) => React.ReactNode
+  children: (
+    thumbnail: string | null,
+    loading: boolean,
+    isVideo: boolean,
+  ) => React.ReactNode
 }
 
 export const VideoThumbnailWrapper = ({
@@ -19,9 +23,11 @@ export const VideoThumbnailWrapper = ({
     time,
   )
 
+  const isVideo = (videoUrl && /\.(mp4|webm|ogg)$/i.test(videoUrl)) || false
+
   return (
     <>
-      {videoUrl && /\.(mp4|webm|ogg)$/i.test(videoUrl) && (
+      {isVideo && (
         <video
           ref={videoRef}
           muted
@@ -30,7 +36,7 @@ export const VideoThumbnailWrapper = ({
           crossOrigin="anonymous"
         />
       )}
-      {children(thumbnail, loading)}
+      {children(thumbnail, loading, isVideo)}
     </>
   )
 }
