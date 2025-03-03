@@ -149,8 +149,7 @@ const LeftContent: React.FC<{
 
   const renderImageContent = () => <ImageLive groupConfig={groupConfig} />
 
-  // Hàm kiểm tra xem imageLive là video hay image
-  const isVideo = (url?: string) => url?.toLowerCase().endsWith(".mp4")
+  const isVideo = (url?: string) => /\.(mp4|webm|ogg)$/i.test(url || "")
 
   return (
     <div

@@ -1,23 +1,8 @@
 import { FilledSearchIcon } from "@components/Icons/SearchIcon"
 import { Input } from "@nextui-org/react"
 import { useNavigate, useLocation } from "react-router-dom"
-import { useState, useEffect, useCallback, useRef } from "react"
-
-const useDebounce = (callback: (...args: any[]) => void, delay: number) => {
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null)
-
-  return useCallback(
-    (...args: any[]) => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current)
-      }
-      timeoutRef.current = setTimeout(() => {
-        callback(...args)
-      }, delay)
-    },
-    [callback, delay],
-  )
-}
+import { useState, useEffect, useCallback } from "react"
+import useDebounce from "@hooks/useDebounce"
 
 const InputSearchAgent = () => {
   const navigate = useNavigate()

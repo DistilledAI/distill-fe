@@ -68,7 +68,7 @@ const useJoinGroupLive = () => {
             }),
           )
           queryClient.setQueryData([QueryDataKeys.HAS_JOINED_GROUP], () => true)
-          await fetchGroups() // Đảm bảo fetchGroups được gọi
+          await fetchGroups()
         }, 10)
       }
     }

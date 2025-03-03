@@ -1,6 +1,6 @@
+import { useRef, useEffect } from "react"
 import AvatarContainer, { AvatarClan } from "@components/AvatarContainer"
 import AvatarGroup from "@components/AvatarGroup"
-// import DotLoading from "@components/DotLoading"
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { FilledUserIcon } from "@components/Icons/UserIcon"
 import { PATH_NAMES, RoleUser } from "@constants/index"
@@ -23,47 +23,40 @@ import {
   getRoleUser,
 } from "../../ChatPage/ChatContainer/LeftBar/helpers"
 import useFetchGroups, {
-  LIMIT,
   TypeGroup,
   UserGroup,
 } from "../../ChatPage/ChatContainer/LeftBar/useFetchGroups"
-// import { PlusIcon } from "@components/Icons/Plus"
-import React from "react"
 import { useVirtualizer } from "@tanstack/react-virtual"
+import useDebounce from "@hooks/useDebounce"
 
 const ChatAgentOthers = () => {
-  const { groups, handleLoadMore } = useFetchGroups({
-    initialLimit: 100,
+  const { groups, isLoadingMore, handleLoadMore, hasMore } = useFetchGroups({
+    initialLimit: 10,
     initialFilter: { typeGroup: TypeGroup.DIRECT },
   })
   const { user } = useAuthState()
   const navigate = useNavigate()
   const { chatId } = useGetChatId()
   const queryClient = useQueryClient()
+  const containerRef = useRef<HTMLDivElement>(null)
+  const itemRef = useRef<HTMLDivElement>(null)
 
-  const getIconGroup = (ownerId: number, userA: IUser, userB: IUser) => {
-    return getRoleUser(ownerId, userA, userB) === RoleUser.USER ? (
+  const getIconGroup = (ownerId: number, userA: IUser, userB: IUser) =>
+    getRoleUser(ownerId, userA, userB) === RoleUser.USER ? (
       <FilledUserIcon size={14} />
     ) : (
       <FilledBrainAIIcon size={14} />
     )
-  }
 
-  const mapColorsToGroups = (groups: UserGroup[]) => {
-    return groups.map((group) => {
+  const mapColorsToGroups = (groups: UserGroup[]) =>
+    groups.map((group) => {
       const groupId = group.groupId
       const { bgColor } = getActiveColorRandomById(groupId)
-      return {
-        ...group,
-        bgColor,
-      }
+      return { ...group, bgColor }
     })
-  }
 
-  const renderInfoGroup = (groupItem: UserGroup) => {
-    const typeGroup = groupItem.group.typeGroup
-
-    return match(typeGroup)
+  const renderInfoGroup = (groupItem: UserGroup) =>
+    match(groupItem.group.typeGroup)
       .returnType<React.ReactNode>()
       .with(TypeGroup.PRIVATE_GROUP, () => (
         <AvatarGroup groupName={groupItem.group.name} />
@@ -106,7 +99,6 @@ const ChatAgentOthers = () => {
           usernameClassName="text-[16px] font-bold text-mercury-950 flex-1"
         />
       ))
-  }
 
   const handleGroupClick = (groupItem: UserGroup, isBotLive: boolean) => {
     queryClient.setQueryData<number[]>(
@@ -116,55 +108,85 @@ const ChatAgentOthers = () => {
 
     if (isBotLive) {
       return navigate(`${PATH_NAMES.CLAN}/${groupItem?.group?.label}`, {
-        state: {
-          isGroupJoined: true,
-        },
+        state: { isGroupJoined: true },
       })
     }
     navigate(`${PATH_NAMES.CHAT}/${groupItem.groupId}`)
   }
 
-  const containerRef = React.useRef<HTMLDivElement>(null)
+  const newGroups = mapColorsToGroups(groups)
 
   const virtualizer = useVirtualizer({
-    count: groups.length,
+    count: hasMore || isLoadingMore ? newGroups.length + 1 : newGroups.length,
     getScrollElement: () => containerRef.current,
     estimateSize: () => 64,
-    overscan: 8,
+    overscan: 5,
   })
 
-  const newGroups = mapColorsToGroups(groups)
+  const items = virtualizer.getVirtualItems()
+
+  useEffect(() => {
+    if (itemRef.current) {
+      const height = itemRef.current.offsetHeight
+      virtualizer.options.estimateSize = () => height
+      virtualizer.measure()
+    }
+  }, [newGroups.length, virtualizer])
+
+  const debouncedLoadMore = useDebounce(handleLoadMore, 10)
+
+  const handleScroll = () => {
+    const scrollElement = containerRef.current
+    if (!scrollElement || isLoadingMore || !hasMore) return
+
+    const { scrollTop, clientHeight, scrollHeight } = scrollElement
+    const isNearBottom = scrollTop + clientHeight >= scrollHeight - 500
+    if (isNearBottom) {
+      debouncedLoadMore()
+    }
+  }
 
   return (
     <>
       <div className="mt-4 md:mt-6">
         <div className="flex items-center justify-between">
           <h3 className="text-14 font-medium text-mercury-800">All Messages</h3>
-          {/* <button type="button">
-            <PlusIcon color="#676767" size={20} />
-          </button> */}
         </div>
       </div>
 
       <div
-        className="-mx-3 mt-3 max-h-[calc(100dvh-250px)] w-full overflow-y-auto scrollbar-hide md:max-h-[calc(100%-250px)] md:w-[250px]"
+        className="-mx-3 mt-3 h-[calc(100%-250px)] w-full overflow-y-auto scrollbar-hide md:h-[calc(100%-212px)] md:w-[250px]"
         ref={containerRef}
-        onScroll={() => {
-          const scrollElement = containerRef.current
-          if (!scrollElement) return
-
-          const { scrollTop, clientHeight, scrollHeight } = scrollElement
-          const isNearBottom = scrollTop + clientHeight >= scrollHeight - 500
-          if (isNearBottom && groups.length >= LIMIT) {
-            handleLoadMore()
-          }
-        }}
+        onScroll={handleScroll}
       >
         <div
-          className="relative w-full"
+          className="relative h-full w-full"
           style={{ height: virtualizer.getTotalSize() }}
         >
-          {virtualizer.getVirtualItems().map((virtualItem) => {
+          {items.map((virtualItem) => {
+            const isLoader = virtualItem.index >= newGroups.length
+
+            if (isLoader) {
+              return (
+                <div
+                  key={virtualItem.key}
+                  data-index={virtualItem.index}
+                  ref={virtualizer.measureElement}
+                  className="absolute left-0 w-full text-center text-14 text-mercury-800"
+                  style={{
+                    top: `${virtualItem.start}px`,
+                    height: 64,
+                  }}
+                >
+                  {isLoadingMore
+                    ? "Loading..."
+                    : !hasMore
+                      ? "No more messages"
+                      : null}
+                </div>
+              )
+            }
+
             const groupItem = newGroups[virtualItem.index]
             const isActive = Number(chatId) === groupItem.groupId
             const isBotLive = groupItem.group.live === 1
@@ -172,21 +194,20 @@ const ChatAgentOthers = () => {
             return (
               <div
                 key={groupItem.id}
+                ref={
+                  virtualItem.index === 0 ? itemRef : virtualizer.measureElement
+                }
+                className="absolute left-0 w-full px-3"
                 style={{
-                  position: "absolute",
-                  top: 0,
-                  left: 0,
-                  width: "100%",
-                  height: `${virtualItem.size}px`,
-                  transform: `translateY(${virtualItem.start}px)`,
-                  padding: "0px 12px",
+                  top: `${virtualItem.start}px`,
+                  height: 64,
                 }}
               >
                 <div
                   aria-selected={isActive}
                   onClick={() => handleGroupClick(groupItem, isBotLive)}
                   className={twMerge(
-                    "group/item group relative mb-2 flex h-14 cursor-pointer items-center justify-between gap-2 rounded-full p-2 hover:bg-mercury-100",
+                    "group/item group relative flex h-14 cursor-pointer items-center justify-between gap-2 rounded-full p-2 hover:bg-mercury-100",
                     isActive && "bg-mercury-100",
                     isActive &&
                       isBotLive &&
@@ -211,4 +232,5 @@ const ChatAgentOthers = () => {
     </>
   )
 }
+
 export default ChatAgentOthers

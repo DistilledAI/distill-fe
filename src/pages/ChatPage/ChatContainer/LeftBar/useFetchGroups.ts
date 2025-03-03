@@ -77,11 +77,12 @@ interface UseFetchGroupsOptions {
 }
 
 const useFetchGroups = (options: UseFetchGroupsOptions = {}) => {
-  const { initialLimit = 10, initialOffset = 0, initialFilter } = options
+  const { initialLimit = LIMIT, initialOffset = 0, initialFilter } = options
   const { isLogin } = useAuthState()
   const [hasMore, setHasMore] = useState(true)
   const [offset, setOffset] = useState(initialOffset)
   const [isFetched, setIsFetched] = useState(false)
+  const [isLoadingMore, setIsLoadingMore] = useState(false)
   const queryClient = useQueryClient()
 
   const fetchGroups = async ({
@@ -93,24 +94,38 @@ const useFetchGroups = (options: UseFetchGroupsOptions = {}) => {
     try {
       setIsFetched(true)
       const res = await getGroupList(offset, limit, filter)
-      if (res.data.items && !isLoadMore) {
+
+      if (!res.data.items) {
+        setHasMore(false)
+        return []
+      }
+
+      if (!isLoadMore) {
         return res.data.items
       }
 
-      if (res.data.items.length && isLoadMore) {
+      if (res.data.items.length > 0) {
         queryClient.setQueryData(
-          [QueryDataKeys.MY_LIST_CHAT],
-          (oldData: UserGroup[]) => [...oldData, ...res.data.items],
+          [QueryDataKeys.MY_LIST_CHAT, filter],
+          (oldData: UserGroup[] | undefined) => {
+            const newData = oldData
+              ? [...oldData, ...res.data.items]
+              : res.data.items
+            return newData
+          },
         )
       }
 
-      return res.data.items ? res.data.items : []
+      setHasMore(res.data.items.length === limit)
+      return res.data.items
     } catch (error) {
-      console.error(error)
+      console.error("Fetch groups error:", error)
+      setHasMore(false)
+      return []
     }
   }
 
-  const { data, refetch, isFetching } = useQuery({
+  const { data, refetch, isSuccess } = useQuery<UserGroup[]>({
     queryKey: [QueryDataKeys.MY_LIST_CHAT, initialFilter],
     queryFn: () =>
       fetchGroups({
@@ -124,29 +139,38 @@ const useFetchGroups = (options: UseFetchGroupsOptions = {}) => {
   })
 
   const handleLoadMore = async () => {
-    if (hasMore) {
-      const newGroups = await fetchGroups({
-        offset,
-        limit: initialLimit,
-        filter: initialFilter,
-        isLoadMore: true,
-      })
-      if (!newGroups?.length) return setHasMore(false)
-      setOffset((prev) => prev + initialLimit)
+    if (!hasMore || !isSuccess || isLoadingMore) {
+      return
     }
+
+    setIsLoadingMore(true)
+    const newOffset = offset + initialLimit
+    const newGroups = await fetchGroups({
+      offset: newOffset,
+      limit: initialLimit,
+      filter: initialFilter,
+      isLoadMore: true,
+    })
+
+    if (newGroups && newGroups.length > 0) {
+      setOffset(newOffset)
+    }
+    setIsLoadingMore(false)
   }
 
   const dataByPrivateMsg = data?.filter(
-    (item: any) =>
+    (item) =>
       ![TypeGroup.PUBLIC_GROUP_CONVERSATION].includes(item?.group?.typeGroup),
   )
 
   return {
-    isLoading: isFetching,
+    isLoading: !isSuccess,
+    isLoadingMore,
     groups: dataByPrivateMsg || [],
     fetchGroups: refetch,
     handleLoadMore,
     isFetched,
+    hasMore,
   }
 }
 
