@@ -43,20 +43,19 @@ const BindYourAccount: React.FC<{
       accessTokenSecret: "",
     },
   })
-  const { watch } = methods
+  // const { watch } = methods
   const [stepNumber, setStepNumber] = useState<number>(1)
 
-  const consumerKeyValue = watch("consumerKey")
-  const consumerSecretValue = watch("consumerSecret")
-  const accessTokenValue = watch("accessToken")
-  const accessTokenSecretValue = watch("accessTokenSecret")
+  // const consumerKeyValue = watch("consumerKey")
+  // const consumerSecretValue = watch("consumerSecret")
+  // const accessTokenValue = watch("accessToken")
+  // const accessTokenSecretValue = watch("accessTokenSecret")
 
-  const isDisabled =
-    consumerKeyValue &&
-    consumerSecretValue &&
-    accessTokenValue &&
-    accessTokenSecretValue
-  console.log("🚀 ~ isDisabled:", isDisabled)
+  // const isDisabled =
+  //   consumerKeyValue &&
+  //   consumerSecretValue &&
+  //   accessTokenValue &&
+  //   accessTokenSecretValue
 
   const onNextStep = () => {
     setStepNumber(stepNumber + 1)
