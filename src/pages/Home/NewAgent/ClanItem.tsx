@@ -1,6 +1,9 @@
+import { maxAvatarPlaceholder } from "@assets/images"
 import { AvatarClanByList } from "@components/AvatarContainer"
 import { PlusIcon } from "@components/Icons/Plus"
+import { VideoThumbnailWrapper } from "@components/VideoThumbnailWrapper"
 import { PATH_NAMES } from "@constants/index"
+import { getConfigClanValue } from "@pages/AgentStore/AgentClansStore"
 import { IGroup } from "@pages/ChatPage/ChatContainer/LeftBar/useFetchGroups"
 import { useQueryClient } from "@tanstack/react-query"
 import React from "react"
@@ -36,12 +39,15 @@ const ClanItem: React.FC<{
         isActive && "opacity-100",
       )}
     >
-      <AvatarClanByList
-        name={group.name}
-        publicAddress={group.name}
-        avatarUrl={group.image || undefined}
-        member={group.groupMemberStats?.total}
-      />
+      <VideoThumbnailWrapper videoUrl={getConfigClanValue(group, "imageLive")}>
+        {(thumbnail) => (
+          <AvatarClanByList
+            name={group.name}
+            avatarUrl={thumbnail || maxAvatarPlaceholder}
+            member={group.groupMemberStats?.total}
+          />
+        )}
+      </VideoThumbnailWrapper>
       {!isJoined && (
         <div className="absolute right-[6px] top-[-4px] flex h-5 w-5 items-center justify-center rounded-full bg-white max-md:right-[12px]">
           <PlusIcon size={14} color="#545454" />
