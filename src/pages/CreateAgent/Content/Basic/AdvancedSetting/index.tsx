@@ -45,7 +45,7 @@ const AdvancedSetting = () => {
             }}
           />
         </div>
-        <div>
+        {/* <div>
           <FieldLabel text="Sample Prompts" />
 
           <Controller
@@ -91,7 +91,7 @@ const AdvancedSetting = () => {
               )
             }}
           />
-        </div>
+        </div> */}
       </div>
     </div>
   )
