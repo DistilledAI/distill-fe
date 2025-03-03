@@ -61,15 +61,12 @@ const AutonomousX: React.FC<{
   const [inputValue, setInputValue] = useState<string>("")
   const xUserNameValues = JSON.parse(watch("x_user_names") || "[]")
   const xKeywordsValues = JSON.parse(watch("x_keywords") || "[]")
+  const autonomousReply = watch("autonomous_reply")
   const xBotData = agentConfigs?.find(
     (agent: any) => agent.key === "bindTwitterKey",
   )
   const bindTwitterValue = xBotData?.value ? JSON.parse(xBotData.value) : null
   const twitterUsername = bindTwitterValue?.info?.data?.username
-  const autonomouXStatusValue = bindTwitterValue?.status || 1
-  const [autonomouXStatus, setAutonomouXStatus] = useState<number | string>(
-    autonomouXStatusValue,
-  )
 
   const toggleShowInput = () => {
     setIsShowInput(!isShowInput)
@@ -219,14 +216,14 @@ const AutonomousX: React.FC<{
 
   const AutonomousMode = () => {
     const onChangeStatus = (status: string | number) => {
-      setAutonomouXStatus(status)
+      setValue("autonomous_reply", status, { shouldDirty: true })
     }
 
-    if (autonomouXStatus === 1) {
+    if (autonomousReply === "1") {
       return (
         <div
           className="flex cursor-pointer items-center gap-2"
-          onClick={() => onChangeStatus(0)}
+          onClick={() => onChangeStatus("0")}
         >
           <StopFilledIcon />
           <span className="text-base-b text-brown-600">
@@ -239,7 +236,7 @@ const AutonomousX: React.FC<{
     return (
       <div
         className="flex cursor-pointer items-center gap-2"
-        onClick={() => onChangeStatus(1)}
+        onClick={() => onChangeStatus("1")}
       >
         <PlayFilledIcon />
         <span className="text-base-b text-brown-600">
