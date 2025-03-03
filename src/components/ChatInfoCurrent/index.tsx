@@ -17,21 +17,25 @@ import {
   UserGroup,
 } from "@pages/ChatPage/ChatContainer/LeftBar/useFetchGroups"
 import React from "react"
-import { useLocation, useParams } from "react-router-dom"
+import { Link, useLocation, useParams } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
 import MoreAction from "./MoreAction"
 import OrchestrationHeader from "./OrchestrationHeader"
 import { getConfigClanValue } from "@pages/AgentStore/AgentClansStore"
+import { useAppSelector } from "@hooks/useAppRedux"
+import { TabKeyAgent } from "@pages/CreateAgent/NavTab"
 
 const ChatInfoCurrent: React.FC<{
   groupDetail: UserGroup | null
   textColor?: string
 }> = ({ groupDetail, textColor = "text-mercury-900" }) => {
   const { user } = useAuthState()
+  const myAgent = useAppSelector((state) => state.agents.myAgent)
   const isGroup = groupDetail?.group?.typeGroup === TypeGroup.PRIVATE_GROUP
   const isGroupPublic = groupDetail?.group?.typeGroup === TypeGroup.PUBLIC_GROUP
   const isLive = isGroupPublic && groupDetail?.group?.live === 1
   const location = useLocation()
+  const isMyAgentClan = location.pathname.startsWith(PATH_NAMES.MY_AGENT_CLAN)
   const { chatId: conversationId } = useParams()
 
   if (!groupDetail) return null
@@ -90,6 +94,14 @@ const ChatInfoCurrent: React.FC<{
           }}
           buttonClassName="w-fit !p-0 !bg-white !min-w-[40px]"
         />
+        {isMyAgentClan && (
+          <Link
+            to={`${PATH_NAMES.AGENT_DETAIL}/${myAgent?.id}?tab=${TabKeyAgent.ClanUtilities}`}
+            className="inline-flex h-[30px] cursor-pointer items-center rounded-full bg-mercury-950 px-3 text-14 font-bold text-white"
+          >
+            Edit Clan
+          </Link>
+        )}
       </div>
     )
 
