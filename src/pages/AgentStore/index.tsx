@@ -22,7 +22,7 @@ type TabId = keyof typeof CATEGORIES
 const AgentStore = () => {
   const navigate = useNavigate()
   const location = useLocation()
-  const [tabId, setTabId] = useState<TabId>()
+  const [tabId, setTabId] = useState<TabId>("agent-clans")
   const swiperRef = useRef<SwiperRef | null>(null)
 
   useEffect(() => {
@@ -39,20 +39,27 @@ const AgentStore = () => {
       const validTab = Object.keys(CATEGORIES).includes(tabFromUrl)
         ? (tabFromUrl as TabId)
         : "agent-clans"
-      setTabId(validTab)
-      if (swiperRef.current?.swiper) {
-        const index = Object.keys(CATEGORIES).indexOf(validTab)
-        swiperRef.current.swiper.slideTo(index)
+
+      if (validTab !== tabId) {
+        setTabId(validTab)
+        if (swiperRef.current?.swiper) {
+          const index = Object.keys(CATEGORIES).indexOf(validTab)
+          swiperRef.current.swiper.slideTo(index)
+        }
       }
     }
-  }, [location.search, navigate])
+  }, [location.search, navigate, tabId])
 
   const handleSlideClick = (id: TabId, index: number) => {
     if (swiperRef.current?.swiper) {
       swiperRef.current.swiper.slideTo(index)
     }
     setTabId(id)
-    navigate(`${location.pathname}?tab=${id}`, { replace: true })
+    const searchParams = new URLSearchParams(location.search)
+    searchParams.set("tab", id)
+    navigate(`${location.pathname}?${searchParams.toString()}`, {
+      replace: true,
+    })
   }
 
   const renderActiveComponent = () => {
@@ -70,12 +77,6 @@ const AgentStore = () => {
     <div className="mx-auto mt-3 max-w-[1024px] max-lg:px-3 max-md:pb-16 md:mt-8">
       <div className="flex items-center justify-between gap-2">
         <InputSearchAgent />
-        {/* <button
-          type="button"
-          className="h-14 flex-shrink-0 rounded-full bg-mercury-950 px-6 text-16 font-bold text-mercury-30"
-        >
-          My Agent’s Publication
-        </button> */}
       </div>
 
       <div className="relative my-6 flex items-center md:pr-[160px]">

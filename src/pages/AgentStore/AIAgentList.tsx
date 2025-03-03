@@ -5,24 +5,28 @@ import useAuthState from "@hooks/useAuthState"
 import { IUser } from "@reducers/userSlice"
 import { useQuery } from "@tanstack/react-query"
 import { ConfigBotType } from "@types"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useLocation } from "react-router-dom"
 import { searchUsers } from "services/chat"
 import { QueryDataKeys } from "types/queryDataKeys"
 import { useState } from "react"
-import { Pagination, Skeleton } from "@nextui-org/react" // Thêm Skeleton
+import { Pagination, Skeleton } from "@nextui-org/react"
 import PaginationItemCustom from "./PaginationItemCustom"
 import AvatarCustom from "@components/AvatarCustom"
 import { maxAvatarPlaceholder } from "@assets/images"
 
 const AIAgentList = () => {
   const navigate = useNavigate()
+  const location = useLocation()
   const { user } = useAuthState()
   const limit = 9
   const [page, setPage] = useState(1)
 
+  const searchParams = new URLSearchParams(location.search)
+  const searchValue = searchParams.get("search") || ""
+
   const fetchPrivateAgents = async () => {
     const payloadData = {
-      username: "",
+      username: searchValue,
       status: STATUS_AGENT.ACTIVE,
       role: RoleUser.BOT,
       publish: Publish.Published,
@@ -40,7 +44,7 @@ const AIAgentList = () => {
   }
 
   const { data, error, isLoading } = useQuery({
-    queryKey: [QueryDataKeys.PRIVATE_AGENTS_MKL, page],
+    queryKey: [QueryDataKeys.PRIVATE_AGENTS_MKL, page, searchValue],
     queryFn: fetchPrivateAgents,
     refetchOnWindowFocus: false,
   })
