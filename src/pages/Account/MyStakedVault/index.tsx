@@ -1,4 +1,4 @@
-import { Button, Switch } from "@nextui-org/react"
+import { Button, Image, Switch } from "@nextui-org/react"
 import StakedTable from "./StakedTable"
 import { useWallet } from "@solana/wallet-adapter-react"
 import { useWalletModal } from "@solana/wallet-adapter-react-ui"
@@ -9,6 +9,10 @@ import { CoinGeckoId } from "@oraichain/oraidex-common"
 import { Web3SolanaLockingToken } from "@pages/Stake/web3Locking"
 import { SPL_DECIMAL } from "@pages/Stake/config"
 import { toBN } from "@utils/format"
+import { centerTextEllipsis, copyClipboard } from "@utils/index"
+import { solanaCircleIcon } from "@assets/svg"
+import { CopyIcon } from "@components/Icons/Copy"
+import { LogoutIcon } from "@components/Icons/OutputIcon"
 
 export interface IVaultData {
   totalStaked: number
@@ -84,13 +88,31 @@ const MyStakedVault = () => {
           <p className="font-bold max-md:text-15">Show All Vaults</p>
           <Switch isSelected={isAllVault} onValueChange={setIsAllVault} />
         </div>
-        {!wallet.publicKey && (
+        {!wallet.publicKey ? (
           <Button
             className="rounded-full bg-mercury-950 text-white max-md:h-[40px]"
             onPress={() => setVisible(true)}
           >
-            Connect Wallet
+            <img className="w-5" src={solanaCircleIcon} /> Connect Wallet
           </Button>
+        ) : (
+          <div className="inline-flex items-center gap-2">
+            <div
+              className="flex cursor-pointer items-center gap-2"
+              onClick={(e) =>
+                copyClipboard(e, wallet.publicKey?.toBase58() || "")
+              }
+            >
+              <span className="text-[16px] max-md:text-[14px]">
+                {centerTextEllipsis(wallet.publicKey?.toBase58() || "", 4)}
+              </span>
+              <Image className="h-5 w-5" src={solanaCircleIcon} />
+              <CopyIcon />
+            </div>
+            <div onClick={disconnectWallet} className="cursor-pointer">
+              <LogoutIcon color="red" />
+            </div>
+          </div>
         )}
       </div>
       <div className="mt-5">
