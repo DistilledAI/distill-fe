@@ -205,7 +205,10 @@ const AgentDetail: React.FC = () => {
               <AgentContent
                 agentData={agentData}
                 agentConfigs={agentConfigs}
-                refetch={refetch}
+                refetch={() => {
+                  refetch()
+                  refetchConfig()
+                }}
               />
             </div>
             {/* <div className="w-[330px] max-md:hidden">
