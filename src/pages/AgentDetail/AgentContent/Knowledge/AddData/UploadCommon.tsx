@@ -31,7 +31,7 @@ const FILE_UPLOAD_STATUS = {
 const UploadCommon: React.FC<UploadCustomProps> = ({
   fileKey,
   label,
-  accept = ".doc,.docx,application/pdf",
+  accept = ".doc,.docx,application/pdf,.txt",
   multiple,
   moreCustomRequest,
   description,
@@ -122,7 +122,11 @@ const UploadCommon: React.FC<UploadCustomProps> = ({
             {description}
           </span>
         </div>
-        {loading ? <Spinner size="sm" /> : <UploadIcon color="#FFFF" />}
+        {loading ? (
+          <Spinner color="white" size="sm" />
+        ) : (
+          <UploadIcon color="#FFFF" />
+        )}
       </div>
     </StyledUpload>
   )
