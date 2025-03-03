@@ -24,6 +24,8 @@ import OrchestrationHeader from "./OrchestrationHeader"
 import { getConfigClanValue } from "@pages/AgentStore/AgentClansStore"
 import { useAppSelector } from "@hooks/useAppRedux"
 import { TabKeyAgent } from "@pages/CreateAgent/NavTab"
+import { maxAvatarPlaceholder } from "@assets/images"
+import { VideoThumbnailWrapper } from "@components/VideoThumbnailWrapper"
 
 const ChatInfoCurrent: React.FC<{
   groupDetail: UserGroup | null
@@ -37,6 +39,9 @@ const ChatInfoCurrent: React.FC<{
   const location = useLocation()
   const isMyAgentClan = location.pathname.startsWith(PATH_NAMES.MY_AGENT_CLAN)
   const { chatId: conversationId } = useParams()
+  const imageUrl = groupDetail
+    ? getConfigClanValue(groupDetail?.group, "imageLive")
+    : ""
 
   if (!groupDetail) return null
 
@@ -68,18 +73,23 @@ const ChatInfoCurrent: React.FC<{
   if (isGroupPublic)
     return (
       <div className="flex items-center gap-2">
-        <AvatarContainer
-          badgeIcon={<LiveIcon />}
-          avatarUrl={getConfigClanValue(groupDetail.group, "imageLive")}
-          publicAddress={groupDetail.group.name}
-          userName={groupDetail.group.name}
-          badgeClassName={isLive ? "bg-lgd-code-hot-ramp" : ""}
-          isLive={isLive}
-          usernameClassName={twMerge(
-            isLive &&
-              "bg-lgd-code-hot-ramp bg-clip-text text-transparent font-bold text-[16px]",
+        <VideoThumbnailWrapper videoUrl={imageUrl ?? null} size={32} time={0}>
+          {(thumbnail) => (
+            <AvatarContainer
+              badgeIcon={<LiveIcon />}
+              avatarUrl={thumbnail || maxAvatarPlaceholder}
+              publicAddress={groupDetail.group.name}
+              userName={groupDetail.group.name}
+              badgeClassName={isLive ? "bg-lgd-code-hot-ramp" : ""}
+              isLive={isLive}
+              usernameClassName={twMerge(
+                isLive &&
+                  "bg-lgd-code-hot-ramp bg-clip-text text-transparent font-bold text-[16px]",
+              )}
+            />
           )}
-        />
+        </VideoThumbnailWrapper>
+
         {isLive && (
           <TotalMemberBadge groupId={groupDetail.groupId.toString()} />
         )}

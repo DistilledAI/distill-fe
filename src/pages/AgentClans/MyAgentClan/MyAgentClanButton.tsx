@@ -6,6 +6,7 @@ import { PATH_NAMES } from "@constants/index"
 import { useNavigate } from "react-router-dom"
 import useAgentClanData from "./useAgentClanData"
 import useWindowSize from "@hooks/useWindowSize"
+import { VideoThumbnailWrapper } from "@components/VideoThumbnailWrapper"
 
 const MyAgentClanButton = () => {
   const navigate = useNavigate()
@@ -33,13 +34,18 @@ const MyAgentClanButton = () => {
       )}
       onClick={handleClick}
     >
-      <AvatarClanByList
-        avatarUrl={imageUrl || maxAvatarPlaceholder}
-        isNameDisplay={false}
-        name=""
-        className="h-8 w-8"
-        member={group?.groupMemberStats?.total || 0}
-      />
+      <VideoThumbnailWrapper videoUrl={imageUrl ?? null} size={32} time={0}>
+        {(thumbnail) => (
+          <AvatarClanByList
+            avatarUrl={thumbnail || maxAvatarPlaceholder}
+            isNameDisplay={false}
+            name=""
+            className="h-8 w-8"
+            member={group?.groupMemberStats?.total || 0}
+          />
+        )}
+      </VideoThumbnailWrapper>
+
       <span className="line-clamp-2 text-left text-16 font-bold text-mercury-950">
         {group?.name || "Clan name"}
       </span>
