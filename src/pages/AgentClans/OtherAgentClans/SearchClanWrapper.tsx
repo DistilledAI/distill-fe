@@ -22,7 +22,13 @@ const SearchClanWrapper = ({ onSearch }: Props) => {
           </button>
         </div>
       )}
-      {isOpen && <InputSearchClan onSearch={onSearch} onClose={onClose} />}
+      {isOpen && (
+        <InputSearchClan
+          onSearch={onSearch}
+          onClose={onClose}
+          isOpen={isOpen}
+        />
+      )}
     </div>
   )
 }

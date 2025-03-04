@@ -35,7 +35,7 @@ const TotalMemberBadge = ({
   return (
     <div
       className={twMerge(
-        "flex h-fit w-fit min-w-[18px] items-center rounded-full bg-[#FF3B30] px-[5px] py-[1px]",
+        "flex h-fit w-fit min-w-[18px] items-center rounded-full bg-[#FF3B30] px-1 py-[1px]",
         classname,
       )}
     >

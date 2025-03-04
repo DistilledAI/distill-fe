@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useCallback } from "react"
+import { useState, useMemo, useCallback } from "react"
 import { useNavigate, useLocation } from "react-router-dom"
 import useFetchClan from "@pages/Marketplace/useFetchClan"
 import { PATH_NAMES } from "@constants/index"
@@ -52,27 +52,13 @@ const AgentClansStore = () => {
     [searchValue],
   )
 
-  const { data, total, getList, loading } = useFetchClan({
-    isFetchNow: false,
+  const { data, total, loading } = useFetchClan({
     limit,
-    offset: (page - 1) * limit,
+    page,
     filter,
+    sort,
+    mode: "pagination",
   })
-
-  const fetchClans = useCallback(() => {
-    getList({
-      hasLoading: true,
-      isFetchMore: false,
-      fetchLimit: limit,
-      fetchOffset: (page - 1) * limit,
-      sort,
-      filter,
-    })
-  }, [page, limit, sort, filter, getList])
-
-  useEffect(() => {
-    fetchClans()
-  }, [fetchClans])
 
   const onPageChange = useCallback((newPage: number) => {
     setPage(newPage)

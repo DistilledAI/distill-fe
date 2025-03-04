@@ -143,8 +143,10 @@ export const AvatarClanByList: React.FC<{
           badgeClassName="bg-lgd-code-hot-ramp"
           isLive={true}
         />
-        <div className="-mt-[10px] flex h-fit w-fit min-w-[18px] items-center rounded-full bg-[#FF3B30] px-[5px] py-[1px]">
-          <FilledUserIcon size={12} color="#FFFFFF" />
+        <div className="-mt-[10px] flex h-5 min-w-[52px] items-center justify-center rounded-full bg-[#FF3B30]">
+          <div>
+            <FilledUserIcon size={12} color="#FFFFFF" />
+          </div>
           <span className="text-13 font-medium leading-[140%] text-white">
             {shortenNumber(member || 0)}
           </span>

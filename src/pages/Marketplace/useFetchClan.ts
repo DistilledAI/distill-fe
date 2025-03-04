@@ -1,116 +1,101 @@
-import { IGroup } from "@pages/ChatPage/ChatContainer/LeftBar/useFetchGroups"
-import { useEffect, useState, useCallback, useMemo } from "react"
+import { useQuery, useInfiniteQuery } from "@tanstack/react-query"
 import { getListGroupAgentPublic } from "services/group"
+import { useMemo } from "react"
 
-// Types
 interface Filter {
   [key: string]: any
 }
 
 interface UseFetchClanParams {
-  isFetchNow?: boolean
   limit?: number
-  offset?: number
+  page?: number
   filter?: Filter
+  sort?: Filter
+  mode?: "infinite" | "pagination"
 }
 
-interface GetListParams {
-  hasLoading?: boolean
-  isFetchMore?: boolean
-  fetchLimit?: number
-  fetchOffset?: number
-  sort?: Record<string, any>
-  filter?: Filter
+const fetchClans = async ({ pageParam = 0, queryKey }: any) => {
+  const [, limit, filter, sort, mode, page] = queryKey
+  const offset = mode === "pagination" ? (page - 1) * limit : pageParam
+  const res = await getListGroupAgentPublic({
+    filter,
+    sort,
+    limit,
+    offset,
+  })
+  return {
+    items: res.data.items || [],
+    total: res.data.total || 0,
+  }
 }
 
 const useFetchClan = ({
-  isFetchNow = true,
   limit = 10,
-  offset = 0,
+  page = 1,
   filter: externalFilter,
+  sort: externalSort,
+  mode = "infinite",
 }: UseFetchClanParams = {}) => {
-  const [loading, setLoading] = useState(false)
-  const [data, setData] = useState<IGroup[]>([])
-  const [hasMore, setHasMore] = useState(true)
-  const [currentOffset, setCurrentOffset] = useState(offset)
-  const [total, setTotal] = useState<number>(0)
-
-  // Memoize the filter to prevent unnecessary re-renders
   const memoizedFilter = useMemo(
-    () => externalFilter,
+    () => externalFilter || {},
     [JSON.stringify(externalFilter)],
   )
 
-  const getList = useCallback(
-    async ({
-      hasLoading = true,
-      isFetchMore = false,
-      fetchLimit = limit,
-      fetchOffset = currentOffset,
-      sort,
-      filter: overrideFilter,
-    }: GetListParams = {}) => {
-      try {
-        if (hasLoading) setLoading(true)
-
-        const combinedFilter = {
-          ...memoizedFilter,
-          ...overrideFilter,
-        }
-
-        const filter = Object.keys(combinedFilter).length
-          ? combinedFilter
-          : undefined
-
-        const res = await getListGroupAgentPublic({
-          filter,
-          sort,
-          limit: fetchLimit,
-          offset: fetchOffset,
-        })
-
-        const newData = res.data.items || []
-
-        if (isFetchMore) {
-          setData((prev) => [...prev, ...newData])
-        } else {
-          setData(newData)
-        }
-        setTotal(res?.data?.total || 0)
-        setHasMore(newData.length === fetchLimit)
-      } catch (error: any) {
-        console.error("Error fetching clan data:", error)
-      } finally {
-        setLoading(false)
-      }
-    },
-    [limit, currentOffset, memoizedFilter],
+  const memoizedSort = useMemo(
+    () => externalSort || {},
+    [JSON.stringify(externalSort)],
   )
 
-  useEffect(() => {
-    if (isFetchNow) {
-      getList({
-        hasLoading: true,
-        isFetchMore: false,
-        fetchLimit: limit,
-        fetchOffset: offset,
-      })
+  const infiniteResult = useInfiniteQuery({
+    queryKey: ["clans", limit, memoizedFilter, memoizedSort, "infinite"],
+    queryFn: fetchClans,
+    getNextPageParam: (lastPage, allPages) => {
+      const totalFetched = allPages.reduce(
+        (sum, page) => sum + page.items.length,
+        0,
+      )
+      return totalFetched < lastPage.total ? totalFetched : undefined
+    },
+    initialPageParam: 0,
+    enabled: mode === "infinite",
+  })
+
+  const paginationResult = useQuery({
+    queryKey: [
+      "clans",
+      limit,
+      memoizedFilter,
+      memoizedSort,
+      "pagination",
+      page,
+    ],
+    queryFn: fetchClans,
+    enabled: mode === "pagination",
+  })
+
+  if (mode === "infinite") {
+    const flatData =
+      infiniteResult.data?.pages.flatMap((page) => page.items) || []
+    return {
+      data: flatData,
+      loading: infiniteResult.isLoading,
+      isFetching: infiniteResult.isFetching,
+      hasMore: infiniteResult.hasNextPage,
+      fetchMore: infiniteResult.fetchNextPage,
+      total: infiniteResult.data?.pages[0]?.total || 0,
+      refetch: infiniteResult.refetch,
     }
-  }, [isFetchNow, limit, offset, getList])
-
-  const fetchMore = useCallback(() => {
-    if (!hasMore || loading) return
-    const newOffset = currentOffset + limit
-    setCurrentOffset(newOffset)
-    getList({
-      hasLoading: true,
-      isFetchMore: true,
-      fetchLimit: limit,
-      fetchOffset: newOffset,
-    })
-  }, [hasMore, loading, currentOffset, limit, getList])
-
-  return { data, loading, hasMore, fetchMore, getList, total }
+  } else {
+    return {
+      data: paginationResult.data?.items || [],
+      total: paginationResult.data?.total || 0,
+      loading: paginationResult.isLoading,
+      isFetching: paginationResult.isFetching,
+      hasMore: false,
+      fetchMore: () => {},
+      refetch: paginationResult.refetch,
+    }
+  }
 }
 
 export default useFetchClan

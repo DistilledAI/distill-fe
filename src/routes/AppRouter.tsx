@@ -4,6 +4,7 @@ import LoadingFallback from "@components/LoadingFallback"
 import ProtectedByAuth from "@components/Layout/ProtectedByAuth"
 import useWindowSize from "@hooks/useWindowSize"
 import { PATH_NAMES } from "@constants/index"
+import AgentStore from "@pages/AgentStore"
 
 // Lazy-loaded components
 const PageNotFound = lazy(() => import("@pages/NotFound"))
@@ -19,7 +20,7 @@ const AgentClansPage = lazy(() => import("@pages/AgentClans"))
 const AgentClansMobilePage = lazy(
   () => import("@pages/AgentClans/Mobile/AgentClansMobile"),
 )
-const AgentStorePage = lazy(() => import("@pages/AgentStore"))
+
 const PrivateChatPage = lazy(() => import("@pages/PrivateChat"))
 const PrivateChatMobile = lazy(
   () => import("@pages/PrivateChat/Mobile/PrivateChatMobile"),
@@ -108,7 +109,7 @@ const AppRouter = () => {
             />
           </Route>
           {/* General Feature Routes */}
-          <Route path={PATH_NAMES.MARKETPLACE} element={<AgentStorePage />} />
+          <Route path={PATH_NAMES.MARKETPLACE} element={<AgentStore />} />
           <Route path={PATH_NAMES.ADD_MY_DATA} element={<AddMyData />} />
           <Route
             path={`${PATH_NAMES.AUTHOR_PROFILE}/:authorId`}

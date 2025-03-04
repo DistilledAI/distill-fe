@@ -1,44 +1,48 @@
-import { useRef, useState } from "react"
+import { useRef, useState, useEffect } from "react"
 import { maxAvatarPlaceholder } from "@assets/images"
 import { AvatarClanByList } from "@components/AvatarContainer"
 import { PATH_NAMES } from "@constants/index"
 import useAuthState from "@hooks/useAuthState"
 import { getConfigClanValue } from "@pages/AgentStore/AgentClansStore"
-import useFetchGroups, {
-  TypeGroup,
-  UserGroup,
-} from "@pages/ChatPage/ChatContainer/LeftBar/useFetchGroups"
 import { useNavigate, useParams } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
 import { useVirtualizer } from "@tanstack/react-virtual"
 import useDebounce from "@hooks/useDebounce"
 import SearchClanWrapper from "./SearchClanWrapper"
+import useFetchClan from "@pages/Marketplace/useFetchClan"
+import { IGroup } from "@pages/ChatPage/ChatContainer/LeftBar/useFetchGroups"
 
 const AllClans = () => {
   const { chatId } = useParams()
   const navigate = useNavigate()
   const { user } = useAuthState()
   const parentRef = useRef<HTMLDivElement>(null)
-  const [searchClanValue, setSearchClanValue] = useState("")
+  const [searchClanValue, setSearchClanValue] = useState<string>("")
 
-  const { groups, isLoading, isLoadingMore, handleLoadMore, hasMore } =
-    useFetchGroups({
-      initialLimit: 15,
-      initialFilter: {
-        typeGroup: TypeGroup.PUBLIC_GROUP,
-        name: searchClanValue,
-      },
-    })
+  const {
+    data: groups,
+    isFetching,
+    hasMore,
+    fetchMore: handleLoadMore,
+    refetch,
+  } = useFetchClan({
+    limit: 20,
+    filter: {
+      name: searchClanValue,
+    },
+    sort: {
+      totalMember: "DESC",
+    },
+    mode: "infinite",
+  })
 
   const filteredGroups = groups.filter(
-    (item) => user?.id !== item.group.createBy,
+    (item: IGroup) => user?.id !== item.createBy,
   )
 
   const virtualizer = useVirtualizer({
     count:
-      hasMore || isLoading || isLoadingMore
-        ? filteredGroups.length + 1
-        : filteredGroups.length,
+      hasMore || isFetching ? filteredGroups.length + 1 : filteredGroups.length,
     getScrollElement: () => parentRef.current,
     estimateSize: () => 72,
     overscan: 5,
@@ -47,17 +51,24 @@ const AllClans = () => {
   const items = virtualizer.getVirtualItems()
 
   const debouncedHandleScroll = useDebounce(() => {
-    if (!parentRef.current || isLoading || isLoadingMore || !hasMore) return
+    if (!parentRef.current || isFetching || !hasMore) return
 
     const { scrollTop, scrollHeight, clientHeight } = parentRef.current
     if (scrollTop + clientHeight >= scrollHeight - 100) {
+      console.log("Fetching more at offset:", filteredGroups.length)
       handleLoadMore()
     }
-  }, 10)
+  }, 100)
+
+  const debouncedSearchValue = useDebounce(searchClanValue as any, 300)
 
   const handleSearch = (value: string) => {
     setSearchClanValue(value)
   }
+
+  useEffect(() => {
+    refetch()
+  }, [debouncedSearchValue, refetch])
 
   return (
     <div className="-mx-3 mt-6 space-y-3 overflow-x-hidden px-3 pb-4">
@@ -89,13 +100,13 @@ const AllClans = () => {
                     height: 64,
                   }}
                 >
-                  {isLoadingMore ? "Loading..." : null}
+                  {isFetching ? "Loading..." : null}
                 </div>
               )
             }
 
-            const item = filteredGroups[virtualItem.index] as UserGroup
-            const group = item.group
+            const item = filteredGroups[virtualItem.index]
+            const group = item
             const imageUrl = getConfigClanValue(group, "imageLive")
 
             return (

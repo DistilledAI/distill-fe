@@ -35,13 +35,13 @@ const InputSearchPrivateAgent = ({ onSearch, onClose }: Props) => {
           <CloseFilledIcon size={20} color="#676767" />
         </button>
       }
-      placeholder="Search Clans.."
+      placeholder="Search Agents.."
       value={searchValue}
       onValueChange={handleInputChange}
       classNames={{
         inputWrapper:
           "!bg-transparent shadow-none  w-full px-0 min-h-[21px] h-[21px]",
-        input: "text-[14px] text-mercury-950 placeholder:text-mercury-800",
+        input: "text-[14px] text-mercury-950 placeholder:text-mercury-800 ",
       }}
     />
   )
