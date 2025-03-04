@@ -56,11 +56,11 @@ const AgentLiveInfo: React.FC<{
             <AgentSocials
               agentInfo={{
                 username: groupDetail?.group?.name as string,
-                xLink: groupConfig?.x as string,
-                teleLink: groupConfig?.telegram as string,
+                xLink: groupConfig?.x_link as string,
+                teleLink: groupConfig?.telegram_link as string,
                 shareLink: `${window.location.origin}${PATH_NAMES.CLAN}/${groupDetail?.group?.label}`,
                 contract: groupConfig?.contractAddress as string,
-                website: groupConfig?.website as string,
+                website: groupConfig?.website_link as string,
               }}
             />
             <ContractDisplay
