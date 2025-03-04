@@ -13,7 +13,7 @@ import { StakeTokenAddress } from "@pages/Stake"
 import { getInfoTokenByAddress } from "@pages/Stake/helpers"
 import { useQueries, useQueryClient } from "@tanstack/react-query"
 import React, { lazy, useEffect, useState } from "react"
-import { useSearchParams } from "react-router-dom"
+import { Link, useSearchParams } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
 import { QueryDataKeys } from "types/queryDataKeys"
 import AgentDescription from "./AgentDescription"
@@ -26,6 +26,7 @@ import { ArrowsMaximizeIcon, ArrowsMinimizeIcon } from "@components/Icons/Arrow"
 import { SkeletonDesc } from "./SkeletonInfo"
 import { CLAN_CONFIG_KEYS } from "@pages/AgentDetail/AgentContent/ClanUtilities/types"
 import { useGroupConfig } from "./useGroupConfig"
+import { MessagePlusIcon } from "@components/Icons/Message"
 
 const BetModal = lazy(() => import("@components/BetModal"))
 
@@ -150,7 +151,7 @@ const LeftContent: React.FC<{
   const renderImageContent = () => <ImageLive groupConfig={groupConfig} />
 
   const isVideo = (url?: string) => /\.(mp4|webm|ogg)$/i.test(url || "")
-
+  console.log("PPP", groupDetail)
   return (
     <div
       className={twMerge(
@@ -223,20 +224,29 @@ const LeftContent: React.FC<{
           ) : (
             <SkeletonDesc />
           )}
-          <AgentSocials
-            agentInfo={{
-              username: groupDetail?.group?.name ?? "",
-              xLink: groupConfig[CLAN_CONFIG_KEYS.X] ?? "",
-              teleLink: groupConfig[CLAN_CONFIG_KEYS.TELEGRAM] ?? "",
-              shareLink: `${window.location.origin}${PATH_NAMES.CLAN}/${groupDetail?.group?.label ?? ""}`,
-              contract: groupConfig[CLAN_CONFIG_KEYS.CONTRACT_ADDRESS] ?? "",
-              website: groupConfig[CLAN_CONFIG_KEYS.WEBSITE] ?? "",
-            }}
-            classNames={{
-              wrapper: "mt-3 hidden md:flex",
-              button: "p-0 !min-w-fit !w-fit !h-fit bg-transparent",
-            }}
-          />
+          <div className="mt-3 flex items-center justify-between">
+            <AgentSocials
+              agentInfo={{
+                username: groupDetail?.group?.name ?? "",
+                xLink: groupConfig[CLAN_CONFIG_KEYS.X] ?? "",
+                teleLink: groupConfig[CLAN_CONFIG_KEYS.TELEGRAM] ?? "",
+                shareLink: `${window.location.origin}${PATH_NAMES.CLAN}/${groupDetail?.group?.label ?? ""}`,
+                contract: groupConfig[CLAN_CONFIG_KEYS.CONTRACT_ADDRESS] ?? "",
+                website: groupConfig[CLAN_CONFIG_KEYS.WEBSITE] ?? "",
+              }}
+              classNames={{
+                wrapper: "hidden md:flex",
+                button: "p-0 !min-w-fit !w-fit !h-fit bg-transparent",
+              }}
+            />
+            <Link
+              className="flex items-center gap-2 rounded-full bg-mercury-950 px-3 py-1 text-15 font-medium text-white hover:opacity-70"
+              to={`${PATH_NAMES.INVITE}/${groupDetail?.group?.clanOfAgentId}`}
+            >
+              <MessagePlusIcon color="white" />
+              <span>Chat private now</span>
+            </Link>
+          </div>
         </div>
         {isOpenModal && (
           <BetModal onOpenChange={onOpenChange} isOpen={isOpenModal} />

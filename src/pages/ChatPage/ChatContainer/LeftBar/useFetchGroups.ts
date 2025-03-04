@@ -35,6 +35,7 @@ export interface IGroup {
     createdAt: string
   }
   groupUser?: Array<any>
+  clanOfAgentId?: string | number
 }
 
 export interface GroupConfig {
