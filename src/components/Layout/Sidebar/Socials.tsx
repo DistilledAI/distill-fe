@@ -1,12 +1,6 @@
 import { distilledAIIcon } from "@assets/svg"
-import DistilledAILogo from "@components/DistilledAILogo"
-import { DistilledAIIcon } from "@components/Icons/DistilledAIIcon"
-import {
-  AgentDotLandIcon,
-  FilledSquareCircleIcon,
-} from "@components/Icons/FilledSquareCircleIcon"
-import { DuneOutlineIcon, XIcon } from "@components/Icons/SocialLinkIcon"
-import { PATH_NAMES } from "@constants/index"
+import { AgentDotLandIcon } from "@components/Icons/FilledSquareCircleIcon"
+import { XIcon } from "@components/Icons/SocialLinkIcon"
 import { useAppSelector } from "@hooks/useAppRedux"
 import useWindowSize from "@hooks/useWindowSize"
 import { Link, useLocation, useNavigate } from "react-router-dom"
