@@ -6,7 +6,7 @@ import {
   TemProfessional,
   TemSupportive,
 } from "@assets/images"
-import { LockFilledIcon } from "@components/Icons/AgentDetailIcon"
+// import { LockFilledIcon } from "@components/Icons/AgentDetailIcon"
 import { StarUserIconOutline } from "@components/Icons/UserIcon"
 import { Checkbox, Textarea } from "@nextui-org/react"
 import CategoryLabel from "@pages/AgentDetail/CategoryLabel"
@@ -124,12 +124,12 @@ const Personality = () => {
           text="Personality"
           icon={<StarUserIconOutline color="#A2845E" />}
         />
-        <div className="flex items-center gap-1 rounded-full bg-mercury-70 px-2">
+        {/* <div className="flex items-center gap-1 rounded-full bg-mercury-70 px-2">
           <LockFilledIcon />
           <span className="font-medium uppercase text-mercury-700 max-md:text-14">
             private
           </span>
-        </div>
+        </div> */}
       </div>
       <div className="mt-3">
         <p className="font-semibold">
@@ -194,7 +194,7 @@ const Personality = () => {
         </div>
         {(selectedBehaviors.personality_traits[0] || isCustom) && (
           <>
-            <div className="mt-5">
+            {/* <div className="mt-5">
               <p className="mb-1 font-semibold max-md:text-14">
                 Agent's Purpose
               </p>
@@ -211,7 +211,7 @@ const Personality = () => {
                 }}
                 value={selectedBehaviors.personality_traits[0]}
               />
-            </div>
+            </div> */}
             <div className="mt-4">
               <div className="flex items-center justify-between">
                 <p className="mb-1 font-semibold max-md:text-14">
@@ -223,9 +223,26 @@ const Personality = () => {
                   inputWrapper: "!bg-mercury-30  border-1 border-mercury-400",
                   input: "text-15 max-md:text-14 font-semibold !text-brown-600",
                 }}
-                onValueChange={(val) =>
+                onValueChange={(val) => {
                   handleSelect("communication_style", val)
-                }
+                  if (
+                    PERSONALITY_LIST.find((item) => item.communication === val)
+                  ) {
+                    setIsCustom(false)
+                    setValue(
+                      "personality_traits",
+                      [
+                        PERSONALITY_LIST.find(
+                          (item) => item.communication === val,
+                        )?.value,
+                      ],
+                      { shouldDirty: true },
+                    )
+                  } else {
+                    setIsCustom(true)
+                    setValue("personality_traits", [""], { shouldDirty: true })
+                  }
+                }}
                 value={selectedBehaviors.communication_style[0]}
               />
             </div>

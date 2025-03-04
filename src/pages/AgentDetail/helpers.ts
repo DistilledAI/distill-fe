@@ -7,7 +7,6 @@ const LENGTH_RULES = {
   clanName: { max: 100 },
   clanDesc: { max: 500 },
   agentDesc: { max: DESC_MAX_LENGTH },
-  personalityTraits: { max: 500 },
   communicationStyle: { max: 500 },
   firstMsg: { max: 500 },
 } as const
@@ -47,15 +46,9 @@ const VALIDATION_RULES = {
   },
   personality: {
     test: (data: any) =>
-      data["personality_traits"][0] !== "" &&
-      data["personality_traits"].length !== 0,
+      data["communication_style"][0] !== "" &&
+      data["communication_style"].length !== 0,
     message: "Personality is required",
-  },
-  personalityTraits: {
-    test: (data: any) =>
-      data["personality_traits"]?.[0].length <=
-      LENGTH_RULES.personalityTraits.max,
-    message: `Agent's Purpose max ${LENGTH_RULES.personalityTraits.max} characters`,
   },
   communicationStyle: {
     test: (data: any) =>
@@ -79,7 +72,6 @@ export const isPassRuleAgentInfo = (data: any): boolean => {
     { rule: VALIDATION_RULES.clanDescRequired, value: data },
     { rule: VALIDATION_RULES.clanImageLive, value: data },
     { rule: VALIDATION_RULES.personality, value: data },
-    { rule: VALIDATION_RULES.personalityTraits, value: data },
     { rule: VALIDATION_RULES.communicationStyle, value: data },
     { rule: VALIDATION_RULES.firstMsg, value: data },
   ]

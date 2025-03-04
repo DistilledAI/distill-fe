@@ -52,6 +52,15 @@ const AgentNavTab: React.FC<{
       isCreate: true,
     },
     {
+      key: TabKeyAgent.Knowledge,
+      title: "Knowledge",
+      icon: <BrainOutlineIcon color="#545454" size={24} />,
+      iconActive: <BrainOutlineIcon color="#83664B" size={24} />,
+      isLater: !agentId,
+      isCreate: true,
+      isEdit: true,
+    },
+    {
       key: TabKeyAgent.ClanUtilities,
       title: "Clan & Utilities",
       icon: <ClanOutlineIcon color="#545454" size={24} />,
@@ -81,15 +90,6 @@ const AgentNavTab: React.FC<{
       title: "Autonomous TG",
       icon: <TelegramOutlineIcon color="#545454" size={24} />,
       iconActive: <TelegramOutlineIcon color="#83664B" size={24} />,
-      isEdit: true,
-    },
-    {
-      key: TabKeyAgent.Knowledge,
-      title: "Knowledge",
-      icon: <BrainOutlineIcon color="#545454" size={24} />,
-      iconActive: <BrainOutlineIcon color="#83664B" size={24} />,
-      isLater: !agentId,
-      isCreate: true,
       isEdit: true,
     },
   ]

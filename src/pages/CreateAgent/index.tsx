@@ -70,7 +70,7 @@ const CreateAgent = () => {
       if (!isPassRuleAgentInfo(data)) return
 
       setIsLoading(true)
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
       const { avatar, avatarFile, ...newData } = data
       const res = await createBot({
         ...newData,

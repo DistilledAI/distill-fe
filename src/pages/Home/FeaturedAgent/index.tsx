@@ -16,8 +16,6 @@ const FeaturedAgent = () => {
   const { isMobile } = useWindowSize()
   const { data, loading } = useFetchFeaturedAgentClan()
 
-  console.log("XXXX", data)
-
   return (
     <div>
       <div className="flex items-center gap-2 max-md:gap-1">
