@@ -1,6 +1,6 @@
 import { desktopPrivateAgent } from "@assets/images"
 import FeaturedAgent from "./FeaturedAgent"
-import NewAgent from "./NewAgent"
+// import NewAgent from "./NewAgent"
 import ForCreator from "./ForCreator"
 import MultiChat from "./MultiChat"
 import { useAppSelector } from "@hooks/useAppRedux"
@@ -32,7 +32,7 @@ const HomePage = () => {
       ></div>
       <div className="relative mx-auto max-w-[884px] px-4">
         <FeaturedAgent />
-        <NewAgent />
+        {/* <NewAgent /> */}
         <ForCreator />
       </div>
       {!isMobile && <MultiChat />}

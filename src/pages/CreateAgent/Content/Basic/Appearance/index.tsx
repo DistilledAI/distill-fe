@@ -10,7 +10,7 @@ import ChangeAvatarContainer from "@pages/AgentDetail/ChangeAvatarContainer"
 import { fileToBase64, isPassFileSize } from "@utils/index"
 import { Controller, useFormContext } from "react-hook-form"
 import { toast } from "react-toastify"
-import ClanPublicChip from "../../ClanUtilities/ClanPublicChip"
+// import ClanPublicChip from "../../ClanUtilities/ClanPublicChip"
 
 const Appearance = () => {
   const { control, setValue, watch } = useFormContext()
@@ -33,7 +33,7 @@ const Appearance = () => {
     <div>
       <div className="flex items-center justify-between">
         <CategoryLabel text="Public Appearance" icon={<ClipboardTextIcon />} />
-        <ClanPublicChip />
+        {/* <ClanPublicChip /> */}
       </div>
       <div className="mt-6 flex flex-wrap gap-4 rounded-[22px] border-1 border-mercury-100 bg-mercury-30 p-6 max-md:p-4">
         <div className="flex w-[240px] flex-col items-center justify-center max-md:w-full">

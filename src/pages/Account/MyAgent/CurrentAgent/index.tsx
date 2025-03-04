@@ -3,15 +3,16 @@ import { solanaCircleIcon } from "@assets/svg"
 import AgentStatus from "@components/AgentStatus"
 import AlertBox from "@components/AlertBox"
 import AvatarCustom from "@components/AvatarCustom"
-import { CloudXIcon } from "@components/Icons"
+import { CloudXIcon, DollarIcon } from "@components/Icons"
 import { CheckFilledIcon } from "@components/Icons/DefiLens"
 import { PenFullIcon } from "@components/Icons/Edit"
 import { MessagePlusIcon } from "@components/Icons/Message"
 import { PublishIcon } from "@components/Icons/RewardsIcons"
+import PublishedOnMarket from "@components/PublishedOnMarket"
 import { PATH_NAMES, Publish, STATUS_AGENT } from "@constants/index"
 import { useAppSelector } from "@hooks/useAppRedux"
 import useAuthState from "@hooks/useAuthState"
-import { Button } from "@nextui-org/react"
+import { Button, useDisclosure } from "@nextui-org/react"
 import ContractDisplay from "@pages/ChatBoxLive/ContractDisplay"
 import TradeTokenButton from "@pages/ChatBoxLive/TradeTokenButton"
 import { AGENT_TYPE_KEY } from "@pages/ChatPage/ChatContainer/RightContent/MyPrivateAgentContent/AgentInitialization/AgentType"
@@ -36,6 +37,7 @@ const ADDRESS_PAYMENT_NETWORK_SOL = isStaging
 
 const CurrentAgent = () => {
   const { isPaid, checkPayment } = useGetPaymentHistory()
+  const { onClose, onOpen, isOpen } = useDisclosure()
   const queryClient = useQueryClient()
   const navigate = useNavigate()
   const [loading, setLoading] = useState(false)
@@ -108,6 +110,7 @@ const CurrentAgent = () => {
         queryClient.refetchQueries({
           queryKey: [QueryDataKeys.PRIVATE_AGENTS_MKL],
         })
+        if (!isPublished) onOpen()
       }
     } catch (error: any) {
       toast.error(error?.response?.data?.message)
@@ -167,7 +170,7 @@ const CurrentAgent = () => {
                   <img src={maxAvatar} width={14} className="rounded-full" />
                   <span className="text-14 font-medium text-[#BCAA88]">
                     <span className="font-bold">1,000 </span>
-                    Max
+                    MAX
                   </span>
                   <span className="text-13 font-bold text-mercury-30">
                     {" "}
@@ -180,19 +183,32 @@ const CurrentAgent = () => {
         />
       )}
       <div className="mb-2 mt-6">
-        <div className="flex items-center justify-between">
-          <p className="text-base-b text-mercury-950 max-md:text-15">
+        <div className="flex items-center justify-between max-md:flex-col max-md:items-start">
+          <p className="text-base-b text-mercury-950 max-md:mb-1 max-md:text-15">
             Preview:
           </p>
-          <Button
-            isDisabled={!isAgentActive || loading}
-            isLoading={loading}
-            onPress={() => onPublishMarketplace(agent.id)}
-            className="h-[32px] rounded-full bg-mercury-100 font-semibold"
-          >
-            {!isPublished ? <PublishIcon color="black" /> : <CloudXIcon />}
-            <span>{!isPublished ? "Publish" : "Unpublish"}</span>
-          </Button>
+          <div className="flex items-center gap-2">
+            <Link
+              className="flex h-[32px] items-center gap-2 rounded-full bg-mercury-100 px-4 font-semibold"
+              to={`${PATH_NAMES.PRIVATE_AGENT}/${agent.id}`}
+            >
+              <MessagePlusIcon color="black" />
+              Chat
+            </Link>
+            <Button
+              isDisabled={!isAgentActive || loading}
+              isLoading={loading}
+              onPress={() => onPublishMarketplace(agent.id)}
+              className="h-[32px] rounded-full bg-mercury-100 font-semibold"
+            >
+              {!isPublished ? <PublishIcon color="black" /> : <CloudXIcon />}
+              <span>
+                {!isPublished
+                  ? "Publish on Agent Store"
+                  : "Unpublish on Agent Store"}
+              </span>
+            </Button>
+          </div>
         </div>
         <div className="mt-2 rounded-[14px] border-1 border-mercury-100 bg-mercury-50 p-4">
           <div className="flex gap-6">
@@ -247,21 +263,50 @@ const CurrentAgent = () => {
             </div>
           </div>
           <div className="my-6 w-full border-t-1 border-dashed border-mercury-400 max-md:my-3" />
-          <div className="flex items-center justify-between">
-            <Link to={`${PATH_NAMES.PRIVATE_AGENT}/${agent.id}`}>
-              <MessagePlusIcon color="black" />
-            </Link>
-            <Button
-              onPress={() => navigate(`${PATH_NAMES.AGENT_DETAIL}/${agent.id}`)}
-              isDisabled={!isAgentActive}
-              className="flex h-[50px] items-center gap-1 rounded-full bg-mercury-950 px-4 font-semibold text-white max-md:h-[44px]"
-            >
-              <PenFullIcon />
-              <span>Edit Agent</span>
-            </Button>
+          <div className="flex items-center justify-between gap-3 max-md:flex-col max-md:items-start">
+            <div>
+              <p className="font-medium text-mercury-600">Utilities:</p>
+              <div className="mt-1 rounded-md border-1 border-brown-600 bg-brown-50 px-2 py-1 text-14 font-medium leading-5 text-brown-600">
+                No utilities yet
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <Button
+                as={Link}
+                to="https://agents.land/create-coin"
+                isDisabled={!agent.contractAddress}
+                target="_blank"
+                className="flex h-[50px] items-center gap-1 rounded-full bg-mercury-950 px-4 font-semibold text-white max-md:h-[44px]"
+              >
+                <DollarIcon color="white" />
+                <span>Go to Tokenize</span>
+              </Button>
+              <Button
+                onPress={() =>
+                  navigate(`${PATH_NAMES.AGENT_DETAIL}/${agent.id}`)
+                }
+                isDisabled={!isAgentActive}
+                className="flex h-[50px] items-center gap-1 rounded-full bg-mercury-950 px-4 font-semibold text-white max-md:h-[44px]"
+              >
+                <PenFullIcon />
+                <span>Edit Agent</span>
+              </Button>
+            </div>
           </div>
         </div>
       </div>
+      <PublishedOnMarket
+        isOpen={isOpen}
+        onClose={onClose}
+        data={{
+          avatar: agent?.avatar ?? undefined,
+          nameDisplay: agent?.username,
+          username: agent?.username,
+          description: agent?.description ?? "",
+          publicAddress: agent?.publicAddress ?? agent?.username,
+          id: agent?.id,
+        }}
+      />
     </div>
   )
 }

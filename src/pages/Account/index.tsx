@@ -33,7 +33,7 @@ const Account = () => {
   }
 
   return (
-    <div className="mx-auto max-w-[1080px] px-4 pb-10 pt-5">
+    <div className="mx-auto max-w-[1080px] px-4 pb-10 pt-5 max-md:pb-[70px]">
       <div className="flex flex-wrap max-md:flex-col-reverse">
         <div className="w-[calc(100%-300px)] pr-[64px] max-md:w-full max-md:pr-0">
           <div className="flex items-center gap-2">
