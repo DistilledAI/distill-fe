@@ -13,18 +13,18 @@ const SortAgents: React.FC = () => {
   const navigate = useNavigate()
   const location = useLocation()
   const [selectedKeys, setSelectedKeys] = React.useState<Set<string>>(
-    new Set(["trending"]),
+    new Set(["Trending"]),
   )
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search)
     const sortByFromUrl = searchParams.get("sortBy")
-    const validOptions = ["trending", "newest"]
+    const validOptions = ["Trending", "Newest"]
 
     if (sortByFromUrl && validOptions.includes(sortByFromUrl)) {
       setSelectedKeys(new Set([sortByFromUrl]))
     } else {
-      setSelectedKeys(new Set(["trending"]))
+      setSelectedKeys(new Set(["Trending"]))
     }
   }, [location.search])
 
@@ -76,8 +76,8 @@ const SortAgents: React.FC = () => {
           selectedIcon: "text-brown-500 w-4 h-4",
         }}
       >
-        <DropdownItem key="trending">Trending</DropdownItem>
-        <DropdownItem key="newest">Newest</DropdownItem>
+        <DropdownItem key="Trending">Trending</DropdownItem>
+        <DropdownItem key="Newest">Newest</DropdownItem>
       </DropdownMenu>
     </Dropdown>
   )

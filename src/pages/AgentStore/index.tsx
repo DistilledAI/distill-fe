@@ -13,7 +13,7 @@ const CATEGORIES = {
     name: "Agent Clans",
   },
   "ai-agents": {
-    name: "All AI Agents",
+    name: "All Agents",
   },
 } as const
 

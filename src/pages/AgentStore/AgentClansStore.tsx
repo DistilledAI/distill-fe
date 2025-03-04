@@ -38,10 +38,10 @@ const AgentClansStore = () => {
 
   const searchParams = new URLSearchParams(location.search)
   const searchValue = searchParams.get("search") || ""
-  const sortBy = searchParams.get("sortBy") || "trending"
+  const sortBy = searchParams.get("sortBy") || "Trending"
 
   const sort = useMemo(() => {
-    if (sortBy === "newest") {
+    if (sortBy === "Newest") {
       return { createdAt: "DESC" }
     }
     return { totalMember: "DESC" }
@@ -180,7 +180,7 @@ const AgentClansStore = () => {
                           <span className="text-16 font-bold text-mercury-950">
                             {item.name}
                           </span>
-                          {renderAgentType()}
+                          {/* {renderAgentType()} */}
                         </div>
                         <AgentDescription
                           isTitle={false}

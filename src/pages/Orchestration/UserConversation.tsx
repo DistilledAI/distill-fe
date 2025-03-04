@@ -67,7 +67,7 @@ const UserConversation = () => {
         className={twMerge(
           "px-0 py-3 pl-4",
           index === 0 && "pt-8",
-          index === messages.length - 1 && "pb-8",
+          index === messages.length - 1 && "pb-20",
         )}
       >
         <MessageLive
@@ -88,7 +88,7 @@ const UserConversation = () => {
   }
 
   return (
-    <div className="absolute inset-x-0 bottom-0 z-10 h-fit w-full rounded-[14px] bg-white transition-all duration-300 ease-in-out md:relative md:rounded-[32px] md:border md:border-mercury-100">
+    <div className="absolute inset-x-0 bottom-0 z-10 h-fit w-full overflow-hidden rounded-[14px] bg-white transition-all duration-300 ease-in-out md:relative md:rounded-[32px] md:border md:border-mercury-100">
       {/* header mobile */}
       <div className="flex items-center justify-between border-b border-b-mercury-100 px-4 py-2 md:hidden">
         <h4 className="text-16 font-bold text-mercury-950">Live Discussion</h4>
@@ -121,8 +121,14 @@ const UserConversation = () => {
           "max-h-full px-3 max-md:hidden md:h-dvh md:max-h-[calc(100dvh-92px)]",
           isOpen && "max-md:block max-md:h-[calc(100dvh-290px)]",
         )}
+        scrollBottomClassName="md:bottom-[64px] md:h-14"
       />
-      <div className={twMerge("p-2 md:p-0", isOpen && "pb-[56px]")}>
+      <div
+        className={twMerge(
+          "p-2 md:absolute md:bottom-0 md:h-16 md:w-full md:bg-white md:p-0",
+          isOpen && "pb-[56px]",
+        )}
+      >
         <ChatInput
           onSubmit={onChatSubmit}
           isDisabledInput={!isEnableTextInput}

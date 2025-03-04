@@ -116,10 +116,11 @@ const AIAgentList = () => {
                 </div>
                 <div className="line-clamp-1 flex items-center justify-center gap-2 text-12 font-medium text-mercury-600 md:text-14">
                   Created by{" "}
-                  <img
-                    src={item?.ownerInfo?.avatar || maxAvatarPlaceholder}
+                  <AvatarCustom
+                    src={item?.ownerInfo?.avatar}
+                    publicAddress={item?.ownerInfo?.publicAddress}
                     className="h-[18px] w-[18px] rounded-full"
-                  />{" "}
+                  />
                   {item?.ownerInfo?.username || "-"}
                 </div>
               </div>

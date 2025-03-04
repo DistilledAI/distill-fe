@@ -17,9 +17,17 @@ const MarkdownMessage = ({ msg }: { msg: string }) => {
 
   const checkTextBreak = (text: string) => {
     const tokenRegex = /[a-zA-Z0-9/]{40,}/
+    const maxLength = 500
+    const sysRegex = /<<SYS>>[\s\S]*?<<\/SYS>>/
 
+    if (sysRegex.test(text)) {
+      return "break-words whitespace-pre-wrap max-w-full overflow-x-auto"
+    }
     if (tokenRegex.test(text)) {
       return "break-all"
+    }
+    if (text.length > maxLength) {
+      return "break-words whitespace-pre-wrap max-w-full"
     }
     return "break-words"
   }
@@ -32,20 +40,15 @@ const MarkdownMessage = ({ msg }: { msg: string }) => {
       )
       return imageSrc
     }
-
     return src
   }
 
   const breakLine = (text: string) => {
     const newText = text?.replace(/\n+$/, "")
-
     let md = newText
-    // Support multiple linebreaks
     md = newText?.replace(/```[\s\S]*?```/g, (m) => m.replace(/\n/g, "\n "))
-    md = md?.replace(/(?<=\n\n)(?![*-])\n/g, "&nbsp;\n ")
-    // Support single linebreak
+    md = md?.replace(/(?<=\n\n)(?![*-])\n/g, " \n ")
     md = md?.replace(/(\n)/gm, "  \n")
-
     return md
   }
 
@@ -55,7 +58,6 @@ const MarkdownMessage = ({ msg }: { msg: string }) => {
       if (isImageUrl(url)) {
         return `![image](${url})`
       }
-
       return url
     })
   }
@@ -72,7 +74,6 @@ const MarkdownMessage = ({ msg }: { msg: string }) => {
     },
     img: ({ src, alt }: any) => {
       const imageSrc = replaceSrcImage(src)
-
       return (
         <img
           src={imageSrc}
@@ -115,6 +116,28 @@ const MarkdownMessage = ({ msg }: { msg: string }) => {
     },
   }
 
+  const sysRegex = /<<SYS>>([\s\S]*?)<<\/SYS>>/
+  const sysMatch = msg.match(sysRegex)
+
+  if (sysMatch) {
+    const sysContent = sysMatch[1].trim()
+    const remainingContent = msg.replace(sysRegex, "").trim()
+    const processedMessage = breakLine(enhancedMessage(remainingContent))
+
+    return (
+      <>
+        <div className="h-full max-w-full rounded-lg border border-mercury-200 bg-mercury-50 p-3">
+          <p className="whitespace-pre-wrap text-14 text-mercury-900">
+            {sysContent}
+          </p>
+        </div>
+        {processedMessage && (
+          <Markdown components={renderers}>{processedMessage}</Markdown>
+        )}
+      </>
+    )
+  }
+
   const regex = /<think>\s*([\s\S]*?)(?:\s*<\/think>\s*([\s\S]*)|$)/
   const match = msg.match(regex)
 
@@ -134,7 +157,6 @@ const MarkdownMessage = ({ msg }: { msg: string }) => {
           <span className="font-medium text-mercury-950">
             {!!processedMessage ? "Thought" : "Thinking..."}
           </span>
-
           <div className={twMerge(isCollapsed && "rotate-180")}>
             <CaretUpFilledIcon color="#363636" />
           </div>
