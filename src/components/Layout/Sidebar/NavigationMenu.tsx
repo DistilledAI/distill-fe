@@ -6,7 +6,7 @@ import {
   BrainOutlineIcon,
   ClanOutlineIcon,
   MessageAIOutlineIcon,
-  CoinsOutlineIcon,
+  // CoinsOutlineIcon,
 } from "@components/Icons/Sidebar"
 import { FilledSquareCircleIcon } from "@components/Icons/FilledSquareCircleIcon"
 import {
@@ -96,13 +96,13 @@ const NavigationMenu = ({ isMobile = false }: { isMobile?: boolean }) => {
       rightContent: null,
       pathname: "/private-agent",
     },
-    {
-      id: "vaults",
-      icon: (color) => <CoinsOutlineIcon color={color} />,
-      name: "My Staked Vaults",
-      rightContent: null,
-      pathname: "/account?tab=my-vault-holdings",
-    },
+    // {
+    //   id: "vaults",
+    //   icon: (color) => <CoinsOutlineIcon color={color} />,
+    //   name: "My Staked Vaults",
+    //   rightContent: null,
+    //   pathname: "/account?tab=my-vault-holdings",
+    // },
     {
       id: "marketplace",
       icon: (color) => <FilledSquareCircleIcon size={18} color={color} />,
@@ -116,7 +116,7 @@ const NavigationMenu = ({ isMobile = false }: { isMobile?: boolean }) => {
   // Determine menu order based on device type
   const getMenuOrder = (isMobile: boolean): MenuItem[] =>
     isMobile
-      ? [BASE_MENU[0], BASE_MENU[3], BASE_MENU[5], BASE_MENU[2], BASE_MENU[1]]
+      ? [BASE_MENU[0], BASE_MENU[3], BASE_MENU[4], BASE_MENU[2], BASE_MENU[1]]
       : BASE_MENU
 
   const menu = getMenuOrder(isMobile)
