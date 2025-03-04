@@ -113,7 +113,7 @@ const Appearance = () => {
                 Links
               </h4>
             </div>
-            <div className="grid grid-cols-3 gap-2 max-md:grid-cols-1">
+            <div className="flex flex-col gap-2">
               <Controller
                 name="x_link"
                 control={control}

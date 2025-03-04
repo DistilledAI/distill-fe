@@ -42,7 +42,7 @@ const AgentDescription: React.FC<{
         <h4 className="mb-1 text-16 font-bold text-mercury-950">Description</h4>
       )}
 
-      <ScrollShadow className="max-h-[150px]">
+      <ScrollShadow className="max-h-[90px]">
         <Markdown components={renderers}>{description}</Markdown>
       </ScrollShadow>
     </>
