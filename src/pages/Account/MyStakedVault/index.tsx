@@ -85,8 +85,12 @@ const MyStakedVault = () => {
     <div className="mt-6">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <p className="font-bold max-md:text-15">Show All Vaults</p>
-          <Switch isSelected={isAllVault} onValueChange={setIsAllVault} />
+          {wallet.publicKey && (
+            <>
+              <p className="font-bold max-md:text-15">Show All Vaults</p>
+              <Switch isSelected={isAllVault} onValueChange={setIsAllVault} />
+            </>
+          )}
         </div>
         {!wallet.publicKey ? (
           <Button
@@ -118,6 +122,9 @@ const MyStakedVault = () => {
       <div className="mt-5">
         <StakedTable
           list={isAllVault ? list : list.filter((item) => item.myStaked > 0)}
+          emptyContent={
+            wallet.publicKey ? "Empty" : "Connect wallet to show vaults"
+          }
         />
       </div>
     </div>

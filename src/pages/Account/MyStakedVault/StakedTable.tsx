@@ -42,7 +42,8 @@ const columns = [
 
 const StakedTable: React.FC<{
   list: IVaultData[]
-}> = ({ list }) => {
+  emptyContent?: string
+}> = ({ list, emptyContent = "Empty" }) => {
   const renderCell = (item: Record<string, any>, columnKey: string) => {
     switch (columnKey) {
       case ColumnKey.VaultName:
@@ -98,7 +99,9 @@ const StakedTable: React.FC<{
       </TableHeader>
       <TableBody
         items={list}
-        emptyContent={<span className="text-base text-mercury-600">Empty</span>}
+        emptyContent={
+          <span className="text-base text-mercury-600">{emptyContent}</span>
+        }
       >
         {(item) => (
           <TableRow key={item.id}>
