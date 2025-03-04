@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react"
+import { useRef } from "react"
 import AvatarContainer, { AvatarClan } from "@components/AvatarContainer"
 import AvatarGroup from "@components/AvatarGroup"
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
