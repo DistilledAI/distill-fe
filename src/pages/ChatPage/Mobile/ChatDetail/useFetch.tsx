@@ -1,5 +1,5 @@
 import useAuthState from "@hooks/useAuthState"
-import { UserGroup } from "@pages/ChatPage/ChatBox/LeftBar/useFetchGroups"
+import { UserGroup } from "@pages/ChatPage/ChatContainer/LeftBar/useFetchGroups"
 import { useQuery } from "@tanstack/react-query"
 import { getGroupChatDetail } from "services/chat"
 import useGetChatId from "../../hooks/useGetChatId"

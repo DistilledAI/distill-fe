@@ -1,7 +1,7 @@
 import ReCaptchaWraper from "@components/ReCaptchaWraper"
 import useAuthState from "@hooks/useAuthState"
 import useSubmitChat from "@hooks/useSubmitChat"
-import ChatInput from "@pages/ChatPage/ChatBox/ChatInput"
+import ChatInput from "@pages/ChatPage/ChatContainer/ChatInput"
 import React, { useRef } from "react"
 import SpeechRecognition from "react-speech-recognition"
 import { twMerge } from "tailwind-merge"
@@ -58,9 +58,9 @@ const SendMessage: React.FC<{
     <>
       <div
         className={twMerge(
-          "relative pt-3 duration-300",
-          "max-md:bottom-0 max-md:left-0 max-md:right-0 max-md:bg-fading-white max-md:px-4 md:bg-white",
-          "max-lg:fixed max-lg:bottom-0 max-lg:left-[344px] max-lg:right-4 max-lg:pb-4",
+          "fixed pt-3 duration-300 md:relative",
+          "max-md:bottom-0 max-md:left-0 max-md:right-0 max-md:bg-fading-white max-md:px-3 md:bg-white",
+          "max-lg:fixed max-lg:bottom-0 max-lg:left-[344px] max-lg:right-4 max-lg:pb-3",
           sidebarCollapsed && "max-lg:left-[121px]",
         )}
       >

@@ -1,4 +1,4 @@
-import PrivateAgentChatContent from "@pages/ChatPage/ChatBox/RightContent/MyPrivateAgentContent/PrivateAgentChatContent"
+import PrivateAgentChatContent from "@pages/PrivateChat/ChatMyAgent/ChatMyAgentBox"
 
 const ChatMyAgent = () => {
   return <PrivateAgentChatContent />

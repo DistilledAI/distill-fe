@@ -1,4 +1,5 @@
 import { maxAvatar } from "@assets/images"
+import AgentStatus from "@components/AgentStatus"
 import AlertBox from "@components/AlertBox"
 import HeaderMobileBack from "@components/HeaderMobileBack"
 import {
@@ -10,10 +11,9 @@ import { STATUS_AGENT } from "@constants/index"
 import { useAppSelector } from "@hooks/useAppRedux"
 import useAuthState from "@hooks/useAuthState"
 import { Button } from "@nextui-org/react"
-import MyAgents from "@pages/Account/MyAgents"
-import AgentStatus from "@pages/ChatPage/ChatBox/RightContent/MyPrivateAgentContent/AgentInitialization/AgentStatus"
-import { AGENT_TYPE_KEY } from "@pages/ChatPage/ChatBox/RightContent/MyPrivateAgentContent/AgentInitialization/AgentType"
-import useGetPaymentHistory from "@pages/ChatPage/ChatBox/RightContent/MyPrivateAgentContent/AgentInitialization/useGetPaymentHistory"
+import MyAgents from "@pages/Account1/MyAgents"
+import { AGENT_TYPE_KEY } from "@pages/ChatPage/ChatContainer/RightContent/MyPrivateAgentContent/AgentInitialization/AgentType"
+import useGetPaymentHistory from "@pages/ChatPage/ChatContainer/RightContent/MyPrivateAgentContent/AgentInitialization/useGetPaymentHistory"
 import { findTokenByAddress } from "@pages/MyPrivateAgent/helpers"
 import { Network } from "@pages/MyPrivateAgent/interface"
 import useSend from "@pages/MyPrivateAgent/Send/useSend"
@@ -29,7 +29,6 @@ const MyAgentPage = () => {
   const agents = useAppSelector((state) => state.agents.myAgents)
   const agent = agents[0]
   const isAgentActive = agent && agent?.status === STATUS_AGENT.ACTIVE
-  //@ts-ignore
   const typeAgentData = agent?.typeAgent
 
   const { handleSend } = useSend()
@@ -145,7 +144,7 @@ const MyAgentPage = () => {
                         />
                         <span className="text-14 font-medium text-[#BCAA88]">
                           <span className="font-bold">1,000 </span>
-                          Max
+                          MAX
                         </span>
                         <span className="text-13 font-bold text-mercury-30">
                           {" "}

@@ -6,7 +6,7 @@ import useWindowSize from "@hooks/useWindowSize"
 import {
   FaqSample,
   faqSampleDefault,
-} from "@pages/ChatPage/ChatBox/RightContent/MyPrivateAgentContent/UploadFAQ/AddFAQModal"
+} from "@pages/ChatPage/ChatContainer/RightContent/MyPrivateAgentContent/UploadFAQ/AddFAQModal"
 import { BotDataTypeKey } from "@types"
 import moment from "moment"
 import React, { useState } from "react"
@@ -79,7 +79,7 @@ const FaqData: React.FC<{
             <DeleteData
               botId={item.userId}
               ids={[item.id]}
-              category={category}
+              // category={category}
             />
           </div>
         )
@@ -153,7 +153,7 @@ const FaqData: React.FC<{
               }))}
               loadMore={fetchNextPage}
               hasMore={hasNextPage}
-              category={category}
+              // category={category}
               botId={botId}
             />
           ) : (

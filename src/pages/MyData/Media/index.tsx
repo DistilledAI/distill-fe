@@ -73,7 +73,7 @@ const MediaData: React.FC<{
             <DeleteData
               botId={item.userId}
               ids={[item.id]}
-              category={category}
+              // category={category}
             />
           </div>
         )
@@ -140,7 +140,6 @@ const MediaData: React.FC<{
             }))}
             loadMore={fetchNextPage}
             hasMore={hasNextPage}
-            category={category}
             botId={botId}
           />
         ) : (

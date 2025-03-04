@@ -39,7 +39,11 @@ const PublishedOnMarket: React.FC<{
         onOpenChange={onClose}
         hideCloseButton
         size="4xl"
-        classNames={{ wrapper: "overflow-hidden", base: "bg-mercury-100" }}
+        classNames={{
+          wrapper: "overflow-hidden z-[51]",
+          base: "bg-mercury-100",
+          backdrop: "z-[51]",
+        }}
       >
         <ModalContent className="rounded-3xl">
           <div className="p-6 max-sm:px-4">
@@ -54,7 +58,7 @@ const PublishedOnMarket: React.FC<{
               <div className="inline-flex items-center gap-2">
                 <CheckedIcon size={16} />
                 <span className="text-green-600">
-                  Your agent is published on marketplace
+                  Your agent is published on Agent Store
                 </span>
               </div>
             </div>

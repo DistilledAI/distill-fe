@@ -3,14 +3,13 @@ import DotLoading from "@components/DotLoading"
 import { FilledExclamationCircleIcon } from "@components/Icons/FilledExclamationCircleIcon"
 import { ExploreFilledIcon } from "@components/Icons/MetamaskIcon"
 import useConnectWallet from "@hooks/useConnectWallet"
-import IntroVideo from "@pages/ChatPage/ChatBox/RightContent/Modal/CreatPrivateAgentModal/IntroVideo"
 
 const Login = () => {
   const { connectMultipleWallet, loading } = useConnectWallet()
 
   return (
     <div
-      className="relative mx-auto flex h-full w-full flex-1 items-center justify-center rounded-[22px] border border-white bg-white bg-cover bg-center bg-no-repeat font-barlow max-md:h-[calc(100dvh-50px)]"
+      className="relative mx-auto flex h-[calc(100dvh-68px)] w-full flex-1 items-center justify-center rounded-[22px] border border-white bg-white bg-cover bg-center bg-no-repeat font-barlow max-md:h-[calc(100dvh-50px)]"
       style={{
         backgroundImage: `url(${desktopPrivateAgent})`,
       }}
@@ -38,9 +37,6 @@ const Login = () => {
           </span>
         </div>
       )}
-      <div className="absolute right-6 top-4 hidden w-[240px] md:block">
-        <IntroVideo />
-      </div>
     </div>
   )
 }

@@ -10,28 +10,23 @@ import {
   ModalHeader,
   useDisclosure,
 } from "@nextui-org/react"
-import {
-  GroupConfig,
-  UserGroup,
-} from "@pages/ChatPage/ChatBox/LeftBar/useFetchGroups"
+import { UserGroup } from "@pages/ChatPage/ChatContainer/LeftBar/useFetchGroups"
 import React from "react"
 import AgentDescription from "./AgentDescription"
 import AgentSocials from "./AgentSocials"
 import ContractDisplay from "./ContractDisplay"
 import { PATH_NAMES } from "@constants/index"
+import { useGroupConfig } from "./useGroupConfig"
 
 const AgentLiveInfo: React.FC<{
   groupDetail: UserGroup | null
 }> = ({ groupDetail }) => {
   const { isOpen, onClose, onOpen } = useDisclosure()
-  const groupConfig: GroupConfig | null = groupDetail?.group?.config
-    ? JSON.parse(groupDetail.group.config)
-    : null
-
+  const groupConfig = useGroupConfig(groupDetail?.group)
   return (
     <>
       <Button
-        className="h-7 w-7 min-w-7 rounded-full bg-mercury-70 p-0"
+        className="h-11 w-11 min-w-11 rounded-full bg-mercury-100 p-0"
         onPress={onOpen}
       >
         <InfoCircleOutlineIcon size={20} />
@@ -61,11 +56,11 @@ const AgentLiveInfo: React.FC<{
             <AgentSocials
               agentInfo={{
                 username: groupDetail?.group?.name as string,
-                xLink: groupConfig?.x as string,
-                teleLink: groupConfig?.telegram as string,
+                xLink: groupConfig?.x_link as string,
+                teleLink: groupConfig?.telegram_link as string,
                 shareLink: `${window.location.origin}${PATH_NAMES.CLAN}/${groupDetail?.group?.label}`,
                 contract: groupConfig?.contractAddress as string,
-                website: groupConfig?.website as string,
+                website: groupConfig?.website_link as string,
               }}
             />
             <ContractDisplay
@@ -73,7 +68,7 @@ const AgentLiveInfo: React.FC<{
                 wrapper: "mt-3",
               }}
               icon={groupConfig?.contractAddress ? solanaCircleIcon : ""}
-              value={groupConfig?.contractAddress}
+              value={groupConfig?.contractAddress || ""}
             />
             <AgentDescription description={groupConfig?.description} />
           </ModalBody>

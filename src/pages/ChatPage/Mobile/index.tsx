@@ -5,14 +5,13 @@ import useOutsideClick from "@hooks/useOutSideClick"
 import { Button, ScrollShadow } from "@nextui-org/react"
 import { useEffect, useRef, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
-import SearchResult from "../ChatBox/LeftBar/SearchContainer/Result"
-import useSearch from "../ChatBox/LeftBar/SearchContainer/useSearch"
+import SearchResult from "../ChatContainer/LeftBar/SearchContainer/Result"
+import useSearch from "../ChatContainer/LeftBar/SearchContainer/useSearch"
 import ChatDetail from "./ChatDetail"
 import useGetChatId from "../hooks/useGetChatId"
 import ChatList from "./ChatList"
 import ChatSearch from "./ChatSearch"
 import VideoCustom from "@components/VideoCustom"
-import ChatClans from "../ChatBox/LeftBar/Clans"
 
 const ChatPageMobile = () => {
   const { privateChatId } = useParams()
@@ -56,9 +55,7 @@ const ChatPageMobile = () => {
         )}
       </div>
       <div className="flex h-[calc(100dvh-110px)] w-full flex-col bg-[rgba(255,255,255,0.85)] pt-[56px]">
-        <div className="px-4 pb-2">
-          <ChatClans />
-        </div>
+        <div className="px-4 pb-2">{/* <ChatClans /> */}</div>
         <div className="flex-1">
           <ChatList />
         </div>

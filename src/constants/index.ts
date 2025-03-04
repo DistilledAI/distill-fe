@@ -21,6 +21,8 @@ export const PATH_NAMES = {
   ORCHESTRATION: "/orchestration",
   STAKING: "/staking",
   DAO: "/dao",
+  CLAN_AGENT_EMPTY: "/agent-clan-empty",
+  MY_AGENT_CLAN: "/my-agent-clan",
 }
 
 export const MIX_PANEL_TRACK_EVENT = {
@@ -180,13 +182,13 @@ export const PERSONALITY_LIST = [
 ]
 
 export const COMMUNICATION_STYLE_LIST = [
-  {
-    emoji: "⭐️",
-    label: "Custom",
-    selected: false,
-    value: "communication_style",
-    type: "custom",
-  },
+  // {
+  //   emoji: "⭐️",
+  //   label: "Custom",
+  //   selected: false,
+  //   value: "communication_style",
+  //   type: "custom",
+  // },
   {
     emoji: "👔",
     label: "Formal",

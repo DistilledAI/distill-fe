@@ -2,13 +2,20 @@ import { IUser } from "@reducers/userSlice"
 import endpoint from "./endpoint"
 import { fetchApiAuth } from "./fetchApi"
 
-export const getGroupList = async (offset: number = 0, limit: number = 10) => {
+export const getGroupList = async (
+  offset: number = 0,
+  limit: number = 10,
+  filter?: {
+    [key: string]: any
+  },
+) => {
   return fetchApiAuth({
     method: "get",
     url: endpoint.GET_MY_CHAT_GROUP_LIST,
     params: {
       offset,
       limit,
+      filter: JSON.stringify(filter),
     },
   })
 }
@@ -94,14 +101,29 @@ export const getChatHistoryById = async ({
   })
 }
 
-export const searchUsers = async (payload: any) => {
+export const searchUsers = async ({
+  filter,
+  sort,
+  limit = 30,
+  offset = 0,
+}: {
+  filter?: {
+    [key: string]: any
+  }
+  sort?: {
+    [key: string]: any
+  }
+  limit?: number
+  offset?: number
+}) => {
   return fetchApiAuth({
     method: "get",
     url: endpoint.SEARCH_USER,
     params: {
-      filter: payload,
-      limit: 30,
-      offset: 0,
+      filter: JSON.stringify(filter),
+      sort: JSON.stringify(sort),
+      limit,
+      offset,
     },
   })
 }

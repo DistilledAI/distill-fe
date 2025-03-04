@@ -1,4 +1,3 @@
-import { InfoCircleIcon } from "@components/Icons/InfoCircleIcon"
 import { MouseEvent, ReactNode } from "react"
 import { Link } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
@@ -30,15 +29,18 @@ const AlertBox = ({
   return (
     <div
       className={twMerge(
-        "flex flex-col justify-between gap-1 rounded-lg border border-brown-500 bg-brown-50 px-4 py-3 md:flex-row md:items-center md:gap-2",
+        "flex flex-col justify-between gap-1 rounded-lg bg-brown-50 px-3 py-2 md:flex-row md:items-center md:gap-2 md:px-4 md:py-3",
         className,
       )}
     >
       <div className="flex items-center gap-2">
-        <div>{icon || <InfoCircleIcon color="#83664B" size={16} />}</div>
+        {icon && <div>{icon}</div>}
         <div>
           {messages.map((message, index) => (
-            <div key={index} className="text-16 font-medium text-brown-600">
+            <div
+              key={index}
+              className="text-14 font-medium text-brown-600 md:text-16"
+            >
               {message}
             </div>
           ))}
@@ -47,14 +49,14 @@ const AlertBox = ({
 
       {extendButton ||
         (links && (
-          <div className="flex gap-4 max-md:ml-[22px]">
+          <div className="flex gap-4">
             {links.map(({ to, label, external, onClick }) => (
               <Link
                 key={label}
                 to={to}
                 target={external ? "_blank" : "_self"}
                 onClick={onClick}
-                className="whitespace-nowrap text-16 font-bold text-brown-600 hover:underline"
+                className="whitespace-nowrap text-14 font-bold text-brown-600 hover:underline md:text-16"
               >
                 {label}
               </Link>

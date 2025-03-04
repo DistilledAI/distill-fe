@@ -1,4 +1,4 @@
-import { TypeGroup } from "@pages/ChatPage/ChatBox/LeftBar/useFetchGroups"
+import { TypeGroup } from "@pages/ChatPage/ChatContainer/LeftBar/useFetchGroups"
 
 export interface IGroupDetail {
   id: number
@@ -21,4 +21,5 @@ export interface IGroupDetail {
     total: number
     createdAt: string
   }
+  groupConfig: any[]
 }

@@ -1,49 +1,101 @@
-import { useEffect, useState } from "react"
+import { useQuery, useInfiniteQuery } from "@tanstack/react-query"
 import { getListGroupAgentPublic } from "services/group"
-import { IGroupDetail } from "types/group"
+import { useMemo } from "react"
+
+interface Filter {
+  [key: string]: any
+}
+
+interface UseFetchClanParams {
+  limit?: number
+  page?: number
+  filter?: Filter
+  sort?: Filter
+  mode?: "infinite" | "pagination"
+}
+
+const fetchClans = async ({ pageParam = 0, queryKey }: any) => {
+  const [, limit, filter, sort, mode, page] = queryKey
+  const offset = mode === "pagination" ? (page - 1) * limit : pageParam
+  const res = await getListGroupAgentPublic({
+    filter,
+    sort,
+    limit,
+    offset,
+  })
+  return {
+    items: res.data.items || [],
+    total: res.data.total || 0,
+  }
+}
 
 const useFetchClan = ({
-  isFetchNow = true,
-  userId,
-  limit,
-  offset,
-}: {
-  isFetchNow?: boolean
-  userId?: number
-  limit?: number
-  offset?: number
-}) => {
-  const [loading, setLoading] = useState(false)
-  const [data, setData] = useState<IGroupDetail[]>([])
+  limit = 10,
+  page = 1,
+  filter: externalFilter,
+  sort: externalSort,
+  mode = "infinite",
+}: UseFetchClanParams = {}) => {
+  const memoizedFilter = useMemo(
+    () => externalFilter || {},
+    [JSON.stringify(externalFilter)],
+  )
 
-  const getList = async ({
-    hasLoading = true,
-    limit = 10,
-    offset = 0,
-  }: {
-    hasLoading?: boolean
-    limit?: number
-    offset?: number
-  }) => {
-    try {
-      if (hasLoading) setLoading(true)
-      const filter = userId
-        ? JSON.stringify({ userId: userId.toString() })
-        : undefined
-      const res = await getListGroupAgentPublic(filter, limit, offset)
-      if (res.data.items) setData(res.data.items)
-    } catch (error: any) {
-      console.error(error)
-    } finally {
-      setLoading(false)
+  const memoizedSort = useMemo(
+    () => externalSort || {},
+    [JSON.stringify(externalSort)],
+  )
+
+  const infiniteResult = useInfiniteQuery({
+    queryKey: ["clans", limit, memoizedFilter, memoizedSort, "infinite"],
+    queryFn: fetchClans,
+    getNextPageParam: (lastPage, allPages) => {
+      const totalFetched = allPages.reduce(
+        (sum, page) => sum + page.items.length,
+        0,
+      )
+      return totalFetched < lastPage.total ? totalFetched : undefined
+    },
+    initialPageParam: 0,
+    enabled: mode === "infinite",
+  })
+
+  const paginationResult = useQuery({
+    queryKey: [
+      "clans",
+      limit,
+      memoizedFilter,
+      memoizedSort,
+      "pagination",
+      page,
+    ],
+    queryFn: fetchClans,
+    enabled: mode === "pagination",
+  })
+
+  if (mode === "infinite") {
+    const flatData =
+      infiniteResult.data?.pages.flatMap((page) => page.items) || []
+    return {
+      data: flatData,
+      loading: infiniteResult.isLoading,
+      isFetching: infiniteResult.isFetching,
+      hasMore: infiniteResult.hasNextPage,
+      fetchMore: infiniteResult.fetchNextPage,
+      total: infiniteResult.data?.pages[0]?.total || 0,
+      refetch: infiniteResult.refetch,
+    }
+  } else {
+    return {
+      data: paginationResult.data?.items || [],
+      total: paginationResult.data?.total || 0,
+      loading: paginationResult.isLoading,
+      isFetching: paginationResult.isFetching,
+      hasMore: false,
+      fetchMore: () => {},
+      refetch: paginationResult.refetch,
     }
   }
-
-  useEffect(() => {
-    if (isFetchNow) getList({ limit, offset })
-  }, [userId, isFetchNow, limit, offset])
-
-  return { data, loading, getList }
 }
 
 export default useFetchClan
