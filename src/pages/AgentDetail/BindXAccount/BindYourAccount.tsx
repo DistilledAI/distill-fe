@@ -60,6 +60,9 @@ const BindYourAccount: React.FC<{
   const onNextStep = () => {
     setStepNumber(stepNumber + 1)
   }
+  const onPrevStep = () => {
+    setStepNumber(stepNumber - 1)
+  }
 
   const onBindYourAccount = async (data: any) => {
     const newData = {
@@ -157,6 +160,7 @@ const BindYourAccount: React.FC<{
             </ModalBody>
             <Footer
               stepNumber={stepNumber}
+              onPrevStep={onPrevStep}
               methods={methods}
               onNextStep={onNextStep}
               onBindYourAccount={onBindYourAccount}

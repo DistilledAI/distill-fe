@@ -46,10 +46,15 @@ const CreateAgentModal: React.FC<{
     },
   })
 
+  const onCancel = () => {
+    if (isCanClose) onClose()
+    else navigate("/")
+  }
+
   return (
     <Modal
       isOpen={isOpen}
-      onClose={onClose}
+      onClose={onCancel}
       hideCloseButton
       classNames={{
         base: "bg-mercury-100 py-6 max-md:py-4 max-w-[800px]",
@@ -62,14 +67,12 @@ const CreateAgentModal: React.FC<{
         <div className="px-4">
           <div className="relative flex items-center justify-center">
             <p className="mb-2 text-24 font-semibold">Select Agent Type</p>
-            {isCanClose && (
-              <div
-                onClick={onClose}
-                className="absolute right-0 top-0 cursor-pointer"
-              >
-                <CloseFilledIcon />
-              </div>
-            )}
+            <div
+              onClick={onCancel}
+              className="absolute right-0 top-0 cursor-pointer"
+            >
+              <CloseFilledIcon />
+            </div>
           </div>
           <div>
             <FormProvider {...methods}>
