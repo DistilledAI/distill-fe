@@ -150,3 +150,29 @@ export const getAgentReply = async ({
     },
   })
 }
+
+export const getXLogin = async () => {
+  return fetchApiAuth({
+    method: "GET",
+    url: endpoint.GET_X_LOGIN,
+  })
+}
+
+export const verifyXLogin = async (data: {
+  oauthToken: string
+  oauthVerifier: string
+  tokenSecret: string
+}) => {
+  return fetchApiAuth({
+    method: "POST",
+    url: endpoint.VERIFY_X_LOGIN,
+    data,
+  })
+}
+
+export const unBindXLogin = async () => {
+  return fetchApiAuth({
+    method: "POST",
+    url: endpoint.UNBIND_X_LOGIN,
+  })
+}
