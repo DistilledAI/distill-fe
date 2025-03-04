@@ -7,6 +7,9 @@ const LENGTH_RULES = {
   clanName: { max: 100 },
   clanDesc: { max: 500 },
   agentDesc: { max: DESC_MAX_LENGTH },
+  personalityTraits: { max: 500 },
+  communicationStyle: { max: 500 },
+  firstMsg: { max: 500 },
 } as const
 
 const VALIDATION_RULES = {
@@ -48,6 +51,22 @@ const VALIDATION_RULES = {
       data["personality_traits"].length !== 0,
     message: "Personality is required",
   },
+  personalityTraits: {
+    test: (data: any) =>
+      data["personality_traits"]?.[0].length <=
+      LENGTH_RULES.personalityTraits.max,
+    message: `Agent's Purpose max ${LENGTH_RULES.personalityTraits.max} characters`,
+  },
+  communicationStyle: {
+    test: (data: any) =>
+      data["communication_style"]?.[0].length <=
+      LENGTH_RULES.communicationStyle.max,
+    message: `Communication Style max ${LENGTH_RULES.communicationStyle.max} characters`,
+  },
+  firstMsg: {
+    test: (data: any) => data.firstMsg.length <= LENGTH_RULES.firstMsg.max,
+    message: `Greeting message max ${LENGTH_RULES.firstMsg.max} characters`,
+  },
 } as const
 
 export const isPassRuleAgentInfo = (data: any): boolean => {
@@ -60,6 +79,9 @@ export const isPassRuleAgentInfo = (data: any): boolean => {
     { rule: VALIDATION_RULES.clanDescRequired, value: data },
     { rule: VALIDATION_RULES.clanImageLive, value: data },
     { rule: VALIDATION_RULES.personality, value: data },
+    { rule: VALIDATION_RULES.personalityTraits, value: data },
+    { rule: VALIDATION_RULES.communicationStyle, value: data },
+    { rule: VALIDATION_RULES.firstMsg, value: data },
   ]
 
   for (const { rule, value } of validations) {
