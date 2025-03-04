@@ -14,6 +14,7 @@ import TotalMemberBadge from "@components/TotalMemberBadge"
 import { Pagination, Skeleton } from "@nextui-org/react"
 import PaginationItemCustom from "./PaginationItemCustom"
 import { IGroup } from "@pages/ChatPage/ChatContainer/LeftBar/useFetchGroups"
+import AgentDescription from "@pages/ChatBoxLive/AgentDescription"
 
 const agentType = {
   [AGENT_TYPE_KEY.DEFAULT]: <FilledBrainAIIcon size={14} />,
@@ -181,9 +182,13 @@ const AgentClansStore = () => {
                           </span>
                           {renderAgentType()}
                         </div>
-                        <p className="text-13 font-medium text-mercury-800">
-                          {description}
-                        </p>
+                        <AgentDescription
+                          isTitle={false}
+                          description={description}
+                          classNames={{
+                            p: "text-[13px] font-medium text-mercury-800 line-clamp-3",
+                          }}
+                        />
                       </div>
                       <div>
                         <div className="w-fit rounded-[4px] border border-brown-400 bg-brown-50 px-2 text-14 font-medium text-brown-600">
