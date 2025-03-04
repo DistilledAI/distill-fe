@@ -106,7 +106,7 @@ const NavigationMenu = ({ isMobile = false }: { isMobile?: boolean }) => {
         ) : (
           <FilledSquareCircleIcon size={20} color={color} />
         ),
-      name: "Store",
+      name: "Agent Store",
       rightContent: null,
       pathname: "/marketplace?tab=agent-clans",
     },
