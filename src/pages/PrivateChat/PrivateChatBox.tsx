@@ -8,7 +8,7 @@ import useWindowSize from "@hooks/useWindowSize"
 import useGetChatId from "@pages/ChatPage/hooks/useGetChatId"
 import HeaderBack from "@components/Layout/Header/HeaderBack"
 import AvatarCustom from "@components/AvatarCustom"
-import { maxAvatarPlaceholder } from "@assets/images"
+import { distilledAiPlaceholder } from "@assets/images"
 import ChatMyAgentBox from "./ChatMyAgent/ChatMyAgentBox"
 import ChatMyAgentEmpty from "./ChatMyAgent/ChatMyAgentEmpty"
 import ChatAgentOthersBox from "./ChatAgentOthers/ChatAgentOthersBox"
@@ -70,7 +70,7 @@ const PrivateChatBox: FC = () => {
     const user = isChatAgentOther ? userB : myAgent
     const avatarSrc = isChatAgentOther
       ? userB?.avatar
-      : myAgent?.avatar || maxAvatarPlaceholder
+      : myAgent?.avatar || distilledAiPlaceholder
 
     if (!user) return null
 

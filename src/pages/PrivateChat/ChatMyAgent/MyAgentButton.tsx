@@ -1,4 +1,4 @@
-import { maxAvatarPlaceholder } from "@assets/images"
+import { distilledAiPlaceholder } from "@assets/images"
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { PATH_NAMES } from "@constants/index"
 import { useAppSelector } from "@hooks/useAppRedux"
@@ -28,8 +28,8 @@ const MyPrivateAgent = () => {
     >
       <div className="relative flex-shrink-0">
         <img
-          src={myAgent?.avatar || maxAvatarPlaceholder}
-          className="h-10 w-10 rounded-full object-cover"
+          src={myAgent?.avatar || distilledAiPlaceholder}
+          className="h-10 w-10 rounded-full border border-mercury-400 object-cover"
           alt="avatar placeholder"
         />
         <div className="absolute bottom-[-2px] right-[-2px] flex h-[18px] w-[18px] items-center justify-center rounded-full bg-[#FC0]">

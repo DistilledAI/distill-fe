@@ -11,7 +11,7 @@ import ClanPublicChip from "./ClanPublicChip"
 import ClanTitle from "./ClanTitle"
 import LabelRequired from "./LabelRequired"
 import { isPassFileSize } from "@utils/index"
-import { maxAvatarPlaceholder2 } from "@assets/images"
+import { distilledAiPlaceholder } from "@assets/images"
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5MB
 const VIDEO_EXTENSIONS = [
@@ -32,7 +32,7 @@ const ClanAppearance: React.FC = () => {
   const mediaSrc = (() => {
     if (imageLive instanceof File) return URL.createObjectURL(imageLive)
     if (typeof imageLive === "string") return imageLive
-    return maxAvatarPlaceholder2
+    return distilledAiPlaceholder
   })()
 
   const isVideo =

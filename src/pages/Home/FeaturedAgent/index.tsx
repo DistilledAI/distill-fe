@@ -8,7 +8,7 @@ import { Link } from "react-router-dom"
 import FeaturedSkeleton from "./Skeleton"
 import useWindowSize from "@hooks/useWindowSize"
 import { AGENT_TYPE_KEY } from "@pages/ChatPage/ChatContainer/RightContent/MyPrivateAgentContent/AgentInitialization/AgentType"
-import { maxAvatarPlaceholder2 } from "@assets/images"
+import { distilledAiPlaceholder } from "@assets/images"
 import { getConfigClanValue } from "@pages/AgentStore/AgentClansStore"
 import { VideoThumbnailWrapper } from "@components/VideoThumbnailWrapper"
 
@@ -60,7 +60,7 @@ const FeaturedAgent = () => {
                         ) : (
                           <AvatarCustom
                             className="absolute left-0 top-0 h-full w-full rounded-none border-none object-cover transition-all duration-1000 group-hover:scale-110"
-                            src={thumbnail || maxAvatarPlaceholder2}
+                            src={thumbnail || distilledAiPlaceholder}
                           />
                         )
                       }

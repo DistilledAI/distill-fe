@@ -1,4 +1,4 @@
-import { maxAvatarPlaceholder2 } from "@assets/images"
+import { distilledAiPlaceholder } from "@assets/images"
 import { CameraIcon } from "@components/Icons"
 import { ClipboardTextIcon } from "@components/Icons/ClipboardTextIcon"
 import { TelegramIcon } from "@components/Icons/RewardsIcons"
@@ -41,7 +41,7 @@ const Appearance = () => {
             <div className="group relative h-[140px] w-[140px] cursor-pointer overflow-hidden rounded-full border-1 border-mercury-100 max-md:h-[80px] max-md:w-[80px]">
               <img
                 className="h-full w-full object-cover"
-                src={avatarWatch || maxAvatarPlaceholder2}
+                src={avatarWatch || distilledAiPlaceholder}
               />
               <div className="absolute left-1/2 top-1/2 flex h-10 w-10 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-brown-50 opacity-0 group-hover:opacity-100">
                 <CameraIcon />

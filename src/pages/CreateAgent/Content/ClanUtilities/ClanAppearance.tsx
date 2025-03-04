@@ -3,7 +3,7 @@ import ClanPublicChip from "./ClanPublicChip"
 import { Input, Switch, Textarea } from "@nextui-org/react"
 import ClanTitle from "./ClanTitle"
 import ChangeAvatarContainer from "@pages/AgentDetail/ChangeAvatarContainer"
-import { maxAvatarPlaceholder2 } from "@assets/images"
+import { distilledAiPlaceholder } from "@assets/images"
 import { BroadcastIcon } from "@components/Icons/Broadcast"
 import TotalMemberBadge from "@components/TotalMemberBadge"
 import { fileToBase64, isPassFileSize } from "@utils/index"
@@ -100,7 +100,7 @@ const ClanAppearance: React.FC = () => {
                 <div
                   className="h-full w-full bg-cover bg-center bg-no-repeat"
                   style={{
-                    backgroundImage: `url(${mediaPreview.src || maxAvatarPlaceholder2})`,
+                    backgroundImage: `url(${mediaPreview.src || distilledAiPlaceholder})`,
                   }}
                 />
               ) : (

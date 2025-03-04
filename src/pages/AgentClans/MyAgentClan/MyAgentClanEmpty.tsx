@@ -1,4 +1,4 @@
-import { maxAvatarPlaceholder2 } from "@assets/images"
+import { distilledAiPlaceholder } from "@assets/images"
 import { EditPenOutlineIcon } from "@components/Icons/Edit"
 import { PlusIcon } from "@components/Icons/Plus"
 import { WalletIcon } from "@components/Icons/Wallet"
@@ -63,7 +63,7 @@ const MyAgentClanEmpty = ({ imageUrl }: Props) => {
             </video>
           ) : (
             <img
-              src={thumbnail || maxAvatarPlaceholder2}
+              src={thumbnail || distilledAiPlaceholder}
               className="my-4 h-[300px] w-auto rounded-[32px] object-cover px-3 md:mt-10 md:h-[419px]"
               alt="avatar placeholder"
             />

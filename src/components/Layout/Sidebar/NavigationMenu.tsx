@@ -6,13 +6,15 @@ import {
   BrainOutlineIcon,
   ClanOutlineIcon,
   MessageAIOutlineIcon,
-  // CoinsOutlineIcon,
 } from "@components/Icons/Sidebar"
-import { FilledSquareCircleIcon } from "@components/Icons/FilledSquareCircleIcon"
 import {
+  FilledSquareCircleIcon,
+  SquareCircleIcon,
+} from "@components/Icons/FilledSquareCircleIcon"
+import {
+  distilledAiPlaceholder,
   gnrtAvatar,
   maxAvatar,
-  maxAvatarPlaceholder,
   racksAvatar,
 } from "@assets/images"
 
@@ -45,7 +47,7 @@ const NavigationMenu = ({ isMobile = false }: { isMobile?: boolean }) => {
       name: "My Agent",
       rightContent: (avatarAgent) => (
         <img
-          src={avatarAgent || maxAvatarPlaceholder}
+          src={avatarAgent || distilledAiPlaceholder}
           alt="avatar placeholder"
           className="h-8 w-8 rounded-full object-cover"
         />
@@ -96,20 +98,17 @@ const NavigationMenu = ({ isMobile = false }: { isMobile?: boolean }) => {
       rightContent: null,
       pathname: "/private-agent",
     },
-    // {
-    //   id: "vaults",
-    //   icon: (color) => <CoinsOutlineIcon color={color} />,
-    //   name: "My Staked Vaults",
-    //   rightContent: null,
-    //   pathname: "/account?tab=my-vault-holdings",
-    // },
     {
       id: "marketplace",
-      icon: (color) => <FilledSquareCircleIcon size={18} color={color} />,
+      icon: (color) =>
+        !isMobile ? (
+          <SquareCircleIcon />
+        ) : (
+          <FilledSquareCircleIcon size={20} color={color} />
+        ),
       name: "Store",
       rightContent: null,
       pathname: "/marketplace?tab=agent-clans",
-      isHidden: !isMobile,
     },
   ]
 

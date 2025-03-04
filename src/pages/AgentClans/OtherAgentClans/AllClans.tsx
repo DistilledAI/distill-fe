@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from "react"
-import { maxAvatarPlaceholder } from "@assets/images"
+import { distilledAiPlaceholder } from "@assets/images"
 import { AvatarClanByList } from "@components/AvatarContainer"
 import { PATH_NAMES } from "@constants/index"
 import useAuthState from "@hooks/useAuthState"
@@ -124,7 +124,7 @@ const AllClans = () => {
                 onClick={() => navigate(`${PATH_NAMES.CLAN}/${group.label}`)}
               >
                 <AvatarClanByList
-                  avatarUrl={imageUrl || maxAvatarPlaceholder}
+                  avatarUrl={imageUrl || distilledAiPlaceholder}
                   isNameDisplay={false}
                   name=""
                   className="h-8 w-8"

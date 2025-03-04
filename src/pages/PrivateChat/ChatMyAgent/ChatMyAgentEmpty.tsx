@@ -1,4 +1,4 @@
-import { maxAvatarPlaceholder } from "@assets/images"
+import { distilledAiPlaceholder } from "@assets/images"
 import { PlusIcon } from "@components/Icons/Plus"
 import { WalletIcon } from "@components/Icons/Wallet"
 import { PATH_NAMES, RoleUser } from "@constants/index"
@@ -19,8 +19,8 @@ const ChatMyAgentEmpty = () => {
       <div className="mx-auto min-h-[111px] w-full max-w-[768px] border border-mercury-100 bg-mercury-50 p-4 max-md:border-x-0 max-md:px-4 md:rounded-[14px]">
         <div className="flex gap-x-3 md:gap-x-4">
           <img
-            src={maxAvatarPlaceholder}
-            className="h-[72px] w-[72px] object-cover"
+            src={distilledAiPlaceholder}
+            className="h-[72px] w-[72px] rounded-full border border-mercury-400 object-cover"
           />
           <div className="flex-1 space-y-3">
             <div className="flex justify-between gap-x-2 md:gap-x-4">

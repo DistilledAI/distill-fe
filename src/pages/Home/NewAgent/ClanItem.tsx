@@ -1,4 +1,4 @@
-import { maxAvatarPlaceholder } from "@assets/images"
+import { distilledAiPlaceholder } from "@assets/images"
 import { AvatarClanByList } from "@components/AvatarContainer"
 import { PlusIcon } from "@components/Icons/Plus"
 import { VideoThumbnailWrapper } from "@components/VideoThumbnailWrapper"
@@ -43,7 +43,7 @@ const ClanItem: React.FC<{
         {(thumbnail) => (
           <AvatarClanByList
             name={group.name}
-            avatarUrl={thumbnail || maxAvatarPlaceholder}
+            avatarUrl={thumbnail || distilledAiPlaceholder}
             member={group.groupMemberStats?.total}
           />
         )}

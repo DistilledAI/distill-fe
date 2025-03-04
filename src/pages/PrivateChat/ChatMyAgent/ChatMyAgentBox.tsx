@@ -22,7 +22,7 @@ import {
 import useFetchMessages from "../../ChatPage/ChatContainer/ChatMessages/useFetchMessages"
 import ChatWindowV2 from "@components/ChatWindowV2"
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
-import { maxAvatarPlaceholder } from "@assets/images"
+import { distilledAiPlaceholder } from "@assets/images"
 
 const ChatMyAgentBox: React.FC<{
   hasInputChat?: boolean
@@ -71,7 +71,7 @@ const ChatMyAgentBox: React.FC<{
         {message.role === RoleChat.CUSTOMER ? (
           <ReceiverMessage
             avatar={{
-              src: message.avatar || maxAvatarPlaceholder,
+              src: message.avatar || distilledAiPlaceholder,
               className: "bg-white",
               badgeIcon: <FilledBrainAIIcon size={14} />,
               badgeClassName: "bg-[#FFCC00]",

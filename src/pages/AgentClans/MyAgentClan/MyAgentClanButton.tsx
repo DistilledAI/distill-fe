@@ -1,4 +1,4 @@
-import { maxAvatarPlaceholder } from "@assets/images"
+import { distilledAiPlaceholder } from "@assets/images"
 import { AvatarClanByList } from "@components/AvatarContainer"
 import ActiveEffect from "@pages/ChatPage/ChatContainer/LeftBar/ActiveEffect"
 import { twMerge } from "tailwind-merge"
@@ -37,7 +37,7 @@ const MyAgentClanButton = () => {
       <VideoThumbnailWrapper videoUrl={imageUrl ?? null} size={32} time={0}>
         {(thumbnail) => (
           <AvatarClanByList
-            avatarUrl={thumbnail || maxAvatarPlaceholder}
+            avatarUrl={thumbnail || distilledAiPlaceholder}
             isNameDisplay={false}
             name=""
             className="h-8 w-8"

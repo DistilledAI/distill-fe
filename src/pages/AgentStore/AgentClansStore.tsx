@@ -5,7 +5,7 @@ import { PATH_NAMES } from "@constants/index"
 import { ORCHESTRATION_LIST } from "@pages/ChatPage/ChatContainer/LeftBar/OrchestrationSlider"
 import OrchestrationCard from "@pages/ChatPage/ChatContainer/LeftBar/OrchestrationSlider/OrchestrationCard"
 import { AGENT_TYPE_KEY } from "@pages/ChatPage/ChatContainer/RightContent/MyPrivateAgentContent/AgentInitialization/AgentType"
-import { maxAvatarPlaceholder2 } from "@assets/images"
+import { distilledAiPlaceholder } from "@assets/images"
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { BroadcastIcon } from "@components/Icons/Broadcast"
 import { ClanIcon } from "@components/Icons/Clan"
@@ -24,7 +24,7 @@ const agentType = {
 export const getConfigClanValue = (
   item: IGroup,
   key: string,
-  defaultValue: string = maxAvatarPlaceholder2,
+  defaultValue: string = distilledAiPlaceholder,
 ) => {
   const config = item?.groupConfig?.find((val) => val.key === key)
   return config?.value || defaultValue
