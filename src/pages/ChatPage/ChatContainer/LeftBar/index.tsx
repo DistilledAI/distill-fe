@@ -7,7 +7,6 @@ import { Button } from "@nextui-org/react"
 import { Link } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
 import AnalyticsInfoWrap from "./AnalyticsInfoWrap"
-import ChatClans from "./Clans"
 import MyEcho from "./MyEcho"
 import OrchestrationSlider from "./OrchestrationSlider"
 import PrivateAI from "./PrivateAI"
@@ -50,7 +49,7 @@ const LeftBar = () => {
             className={twMerge("relative z-[1] h-[calc(100%-152px)] flex-1")}
           >
             <MyEcho />
-            <ChatClans />
+            {/* <ChatClans /> */}
             <PrivateAI />
           </div>
           <OrchestrationSlider />

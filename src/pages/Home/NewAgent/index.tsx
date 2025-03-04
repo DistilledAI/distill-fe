@@ -1,14 +1,14 @@
 import { LeafIcon } from "@components/Icons"
-import useFetchClan from "@pages/Marketplace/useFetchClan"
+// import useFetchClan from "@pages/Marketplace/useFetchClan"
 import { Link } from "react-router-dom"
-import ClanItem from "./ClanItem"
-import ClanSkeleton from "./ClanSkeleton"
+// import ClanItem from "./ClanItem"
+// import ClanSkeleton from "./ClanSkeleton"
 import useWindowSize from "@hooks/useWindowSize"
 import { PATH_NAMES } from "@constants/index"
 
 const NewAgent = () => {
   const { isMobile } = useWindowSize()
-  const { data, loading } = useFetchClan({})
+  // const { data, loading } = useFetchClan({})
 
   return (
     <div className="mt-8">
@@ -26,7 +26,7 @@ const NewAgent = () => {
           View All
         </Link>
       </div>
-      {loading ? (
+      {/* {loading ? (
         <ClanSkeleton />
       ) : (
         <div className="overflow-x-auto scrollbar-hide">
@@ -36,7 +36,7 @@ const NewAgent = () => {
             ))}
           </div>
         </div>
-      )}
+      )} */}
     </div>
   )
 }
