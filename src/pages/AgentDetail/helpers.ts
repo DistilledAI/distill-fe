@@ -8,7 +8,6 @@ const LENGTH_RULES = {
   clanDesc: { max: 500 },
   agentDesc: { max: DESC_MAX_LENGTH },
   communicationStyle: { max: 500 },
-  firstMsg: { max: 500 },
 } as const
 
 const VALIDATION_RULES = {
@@ -56,10 +55,6 @@ const VALIDATION_RULES = {
       LENGTH_RULES.communicationStyle.max,
     message: `Communication Style max ${LENGTH_RULES.communicationStyle.max} characters`,
   },
-  firstMsg: {
-    test: (data: any) => data.firstMsg.length <= LENGTH_RULES.firstMsg.max,
-    message: `Greeting message max ${LENGTH_RULES.firstMsg.max} characters`,
-  },
 } as const
 
 export const isPassRuleAgentInfo = (data: any): boolean => {
@@ -73,7 +68,6 @@ export const isPassRuleAgentInfo = (data: any): boolean => {
     { rule: VALIDATION_RULES.clanImageLive, value: data },
     { rule: VALIDATION_RULES.personality, value: data },
     { rule: VALIDATION_RULES.communicationStyle, value: data },
-    { rule: VALIDATION_RULES.firstMsg, value: data },
   ]
 
   for (const { rule, value } of validations) {
