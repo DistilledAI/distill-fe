@@ -84,7 +84,7 @@ const ClanAppearance: React.FC = () => {
         render={({ field }) => (
           <Switch
             isSelected={field.value === 1}
-            onValueChange={(isSelected) => field.onChange(isSelected ? 1 : 0)}
+            onValueChange={(isSelected) => field.onChange(isSelected ? 1 : 2)}
             classNames={{
               label: "text-[16px] max-md:text-15 font-bold text-mercury-950",
             }}
@@ -150,7 +150,7 @@ const ClanAppearance: React.FC = () => {
 
         <div className="col-span-2 space-y-4">
           <div className="space-y-2">
-            <LabelRequired label="Clan name" />
+            <LabelRequired label="Clan Name" />
             <Controller
               control={control}
               name="clan.name"

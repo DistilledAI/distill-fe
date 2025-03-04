@@ -31,18 +31,11 @@ const HeaderDetailAgent: React.FC<{
   const [isPublished, setIsPublished] = useState(
     agent?.publish === Publish.Published,
   )
-  const personality = watch("personality_traits")
   const agentName = watch("username")
   const agentDesc = watch("description")
 
   const isAgentActive = agent && agent?.status === STATUS_AGENT.ACTIVE
-  const isDisabled =
-    personality.length === 0 ||
-    personality[0] === "" ||
-    !agentName ||
-    !agentDesc ||
-    !isAgentActive ||
-    !isDirty
+  const isDisabled = !agentName || !agentDesc || !isAgentActive || !isDirty
 
   useEffect(() => {
     setIsPublished(agent?.publish === Publish.Published)
