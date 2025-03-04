@@ -1,5 +1,5 @@
 import MyPrivateAgent from "../ChatMyAgent/MyAgentButton"
-import ChatAgentOthers from "../ChatAgentOthers"
+import ChatAgentOthers from "../ChatAgentOthers/AllMessages"
 
 const PrivateChatMobile = () => {
   return (

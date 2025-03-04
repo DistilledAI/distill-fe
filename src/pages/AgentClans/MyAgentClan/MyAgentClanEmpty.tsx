@@ -2,6 +2,7 @@ import { maxAvatarPlaceholder2 } from "@assets/images"
 import { EditPenOutlineIcon } from "@components/Icons/Edit"
 import { PlusIcon } from "@components/Icons/Plus"
 import { WalletIcon } from "@components/Icons/Wallet"
+import { VideoThumbnailWrapper } from "@components/VideoThumbnailWrapper"
 import { PATH_NAMES, RoleUser } from "@constants/index"
 import { useAppSelector } from "@hooks/useAppRedux"
 import useAuthState from "@hooks/useAuthState"
@@ -45,11 +46,30 @@ const MyAgentClanEmpty = ({ imageUrl }: Props) => {
       </p>
       {renderContent()}
 
-      <img
-        src={imageUrl || maxAvatarPlaceholder2}
-        className="my-4 h-[300px] w-auto rounded-3xl object-cover px-3 md:mt-10 md:h-[419px]"
-        alt="avatar placeholder"
-      />
+      <VideoThumbnailWrapper videoUrl={imageUrl}>
+        {(thumbnail, _, isVideo) =>
+          isVideo ? (
+            <video
+              preload="auto"
+              muted={true}
+              autoPlay
+              playsInline
+              loop
+              controls={false}
+              className="my-4 h-[300px] w-auto rounded-[32px] object-cover px-3 md:mt-10 md:h-[419px] md:w-[419px]"
+            >
+              <source src={imageUrl} type="video/mp4" />
+              <track kind="captions" />
+            </video>
+          ) : (
+            <img
+              src={thumbnail || maxAvatarPlaceholder2}
+              className="my-4 h-[300px] w-auto rounded-[32px] object-cover px-3 md:mt-10 md:h-[419px]"
+              alt="avatar placeholder"
+            />
+          )
+        }
+      </VideoThumbnailWrapper>
 
       {!isUserLogged ? (
         <Button

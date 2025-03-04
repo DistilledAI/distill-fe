@@ -1,5 +1,5 @@
 import MyPrivateAgent from "./ChatMyAgent/MyAgentButton"
-import ChatAgentOthers from "./ChatAgentOthers"
+import AllMessages from "./ChatAgentOthers/AllMessages"
 import PrivateChatBox from "./PrivateChatBox"
 
 const PrivateChat = () => {
@@ -13,7 +13,7 @@ const PrivateChat = () => {
               Chat with My Agent
             </h3>
             <MyPrivateAgent />
-            <ChatAgentOthers />
+            <AllMessages />
           </div>
         </div>
       </div>

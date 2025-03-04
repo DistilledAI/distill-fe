@@ -1,4 +1,4 @@
-import { useRef } from "react"
+import { useRef, useState } from "react"
 import { maxAvatarPlaceholder } from "@assets/images"
 import { AvatarClanByList } from "@components/AvatarContainer"
 import { PATH_NAMES } from "@constants/index"
@@ -12,17 +12,22 @@ import { useNavigate, useParams } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
 import { useVirtualizer } from "@tanstack/react-virtual"
 import useDebounce from "@hooks/useDebounce"
+import SearchClanWrapper from "./SearchClanWrapper"
 
 const AllClans = () => {
   const { chatId } = useParams()
   const navigate = useNavigate()
   const { user } = useAuthState()
   const parentRef = useRef<HTMLDivElement>(null)
+  const [searchClanValue, setSearchClanValue] = useState("")
 
   const { groups, isLoading, isLoadingMore, handleLoadMore, hasMore } =
     useFetchGroups({
       initialLimit: 15,
-      initialFilter: { typeGroup: TypeGroup.PUBLIC_GROUP },
+      initialFilter: {
+        typeGroup: TypeGroup.PUBLIC_GROUP,
+        name: searchClanValue,
+      },
     })
 
   const filteredGroups = groups.filter(
@@ -50,11 +55,13 @@ const AllClans = () => {
     }
   }, 10)
 
+  const handleSearch = (value: string) => {
+    setSearchClanValue(value)
+  }
+
   return (
     <div className="-mx-3 mt-6 space-y-3 overflow-x-hidden px-3 pb-4">
-      <div className="flex items-center justify-between">
-        <span className="text-14 font-medium text-mercury-800">All Clans</span>
-      </div>
+      <SearchClanWrapper onSearch={handleSearch} />
       <div
         ref={parentRef}
         className="h-[calc(100dvh-240px)] overflow-y-auto scrollbar-hide md:h-[calc(100dvh-212px)]"
