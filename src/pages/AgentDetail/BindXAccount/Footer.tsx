@@ -6,9 +6,17 @@ const Footer: React.FC<{
   stepNumber: number
   methods: any
   onNextStep: any
+  onPrevStep: any
   onBindYourAccount: any
   loading: boolean
-}> = ({ stepNumber, methods, onNextStep, onBindYourAccount, loading }) => {
+}> = ({
+  stepNumber,
+  methods,
+  onPrevStep,
+  onNextStep,
+  onBindYourAccount,
+  loading,
+}) => {
   const { register, watch, handleSubmit, resetField, setValue } = methods
   const consumerKeyValue = watch("consumerKey")
   const consumerSecretValue = watch("consumerSecret")
@@ -169,22 +177,42 @@ const Footer: React.FC<{
         {renderContent()}
 
         {stepNumber < 5 ? (
-          <Button
-            className="rounded-full bg-white"
-            size="lg"
-            onPress={onNextStep}
-          >
-            <span className="text-base-b">Next Step</span>
-          </Button>
+          <div className="flex flex-col items-center gap-2">
+            {stepNumber !== 1 && (
+              <Button
+                className="rounded-full bg-transparent"
+                size="lg"
+                onPress={onPrevStep}
+              >
+                <span className="text-base-b text-white">Back</span>
+              </Button>
+            )}
+            <Button
+              className="rounded-full bg-white"
+              size="lg"
+              onPress={onNextStep}
+            >
+              <span className="text-base-b">Next Step</span>
+            </Button>
+          </div>
         ) : (
-          <Button
-            className="rounded-full bg-white"
-            size="lg"
-            onPress={handleSubmit(onBindYourAccount)}
-            isLoading={loading}
-          >
-            <span className="text-base-b">Finish</span>
-          </Button>
+          <div className="flex flex-col items-center gap-2">
+            <Button
+              className="rounded-full bg-transparent"
+              size="lg"
+              onPress={onPrevStep}
+            >
+              <span className="text-base-b text-white">Back</span>
+            </Button>
+            <Button
+              className="rounded-full bg-white"
+              size="lg"
+              onPress={handleSubmit(onBindYourAccount)}
+              isLoading={loading}
+            >
+              <span className="text-base-b">Finish</span>
+            </Button>
+          </div>
         )}
       </div>
     </ModalFooter>
