@@ -12,7 +12,6 @@ import { useState } from "react"
 import { Pagination, Skeleton } from "@nextui-org/react"
 import PaginationItemCustom from "./PaginationItemCustom"
 import AvatarCustom from "@components/AvatarCustom"
-import { maxAvatarPlaceholder } from "@assets/images"
 
 const AIAgentList = () => {
   const navigate = useNavigate()
