@@ -111,28 +111,34 @@ const AllClans = () => {
 
             return (
               <div
-                key={group.id}
                 data-index={virtualItem.index}
+                key={group.id}
                 ref={virtualizer.measureElement}
-                className={twMerge(
-                  "absolute left-0 top-0 flex w-full cursor-pointer items-center gap-4 rounded-full px-3 py-2 hover:bg-mercury-100",
-                  chatId === group.label && "md:bg-mercury-100",
-                )}
+                className="absolute left-0 top-0 w-full"
                 style={{
-                  transform: `translateY(${virtualItem.start}px)`,
+                  top: `${virtualItem.start}px`,
+                  height: 72,
                 }}
-                onClick={() => navigate(`${PATH_NAMES.CLAN}/${group.label}`)}
               >
-                <AvatarClanByList
-                  avatarUrl={imageUrl || distilledAiPlaceholder}
-                  isNameDisplay={false}
-                  name=""
-                  className="h-8 w-8"
-                  member={group.groupMemberStats?.total}
-                />
-                <span className="line-clamp-1 text-16 font-bold text-mercury-950">
-                  {group.name}
-                </span>
+                <div
+                  key={group.id}
+                  className={twMerge(
+                    "flex w-full cursor-pointer items-center gap-4 rounded-full px-3 py-2 hover:bg-mercury-100",
+                    chatId === group.label && "md:bg-mercury-100",
+                  )}
+                  onClick={() => navigate(`${PATH_NAMES.CLAN}/${group.label}`)}
+                >
+                  <AvatarClanByList
+                    avatarUrl={imageUrl || distilledAiPlaceholder}
+                    isNameDisplay={false}
+                    name=""
+                    className="h-8 w-8"
+                    member={group.groupMemberStats?.total}
+                  />
+                  <span className="line-clamp-1 text-16 font-bold text-mercury-950">
+                    {group.name}
+                  </span>
+                </div>
               </div>
             )
           })}
