@@ -1,10 +1,10 @@
+import ProtectedByAuth from "@components/Layout/ProtectedByAuth"
+import LoadingFallback from "@components/LoadingFallback"
+import { PATH_NAMES } from "@constants/index"
+import useWindowSize from "@hooks/useWindowSize"
+import AgentStore from "@pages/AgentStore"
 import { Suspense, lazy } from "react"
 import { Route, Routes } from "react-router-dom"
-import LoadingFallback from "@components/LoadingFallback"
-import ProtectedByAuth from "@components/Layout/ProtectedByAuth"
-import useWindowSize from "@hooks/useWindowSize"
-import { PATH_NAMES } from "@constants/index"
-import AgentStore from "@pages/AgentStore"
 
 // Lazy-loaded components
 const PageNotFound = lazy(() => import("@pages/NotFound"))
@@ -42,6 +42,7 @@ const RewardsPage = lazy(() => import("@pages/Rewards"))
 const ChatAgentClanBox = lazy(
   () => import("@pages/AgentClans/ChatAgentClanBox"),
 )
+const XLoginPage = lazy(() => import("@pages/XLoginPage"))
 
 const AppRouter = () => {
   const { isMobile } = useWindowSize()
@@ -145,6 +146,7 @@ const AppRouter = () => {
             <Route path={PATH_NAMES.MY_AGENTS} element={<MyAgentPage />} />
             <Route path={PATH_NAMES.REWARDS} element={<RewardsPage />} />
           </Route>
+          <Route path={PATH_NAMES.X_LOGIN} element={<XLoginPage />} />
         </Route>
 
         {/* Fallback Route for 404 */}
