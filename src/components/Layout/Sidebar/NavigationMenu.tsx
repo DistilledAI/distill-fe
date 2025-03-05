@@ -96,7 +96,7 @@ const NavigationMenu = ({ isMobile = false }: { isMobile?: boolean }) => {
       icon: (color) => <MessageAIOutlineIcon color={color} />,
       name: !isMobile ? "Private Chat" : "Chats",
       rightContent: null,
-      pathname: "/private-agent",
+      pathname: myAgent?.id ? `/invite/${myAgent?.id}` : "/private-agent",
     },
     {
       id: "marketplace",
@@ -135,8 +135,10 @@ const NavigationMenu = ({ isMobile = false }: { isMobile?: boolean }) => {
           normalizedCurrentPath.includes("/my-agent-clan")
         )
       case "private-agent":
+      case "invite":
         // Match both /private-agent and /chat/:id paths
         return (
+          normalizedCurrentPath.includes("/invite") ||
           normalizedCurrentPath.includes("/private-agent") ||
           normalizedCurrentPath.startsWith("/chat")
         )

@@ -1,4 +1,4 @@
-import MyPrivateAgent from "./ChatMyAgent/MyAgentButton"
+import MyAgentButton from "./ChatMyAgent/MyAgentButton"
 import AllMessages from "./ChatAgentOthers/AllMessages"
 import PrivateChatBox from "./PrivateChatBox"
 
@@ -12,7 +12,7 @@ const PrivateChat = () => {
             <h3 className="tex-14 mb-3 font-medium text-mercury-800">
               Chat with My Agent
             </h3>
-            <MyPrivateAgent />
+            <MyAgentButton />
             <AllMessages />
           </div>
         </div>

@@ -73,6 +73,14 @@ const useInviteAgent = () => {
       } else {
         navigate(`${PATH_NAMES.CHAT}/${groupId}`)
       }
+      queryClient.invalidateQueries({
+        queryKey: [
+          QueryDataKeys.MY_LIST_CHAT,
+          {
+            typeGroup: TypeGroup.DIRECT,
+          },
+        ],
+      })
     } catch (error) {
       console.log("error", error)
       navigate(PATH_NAMES.HOME)
