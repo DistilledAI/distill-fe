@@ -1,6 +1,6 @@
 import ComingSoon from "@components/ComingSoon"
 import { SettingIcon } from "@components/Icons"
-import { WorldIcon } from "@components/Icons/AgentDetailIcon"
+// import { WorldIcon } from "@components/Icons/AgentDetailIcon"
 import { CloseFilledIcon } from "@components/Icons/DefiLens"
 import {
   PlayFilledIcon,
@@ -253,12 +253,12 @@ const AutonomousX: React.FC<{
           text="Autonomous X Account"
           icon={<TwitterIcon size={24} color="#A2845E" />}
         />
-        <div className="flex items-center gap-1 rounded-full bg-[rgba(0,122,255,0.15)] px-2">
+        {/* <div className="flex items-center gap-1 rounded-full bg-[rgba(0,122,255,0.15)] px-2">
           <WorldIcon size={20} color="#007AFF" />
           <span className="font-medium uppercase text-[#007AFF] max-md:text-14">
             public
           </span>
-        </div>
+        </div> */}
       </div>
       {twitterUsername && (
         <div className="mt-3 flex justify-end">
