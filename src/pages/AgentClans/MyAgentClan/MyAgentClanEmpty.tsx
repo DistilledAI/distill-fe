@@ -36,8 +36,7 @@ const MyAgentClanEmpty = ({ imageUrl }: Props) => {
     if (agent && !isAgentActive) {
       return (
         <p className="text-16 font-semibold text-mercury-950 md:text-18">
-          Please wait for your agent to be activated{" "}
-          <span className="text-brown-500">Edit Agent</span> page.
+          Please wait for your agent to be activated
         </p>
       )
     }

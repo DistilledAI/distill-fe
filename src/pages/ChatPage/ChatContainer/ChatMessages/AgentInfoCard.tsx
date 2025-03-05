@@ -115,7 +115,6 @@ const AgentInfoCard = ({ messages, groupId }: AgentInfoCardProps) => {
         onClose={onClose}
         shareUrl={`${window.location.origin}${PATH_NAMES.INVITE}/${agentInfo?.id}`}
         title="Agent QR"
-        imageSrc={agentInfo?.avatar}
       />
     </div>
   )

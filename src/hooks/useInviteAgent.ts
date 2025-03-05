@@ -1,5 +1,6 @@
 import { PATH_NAMES } from "@constants/index"
 import useFetchGroups, {
+  TypeGroup,
   UserGroup,
 } from "@pages/ChatPage/ChatContainer/LeftBar/useFetchGroups"
 import { loginSuccessByAnonymous } from "@reducers/userSlice"
@@ -13,6 +14,7 @@ import { checkGroupDirect, createGroupChat } from "services/chat"
 import { QueryDataKeys } from "types/queryDataKeys"
 import useAuthState from "./useAuthState"
 import useWindowSize from "./useWindowSize"
+import { useAppSelector } from "./useAppRedux"
 
 const useInviteAgent = () => {
   const navigate = useNavigate()
@@ -27,7 +29,8 @@ const useInviteAgent = () => {
   const sessionAccessToken = cachedSessionStorage.getWithExpiry(
     storageKey.ACCESS_TOKEN,
   )
-  const { fetchGroups } = useFetchGroups()
+  const myAgent = useAppSelector((state) => state.agents.myAgent)
+  useFetchGroups()
 
   const handleInviteUserLoggedIn = async (agentId: number) => {
     try {
@@ -49,11 +52,27 @@ const useInviteAgent = () => {
           )
         const newGroupId = newData?.groupId
         if (newGroupId) {
-          navigate(`${PATH_NAMES.CHAT}/${newGroupId}`)
+          if (agentId === myAgent?.id) {
+            navigate(`${PATH_NAMES.PRIVATE_AGENT}/${newGroupId}`)
+          } else {
+            navigate(`${PATH_NAMES.CHAT}/${newGroupId}`)
+          }
         }
-        return fetchGroups()
+        return queryClient.invalidateQueries({
+          queryKey: [
+            QueryDataKeys.MY_LIST_CHAT,
+            {
+              typeGroup: TypeGroup.DIRECT,
+            },
+          ],
+        })
       }
-      navigate(`${PATH_NAMES.CHAT}/${groupId}`)
+
+      if (agentId === myAgent?.id) {
+        navigate(`${PATH_NAMES.PRIVATE_AGENT}/${groupId}`)
+      } else {
+        navigate(`${PATH_NAMES.CHAT}/${groupId}`)
+      }
     } catch (error) {
       console.log("error", error)
       navigate(PATH_NAMES.HOME)

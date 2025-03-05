@@ -13,7 +13,6 @@ interface ShareModal extends IModalProps {
   shareUrl: string
   title?: string
   onCLose?: any
-  imageSrc?: string
 }
 
 const ShareQRModal = ({
@@ -21,7 +20,6 @@ const ShareQRModal = ({
   onClose,
   shareUrl,
   title = "QR Code",
-  imageSrc,
 }: ShareModal) => {
   const qrRef = useRef<HTMLCanvasElement>(null)
 
@@ -30,7 +28,7 @@ const ShareQRModal = ({
       const canvas = qrRef.current
       canvas.toBlob((blob) => {
         if (blob) {
-          saveAs(blob, "my-agent-qr-code.png")
+          saveAs(blob, "agent-qr-code.png")
         }
       })
     }
@@ -66,7 +64,7 @@ const ShareQRModal = ({
             size={240}
             title="My Agent QR"
             imageSettings={{
-              src: imageSrc || distilledAIIcon,
+              src: distilledAIIcon,
               width: 32,
               height: 32,
               excavate: true,

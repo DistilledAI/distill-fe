@@ -38,13 +38,13 @@ const AgentClansStore = () => {
 
   const searchParams = new URLSearchParams(location.search)
   const searchValue = searchParams.get("search") || ""
-  const sortBy = searchParams.get("sortBy") || "Trending"
+  const sortBy = searchParams.get("sortBy") || "Oldest"
 
   const sort = useMemo(() => {
     if (sortBy === "Newest") {
       return { createdAt: "DESC" }
     }
-    return { totalMember: "DESC" }
+    return { createdAt: "ASC" }
   }, [sortBy])
 
   const filter = useMemo(
@@ -179,7 +179,7 @@ const AgentClansStore = () => {
                           isTitle={false}
                           description={description}
                           classNames={{
-                            p: "text-[13px] font-medium text-mercury-800 line-clamp-2",
+                            p: "text-[13px] font-medium text-mercury-800 line-clamp-3",
                           }}
                         />
                       </div>

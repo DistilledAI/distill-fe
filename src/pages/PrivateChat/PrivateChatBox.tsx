@@ -14,6 +14,7 @@ import ChatMyAgentEmpty from "./ChatMyAgent/ChatMyAgentEmpty"
 import ChatAgentOthersBox from "./ChatAgentOthers/ChatAgentOthersBox"
 import MoreAction from "@components/ChatInfoCurrent/MoreAction"
 import { TypeGroup } from "@pages/ChatPage/ChatContainer/LeftBar/useFetchGroups"
+import useAuthState from "@hooks/useAuthState"
 
 interface User {
   publicAddress: string
@@ -36,11 +37,11 @@ const PrivateChatBox: FC = () => {
   const { isMobile } = useWindowSize()
   const { chatId } = useGetChatId()
   const myAgent = useAppSelector((state) => state.agents.myAgent)
+  const { user } = useAuthState()
 
   const isChatAgentOther = pathname.startsWith(PATH_NAMES.CHAT)
   const isChatMyAgent =
     pathname.startsWith(PATH_NAMES.PRIVATE_AGENT) && !!myAgent?.id
-
   const { data: groupDetail } = useQuery<GroupDetail>({
     queryKey: [`${QueryDataKeys.GROUP_DETAIL}-${chatId}`],
     enabled: isMobile && !!chatId,
@@ -49,7 +50,12 @@ const PrivateChatBox: FC = () => {
   const userB = groupDetail?.data?.group?.userB
 
   useEffect(() => {
-    if (!myAgent?.id && !isChatAgentOther) {
+    if (
+      !myAgent?.id &&
+      !isChatAgentOther &&
+      user?.id &&
+      !pathname.startsWith(PATH_NAMES.INVITE)
+    ) {
       navigate(
         isMobile
           ? `${PATH_NAMES.PRIVATE_AGENT}/empty`
@@ -58,7 +64,14 @@ const PrivateChatBox: FC = () => {
     } else if (isChatMyAgent) {
       navigate(`${PATH_NAMES.PRIVATE_AGENT}/${myAgent?.id}`)
     }
-  }, [myAgent?.id, isChatAgentOther, isChatMyAgent, isMobile, navigate])
+  }, [
+    myAgent?.id,
+    isChatAgentOther,
+    isChatMyAgent,
+    isMobile,
+    user?.id,
+    pathname,
+  ])
 
   const getHeaderName = () => {
     return isChatAgentOther ? userB?.username : myAgent?.username
