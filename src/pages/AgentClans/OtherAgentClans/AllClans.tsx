@@ -11,6 +11,7 @@ import useDebounce from "@hooks/useDebounce"
 import SearchClanWrapper from "./SearchClanWrapper"
 import useFetchClan from "@pages/Marketplace/useFetchClan"
 import { IGroup } from "@pages/ChatPage/ChatContainer/LeftBar/useFetchGroups"
+import { VideoThumbnailWrapper } from "@components/VideoThumbnailWrapper"
 
 const AllClans = () => {
   const { chatId } = useParams()
@@ -128,13 +129,17 @@ const AllClans = () => {
                   )}
                   onClick={() => navigate(`${PATH_NAMES.CLAN}/${group.label}`)}
                 >
-                  <AvatarClanByList
-                    avatarUrl={imageUrl || distilledAiPlaceholder}
-                    isNameDisplay={false}
-                    name=""
-                    className="h-8 w-8"
-                    member={group.groupMemberStats?.total}
-                  />
+                  <VideoThumbnailWrapper videoUrl={imageUrl}>
+                    {(thumbnail) => (
+                      <AvatarClanByList
+                        avatarUrl={thumbnail || distilledAiPlaceholder}
+                        isNameDisplay={false}
+                        name=""
+                        className="h-8 w-8"
+                        member={group.groupMemberStats?.total}
+                      />
+                    )}
+                  </VideoThumbnailWrapper>
                   <span className="line-clamp-1 text-16 font-bold text-mercury-950">
                     {group.name}
                   </span>

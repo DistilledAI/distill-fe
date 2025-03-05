@@ -2,6 +2,7 @@ import { distilledAiPlaceholder } from "@assets/images"
 import { EditPenOutlineIcon } from "@components/Icons/Edit"
 import { PlusIcon } from "@components/Icons/Plus"
 import { WalletIcon } from "@components/Icons/Wallet"
+import HeaderBack from "@components/Layout/Header/HeaderBack"
 import { VideoThumbnailWrapper } from "@components/VideoThumbnailWrapper"
 import { PATH_NAMES, RoleUser, STATUS_AGENT } from "@constants/index"
 import { useAppSelector } from "@hooks/useAppRedux"
@@ -51,6 +52,8 @@ const MyAgentClanEmpty = ({ imageUrl }: Props) => {
 
   return (
     <div className="flex h-[calc(100dvh-68px)] w-full flex-col items-center justify-center">
+      <HeaderBack onBack={() => navigate(PATH_NAMES.MY_AGENT_CLAN)} />
+
       <p className="text-16 font-semibold text-mercury-950 md:text-18">
         Your Agent Clan is not enabled yet.
       </p>

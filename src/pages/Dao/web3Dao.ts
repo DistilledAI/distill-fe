@@ -20,12 +20,14 @@ export class Web3Dao extends Web3StakeBase {
     wallet,
     stakeCurrencyMint,
     numOptions,
+    feeCurrencyMint,
   }: {
     unbondingPeriod: number | string
     uri: string
     wallet: WalletContextState
     stakeCurrencyMint: string
     numOptions: number
+    feeCurrencyMint: string
   }) {
     try {
       const provider = this.getProvider(wallet)
@@ -45,6 +47,7 @@ export class Web3Dao extends Web3StakeBase {
         .accounts({
           stakeCurrencyMint,
           proposal: proposal.publicKey,
+          feeCurrencyMint,
         })
         .signers([proposal])
         .instruction()
