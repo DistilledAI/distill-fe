@@ -1,5 +1,4 @@
-import { Suspense, useMemo } from "react"
-import ConnectWalletModal from "@components/ConnectWalletModal"
+import { useMemo } from "react"
 import { PATH_NAMES } from "@constants/index"
 import { useAppSelector } from "@hooks/useAppRedux"
 import useFetchMe from "@hooks/useFetchMe"
@@ -17,6 +16,7 @@ const MainLayoutDesktop = () => {
   const { agentId } = useParams()
   const { isLogin, isAnonymous } = useAuthState()
   const sidebarCollapsed = useAppSelector((state) => state.sidebarCollapsed)
+
   useInviteAgent()
   useFetchMe()
   useMessageSocket()
@@ -58,9 +58,6 @@ const MainLayoutDesktop = () => {
   return (
     <>
       <StyleSpacingProvider>{renderContent}</StyleSpacingProvider>
-      <Suspense fallback={null}>
-        <ConnectWalletModal />
-      </Suspense>
     </>
   )
 }
