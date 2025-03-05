@@ -1,6 +1,5 @@
-import ConnectWalletModal from "@components/ConnectWalletModal"
 import { StyleSpacingProvider } from "providers/StyleSpacingProvider"
-import { Suspense, useMemo } from "react"
+import { useMemo } from "react"
 import Header from "./Header"
 import { Outlet, useLocation, useParams } from "react-router-dom"
 import NavigationMenu from "./Sidebar/NavigationMenu"
@@ -51,9 +50,6 @@ const MainLayoutMobile = () => {
   return (
     <>
       <StyleSpacingProvider>{renderContent()}</StyleSpacingProvider>
-      <Suspense fallback={null}>
-        <ConnectWalletModal />
-      </Suspense>
     </>
   )
 }

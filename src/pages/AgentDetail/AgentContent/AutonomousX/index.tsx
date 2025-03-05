@@ -1,6 +1,6 @@
 import ComingSoon from "@components/ComingSoon"
 import { SettingIcon } from "@components/Icons"
-import { WorldIcon } from "@components/Icons/AgentDetailIcon"
+// import { WorldIcon } from "@components/Icons/AgentDetailIcon"
 import { CloseFilledIcon } from "@components/Icons/DefiLens"
 import {
   PlayFilledIcon,
@@ -10,7 +10,7 @@ import { TablerPlusIcon } from "@components/Icons/TablerPlusIcon"
 import { TwitterIcon } from "@components/Icons/Twitter"
 import { Button, Input, Select, SelectItem } from "@nextui-org/react"
 import { isArray, uniq, uniqBy } from "lodash"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Controller, useFormContext } from "react-hook-form"
 import { toast } from "react-toastify"
 import BindYourAccount from "../../BindXAccount/BindYourAccount"
@@ -67,6 +67,13 @@ const AutonomousX: React.FC<{
   )
   const bindTwitterValue = xBotData?.value ? JSON.parse(xBotData.value) : null
   const twitterUsername = bindTwitterValue?.info?.data?.username
+  const categoryFollowing = agentConfigs?.find(
+    (agent: any) => agent.key === "category",
+  )
+
+  useEffect(() => {
+    if (categoryFollowing?.value) setCategory(categoryFollowing.value)
+  }, [categoryFollowing])
 
   const toggleShowInput = () => {
     setIsShowInput(!isShowInput)
@@ -253,12 +260,12 @@ const AutonomousX: React.FC<{
           text="Autonomous X Account"
           icon={<TwitterIcon size={24} color="#A2845E" />}
         />
-        <div className="flex items-center gap-1 rounded-full bg-[rgba(0,122,255,0.15)] px-2">
+        {/* <div className="flex items-center gap-1 rounded-full bg-[rgba(0,122,255,0.15)] px-2">
           <WorldIcon size={20} color="#007AFF" />
           <span className="font-medium uppercase text-[#007AFF] max-md:text-14">
             public
           </span>
-        </div>
+        </div> */}
       </div>
       {twitterUsername && (
         <div className="mt-3 flex justify-end">

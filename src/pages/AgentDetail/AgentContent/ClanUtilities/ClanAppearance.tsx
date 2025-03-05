@@ -7,7 +7,7 @@ import { BroadcastIcon } from "@components/Icons/Broadcast"
 import ChangeAvatarContainer from "@pages/AgentDetail/ChangeAvatarContainer"
 import VideoCustom from "@components/VideoCustom"
 import TotalMemberBadge from "@components/TotalMemberBadge"
-import ClanPublicChip from "./ClanPublicChip"
+// import ClanPublicChip from "./ClanPublicChip"
 import ClanTitle from "./ClanTitle"
 import LabelRequired from "./LabelRequired"
 import { isPassFileSize } from "@utils/index"
@@ -75,7 +75,7 @@ const ClanAppearance: React.FC = () => {
           icon={<ClanOutlineIcon size={24} color="#A2845E" />}
           title="Clan Appearance"
         />
-        <ClanPublicChip />
+        {/* <ClanPublicChip /> */}
       </div>
 
       <Controller

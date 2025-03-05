@@ -1,5 +1,4 @@
 import { ClanOutlineIcon } from "@components/Icons/Sidebar"
-import ClanPublicChip from "./ClanPublicChip"
 import { Input, Switch, Textarea } from "@nextui-org/react"
 import ClanTitle from "./ClanTitle"
 import ChangeAvatarContainer from "@pages/AgentDetail/ChangeAvatarContainer"
@@ -63,7 +62,7 @@ const ClanAppearance: React.FC = () => {
           icon={<ClanOutlineIcon size={24} color="#A2845E" />}
           title="Clan Appearance"
         />
-        <ClanPublicChip />
+        {/* <ClanPublicChip /> */}
       </div>
       <div className="flex space-x-6">
         <Switch

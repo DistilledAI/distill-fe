@@ -1,6 +1,6 @@
 import ClanTitle from "./ClanTitle"
 import { CodesanboxIcon } from "@components/Icons/RewardsIcons"
-import ClanPublicChip from "./ClanPublicChip"
+// import ClanPublicChip from "./ClanPublicChip"
 // import { Input } from "@nextui-org/react"
 // import LabelRequired from "./LabelRequired"
 // import { Controller, useFormContext } from "react-hook-form"
@@ -29,7 +29,7 @@ const TokenInfo = () => {
           icon={<CodesanboxIcon size={24} color="#A2845E" />}
           title="Tokenize Info"
         />
-        <ClanPublicChip />
+        {/* <ClanPublicChip /> */}
       </div>
       <div className="flex items-center rounded-lg bg-brown-50 p-4 text-13 font-bold text-brown-600">
         💡 You can launch your token on Agents.land after completing your
