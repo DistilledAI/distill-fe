@@ -42,6 +42,7 @@ const ChatAgentClanBox = lazy(
   () => import("@pages/AgentClans/ChatAgentClanBox"),
 )
 const XLoginPage = lazy(() => import("@pages/XLoginPage"))
+const AgentStore = lazy(() => import("@pages/AgentStore"))
 
 const AppRouter = () => {
   const { isMobile } = useWindowSize()
