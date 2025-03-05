@@ -1,22 +1,27 @@
-import {
-  AgentDotLandIcon,
-  FilledSquareCircleIcon,
-} from "@components/Icons/FilledSquareCircleIcon"
-import { DuneOutlineIcon, XIcon } from "@components/Icons/SocialLinkIcon"
-import { PATH_NAMES } from "@constants/index"
+import { distilledAIIcon } from "@assets/svg"
+import { AgentDotLandIcon } from "@components/Icons/FilledSquareCircleIcon"
+import { XIcon } from "@components/Icons/SocialLinkIcon"
 import { useAppSelector } from "@hooks/useAppRedux"
 import useWindowSize from "@hooks/useWindowSize"
 import { Link, useLocation, useNavigate } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
 
 const SOCIALS = [
+  // {
+  //   name: "Agents Store",
+  //   icon: (color?: string) => (
+  //     <FilledSquareCircleIcon size={18} color={color} />
+  //   ),
+  //   link: PATH_NAMES.MARKETPLACE,
+  //   type: "internal",
+  // },
   {
-    name: "Agents Store",
-    icon: (color?: string) => (
-      <FilledSquareCircleIcon size={18} color={color} />
+    name: "About Distilled AI",
+    icon: () => (
+      <img src={distilledAIIcon} className="h-5 w-5" alt="distilled ai logo" />
     ),
-    link: PATH_NAMES.MARKETPLACE,
-    type: "internal",
+    link: "https://distilled.ai",
+    type: "external",
   },
   {
     name: "Agents.land",
@@ -24,12 +29,12 @@ const SOCIALS = [
     link: "https://agents.land",
     type: "external",
   },
-  {
-    name: "Dune Analytics",
-    icon: (color?: string) => <DuneOutlineIcon color={color} />,
-    link: "https://dune.com/distilled_ai_team/distilledaistats",
-    type: "external",
-  },
+  // {
+  //   name: "Dune Analytics",
+  //   icon: (color?: string) => <DuneOutlineIcon color={color} />,
+  //   link: "https://dune.com/distilled_ai_team/distilledaistats",
+  //   type: "external",
+  // },
   {
     name: "X (Twitter)",
     icon: (color?: string) => <XIcon size={18} color={color} />,
@@ -83,7 +88,7 @@ const Socials = () => {
                 target="_blank"
                 className="flex h-10 items-center gap-2 border-[2px] border-transparent px-4 py-2 max-md:h-8"
               >
-                <div>{item.icon("#545454")}</div>
+                <div className="flex-shrink-0">{item.icon("#545454")}</div>
                 <span
                   className={twMerge(
                     "whitespace-nowrap text-[16px] font-medium text-mercury-900 hover:underline",

@@ -1,7 +1,12 @@
 import { ChartBarIcon } from "@components/Icons/Chart"
 import {
+  IDataProposal,
+  ProposalType,
+} from "@pages/Dao/CreateProposal/useCreateProposal"
+import {
   getPercentVotes,
   getProposalStatus,
+  getRatioOfVotes,
   getTurnout,
   ProposalStatus,
 } from "@pages/Dao/Proposals/helper"
@@ -9,24 +14,46 @@ import { IProposal } from "@pages/Dao/Proposals/useProposals"
 
 interface Props {
   proposalDetail: IProposal | null
+  proposalIpfs: IDataProposal | null
+}
+
+interface ProposalStatusContent {
+  turnout?: number
+  ratio?: number
+  proposal?: IProposal
+  voteType?: ProposalType
 }
 
 const proposalStatusTemplates = {
   [ProposalStatus.OPEN]: {
-    content: () =>
-      "If the current vote stands, this proposal will fail due to a lack of voter participation.",
+    content: () => "This proposal is open for voting.",
   },
   [ProposalStatus.PASSED]: {
-    content: (turnout: number, ratio: number) =>
-      `This proposal is closed for voting with a turnout of ${turnout}% and ${ratio}% of voters in favor. It was passed and now needs to be executed.`,
+    content: ({ turnout, ratio }: ProposalStatusContent) =>
+      `This proposal is closed for voting with a turnout of ${turnout}% and ${ratio}% of voters in favor.`,
   },
   [ProposalStatus.REJECTED]: {
-    content: (turnout: number, ratio: number) =>
-      `This proposal is closed for voting with a turnout of ${turnout}% and ${ratio}% of voters in favor. It was rejected and now needs to be closed.`,
+    content: ({ ratio, proposal, voteType }: ProposalStatusContent) => {
+      if (proposal) {
+        const { turnout, totalYesVotes, quorum, threshold } = getRatioOfVotes(
+          proposal,
+          voteType,
+        )
+        const turnoutPass = turnout >= quorum
+
+        if (
+          (totalYesVotes >= threshold && turnoutPass) ||
+          (voteType === ProposalType.Options && turnoutPass)
+        ) {
+          return `This proposal is closed for voting with a turnout of ${turnout}% and ${ratio}% of voters in favor.`
+        }
+      }
+      return "This proposal is closed and rejected."
+    },
   },
 }
 
-const PropsalStatusContent = ({ proposalDetail }: Props) => {
+const PropsalStatusContent = ({ proposalDetail, proposalIpfs }: Props) => {
   const proposalStatus =
     proposalDetail && getProposalStatus(proposalDetail, Date.now() / 1000)
   const percents = getPercentVotes(proposalDetail?.voteCount)
@@ -35,6 +62,7 @@ const PropsalStatusContent = ({ proposalDetail }: Props) => {
     ? proposalDetail?.voteCount.reduce((total, current) => total + current, 0)
     : 0
   const totalStaked = proposalDetail?.totalStaked || 0
+  const voteType = proposalIpfs?.vote?.type
 
   return (
     <>
@@ -46,10 +74,12 @@ const PropsalStatusContent = ({ proposalDetail }: Props) => {
         {proposalStatus
           ? proposalStatusTemplates[
               proposalStatus as keyof typeof proposalStatusTemplates
-            ].content(
-              getTurnout(totalVoteCount, totalStaked),
-              Math.max(...percents),
-            )
+            ].content({
+              turnout: getTurnout(totalVoteCount, totalStaked),
+              ratio: Math.max(...percents),
+              proposal: proposalDetail,
+              voteType,
+            })
           : "--"}
       </p>
       <div className="my-6 h-[1px] w-full bg-mercury-100" />

@@ -1,9 +1,10 @@
-import { maxAvatarPlaceholder2 } from "@assets/images"
+import { distilledAiPlaceholder } from "@assets/images"
 import { EditPenOutlineIcon } from "@components/Icons/Edit"
 import { PlusIcon } from "@components/Icons/Plus"
 import { WalletIcon } from "@components/Icons/Wallet"
+import HeaderBack from "@components/Layout/Header/HeaderBack"
 import { VideoThumbnailWrapper } from "@components/VideoThumbnailWrapper"
-import { PATH_NAMES, RoleUser } from "@constants/index"
+import { PATH_NAMES, RoleUser, STATUS_AGENT } from "@constants/index"
 import { useAppSelector } from "@hooks/useAppRedux"
 import useAuthState from "@hooks/useAuthState"
 import useConnectWallet from "@hooks/useConnectWallet"
@@ -19,6 +20,7 @@ const MyAgentClanEmpty = ({ imageUrl }: Props) => {
   const agent = useAppSelector((state) => state.agents.myAgent)
   const { user } = useAuthState()
   const { connectMultipleWallet, loading } = useConnectWallet()
+  const isAgentActive = agent?.status === STATUS_AGENT.ACTIVE
 
   const isUserLogged = user.publicAddress && user.role !== RoleUser.ANONYMOUS
 
@@ -27,6 +29,15 @@ const MyAgentClanEmpty = ({ imageUrl }: Props) => {
       return (
         <p className="text-16 font-semibold text-mercury-950 md:text-18">
           Please <span className="text-brown-500">Create Your First Agent</span>
+        </p>
+      )
+    }
+
+    if (agent && !isAgentActive) {
+      return (
+        <p className="text-16 font-semibold text-mercury-950 md:text-18">
+          Please wait for your agent to be activated{" "}
+          <span className="text-brown-500">Edit Agent</span> page.
         </p>
       )
     }
@@ -41,6 +52,8 @@ const MyAgentClanEmpty = ({ imageUrl }: Props) => {
 
   return (
     <div className="flex h-[calc(100dvh-68px)] w-full flex-col items-center justify-center">
+      <HeaderBack onBack={() => navigate(PATH_NAMES.MY_AGENT_CLAN)} />
+
       <p className="text-16 font-semibold text-mercury-950 md:text-18">
         Your Agent Clan is not enabled yet.
       </p>
@@ -63,7 +76,7 @@ const MyAgentClanEmpty = ({ imageUrl }: Props) => {
             </video>
           ) : (
             <img
-              src={thumbnail || maxAvatarPlaceholder2}
+              src={thumbnail || distilledAiPlaceholder}
               className="my-4 h-[300px] w-auto rounded-[32px] object-cover px-3 md:mt-10 md:h-[419px]"
               alt="avatar placeholder"
             />
@@ -102,6 +115,7 @@ const MyAgentClanEmpty = ({ imageUrl }: Props) => {
                   `${PATH_NAMES.AGENT_DETAIL}/${agent.id}?tab=clan_utilities`,
                 )
               }
+              isDisabled={!isAgentActive}
             >
               <EditPenOutlineIcon color="#83664B" size={20} />
               Edit Agent

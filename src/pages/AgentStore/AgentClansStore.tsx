@@ -5,7 +5,7 @@ import { PATH_NAMES } from "@constants/index"
 import { ORCHESTRATION_LIST } from "@pages/ChatPage/ChatContainer/LeftBar/OrchestrationSlider"
 import OrchestrationCard from "@pages/ChatPage/ChatContainer/LeftBar/OrchestrationSlider/OrchestrationCard"
 import { AGENT_TYPE_KEY } from "@pages/ChatPage/ChatContainer/RightContent/MyPrivateAgentContent/AgentInitialization/AgentType"
-import { maxAvatarPlaceholder2 } from "@assets/images"
+import { distilledAiPlaceholder } from "@assets/images"
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { BroadcastIcon } from "@components/Icons/Broadcast"
 import { ClanIcon } from "@components/Icons/Clan"
@@ -24,7 +24,7 @@ const agentType = {
 export const getConfigClanValue = (
   item: IGroup,
   key: string,
-  defaultValue: string = maxAvatarPlaceholder2,
+  defaultValue: string = distilledAiPlaceholder,
 ) => {
   const config = item?.groupConfig?.find((val) => val.key === key)
   return config?.value || defaultValue
@@ -60,9 +60,16 @@ const AgentClansStore = () => {
     mode: "pagination",
   })
 
-  const onPageChange = useCallback((newPage: number) => {
-    setPage(newPage)
-  }, [])
+  const totalPages = Math.ceil(total / limit)
+
+  const onPageChange = useCallback(
+    (newPage: number) => {
+      // Ensure page stays within valid bounds
+      const validPage = Math.max(1, Math.min(newPage, totalPages))
+      setPage(validPage)
+    },
+    [totalPages],
+  )
 
   const handleChatAgentClan = useCallback(
     (clan: IGroup) => {
@@ -172,7 +179,7 @@ const AgentClansStore = () => {
                           isTitle={false}
                           description={description}
                           classNames={{
-                            p: "text-[13px] font-medium text-mercury-800 line-clamp-3",
+                            p: "text-[13px] font-medium text-mercury-800 line-clamp-2",
                           }}
                         />
                       </div>
@@ -229,20 +236,19 @@ const AgentClansStore = () => {
         <div className="grid grid-cols-1 gap-3 md:grid-cols-2 md:gap-4">
           {clanItems}
         </div>
-        {data && (
+        {data && total > 0 && (
           <Pagination
             showControls
-            initialPage={1}
+            page={page}
+            total={totalPages}
+            onChange={onPageChange}
             radius="full"
             renderItem={PaginationItemCustom}
-            total={Math.ceil(total / limit) || 1}
             variant="light"
             classNames={{
               base: "flex justify-center mt-4",
               cursor: "bg-mercury-950 font-bold",
             }}
-            onChange={onPageChange}
-            page={page}
           />
         )}
       </div>

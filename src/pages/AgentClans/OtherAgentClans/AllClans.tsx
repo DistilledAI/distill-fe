@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from "react"
-import { maxAvatarPlaceholder } from "@assets/images"
+import { distilledAiPlaceholder } from "@assets/images"
 import { AvatarClanByList } from "@components/AvatarContainer"
 import { PATH_NAMES } from "@constants/index"
 import useAuthState from "@hooks/useAuthState"
@@ -11,6 +11,7 @@ import useDebounce from "@hooks/useDebounce"
 import SearchClanWrapper from "./SearchClanWrapper"
 import useFetchClan from "@pages/Marketplace/useFetchClan"
 import { IGroup } from "@pages/ChatPage/ChatContainer/LeftBar/useFetchGroups"
+import { VideoThumbnailWrapper } from "@components/VideoThumbnailWrapper"
 
 const AllClans = () => {
   const { chatId } = useParams()
@@ -111,28 +112,38 @@ const AllClans = () => {
 
             return (
               <div
-                key={group.id}
                 data-index={virtualItem.index}
+                key={group.id}
                 ref={virtualizer.measureElement}
-                className={twMerge(
-                  "absolute left-0 top-0 flex w-full cursor-pointer items-center gap-4 rounded-full px-3 py-2 hover:bg-mercury-100",
-                  chatId === group.label && "md:bg-mercury-100",
-                )}
+                className="absolute left-0 top-0 w-full"
                 style={{
-                  transform: `translateY(${virtualItem.start}px)`,
+                  top: `${virtualItem.start}px`,
+                  height: 72,
                 }}
-                onClick={() => navigate(`${PATH_NAMES.CLAN}/${group.label}`)}
               >
-                <AvatarClanByList
-                  avatarUrl={imageUrl || maxAvatarPlaceholder}
-                  isNameDisplay={false}
-                  name=""
-                  className="h-8 w-8"
-                  member={group.groupMemberStats?.total}
-                />
-                <span className="line-clamp-1 text-16 font-bold text-mercury-950">
-                  {group.name}
-                </span>
+                <div
+                  key={group.id}
+                  className={twMerge(
+                    "flex w-full cursor-pointer items-center gap-4 rounded-full px-3 py-2 hover:bg-mercury-100",
+                    chatId === group.label && "md:bg-mercury-100",
+                  )}
+                  onClick={() => navigate(`${PATH_NAMES.CLAN}/${group.label}`)}
+                >
+                  <VideoThumbnailWrapper videoUrl={imageUrl}>
+                    {(thumbnail) => (
+                      <AvatarClanByList
+                        avatarUrl={thumbnail || distilledAiPlaceholder}
+                        isNameDisplay={false}
+                        name=""
+                        className="h-8 w-8"
+                        member={group.groupMemberStats?.total}
+                      />
+                    )}
+                  </VideoThumbnailWrapper>
+                  <span className="line-clamp-1 text-16 font-bold text-mercury-950">
+                    {group.name}
+                  </span>
+                </div>
               </div>
             )
           })}

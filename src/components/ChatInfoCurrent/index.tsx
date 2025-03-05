@@ -24,7 +24,7 @@ import OrchestrationHeader from "./OrchestrationHeader"
 import { getConfigClanValue } from "@pages/AgentStore/AgentClansStore"
 import { useAppSelector } from "@hooks/useAppRedux"
 import { TabKeyAgent } from "@pages/CreateAgent/NavTab"
-import { maxAvatarPlaceholder } from "@assets/images"
+import { distilledAiPlaceholder } from "@assets/images"
 import { VideoThumbnailWrapper } from "@components/VideoThumbnailWrapper"
 
 const ChatInfoCurrent: React.FC<{
@@ -77,7 +77,7 @@ const ChatInfoCurrent: React.FC<{
           {(thumbnail) => (
             <AvatarContainer
               badgeIcon={<LiveIcon />}
-              avatarUrl={thumbnail || maxAvatarPlaceholder}
+              avatarUrl={thumbnail || distilledAiPlaceholder}
               publicAddress={groupDetail.group.name}
               userName={groupDetail.group.name}
               badgeClassName={isLive ? "bg-lgd-code-hot-ramp" : ""}

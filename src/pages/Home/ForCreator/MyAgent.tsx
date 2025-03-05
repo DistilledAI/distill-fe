@@ -1,4 +1,4 @@
-import { maxAvatarPlaceholder } from "@assets/images"
+import { distilledAiPlaceholder } from "@assets/images"
 import AvatarCustom from "@components/AvatarCustom"
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { EditFilledIcon } from "@components/Icons/DefiLens"
@@ -30,7 +30,7 @@ const MyAgentHome = () => {
       </div>
       <div className="flex items-center gap-2 md:flex-col">
         <AvatarCustom
-          src={myAgent?.avatar || maxAvatarPlaceholder}
+          src={myAgent?.avatar || distilledAiPlaceholder}
           alt="avatar"
           badgeIcon={<FilledBrainAIIcon color="#363636" size={14} />}
           badgeClassName="bg-[#FC0] "
