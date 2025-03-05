@@ -52,7 +52,7 @@ const NavigationMenu = ({ isMobile = false }: { isMobile?: boolean }) => {
           className="h-8 w-8 rounded-full object-cover"
         />
       ),
-      pathname: "/account?tab=my-agent",
+      pathname: !myAgent ? "/create-agent" : `/agent/${myAgent.id}`,
     },
     {
       id: "agent-clan",
@@ -96,7 +96,8 @@ const NavigationMenu = ({ isMobile = false }: { isMobile?: boolean }) => {
       icon: (color) => <MessageAIOutlineIcon color={color} />,
       name: !isMobile ? "Private Chat" : "Chats",
       rightContent: null,
-      pathname: myAgent?.id ? `/invite/${myAgent?.id}` : "/private-agent",
+      pathname:
+        myAgent?.id && !isMobile ? `/invite/${myAgent?.id}` : "/private-agent",
     },
     {
       id: "marketplace",

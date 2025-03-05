@@ -3,9 +3,9 @@ import { useAppDispatch } from "./useAppRedux"
 import { logout as logoutSlice } from "@reducers/userSlice"
 import { useQueryClient } from "@tanstack/react-query"
 import { QueryDataKeys } from "types/queryDataKeys"
+import { updateMyAgent } from "@reducers/agentSlice"
 import { useLocation, useNavigate } from "react-router-dom"
 import { PATH_NAMES } from "@constants/index"
-import { updateMyAgent } from "@reducers/agentSlice"
 
 const useAuthAction = () => {
   const dispatch = useAppDispatch()
@@ -13,15 +13,17 @@ const useAuthAction = () => {
   const { pathname } = useLocation()
   const navigate = useNavigate()
 
-  const logout = () => {
+  const logout = (isNavigate = false) => {
     dispatch(logoutSlice())
-    dispatch(updateMyAgent(null))
 
-    if (
-      pathname.startsWith(PATH_NAMES.CHAT) ||
-      pathname.startsWith(PATH_NAMES.PRIVATE_AGENT)
-    ) {
-      navigate(PATH_NAMES.PRIVATE_AGENT)
+    if (isNavigate) {
+      dispatch(updateMyAgent(null))
+      if (
+        pathname.startsWith(PATH_NAMES.CHAT) ||
+        pathname.startsWith(PATH_NAMES.PRIVATE_AGENT)
+      ) {
+        navigate(PATH_NAMES.PRIVATE_AGENT)
+      }
     }
 
     const ignoreKeys = [QueryDataKeys.PRIVATE_AGENTS_MKL]

@@ -150,7 +150,7 @@ const SidebarMobile = () => {
               <div
                 onClick={() => {
                   onClose()
-                  logout()
+                  logout(true)
                 }}
                 className="flex w-full cursor-pointer items-center gap-2 rounded-full border-1 border-white bg-mercury-30 px-3 py-3"
               >
