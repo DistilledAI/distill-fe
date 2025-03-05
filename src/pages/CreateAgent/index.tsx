@@ -6,7 +6,7 @@ import CreateAgentModal from "@components/CreateAgentModal"
 import { COMMUNICATION_STYLE_LIST, PATH_NAMES } from "@constants/index"
 import { useAppSelector } from "@hooks/useAppRedux"
 import { refreshFetchMyAgent } from "@reducers/agentSlice"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { FormProvider, useForm } from "react-hook-form"
 import { useDispatch } from "react-redux"
 import { toast } from "react-toastify"
@@ -28,6 +28,12 @@ const CreateAgent = () => {
     !state || state?.typeAgent === null || state?.llmModel === null
 
   const isBotCreated = myAgents.length > 0
+
+  useEffect(() => {
+    if (isBotCreated) {
+      navigate(`${PATH_NAMES.AGENT_DETAIL}/${myAgents[0].id}`)
+    }
+  }, [isBotCreated])
 
   const methods = useForm<any>({
     defaultValues: {

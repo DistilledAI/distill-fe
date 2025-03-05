@@ -1,11 +1,10 @@
 import { useEffect, FC } from "react"
-import { useLocation, useNavigate } from "react-router-dom"
+import { useLocation, useNavigate, useParams } from "react-router-dom"
 import { useAppSelector } from "@hooks/useAppRedux"
 import { useQuery } from "@tanstack/react-query"
 import { PATH_NAMES } from "@constants/index"
 import { QueryDataKeys } from "types/queryDataKeys"
 import useWindowSize from "@hooks/useWindowSize"
-import useGetChatId from "@pages/ChatPage/hooks/useGetChatId"
 import HeaderBack from "@components/Layout/Header/HeaderBack"
 import AvatarCustom from "@components/AvatarCustom"
 import { distilledAiPlaceholder } from "@assets/images"
@@ -35,18 +34,19 @@ const PrivateChatBox: FC = () => {
   const { pathname } = useLocation()
   const navigate = useNavigate()
   const { isMobile } = useWindowSize()
-  const { chatId } = useGetChatId()
+  const { privateChatId, chatId } = useParams()
   const myAgent = useAppSelector((state) => state.agents.myAgent)
   const { user } = useAuthState()
+  const groupId = privateChatId || chatId
 
   const isChatAgentOther = pathname.startsWith(PATH_NAMES.CHAT)
+
+  const { data: groupDetail } = useQuery<GroupDetail>({
+    queryKey: [`${QueryDataKeys.GROUP_DETAIL}-${groupId}`],
+    enabled: isMobile && !!groupId,
+  })
   const isChatMyAgent =
     pathname.startsWith(PATH_NAMES.PRIVATE_AGENT) && !!myAgent?.id
-  const { data: groupDetail } = useQuery<GroupDetail>({
-    queryKey: [`${QueryDataKeys.GROUP_DETAIL}-${chatId}`],
-    enabled: isMobile && !!chatId,
-  })
-
   const userB = groupDetail?.data?.group?.userB
 
   useEffect(() => {
@@ -61,17 +61,10 @@ const PrivateChatBox: FC = () => {
           ? `${PATH_NAMES.PRIVATE_AGENT}/empty`
           : PATH_NAMES.PRIVATE_AGENT,
       )
-    } else if (isChatMyAgent) {
-      navigate(`${PATH_NAMES.PRIVATE_AGENT}/${myAgent?.id}`)
+    } else if (pathname === PATH_NAMES.PRIVATE_AGENT && myAgent?.id) {
+      navigate(`${PATH_NAMES.INVITE}/${myAgent?.id}`)
     }
-  }, [
-    myAgent?.id,
-    isChatAgentOther,
-    isChatMyAgent,
-    isMobile,
-    user?.id,
-    pathname,
-  ])
+  }, [myAgent?.id, isChatAgentOther, isMobile, user?.id, pathname])
 
   const getHeaderName = () => {
     return isChatAgentOther ? userB?.username : myAgent?.username
@@ -101,7 +94,7 @@ const PrivateChatBox: FC = () => {
         </span>
         {userB && (
           <MoreAction
-            groupId={Number(chatId)}
+            groupId={Number(groupId)}
             groupType={groupDetail?.data?.group?.typeGroup as TypeGroup}
           />
         )}
