@@ -9,6 +9,7 @@ import {
 import { TablerPlusIcon } from "@components/Icons/TablerPlusIcon"
 import { TwitterIcon } from "@components/Icons/Twitter"
 import { Button, Input, Select, SelectItem } from "@nextui-org/react"
+import RepliesDashboard from "@pages/AgentDetail/RepliesDashboard"
 import { isArray, uniq, uniqBy } from "lodash"
 import { useEffect, useState } from "react"
 import { Controller, useFormContext } from "react-hook-form"
@@ -16,7 +17,6 @@ import { toast } from "react-toastify"
 import BindYourAccount from "../../BindXAccount/BindYourAccount"
 import CategoryLabel from "../../CategoryLabel"
 import { AgentConfig } from "../../useFetchAgentConfig"
-import RepliesDashboard from "@pages/AgentDetail/RepliesDashboard"
 
 const POST_INTERVAL = [
   { value: "30m", label: "30 minutes" },
@@ -66,10 +66,11 @@ const AutonomousX: React.FC<{
     (agent: any) => agent.key === "bindTwitterKey",
   )
   const bindTwitterValue = xBotData?.value ? JSON.parse(xBotData.value) : null
-  const twitterUsername = bindTwitterValue?.info?.data?.username
   const categoryFollowing = agentConfigs?.find(
     (agent: any) => agent.key === "category",
   )
+  const twitterUsername =
+    bindTwitterValue?.info?.data?.username || bindTwitterValue?.name
 
   useEffect(() => {
     if (categoryFollowing?.value) setCategory(categoryFollowing.value)
@@ -274,7 +275,7 @@ const AutonomousX: React.FC<{
       )}
       <div className="mb-4 mt-4 flex items-center justify-between rounded-lg bg-brown-50 p-4 max-md:flex-col max-md:items-start max-md:justify-start max-md:gap-2">
         <BindYourAccount agentConfigs={agentConfigs} refetch={refetch} />
-        <AutonomousMode />
+        {twitterUsername && <AutonomousMode />}
       </div>
 
       <span className="text-base-sb text-mercury-950">Feeds Configuration</span>
