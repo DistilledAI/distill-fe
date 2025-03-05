@@ -187,6 +187,7 @@ const AllMessages = () => {
             return (
               <div
                 key={groupItem.id}
+                data-index={virtualItem.index}
                 ref={
                   virtualItem.index === 0 ? itemRef : virtualizer.measureElement
                 }

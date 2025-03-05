@@ -134,7 +134,7 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
                 </DropdownItem>
 
                 <DropdownItem
-                  key="my-profile"
+                  key="my-staked-vaults"
                   onPress={() => {
                     navigate("/account?tab=my-vault-holdings")
                   }}
@@ -150,7 +150,7 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
                 <DropdownItem
                   key="logout"
                   onPress={() => {
-                    logout()
+                    logout(true)
                   }}
                   className="p-0 hover:!bg-transparent"
                 >

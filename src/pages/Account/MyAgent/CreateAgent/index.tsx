@@ -1,4 +1,4 @@
-import { avaMaxGray } from "@assets/images"
+import { distilledAiPlaceholder } from "@assets/images"
 import AvatarCustom from "@components/AvatarCustom"
 import CreateAgentModal from "@components/CreateAgentModal"
 import { PlusIcon } from "@components/Icons/Plus"
@@ -19,7 +19,7 @@ const CreateAgent = () => {
           <div className="h-[72px] w-[72px] rounded-full border-1 border-mercury-400">
             <img
               className="h-full w-full rounded-full object-cover"
-              src={avaMaxGray}
+              src={distilledAiPlaceholder}
             />
           </div>
           <div>

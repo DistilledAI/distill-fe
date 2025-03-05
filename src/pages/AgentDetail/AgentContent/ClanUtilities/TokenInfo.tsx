@@ -1,5 +1,6 @@
 import ClanTitle from "./ClanTitle"
 import { CodesanboxIcon } from "@components/Icons/RewardsIcons"
+// import ClanPublicChip from "./ClanPublicChip"
 // import { Input } from "@nextui-org/react"
 // import LabelRequired from "./LabelRequired"
 // import { Controller, useFormContext } from "react-hook-form"

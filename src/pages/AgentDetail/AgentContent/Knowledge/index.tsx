@@ -1,7 +1,6 @@
 import AgentSetupStatus from "@components/AgentSetupStatus"
 import AlertBox from "@components/AlertBox"
 import { CheckProtectedIcon } from "@components/Icons"
-import { LockFilledIcon } from "@components/Icons/AgentDetailIcon"
 import { DatabaseImportIcon } from "@components/Icons/DatabaseImportIcon"
 import { STATUS_AGENT } from "@constants/index"
 import { useAppSelector } from "@hooks/useAppRedux"
@@ -25,12 +24,12 @@ const Knowledge = () => {
             Connected Sources
           </span>
         </div>
-        <div className="flex items-center gap-1 rounded-full bg-mercury-70 px-2">
+        {/* <div className="flex items-center gap-1 rounded-full bg-mercury-70 px-2">
           <LockFilledIcon />
           <span className="font-medium uppercase text-mercury-700 max-md:text-14">
             private
           </span>
-        </div>
+        </div> */}
       </div>
       <div className="mt-5">
         <AgentSetupStatus isAgentActive={isAgentActive} />

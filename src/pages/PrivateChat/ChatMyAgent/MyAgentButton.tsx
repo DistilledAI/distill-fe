@@ -3,7 +3,7 @@ import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { PATH_NAMES } from "@constants/index"
 import { useAppSelector } from "@hooks/useAppRedux"
 import ActiveEffect from "@pages/ChatPage/ChatContainer/LeftBar/ActiveEffect"
-import { useLocation, useNavigate } from "react-router-dom"
+import { useLocation, useNavigate, useParams } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
 
 const MyPrivateAgent = () => {
@@ -12,6 +12,7 @@ const MyPrivateAgent = () => {
   const myAgent = useAppSelector((state) => state.agents.myAgent)
   const isSelected = pathname.startsWith(PATH_NAMES.PRIVATE_AGENT)
   const myAgentId = myAgent?.id
+  const { privateChatId } = useParams()
 
   return (
     <button
@@ -20,11 +21,13 @@ const MyPrivateAgent = () => {
         "relative flex h-14 w-full items-center gap-3 rounded-full px-2 hover:bg-mercury-100",
         isSelected && "md:bg-mercury-100",
       )}
-      onClick={() =>
-        myAgentId
-          ? navigate(`${PATH_NAMES.PRIVATE_AGENT}/${myAgentId}`)
-          : navigate(`${PATH_NAMES.PRIVATE_AGENT}/empty`)
-      }
+      onClick={() => {
+        if (!privateChatId) {
+          return myAgentId
+            ? navigate(`${PATH_NAMES.INVITE}/${myAgentId}`)
+            : navigate(`${PATH_NAMES.PRIVATE_AGENT}/empty`)
+        }
+      }}
     >
       <div className="relative flex-shrink-0">
         <img

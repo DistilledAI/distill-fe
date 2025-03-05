@@ -48,8 +48,9 @@ const AgentDetail: React.FC = () => {
   const clanIdOfAgent = agentData?.botConfigs?.find(
     (val: any) => val?.key === "clanOfAgent",
   )?.value
-  const isActive = agentData?.status === STATUS_AGENT.ACTIVE
+  const { groupDetail, refetch: refetchGroup } = useGroupDetail(clanIdOfAgent)
 
+  const isActive = agentData?.status === STATUS_AGENT.ACTIVE
   const userNameData = agentData?.username
   const descriptionData = agentData?.description
   const firstMsgData = agentData?.firstMsg
@@ -91,8 +92,6 @@ const AgentDetail: React.FC = () => {
     },
   })
 
-  const { groupDetail } = useGroupDetail(clanIdOfAgent)
-
   useEffect(() => {
     if (groupDetail) {
       const { group } = groupDetail
@@ -131,7 +130,7 @@ const AgentDetail: React.FC = () => {
       communication_style: [defaults?.communication_style],
     }
     methods.reset({ ...defaults, ...selectedBehaviors })
-  }, [agentData, methods.reset, agentConfigs])
+  }, [agentData, methods.reset, agentConfigs, groupDetail?.group])
 
   const onSubmit = async (data: any) => {
     if (!isPassRuleAgentInfo(data) || !isActive) return
@@ -184,6 +183,7 @@ const AgentDetail: React.FC = () => {
           label: data.clan.name,
         }),
       })
+      refetchGroup()
     } catch (error: any) {
       console.error("error", error)
       toast.error(error?.response?.data?.message)

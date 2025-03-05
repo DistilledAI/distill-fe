@@ -49,7 +49,7 @@ const AgentDescription: React.FC<{
       {isTitle && (
         <h4 className="mb-1 text-16 font-bold text-mercury-950">Description</h4>
       )}
-      <ScrollShadow className="max-h-[150px]">
+      <ScrollShadow className="max-h-[90px]">
         {description && isUrl(description) ? (
           <p
             className={twMerge(

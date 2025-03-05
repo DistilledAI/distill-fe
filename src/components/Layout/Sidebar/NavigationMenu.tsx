@@ -42,18 +42,6 @@ const NavigationMenu = ({ isMobile = false }: { isMobile?: boolean }) => {
       pathname: "/",
     },
     {
-      id: "marketplace",
-      icon: (color) =>
-        !isMobile ? (
-          <SquareCircleIcon />
-        ) : (
-          <FilledSquareCircleIcon size={20} color={color} />
-        ),
-      name: "Agent Store",
-      rightContent: null,
-      pathname: "/marketplace?tab=agent-clans",
-    },
-    {
       id: "my-agent",
       icon: (color) => <BrainOutlineIcon color={color} />,
       name: "My Agent",
@@ -64,7 +52,7 @@ const NavigationMenu = ({ isMobile = false }: { isMobile?: boolean }) => {
           className="h-8 w-8 rounded-full object-cover"
         />
       ),
-      pathname: "/account?tab=my-agent",
+      pathname: !myAgent ? "/create-agent" : `/agent/${myAgent.id}`,
     },
     {
       id: "agent-clan",
@@ -108,7 +96,20 @@ const NavigationMenu = ({ isMobile = false }: { isMobile?: boolean }) => {
       icon: (color) => <MessageAIOutlineIcon color={color} />,
       name: !isMobile ? "Private Chat" : "Chats",
       rightContent: null,
-      pathname: "/private-agent",
+      pathname:
+        myAgent?.id && !isMobile ? `/invite/${myAgent?.id}` : "/private-agent",
+    },
+    {
+      id: "marketplace",
+      icon: (color) =>
+        !isMobile ? (
+          <SquareCircleIcon />
+        ) : (
+          <FilledSquareCircleIcon size={20} color={color} />
+        ),
+      name: "Agent Store",
+      rightContent: null,
+      pathname: "/marketplace?tab=agent-clans",
     },
   ]
 
@@ -135,8 +136,10 @@ const NavigationMenu = ({ isMobile = false }: { isMobile?: boolean }) => {
           normalizedCurrentPath.includes("/my-agent-clan")
         )
       case "private-agent":
+      case "invite":
         // Match both /private-agent and /chat/:id paths
         return (
+          normalizedCurrentPath.includes("/invite") ||
           normalizedCurrentPath.includes("/private-agent") ||
           normalizedCurrentPath.startsWith("/chat")
         )

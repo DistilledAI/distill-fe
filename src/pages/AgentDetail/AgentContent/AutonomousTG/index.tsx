@@ -1,4 +1,4 @@
-import { WorldIcon } from "@components/Icons/AgentDetailIcon"
+// import { WorldIcon } from "@components/Icons/AgentDetailIcon"
 import { TelegramOutlineIcon } from "@components/Icons/SocialLinkIcon"
 import { IAgentData } from "types/user"
 import BindYourBot from "../../BindYourBot"
@@ -17,12 +17,12 @@ const AutonomousTG: React.FC<{
           text="Autonomous Bot on Telegram Group"
           icon={<TelegramOutlineIcon size={26} color="#A2845E" />}
         />
-        <div className="flex items-center gap-1 rounded-full bg-[rgba(0,122,255,0.15)] px-2">
+        {/* <div className="flex items-center gap-1 rounded-full bg-[rgba(0,122,255,0.15)] px-2">
           <WorldIcon size={20} color="#007AFF" />
           <span className="font-medium uppercase text-[#007AFF] max-md:text-14">
             public
           </span>
-        </div>
+        </div> */}
       </div>
 
       <FieldLabel
