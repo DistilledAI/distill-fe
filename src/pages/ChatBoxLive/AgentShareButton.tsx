@@ -29,7 +29,6 @@ const AgentShareButton = ({
       </Button>
       <ShareQRModal
         title={agentInfo?.username}
-        imageSrc={agentInfo?.avatar}
         isOpen={isOpen}
         shareUrl={agentInfo?.shareLink || ""}
         onClose={onClose}

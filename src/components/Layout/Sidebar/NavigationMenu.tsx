@@ -42,18 +42,6 @@ const NavigationMenu = ({ isMobile = false }: { isMobile?: boolean }) => {
       pathname: "/",
     },
     {
-      id: "marketplace",
-      icon: (color) =>
-        !isMobile ? (
-          <SquareCircleIcon />
-        ) : (
-          <FilledSquareCircleIcon size={20} color={color} />
-        ),
-      name: "Agent Store",
-      rightContent: null,
-      pathname: "/marketplace?tab=agent-clans",
-    },
-    {
       id: "my-agent",
       icon: (color) => <BrainOutlineIcon color={color} />,
       name: "My Agent",
@@ -109,6 +97,18 @@ const NavigationMenu = ({ isMobile = false }: { isMobile?: boolean }) => {
       name: !isMobile ? "Private Chat" : "Chats",
       rightContent: null,
       pathname: "/private-agent",
+    },
+    {
+      id: "marketplace",
+      icon: (color) =>
+        !isMobile ? (
+          <SquareCircleIcon />
+        ) : (
+          <FilledSquareCircleIcon size={20} color={color} />
+        ),
+      name: "Agent Store",
+      rightContent: null,
+      pathname: "/marketplace?tab=agent-clans",
     },
   ]
 
