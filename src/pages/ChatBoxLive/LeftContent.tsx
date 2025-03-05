@@ -155,7 +155,7 @@ const LeftContent: React.FC<{
   return (
     <div
       className={twMerge(
-        "flex w-full max-w-full flex-col transition-all duration-300 ease-linear scrollbar-hide md:relative md:pt-3 lg:max-w-[320px]",
+        "max-md:max-h-auto flex max-h-[calc(100dvh-68px)] w-full max-w-full flex-col overflow-y-auto transition-all duration-300 ease-linear scrollbar-hide md:relative md:pt-3 lg:max-w-[320px]",
         "max-md:absolute max-md:right-2 max-md:top-3 max-md:z-50 max-md:h-[182px] max-md:w-[146px]",
         maximizeImage &&
           "max-md:bottom-20 max-md:h-[calc(100%-80px)] max-md:w-[calc(100%-16px)]",

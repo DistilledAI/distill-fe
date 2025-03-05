@@ -103,7 +103,7 @@ const ListData: React.FC<{
               target="_blank"
             >
               <span className="text-base text-mercury-950">
-                {item[columnKey]}
+                {isSocialMediaType ? item.value : item[columnKey]}
               </span>
             </a>
           </div>

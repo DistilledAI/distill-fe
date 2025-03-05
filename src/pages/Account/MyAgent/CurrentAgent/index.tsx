@@ -1,4 +1,4 @@
-import { avaMaxGray, maxAvatar } from "@assets/images"
+import { distilledAiPlaceholder, maxAvatar } from "@assets/images"
 import { solanaCircleIcon } from "@assets/svg"
 import AgentStatus from "@components/AgentStatus"
 import AlertBox from "@components/AlertBox"
@@ -215,7 +215,7 @@ const CurrentAgent = () => {
             <div>
               <AvatarCustom
                 className="h-[72px] w-[72px] rounded-full border-none max-md:h-[50px] max-md:w-[50px]"
-                src={agent.avatar || avaMaxGray}
+                src={agent.avatar || distilledAiPlaceholder}
                 publicAddress={agent.publicAddress || agent.username}
               />
             </div>
