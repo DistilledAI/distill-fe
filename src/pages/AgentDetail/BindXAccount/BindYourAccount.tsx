@@ -1,99 +1,132 @@
-import CloseButton from "@components/CloseButton"
-import { LinkAccountIcon, XboxXFilled } from "@components/Icons"
-import { BookIcon } from "@components/Icons/SocialLinkIcon"
+import { LinkAccountIcon } from "@components/Icons"
+import { CloseFilledIcon } from "@components/Icons/DefiLens"
 import { TwitterOnlineIcon } from "@components/Icons/Twitter"
 import {
-  Input,
+  Button,
   Modal,
-  ModalBody,
   ModalContent,
-  ModalHeader,
+  Spinner,
   useDisclosure,
 } from "@nextui-org/react"
-import { refreshFetchMyAgent } from "@reducers/agentSlice"
-import { useState } from "react"
-import { useForm } from "react-hook-form"
-import { useDispatch } from "react-redux"
-import { useParams } from "react-router-dom"
+import { useEffect, useState } from "react"
 import { toast } from "react-toastify"
-import { updateAgentConfig } from "services/agent"
-import { twMerge } from "tailwind-merge"
+import { getXLogin, unBindXLogin, verifyXLogin } from "services/agent"
 import { AgentConfig } from "../useFetchAgentConfig"
-import Content from "./Content"
-import Footer from "./Footer"
 
 const BindYourAccount: React.FC<{
   agentConfigs: AgentConfig[]
   refetch: any
 }> = ({ agentConfigs, refetch }) => {
+  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
+  const [loading, setLoading] = useState<boolean>(false)
+  const [isVerifiedXLogin, setIsVerifiedXLogin] = useState(
+    localStorage.getItem("isVerifiedXLogin"),
+  )
+  const [xLoginInfo, setXLoginInfo] = useState<any>(null)
   const xBotData = agentConfigs?.find(
     (agent: any) => agent.key === "bindTwitterKey",
   )
   const bindTwitterValue = xBotData?.value ? JSON.parse(xBotData.value) : null
-  const twitterUsername = bindTwitterValue?.info?.data?.username
-  const dispatch = useDispatch()
-  const { agentId } = useParams()
-  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
-  const [loading, setLoading] = useState<boolean>(false)
-  const methods = useForm({
-    defaultValues: {
-      consumerKey: "",
-      consumerSecret: "",
-      accessToken: "",
-      accessTokenSecret: "",
-    },
-  })
-  // const { watch } = methods
-  const [stepNumber, setStepNumber] = useState<number>(1)
+  const twitterUsername =
+    bindTwitterValue?.info?.data?.username || bindTwitterValue?.name
+  const tokenSecret = xLoginInfo?.oauth_token_secret
 
-  // const consumerKeyValue = watch("consumerKey")
-  // const consumerSecretValue = watch("consumerSecret")
-  // const accessTokenValue = watch("accessToken")
-  // const accessTokenSecretValue = watch("accessTokenSecret")
-
-  // const isDisabled =
-  //   consumerKeyValue &&
-  //   consumerSecretValue &&
-  //   accessTokenValue &&
-  //   accessTokenSecretValue
-
-  const onNextStep = () => {
-    setStepNumber(stepNumber + 1)
-  }
-  const onPrevStep = () => {
-    setStepNumber(stepNumber - 1)
-  }
-
-  const onBindYourAccount = async (data: any) => {
-    const newData = {
-      ...data,
-      status: 1,
-    }
+  const callUnBindXLogin = async () => {
     try {
-      setLoading(true)
-      const agentIdNumber = Number(agentId)
-      const payload = {
-        botId: agentIdNumber,
-        data: [
-          {
-            key: "bindTwitterKey",
-            value: JSON.stringify(newData),
-          },
-        ],
-      }
-      const res = await updateAgentConfig(payload)
-      if (res?.data) {
-        toast.success("Account bound successfully")
-        onClose()
+      const res = await unBindXLogin()
+      if (res) {
         refetch()
-        dispatch(refreshFetchMyAgent())
+        onClose()
       }
-    } catch (error: any) {
-      toast.error(error?.response?.data?.message)
-    } finally {
-      setLoading(false)
+    } catch (error) {
+      console.log("error", error)
     }
   }
+
+  const callGetXLogin = async () => {
+    try {
+      const res = await getXLogin()
+      if (res) {
+        setXLoginInfo(res.data)
+        return res.data
+      }
+    } catch (error) {
+      console.log("error", error)
+    }
+  }
+
+  const onLogin = async () => {
+    setLoading(true)
+    const xLoginInfoRes = await callGetXLogin()
+    if (!xLoginInfoRes) {
+      return setLoading(false)
+    }
+    const authorizeUrl = xLoginInfoRes?.authorizeUrl
+
+    const width = 650
+    const height = 730
+    const screenWidth = window.screen.width || 1920
+    const screenHeight = window.screen.height || 1080
+    const left = Math.round((screenWidth - width) / 2)
+    const top = Math.round((screenHeight - height) / 2)
+    const safeTop = Math.max(0, top)
+    const safeLeft = Math.max(0, left)
+
+    const popup = window.open(
+      authorizeUrl,
+      "twitter",
+      `menubar=no,location=no,resizable=no,scrollbars=no,status=no,width=${width},height=${height},top=${safeTop},left=${safeLeft}`,
+    )
+
+    if (!popup) {
+      toast.error(
+        "Unable to open the popup window. Please check the browser's popup blocker settings.",
+      )
+    }
+  }
+
+  useEffect(() => {
+    const onStorage = () => {
+      setIsVerifiedXLogin(localStorage.getItem("isVerifyXLoginSuccess"))
+    }
+    window.addEventListener("storage", onStorage)
+    return () => {
+      window.removeEventListener("storage", onStorage)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (isVerifiedXLogin) {
+      setLoading(true)
+      const verifyXLoginInfo = localStorage.getItem("verifyXLoginInfo")
+      const verifyXLoginInfoParsed =
+        verifyXLoginInfo && JSON.parse(verifyXLoginInfo)
+      const oauthVerifier = verifyXLoginInfoParsed?.oauthVerifier
+      const oauthToken = verifyXLoginInfoParsed?.oauthToken
+
+      const callVerifyXLogin = async () => {
+        try {
+          const payload = {
+            oauthToken,
+            oauthVerifier,
+            tokenSecret,
+          }
+          const res = await verifyXLogin(payload)
+          if (res) {
+            refetch()
+            localStorage.removeItem("isVerifyXLoginSuccess")
+            localStorage.removeItem("verifyXLoginInfo")
+          }
+        } catch (error: any) {
+          toast.error(error?.response?.data?.message)
+        } finally {
+          setLoading(false)
+        }
+      }
+
+      callVerifyXLogin()
+    }
+  }, [isVerifiedXLogin])
 
   return (
     <>
@@ -102,19 +135,21 @@ const BindYourAccount: React.FC<{
           <TwitterOnlineIcon />
           <span className="text-base-b">{twitterUsername}</span>
           <span
-            className="text-base-md cursor-pointer text-brown-10 hover:underline"
+            className="text-base-b cursor-pointer text-[#FF3B30] hover:underline"
             onClick={onOpen}
           >
-            Change
+            Unbind
           </span>
         </div>
       ) : (
         <div
           className="flex cursor-pointer items-center gap-2 hover:underline"
-          onClick={onOpen}
+          onClick={() => onLogin()}
         >
-          <LinkAccountIcon />
-          <span className="text-base-b text-brown-500">Bind your Account</span>
+          {loading ? <Spinner size="sm" /> : <LinkAccountIcon />}
+          <span className="text-base-b text-brown-500">
+            {loading ? "Binding your Account" : "Bind your Account"}
+          </span>
         </div>
       )}
 
@@ -122,119 +157,46 @@ const BindYourAccount: React.FC<{
         isOpen={isOpen}
         onOpenChange={onOpenChange}
         hideCloseButton
+        size="xl"
         classNames={{
-          base: "bg-mercury-100 ",
+          base: "bg-mercury-100 py-6 max-md:py-4 max-w-[450px]",
+          wrapper: "z-[99]",
+          backdrop: "z-[99]",
         }}
-        size="5xl"
-        id="bind-your-account-modal"
-        scrollBehavior="inside"
       >
         <ModalContent>
-          <form className="w-full">
-            <ModalHeader className="relative px-6">
-              <h3 className="m-auto flex text-24 font-semibold text-mercury-950">
-                Bind X Account
-              </h3>
-              <CloseButton
-                onClose={onClose}
-                className="absolute right-3 top-1/2 -translate-y-1/2"
-              />
-            </ModalHeader>
-            <ModalBody className="gap-4 px-6 py-4 pb-10">
+          <div className="px-4">
+            <div className="relative flex items-center justify-center">
+              <p className="mb-2 text-20 font-semibold">Unbind This Account?</p>
               <div
-                className="-mx-6 flex cursor-pointer items-center gap-2 bg-brown-50 px-4 py-3 hover:underline"
-                onClick={() =>
-                  window.open(
-                    "https://distilled.foundation/developer-resources/how-to-bind-your-twitter-and-telegram-account",
-                    "_blank",
-                  )
-                }
+                onClick={onClose}
+                className="absolute right-0 top-0 cursor-pointer"
               >
-                <BookIcon />
-                <span className="text-base-b text-brown-600">
-                  Watch the tutorial for each step to easily complete binding.
-                </span>
+                <CloseFilledIcon />
               </div>
-
-              <Content stepNumber={stepNumber} />
-            </ModalBody>
-            <Footer
-              stepNumber={stepNumber}
-              onPrevStep={onPrevStep}
-              methods={methods}
-              onNextStep={onNextStep}
-              onBindYourAccount={onBindYourAccount}
-              loading={loading}
-            />
-          </form>
+            </div>
+            <div className="text-center text-mercury-900">
+              <p>Do you want to cancel the creation?</p>
+              <p>Leaving without saving will delete it permanently.</p>
+            </div>
+            <div className="mt-5 grid grid-cols-2 items-center gap-2">
+              <Button
+                onPress={onClose}
+                className="w-full rounded-full bg-mercury-950 font-bold text-white"
+              >
+                No
+              </Button>
+              <Button
+                onPress={callUnBindXLogin}
+                className="w-full rounded-full bg-[#FF3B30] font-bold text-white"
+              >
+                Yes
+              </Button>
+            </div>
+          </div>
         </ModalContent>
       </Modal>
     </>
-  )
-}
-
-interface InputFieldProps {
-  placeholder: string
-  value: string
-  fieldKey: string
-  register: any
-  resetField: any
-  setValue: any
-}
-
-export const InputField: React.FC<InputFieldProps> = ({
-  placeholder,
-  value,
-  fieldKey,
-  register,
-  resetField,
-  setValue,
-}) => {
-  const onRestTokenKey = () => {
-    resetField(fieldKey)
-  }
-
-  const onPaste = async () => {
-    navigator.clipboard
-      .readText()
-      .then((text) => {
-        setValue(fieldKey, text)
-      })
-      .catch((err) => {
-        console.error("Failed to read clipboard contents: ", err)
-      })
-  }
-
-  return (
-    <Input
-      placeholder={placeholder}
-      classNames={{
-        inputWrapper: twMerge(
-          "!bg-white rounded-lg mt-2 !border !border-mercury-400 px-2 ",
-        ),
-        innerWrapper: "!bg-white rounded-full",
-        input: "text-16 !text-mercury-950 caret-[#363636]",
-      }}
-      size="lg"
-      value={value}
-      {...register(fieldKey)}
-      endContent={
-        value ? (
-          <div onClick={onRestTokenKey} className="cursor-pointer">
-            <XboxXFilled color="#545454" />
-          </div>
-        ) : (
-          <div
-            onClick={onPaste}
-            className="cursor-pointer rounded-lg bg-mercury-70 px-2 py-1"
-          >
-            <span className="text-14 font-medium uppercase text-mercury-950">
-              Paste
-            </span>
-          </div>
-        )
-      }
-    />
   )
 }
 

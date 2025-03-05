@@ -23,6 +23,7 @@ export const PATH_NAMES = {
   DAO: "/dao",
   CLAN_AGENT_EMPTY: "/agent-clan-empty",
   MY_AGENT_CLAN: "/my-agent-clan",
+  X_LOGIN: "/x-login",
 }
 
 export const MIX_PANEL_TRACK_EVENT = {
