@@ -11,6 +11,7 @@ const MediaPreview = lazy(() => import("@components/MediaPreview"))
 const JoinCreatorGroupAnnounce = lazy(
   () => import("@components/JoinCreatorGroupAnnounce"),
 )
+const ConnectWalletModal = lazy(() => import("@components/ConnectWalletModal"))
 
 const mixpanelToken = import.meta.env.VITE_APP_MIXPANEL_TOKEN
 const envMode = import.meta.env.VITE_APP_ENV_MODE
@@ -97,11 +98,10 @@ function App() {
     <>
       <AppRouter />
       <Suspense fallback={null}>
+        <JoinCreatorGroupAnnounce />
+        <ConnectWalletModal />
         <EarnedPointToast />
         <MediaPreview />
-      </Suspense>
-      <Suspense fallback={null}>
-        <JoinCreatorGroupAnnounce />
       </Suspense>
     </>
   )
