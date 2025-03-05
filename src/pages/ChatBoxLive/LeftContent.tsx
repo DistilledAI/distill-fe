@@ -151,7 +151,7 @@ const LeftContent: React.FC<{
   const renderImageContent = () => <ImageLive groupConfig={groupConfig} />
 
   const isVideo = (url?: string) => /\.(mp4|webm|ogg)$/i.test(url || "")
-  console.log("PPP", groupDetail)
+
   return (
     <div
       className={twMerge(

@@ -192,9 +192,9 @@ const NavigationMenu = ({ isMobile = false }: { isMobile?: boolean }) => {
       <div
         key={index}
         className={twMerge(
-          "group/item flex cursor-pointer items-center gap-2 rounded-full border-[2px] border-white bg-mercury-30 px-4 py-[10px] transition-all duration-200 ease-in-out hover:bg-brown-50",
-          active && "h-12 border-brown-500 bg-brown-50",
-          sidebarCollapsed && "h-12 justify-center",
+          "group/item flex h-12 cursor-pointer items-center gap-2 rounded-full border-[2px] border-white bg-mercury-30 px-4 py-[10px] transition-all duration-200 ease-in-out hover:bg-brown-50",
+          active && "border-brown-500 bg-brown-50",
+          sidebarCollapsed && "justify-center",
           item.isHidden && "hidden",
         )}
         onClick={() => navigate(item.pathname)}
