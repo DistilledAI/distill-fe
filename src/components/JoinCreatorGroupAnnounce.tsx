@@ -57,13 +57,19 @@ const JoinCreatorGroupAnnounce = () => {
   return (
     <div
       className={twMerge(
-        "fixed bottom-[60px] right-4 z-[51] flex h-[120px] w-[550px] flex-col items-center gap-2 rounded-[18px] bg-orange-100 bg-cover bg-center bg-no-repeat p-4 duration-300 max-sm:right-0 max-sm:w-full md:flex-row md:px-6",
+        "fixed bottom-[60px] right-4 z-[51] flex h-[120px] w-[550px] flex-col items-center gap-2 rounded-[18px] bg-orange-100 bg-cover bg-center bg-no-repeat p-4 duration-300 max-sm:right-3 max-sm:h-fit max-sm:w-[calc(100%-24px)] md:flex-row",
       )}
       style={{
         backgroundImage: `url(${creatorCommunityBg})`,
       }}
     >
-      <div className="flex-1">
+      <div
+        className="absolute right-4 top-2 flex cursor-pointer justify-end"
+        onClick={() => dispatch(updateTopChatAnnounce("close"))}
+      >
+        <CloseFilledIcon color="#FFFF" size={18} />
+      </div>
+      <div className="flex-1 max-sm:mt-2">
         <div className="mb-2 flex items-center gap-2 max-md:justify-center">
           <img
             src={distilledAiCircleLogo}
@@ -75,7 +81,7 @@ const JoinCreatorGroupAnnounce = () => {
             <span className="font-bold">Creator Community!</span>
           </h4>
         </div>
-        <p className="max-w-[80%] text-[12px] font-medium leading-5 text-white max-md:text-center">
+        <p className="max-w-[80%] text-[12px] font-medium leading-5 text-white max-md:text-center max-sm:max-w-full">
           Join our exclusive group to{" "}
           <span className="font-bold">connect directly with the </span>
           <span className="font-bold">Distilled AI team</span>, share feedback &
@@ -83,30 +89,22 @@ const JoinCreatorGroupAnnounce = () => {
         </p>
       </div>
 
-      <div className="flex flex-col">
-        <div
-          className="mb-2 mr-1 flex cursor-pointer justify-end"
-          onClick={() => dispatch(updateTopChatAnnounce("close"))}
+      <div className="flex flex-col items-center gap-2">
+        <Link
+          to="https://t.me/+05p4nHkoL6RmMmJl"
+          target="_blank"
+          className="flex h-[32px] items-center gap-1 rounded-full border border-mercury-900 bg-white px-4 text-center text-14 font-bold text-mercury-950"
         >
-          <CloseFilledIcon color="#FFFF" size={18} />
-        </div>
-        <div className="flex flex-col items-center gap-2">
-          <Link
-            to="https://t.me/+05p4nHkoL6RmMmJl"
-            target="_blank"
-            className="flex h-[32px] items-center gap-1 rounded-full border border-mercury-900 bg-white px-4 text-center text-14 font-bold text-mercury-950"
-          >
-            <TelegramOutlineIcon />
-            Join us here
-          </Link>
-          <button
-            type="button"
-            className="text-13 font-medium text-white underline"
-            onClick={() => dispatch(updateTopChatAnnounce("dontShowAgain"))}
-          >
-            Don’t show this again
-          </button>
-        </div>
+          <TelegramOutlineIcon />
+          Join us here
+        </Link>
+        <button
+          type="button"
+          className="text-13 font-medium text-white underline"
+          onClick={() => dispatch(updateTopChatAnnounce("dontShowAgain"))}
+        >
+          Don’t show this again
+        </button>
       </div>
     </div>
   )
