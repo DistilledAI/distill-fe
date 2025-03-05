@@ -16,7 +16,7 @@ const SOCIALS = [
   //   type: "internal",
   // },
   {
-    name: "About Distilled AI",
+    name: "Distilled AI",
     icon: () => (
       <img src={distilledAIIcon} className="h-5 w-5" alt="distilled ai logo" />
     ),
