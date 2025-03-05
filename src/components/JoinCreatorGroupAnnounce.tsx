@@ -1,4 +1,4 @@
-import { distilledAiCircleLogo } from "@assets/images"
+import { creatorCommunityBg, distilledAiCircleLogo } from "@assets/images"
 import { useAppDispatch, useAppSelector } from "@hooks/useAppRedux"
 import useAuthState from "@hooks/useAuthState"
 import {
@@ -9,6 +9,8 @@ import { useEffect } from "react"
 import { Link } from "react-router-dom"
 import { getUserPaidCreateAgent } from "services/user"
 import { twMerge } from "tailwind-merge"
+import { CloseFilledIcon } from "./Icons/DefiLens"
+import { TelegramOutlineIcon } from "./Icons/SocialLinkIcon"
 
 const USER_ID_LIST = [
   6649, 9503, 152261, 44602, 50626, 6037, 51452, 65953, 2760, 72209, 19398,
@@ -55,44 +57,50 @@ const JoinCreatorGroupAnnounce = () => {
   return (
     <div
       className={twMerge(
-        "fixed right-4 top-0 z-[51] flex w-[calc(100%-114px)] flex-col gap-2 rounded-b-[22px] border border-t-0 border-brown-500 bg-orange-100 px-2 py-1 duration-300 max-sm:right-0 max-sm:w-full md:flex-row md:px-6",
+        "fixed bottom-[60px] right-4 z-[51] flex h-[120px] w-[550px] flex-col items-center gap-2 rounded-[18px] bg-orange-100 bg-cover bg-center bg-no-repeat p-4 duration-300 max-sm:right-3 max-sm:h-fit max-sm:w-[calc(100%-24px)] md:flex-row",
       )}
+      style={{
+        backgroundImage: `url(${creatorCommunityBg})`,
+      }}
     >
-      <div className="flex-1">
-        <div className="flex items-center gap-2 max-md:justify-center">
+      <div
+        className="absolute right-4 top-2 flex cursor-pointer justify-end"
+        onClick={() => dispatch(updateTopChatAnnounce("close"))}
+      >
+        <CloseFilledIcon color="#FFFF" size={18} />
+      </div>
+      <div className="flex-1 max-sm:mt-2">
+        <div className="mb-2 flex items-center gap-2 max-md:justify-center">
           <img
             src={distilledAiCircleLogo}
             alt="distilled ai logo"
-            className="h-4 w-4 object-cover"
+            className="h-6 w-6 object-cover"
           />
-          <h4 className="text-16 font-medium leading-[125%]">
-            You’re Invited to{" "}
-            <span className="font-bold">Our Creator Community!</span>
+          <h4 className="text-base-md text-[#BCAA88]">
+            You’re Invited to our{" "}
+            <span className="font-bold">Creator Community!</span>
           </h4>
         </div>
-        <p className="text-14 font-medium leading-[110%] max-md:text-center">
-          Not everyone gets this chance —{" "}
-          <span className="font-bold">
-            your contributions have earned you a spot.{" "}
-          </span>
+        <p className="max-w-[80%] text-[12px] font-medium leading-5 text-white max-md:text-center max-sm:max-w-full">
           Join our exclusive group to{" "}
-          <span className="font-bold">
-            connect directly with the Distilled AI team
-          </span>
-          , share feedback & ideas, and shape the future of AI.
+          <span className="font-bold">connect directly with the </span>
+          <span className="font-bold">Distilled AI team</span>, share feedback &
+          ideas, and shape the future of AI.
         </p>
       </div>
-      <div className="flex flex-col gap-1">
+
+      <div className="flex flex-col items-center gap-2">
         <Link
           to="https://t.me/+05p4nHkoL6RmMmJl"
           target="_blank"
-          className="rounded-full border border-mercury-900 bg-mercury-950 px-4 py-[2px] text-center text-16 font-medium text-white"
+          className="flex h-[32px] items-center gap-1 rounded-full border border-mercury-900 bg-white px-4 text-center text-14 font-bold text-mercury-950"
         >
+          <TelegramOutlineIcon />
           Join us here
         </Link>
         <button
           type="button"
-          className="text-13 font-medium text-mercury-900 underline"
+          className="text-13 font-medium text-white underline"
           onClick={() => dispatch(updateTopChatAnnounce("dontShowAgain"))}
         >
           Don’t show this again
