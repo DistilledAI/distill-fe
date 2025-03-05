@@ -22,7 +22,7 @@ const endpoint = {
     "/user/validate-join-creator-group",
   ),
 
-  //bot
+  //agent
   CREATE_BOT: withBaseURL("/bot/create-bot"),
   GET_BOT_LIST: withBaseURL("/bot/list"),
   CHANGE_STATUS_BOT_IN_GROUP: withBaseURL("/group/change-status-bot-in-group"),
@@ -44,6 +44,9 @@ const endpoint = {
   REPOST_X: withBaseURL("/point/xDstl/retweet-x"),
   GET_PAYMENT_HISTORY: withBaseURL("/payment/history"),
   GET_AGENT_REPLY: withBaseURL("/dashboard/agent-reply"),
+  GET_X_LOGIN: withBaseURL("/auth/twitter/login"),
+  VERIFY_X_LOGIN: withBaseURL("/auth/twitter/verify"),
+  UNBIND_X_LOGIN: withBaseURL("/auth/twitter/unlink"),
 
   //chat
   GET_MY_CHAT_GROUP_LIST: withBaseURL("/chat/group/list"),
