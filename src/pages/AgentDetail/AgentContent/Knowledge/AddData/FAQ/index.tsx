@@ -6,16 +6,30 @@ import { BotDataTypeKey } from "@types"
 import useFetchByCategory from "../useFetchByCategory"
 import useLoadDataInfinite from "../useLoadMoreData"
 import UploadFAQ from "../UploadFAQ"
-import React from "react"
+import React, { useEffect } from "react"
+import SkeletonData from "../SkeletonData"
+import { MY_DATA_STATUS } from "@constants/index"
 
 const FaqData: React.FC<{
   onMoreCustomRequest: (data: any, callback: () => void) => void
-}> = ({ onMoreCustomRequest }) => {
+  setIsWarningSync: React.Dispatch<React.SetStateAction<boolean>>
+}> = ({ onMoreCustomRequest, setIsWarningSync }) => {
   const myAgent = useAppSelector((state) => state.agents.myAgent)
   const botId = myAgent?.id as number
 
-  const { list, hasNextPage, fetchNextPage, refetch, isFetchingNextPage } =
-    useFetchByCategory(BotDataTypeKey.FAQ, botId)
+  const {
+    list,
+    hasNextPage,
+    fetchNextPage,
+    refetch,
+    isFetchingNextPage,
+    isLoading,
+  } = useFetchByCategory(BotDataTypeKey.FAQ, botId)
+
+  useEffect(() => {
+    const isWarning = list.some((item) => item.status === MY_DATA_STATUS.ACTIVE)
+    if (isWarning) setIsWarningSync(true)
+  }, [list])
 
   const scrollContainerRef = useLoadDataInfinite({
     hasNextPage,
@@ -33,8 +47,10 @@ const FaqData: React.FC<{
           ref={scrollContainerRef}
           className="max-h-[250px] flex-1 overflow-y-auto scrollbar-hide"
         >
-          {list.length > 0 ? (
-            <div className="grid grid-cols-2 gap-2">
+          {isLoading ? (
+            <SkeletonData />
+          ) : list.length > 0 ? (
+            <div className="grid grid-cols-2 gap-2 max-md:grid-cols-1">
               {list.map((item) => (
                 <ItemData
                   id={item.id}
@@ -42,7 +58,7 @@ const FaqData: React.FC<{
                   value={item.value}
                   title={item.name}
                   status={item.status}
-                  icon={<CSVIcon />}
+                  icon={<CSVIcon size={24} />}
                   category={BotDataTypeKey.FAQ}
                   className={{ classNameTitle: "max-w-[150px]" }}
                 />
@@ -60,7 +76,7 @@ const FaqData: React.FC<{
           )}
         </div>
       </div>
-      <div className="flex w-[190px] flex-col items-end">
+      <div className="flex w-[190px] flex-col items-end max-md:w-full max-md:items-start">
         <UploadFAQ
           onMoreCustomRequest={(data: any, callback) => {
             onMoreCustomRequest(data, () => {

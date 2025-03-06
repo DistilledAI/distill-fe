@@ -33,7 +33,7 @@ const ItemData: React.FC<{
           href={value}
           target="_blank"
           className={twMerge(
-            "max-w-[100px] truncate text-13 font-semibold hover:underline",
+            "max-w-[100px] truncate text-13 font-semibold hover:underline max-md:max-w-[170px]",
             className?.classNameTitle,
           )}
         >

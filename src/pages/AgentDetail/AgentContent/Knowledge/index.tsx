@@ -4,10 +4,11 @@ import { DatabaseImportIcon } from "@components/Icons/DatabaseImportIcon"
 import useFetchMyData from "@pages/MyData/useFetch"
 import AddData from "./AddData"
 import { RefreshIcon } from "@components/Icons/RefreshIcon"
-// import TopicRestriction from "./TopicRestriction"
+import { useState } from "react"
 
 const Knowledge = () => {
   const { list, isFetched } = useFetchMyData()
+  const [isWarningSync, setIsWarningSync] = useState(false)
 
   const isShowAddData = list.length === 0 && isFetched
 
@@ -20,12 +21,6 @@ const Knowledge = () => {
             Connected Sources
           </span>
         </div>
-        {/* <div className="flex items-center gap-1 rounded-full bg-mercury-70 px-2">
-          <LockFilledIcon />
-          <span className="font-medium uppercase text-mercury-700 max-md:text-14">
-            private
-          </span>
-        </div> */}
       </div>
       {isFetched && (
         <AlertBox
@@ -46,16 +41,17 @@ const Knowledge = () => {
           ]}
         />
       )}
-      <div className="mt-3 rounded-[8px] bg-[#FFE9A5] p-3">
-        <div className="flex items-center gap-1 text-14 font-semibold text-orange-700">
-          <WarningIcon color="#CC6502" />
-          <span>To keep your agent updated, please click</span>
-          <RefreshIcon color="#F78500" />
-          <span>to sync its knowledge with new data.</span>
+      {isWarningSync && (
+        <div className="mt-3 rounded-[8px] bg-[#FFE9A5] p-3">
+          <div className="flex items-center gap-1 text-14 font-semibold text-orange-700 max-md:flex-wrap">
+            <WarningIcon color="#CC6502" />
+            <span>To keep your agent updated, please click</span>
+            <RefreshIcon color="#F78500" />
+            <span>to sync its knowledge with new data.</span>
+          </div>
         </div>
-      </div>
-      <AddData />
-      {/* <TopicRestriction /> */}
+      )}
+      <AddData setIsWarningSync={setIsWarningSync} />
     </div>
   )
 }

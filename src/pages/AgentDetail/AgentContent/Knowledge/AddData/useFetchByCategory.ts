@@ -23,6 +23,7 @@ const useFetchByCategory = (category: BotDataTypeKey, botId: number) => {
 
   const {
     data,
+    isLoading,
     isFetching,
     isFetchingNextPage,
     isFetched,
@@ -46,6 +47,7 @@ const useFetchByCategory = (category: BotDataTypeKey, botId: number) => {
 
   return {
     list,
+    isLoading,
     isFetching,
     isFetched,
     isFetchingNextPage,

@@ -7,8 +7,11 @@ import PlainTextFile from "./PlainText"
 import FaqData from "./FAQ"
 import { useAppSelector } from "@hooks/useAppRedux"
 import useUpdateStatus from "@pages/MyData/useUpdateStatus"
+import React from "react"
 
-const AddData = () => {
+const AddData: React.FC<{
+  setIsWarningSync: React.Dispatch<React.SetStateAction<boolean>>
+}> = ({ setIsWarningSync }) => {
   const { agentId } = useParams()
   const myAgent = useAppSelector((state) => state.agents.myAgent)
   useUpdateStatus(myAgent?.id as number)
@@ -50,9 +53,18 @@ const AddData = () => {
 
   return (
     <div className="mt-6 flex flex-col gap-6">
-      <AddSocialProfile onMoreCustomRequest={onMoreCustomRequest} />
-      <PlainTextFile onMoreCustomRequest={onMoreCustomRequest} />
-      <FaqData onMoreCustomRequest={onMoreCustomRequest} />
+      <AddSocialProfile
+        setIsWarningSync={setIsWarningSync}
+        onMoreCustomRequest={onMoreCustomRequest}
+      />
+      <PlainTextFile
+        setIsWarningSync={setIsWarningSync}
+        onMoreCustomRequest={onMoreCustomRequest}
+      />
+      <FaqData
+        setIsWarningSync={setIsWarningSync}
+        onMoreCustomRequest={onMoreCustomRequest}
+      />
     </div>
   )
 }
