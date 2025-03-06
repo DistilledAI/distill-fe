@@ -13,7 +13,7 @@ import { Pagination, Skeleton } from "@nextui-org/react"
 import PaginationItemCustom from "./PaginationItemCustom"
 import AvatarCustom from "@components/AvatarCustom"
 
-const AIAgentList = () => {
+const AllAgents = () => {
   const navigate = useNavigate()
   const location = useLocation()
   const { user } = useAuthState()
@@ -146,4 +146,4 @@ const AIAgentList = () => {
   )
 }
 
-export default AIAgentList
+export default AllAgents

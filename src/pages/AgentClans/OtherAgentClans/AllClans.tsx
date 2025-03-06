@@ -12,13 +12,20 @@ import SearchClanWrapper from "./SearchClanWrapper"
 import useFetchClan from "@pages/Marketplace/useFetchClan"
 import { IGroup } from "@pages/ChatPage/ChatContainer/LeftBar/useFetchGroups"
 import { VideoThumbnailWrapper } from "@components/VideoThumbnailWrapper"
+import PinClanButton from "./PinClanButton"
+import PinAgentClans from "./PinAgentClans"
+import { usePinAgentClans } from "./useAgentPinClans"
+import useWindowSize from "@hooks/useWindowSize"
 
 const AllClans = () => {
   const { chatId } = useParams()
   const navigate = useNavigate()
   const { user } = useAuthState()
   const parentRef = useRef<HTMLDivElement>(null)
+  const pinContainerRef = useRef<HTMLDivElement>(null)
   const [searchClanValue, setSearchClanValue] = useState<string>("")
+  const [pinContainerHeight, setPinContainerHeight] = useState(0)
+  const { isMobile } = useWindowSize()
 
   const {
     data: groups,
@@ -37,8 +44,12 @@ const AllClans = () => {
     mode: "infinite",
   })
 
+  const { data: pinnedClans = [] } = usePinAgentClans()
+
   const filteredGroups = groups.filter(
-    (item: IGroup) => user?.id !== item.createBy,
+    (item: IGroup) =>
+      user?.id !== item.createBy &&
+      !pinnedClans.some((pinned) => pinned.group.id === item.id),
   )
 
   const virtualizer = useVirtualizer({
@@ -56,7 +67,6 @@ const AllClans = () => {
 
     const { scrollTop, scrollHeight, clientHeight } = parentRef.current
     if (scrollTop + clientHeight >= scrollHeight - 100) {
-      console.log("Fetching more at offset:", filteredGroups.length)
       handleLoadMore()
     }
   }, 100)
@@ -68,18 +78,43 @@ const AllClans = () => {
   }
 
   useEffect(() => {
+    if (pinContainerRef.current) {
+      const height = pinContainerRef.current.getBoundingClientRect().height
+      setPinContainerHeight(height)
+    }
+  }, [pinnedClans.length])
+
+  useEffect(() => {
     refetch()
   }, [debouncedSearchValue, refetch])
+
+  const calculateMainContainerHeight = () => {
+    const baseHeight = 240
+    const mdBaseHeight = 212
+    return {
+      mobile: `calc(100dvh - ${baseHeight + pinContainerHeight}px)`,
+      desktop: `calc(100dvh - ${mdBaseHeight + pinContainerHeight}px)`,
+    }
+  }
+
+  const { mobile, desktop } = calculateMainContainerHeight()
 
   return (
     <div className="-mx-3 mt-6 space-y-3 overflow-x-hidden px-3 pb-4">
       <SearchClanWrapper onSearch={handleSearch} />
+      <div ref={pinContainerRef}>
+        <PinAgentClans />
+      </div>
       <div
         ref={parentRef}
-        className="h-[calc(100dvh-240px)] overflow-y-auto scrollbar-hide md:h-[calc(100dvh-212px)]"
+        className="overflow-y-auto scrollbar-hide"
+        style={{
+          height: !isMobile ? desktop : mobile,
+        }}
         onScroll={debouncedHandleScroll}
       >
         <div
+          className="md:h-full"
           style={{
             height: `${virtualizer.getTotalSize()}px`,
             position: "relative",
@@ -124,25 +159,33 @@ const AllClans = () => {
                 <div
                   key={group.id}
                   className={twMerge(
-                    "flex w-full cursor-pointer items-center gap-4 rounded-full px-3 py-2 hover:bg-mercury-100",
+                    "flex w-full flex-1 cursor-pointer items-center justify-between gap-1 rounded-full p-2 hover:bg-mercury-100",
                     chatId === group.label && "md:bg-mercury-100",
                   )}
-                  onClick={() => navigate(`${PATH_NAMES.CLAN}/${group.label}`)}
                 >
-                  <VideoThumbnailWrapper videoUrl={imageUrl}>
-                    {(thumbnail) => (
-                      <AvatarClanByList
-                        avatarUrl={thumbnail || distilledAiPlaceholder}
-                        isNameDisplay={false}
-                        name=""
-                        className="h-8 w-8"
-                        member={group.groupMemberStats?.total}
-                      />
-                    )}
-                  </VideoThumbnailWrapper>
-                  <span className="line-clamp-1 text-16 font-bold text-mercury-950">
-                    {group.name}
-                  </span>
+                  <div
+                    className="flex flex-1 items-center gap-2"
+                    onClick={() =>
+                      navigate(`${PATH_NAMES.CLAN}/${group.label}`)
+                    }
+                  >
+                    <VideoThumbnailWrapper videoUrl={imageUrl}>
+                      {(thumbnail) => (
+                        <AvatarClanByList
+                          avatarUrl={thumbnail || distilledAiPlaceholder}
+                          isNameDisplay={false}
+                          name=""
+                          className="h-8 w-8"
+                          member={group.groupMemberStats?.total}
+                        />
+                      )}
+                    </VideoThumbnailWrapper>
+                    <span className="line-clamp-1 max-w-[114px] break-all text-16 font-bold text-mercury-950">
+                      {group.name}
+                    </span>
+                  </div>
+
+                  <PinClanButton groupId={Number(group.id)} />
                 </div>
               </div>
             )

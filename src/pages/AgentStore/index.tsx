@@ -4,7 +4,7 @@ import { twMerge } from "tailwind-merge"
 import { Swiper, SwiperRef, SwiperSlide } from "swiper/react"
 import { Navigation } from "swiper/modules"
 import AgentClansStore from "./AgentClansStore"
-import AIAgentList from "./AIAgentList"
+import AllAgents from "./AllAgents"
 import { useNavigate, useLocation } from "react-router-dom"
 import InputSearchAgent from "./InputSearchAgent"
 
@@ -67,7 +67,7 @@ const AgentStore = () => {
       case "agent-clans":
         return <AgentClansStore key="agent-clans" />
       case "ai-agents":
-        return <AIAgentList key="ai-agents" />
+        return <AllAgents key="ai-agents" />
       default:
         return null
     }

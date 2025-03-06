@@ -29,7 +29,7 @@ const MyAgentClanButton = () => {
     <button
       type="button"
       className={twMerge(
-        "relative flex h-[64px] w-full items-center gap-4 rounded-full px-3 hover:bg-mercury-100",
+        "relative flex h-[64px] w-full items-center gap-2 rounded-full px-3 hover:bg-mercury-100",
         isSelected && "md:bg-mercury-100",
       )}
       onClick={handleClick}
