@@ -83,6 +83,13 @@ const BindYourAccount: React.FC<{
         "Unable to open the popup window. Please check the browser's popup blocker settings.",
       )
     }
+
+    const interval = setInterval(() => {
+      if (!popup || popup.closed) {
+        clearInterval(interval)
+        setLoading(false)
+      }
+    }, 500)
   }
 
   useEffect(() => {

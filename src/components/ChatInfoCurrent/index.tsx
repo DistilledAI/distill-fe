@@ -93,10 +93,10 @@ const ChatInfoCurrent: React.FC<{
         {isLive && (
           <TotalMemberBadge groupId={groupDetail.groupId.toString()} />
         )}
-        <MoreAction
+        {/* <MoreAction
           groupId={groupDetail.groupId}
           groupType={groupDetail.group.typeGroup}
-        />
+        /> */}
         <AgentShareButton
           agentInfo={{
             shareLink: `${window.location.origin}${PATH_NAMES.CLAN}/${groupDetail?.group?.label}`,
