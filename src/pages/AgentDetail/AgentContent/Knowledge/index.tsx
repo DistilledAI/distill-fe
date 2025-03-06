@@ -1,16 +1,12 @@
-import AgentSetupStatus from "@components/AgentSetupStatus"
 import AlertBox from "@components/AlertBox"
-import { CheckProtectedIcon } from "@components/Icons"
+import { CheckProtectedIcon, WarningIcon } from "@components/Icons"
 import { DatabaseImportIcon } from "@components/Icons/DatabaseImportIcon"
-import { STATUS_AGENT } from "@constants/index"
-import { useAppSelector } from "@hooks/useAppRedux"
 import useFetchMyData from "@pages/MyData/useFetch"
 import AddData from "./AddData"
+import { RefreshIcon } from "@components/Icons/RefreshIcon"
 // import TopicRestriction from "./TopicRestriction"
 
 const Knowledge = () => {
-  const myAgent = useAppSelector((state) => state.agents.myAgent)
-  const isAgentActive = myAgent?.status === STATUS_AGENT.ACTIVE
   const { list, isFetched } = useFetchMyData()
 
   const isShowAddData = list.length === 0 && isFetched
@@ -31,12 +27,9 @@ const Knowledge = () => {
           </span>
         </div> */}
       </div>
-      <div className="mt-5">
-        <AgentSetupStatus isAgentActive={isAgentActive} />
-      </div>
       {isFetched && (
         <AlertBox
-          className="!mx-0 w-full"
+          className="!mx-0 mt-5 w-full"
           isVisible={true}
           icon={<CheckProtectedIcon />}
           messages={[
@@ -53,6 +46,14 @@ const Knowledge = () => {
           ]}
         />
       )}
+      <div className="mt-3 rounded-[8px] bg-[#FFE9A5] p-3">
+        <div className="flex items-center gap-1 text-14 font-semibold text-orange-700">
+          <WarningIcon color="#CC6502" />
+          <span>To keep your agent updated, please click</span>
+          <RefreshIcon color="#F78500" />
+          <span>to sync its knowledge with new data.</span>
+        </div>
+      </div>
       <AddData />
       {/* <TopicRestriction /> */}
     </div>

@@ -5,7 +5,7 @@ import { getMyBotData } from "services/user"
 import { QueryDataKeys } from "types/queryDataKeys"
 import { IBotData } from "types/user"
 
-export const LIMIT_MY_DATA = 10
+export const LIMIT_MY_DATA = 20
 
 const useFetchByCategory = (category: BotDataTypeKey, botId: number) => {
   const { isLogin } = useAuthState()

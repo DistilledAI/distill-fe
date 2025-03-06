@@ -1,10 +1,10 @@
-import { UploadIcon } from "@components/Icons"
+import { PlusIcon } from "@components/Icons/Plus"
 import { Button, useDisclosure } from "@nextui-org/react"
 import AddFAQModal from "@pages/ChatPage/ChatContainer/RightContent/MyPrivateAgentContent/UploadFAQ/AddFAQModal"
 import React from "react"
 
 const UploadFAQ: React.FC<{
-  onMoreCustomRequest: (data: number[]) => any
+  onMoreCustomRequest: (data: number[], callback: () => void) => any
 }> = ({ onMoreCustomRequest }) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
@@ -12,18 +12,14 @@ const UploadFAQ: React.FC<{
     <>
       <Button
         onPress={onOpen}
-        className="flex h-16 w-full items-center justify-between rounded-2xl bg-mercury-950 px-6"
+        className="inline-flex h-[32px] cursor-pointer items-center gap-1 rounded-full bg-mercury-950 px-3 text-15 font-semibold text-white"
       >
-        <div className="flex flex-col items-start">
-          <span className="text-base-b text-mercury-30">FAQ samples</span>
-          <span className="text-[13px] font-medium text-mercury-500">CSV</span>
-        </div>
-        <UploadIcon color="#FFFF" />
+        <PlusIcon color="white" /> Add FAQ Samples file
       </Button>
       <AddFAQModal
         isOpen={isOpen}
         onClose={onClose}
-        onMoreCustomRequest={onMoreCustomRequest}
+        onMoreCustomRequest={(data: any) => onMoreCustomRequest(data, onClose)}
       />
     </>
   )
