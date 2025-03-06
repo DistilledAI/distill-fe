@@ -68,6 +68,7 @@ const AutonomousX: React.FC<{
   const bindTwitterValue = xBotData?.value ? JSON.parse(xBotData.value) : null
   const twitterUsername =
     bindTwitterValue?.info?.data?.username || bindTwitterValue?.name
+  const isUsernameData = isArray(xUserNameValues) && xUserNameValues?.length > 0
 
   const toggleShowInput = () => {
     setIsShowInput(!isShowInput)
@@ -112,8 +113,6 @@ const AutonomousX: React.FC<{
   }
 
   const renderFollowXAccount = () => {
-    const isUsernameData =
-      isArray(xUserNameValues) && xUserNameValues?.length > 0
     return (
       <div className="">
         <div className="flex items-center justify-between">
@@ -123,7 +122,7 @@ const AutonomousX: React.FC<{
         </div>
 
         <span className="text-mercury-700">
-          Your agent will follow and reply to this X account:
+          Your agent will follow follow, reply & quote to this X account:
         </span>
 
         <div className="my-2 flex items-center justify-between rounded-lg bg-mercury-70 p-2 max-md:flex-col max-md:items-start">
@@ -398,19 +397,17 @@ const AutonomousX: React.FC<{
 
         <ComingSoon
           childrenClassName={
-            !!isArray(xUserNameValues) && xUserNameValues?.length > 0
-              ? ""
-              : "opacity-50"
+            !!isUsernameData && !!twitterUsername ? "" : "opacity-50"
           }
           content="You need to follow an X account to use this feature"
-          isOffComing={
-            !!isArray(xUserNameValues) && xUserNameValues?.length > 0
-          }
+          isOffComing={!!isUsernameData && !!twitterUsername}
         >
           <>
             <span className="text-mercury-700">
-              Your agent will reply to posts containing these keywords:
+              Your agents will reply & quote posts that contain these keywords
+              (from followed accounts):
             </span>
+
             <div className="my-2 flex items-center justify-between rounded-lg bg-mercury-70 p-2 max-md:flex-col max-md:items-start">
               <div className="mb-2 flex w-1/2 flex-wrap items-center gap-1">
                 {isArray(xKeywordsValues) &&
