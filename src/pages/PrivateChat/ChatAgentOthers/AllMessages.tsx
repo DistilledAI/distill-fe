@@ -29,6 +29,14 @@ import useFetchGroups, {
 import { useVirtualizer } from "@tanstack/react-virtual"
 import useDebounce from "@hooks/useDebounce"
 import SearchPrivateAgentWrapper from "./SearchPrivateAgentWrapper"
+import SuggestPrivateAgents from "./SuggestPrivateAgents"
+
+export const getIconGroup = (ownerId: number, userA: IUser, userB: IUser) =>
+  getRoleUser(ownerId, userA, userB) === RoleUser.USER ? (
+    <FilledUserIcon size={14} />
+  ) : (
+    <FilledBrainAIIcon size={14} />
+  )
 
 const AllMessages = () => {
   const { user } = useAuthState()
@@ -43,13 +51,6 @@ const AllMessages = () => {
     initialLimit: 10,
     initialFilter: { typeGroup: TypeGroup.DIRECT, username: searchClanValue },
   })
-
-  const getIconGroup = (ownerId: number, userA: IUser, userB: IUser) =>
-    getRoleUser(ownerId, userA, userB) === RoleUser.USER ? (
-      <FilledUserIcon size={14} />
-    ) : (
-      <FilledBrainAIIcon size={14} />
-    )
 
   const mapColorsToGroups = (groups: UserGroup[]) =>
     groups.map((group) => {
@@ -148,81 +149,90 @@ const AllMessages = () => {
   return (
     <>
       <div className="mt-4 md:mt-6">
-        <SearchPrivateAgentWrapper onSearch={handleSearch} />
+        <SearchPrivateAgentWrapper
+          privateAgentsLength={groups.length}
+          onSearch={handleSearch}
+        />
       </div>
 
-      <div
-        className="-mx-3 mt-3 h-[calc(100%-250px)] w-full overflow-y-auto scrollbar-hide md:h-[calc(100%-212px)] md:w-[250px]"
-        ref={containerRef}
-        onScroll={handleScroll}
-      >
+      {!groups.length ? (
+        <SuggestPrivateAgents privateAgentsLength={groups.length} />
+      ) : (
         <div
-          className="relative w-full"
-          style={{ height: virtualizer.getTotalSize() }}
+          className="-mx-3 mt-3 h-[calc(100%-250px)] w-full overflow-y-auto scrollbar-hide md:h-[calc(100%-212px)] md:w-[250px]"
+          ref={containerRef}
+          onScroll={handleScroll}
         >
-          {items.map((virtualItem) => {
-            const isLoader = virtualItem.index >= newGroups.length
+          <div
+            className="relative w-full"
+            style={{ height: virtualizer.getTotalSize() }}
+          >
+            {items.map((virtualItem) => {
+              const isLoader = virtualItem.index >= newGroups.length
 
-            if (isLoader) {
+              if (isLoader) {
+                return (
+                  <div
+                    key={virtualItem.key}
+                    data-index={virtualItem.index}
+                    ref={virtualizer.measureElement}
+                    className="absolute left-0 w-full text-center text-14 text-mercury-800"
+                    style={{
+                      top: `${virtualItem.start}px`,
+                      height: 64,
+                    }}
+                  >
+                    {isLoadingMore ? "Loading..." : null}
+                  </div>
+                )
+              }
+
+              const groupItem = newGroups[virtualItem.index]
+              const isActive = Number(chatId) === groupItem.groupId
+              const isBotLive = groupItem.group.live === 1
+
               return (
                 <div
-                  key={virtualItem.key}
+                  key={groupItem.id}
                   data-index={virtualItem.index}
-                  ref={virtualizer.measureElement}
-                  className="absolute left-0 w-full text-center text-14 text-mercury-800"
+                  ref={
+                    virtualItem.index === 0
+                      ? itemRef
+                      : virtualizer.measureElement
+                  }
+                  className="absolute left-0 w-full px-3"
                   style={{
                     top: `${virtualItem.start}px`,
                     height: 64,
                   }}
                 >
-                  {isLoadingMore ? "Loading..." : null}
+                  <div
+                    aria-selected={isActive}
+                    onClick={() => handleGroupClick(groupItem, isBotLive)}
+                    className={twMerge(
+                      "group/item group relative flex cursor-pointer items-center justify-between gap-2 rounded-full p-2 hover:bg-mercury-100",
+                      isActive && "bg-mercury-100",
+                      isActive &&
+                        isBotLive &&
+                        "bg-fading-orange hover:border-code-agent-1",
+                    )}
+                  >
+                    {renderInfoGroup(groupItem)}
+                    <ActiveEffect
+                      isActive={isActive}
+                      className={twMerge(
+                        isBotLive ? "bg-lgd-code-hot-ramp" : groupItem.bgColor,
+                        "-left-[13px]",
+                      )}
+                    />
+                    <DotNotification groupId={groupItem.groupId} />
+                  </div>
                 </div>
               )
-            }
-
-            const groupItem = newGroups[virtualItem.index]
-            const isActive = Number(chatId) === groupItem.groupId
-            const isBotLive = groupItem.group.live === 1
-
-            return (
-              <div
-                key={groupItem.id}
-                data-index={virtualItem.index}
-                ref={
-                  virtualItem.index === 0 ? itemRef : virtualizer.measureElement
-                }
-                className="absolute left-0 w-full px-3"
-                style={{
-                  top: `${virtualItem.start}px`,
-                  height: 64,
-                }}
-              >
-                <div
-                  aria-selected={isActive}
-                  onClick={() => handleGroupClick(groupItem, isBotLive)}
-                  className={twMerge(
-                    "group/item group relative flex cursor-pointer items-center justify-between gap-2 rounded-full p-2 hover:bg-mercury-100",
-                    isActive && "bg-mercury-100",
-                    isActive &&
-                      isBotLive &&
-                      "bg-fading-orange hover:border-code-agent-1",
-                  )}
-                >
-                  {renderInfoGroup(groupItem)}
-                  <ActiveEffect
-                    isActive={isActive}
-                    className={twMerge(
-                      isBotLive ? "bg-lgd-code-hot-ramp" : groupItem.bgColor,
-                      "-left-[13px]",
-                    )}
-                  />
-                  <DotNotification groupId={groupItem.groupId} />
-                </div>
-              </div>
-            )
-          })}
+            })}
+          </div>
         </div>
-      </div>
+      )}
     </>
   )
 }

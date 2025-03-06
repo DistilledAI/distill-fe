@@ -27,6 +27,7 @@ import { useLocation, useNavigate } from "react-router-dom"
 import LoginPhantom from "./LoginPhantom"
 import useWindowSize from "@hooks/useWindowSize"
 import SidebarMobile from "@components/Layout/SidebarMobile"
+import { useEffect } from "react"
 
 interface UserAuthProps {
   connectWallet: any
@@ -37,7 +38,7 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
   const navigate = useNavigate()
   const { isMobile } = useWindowSize()
   const { pathname } = useLocation()
-  const { groupDetail, groupId } = useGroupDetail()
+  const { groupDetail, groupId, refetch } = useGroupDetail()
   const { logout } = useAuthAction()
 
   const { textColor } = getActiveColorRandomById(groupId)
@@ -48,6 +49,12 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
   const isActionWeb3 =
     pathname.startsWith(PATH_NAMES.STAKING) ||
     pathname.startsWith(PATH_NAMES.DAO)
+
+  useEffect(() => {
+    if (user?.id) {
+      refetch()
+    }
+  }, [user?.id])
 
   if (isActionWeb3) return <LoginPhantom />
 

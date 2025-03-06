@@ -2,7 +2,7 @@ import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { FilledUserIcon } from "@components/Icons/UserIcon"
 import ReceiverMessage from "@components/ReceiverMessage"
 import SenderMessage from "@components/SenderMessage"
-import { CLEAR_CACHED_MESSAGE, RoleUser } from "@constants/index"
+import { CLEAR_CACHED_MESSAGE, PATH_NAMES, RoleUser } from "@constants/index"
 import useGetChatId from "@pages/ChatPage/hooks/useGetChatId"
 import { getActiveColorRandomById } from "@utils/index"
 import { useStyleSpacing } from "providers/StyleSpacingProvider"
@@ -20,11 +20,13 @@ import ContextCleared from "@components/ContextCleared"
 import { useQuery } from "@tanstack/react-query"
 import { QueryDataKeys } from "types/queryDataKeys"
 import useAuthState from "@hooks/useAuthState"
-import { useCallback, useMemo } from "react"
+import { useCallback, useEffect, useMemo } from "react"
 import ChatWindowV2 from "@components/ChatWindowV2"
+import { useNavigate } from "react-router-dom"
 // import MessageActions from "./MessageActions"
 
 const ChatMessages = () => {
+  const navigate = useNavigate()
   const {
     isLoading,
     isFetched,
@@ -32,6 +34,7 @@ const ChatMessages = () => {
     messages,
     hasPreviousMore,
     isFetchingPreviousPage,
+    error: errorMessages,
   } = useFetchMessages()
   const { chatId: groupId } = useGetChatId()
   const { bgColor, textColor } = getActiveColorRandomById(groupId)
@@ -46,6 +49,12 @@ const ChatMessages = () => {
   const isOwner = useMemo(() => {
     return !isGroupDetailFetched && isLogin ? true : userBId === user?.id
   }, [isGroupDetailFetched, userBId, user?.id, isLogin])
+
+  useEffect(() => {
+    if (errorMessages) {
+      navigate(PATH_NAMES.PRIVATE_AGENT)
+    }
+  }, [errorMessages])
 
   const getBadgeIcon = (role: RoleUser) =>
     role === RoleUser.BOT ? (

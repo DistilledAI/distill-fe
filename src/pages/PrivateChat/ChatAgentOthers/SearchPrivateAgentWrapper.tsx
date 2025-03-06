@@ -1,20 +1,25 @@
-import InputSearchPrivateAgent from "./InputSearchPrivateAgent"
-import { useDisclosure } from "@nextui-org/react"
-import { FilledSearchIcon } from "@components/Icons/SearchIcon"
+// import InputSearchPrivateAgent from "./InputSearchPrivateAgent"
+// import { useDisclosure } from "@nextui-org/react"
+// import { FilledSearchIcon } from "@components/Icons/SearchIcon"
+import { PlusIcon } from "@components/Icons/Plus"
+import { useNavigate } from "react-router-dom"
+import { PATH_NAMES } from "@constants/index"
 
 interface Props {
-  onSearch: (value: string) => void
+  onSearch?: (value: string) => void
+  privateAgentsLength: number
 }
 
-const SearchPrivateAgentWrapper = ({ onSearch }: Props) => {
-  const { isOpen, onOpen, onClose } = useDisclosure()
+const SearchPrivateAgentWrapper = ({ privateAgentsLength = 0 }: Props) => {
+  // const { isOpen, onOpen, onClose } = useDisclosure()
+  const navigate = useNavigate()
 
   return (
     <>
-      {!isOpen && (
+      {/* {!isOpen && (
         <div className="flex items-center justify-between">
           <span className="text-14 font-medium text-mercury-800">
-            All Messages
+            {privateAgentsLength ? "All Messages" : "Agent Suggestions"}
           </span>
           <button type="button" onClick={onOpen}>
             <FilledSearchIcon size={20} color="#676767" />
@@ -23,7 +28,19 @@ const SearchPrivateAgentWrapper = ({ onSearch }: Props) => {
       )}
       {isOpen && (
         <InputSearchPrivateAgent onSearch={onSearch} onClose={onClose} />
-      )}
+      )} */}
+
+      <div className="flex items-center justify-between">
+        <span className="text-14 font-medium text-mercury-800">
+          {privateAgentsLength ? "All Messages" : "Agent Suggestions"}
+        </span>
+        <button
+          type="button"
+          onClick={() => navigate(`${PATH_NAMES.MARKETPLACE}?tab=ai-agents`)}
+        >
+          <PlusIcon size={20} color="#676767" />
+        </button>
+      </div>
     </>
   )
 }
