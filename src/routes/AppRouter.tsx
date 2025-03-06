@@ -2,6 +2,7 @@ import ProtectedByAuth from "@components/Layout/ProtectedByAuth"
 import LoadingFallback from "@components/LoadingFallback"
 import { PATH_NAMES } from "@constants/index"
 import useWindowSize from "@hooks/useWindowSize"
+import AgentStore from "@pages/AgentStore"
 import { Suspense, lazy } from "react"
 import { Route, Routes } from "react-router-dom"
 
@@ -42,7 +43,6 @@ const ChatAgentClanBox = lazy(
   () => import("@pages/AgentClans/ChatAgentClanBox"),
 )
 const XLoginPage = lazy(() => import("@pages/XLoginPage"))
-const AgentStore = lazy(() => import("@pages/AgentStore"))
 
 const AppRouter = () => {
   const { isMobile } = useWindowSize()
