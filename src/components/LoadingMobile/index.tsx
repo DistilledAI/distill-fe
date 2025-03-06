@@ -1,4 +1,3 @@
-import MessagesSkeleton from "@components/ChatWindow/MessagesSkeleton"
 import DotLoading from "@components/DotLoading"
 import { Skeleton } from "@nextui-org/react"
 
@@ -20,7 +19,6 @@ export const ChatDetailLoadingPage = () => {
           <Skeleton className="h-5 w-[100px] rounded-full" />
         </div>
       </div>
-      <MessagesSkeleton />
       <div className="fixed bottom-0 left-0 w-full bg-mercury-30 px-3 py-2">
         <Skeleton className="h-[53px] w-full rounded-full bg-mercury-200" />
       </div>
