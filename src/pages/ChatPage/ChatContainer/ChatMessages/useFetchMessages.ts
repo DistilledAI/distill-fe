@@ -102,6 +102,7 @@ const useFetchMessages = () => {
     isFetched,
     isLoading,
     isFetchingPreviousPage,
+    error,
   } = useInfiniteQuery({
     queryKey: chatMessagesKey(groupId),
     queryFn: fetchMessages,
@@ -112,6 +113,7 @@ const useFetchMessages = () => {
     refetchOnReconnect: false,
     initialPageParam: 0,
     staleTime: 0,
+    retry: 1,
   })
 
   const resetInfiniteQueryPagination = () => {
@@ -175,6 +177,7 @@ const useFetchMessages = () => {
     isFetched,
     isFetchingPreviousPage,
     groupId,
+    error,
   }
 }
 
