@@ -36,9 +36,6 @@ const Account = lazy(() => import("@pages/Account"))
 const AddMyData = lazy(() => import("@pages/AddMyData"))
 const AgentDetail = lazy(() => import("@pages/AgentDetail"))
 const CreateAgent = lazy(() => import("@pages/CreateAgent"))
-const MyAgentPage = lazy(() => import("@pages/MyAgents"))
-const MyData = lazy(() => import("@pages/MyData"))
-const RewardsPage = lazy(() => import("@pages/Rewards"))
 const ChatAgentClanBox = lazy(
   () => import("@pages/AgentClans/ChatAgentClanBox"),
 )
@@ -132,7 +129,6 @@ const AppRouter = () => {
           </Route>
           {/* Protected Routes (Requires Authentication) */}
           <Route element={<ProtectedByAuth />}>
-            <Route path={PATH_NAMES.MY_DATA} element={<MyData />} />
             <Route path={PATH_NAMES.ACCOUNT} element={<Account />} />
             <Route
               path={`${PATH_NAMES.AGENT_DETAIL}/:agentId`}
@@ -143,8 +139,6 @@ const AppRouter = () => {
               element={<AddMyData />}
             />
             <Route path={PATH_NAMES.CREATE_AGENT} element={<CreateAgent />} />
-            <Route path={PATH_NAMES.MY_AGENTS} element={<MyAgentPage />} />
-            <Route path={PATH_NAMES.REWARDS} element={<RewardsPage />} />
           </Route>
           <Route path={PATH_NAMES.X_LOGIN} element={<XLoginPage />} />
         </Route>

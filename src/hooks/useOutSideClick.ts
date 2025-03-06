@@ -3,7 +3,7 @@ import { useEffect } from "react"
 const useOutsideClick = (
   ref: any,
   callback: () => void,
-  refArr?: Array<any>,
+  refArr: Array<any> = [],
 ) => {
   const handleClick = (e: any) => {
     if (

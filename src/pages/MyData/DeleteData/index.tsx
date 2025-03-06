@@ -11,20 +11,22 @@ import { QueryDataKeys } from "types/queryDataKeys"
 import useDeleteData from "./useDelete"
 import { IBotData } from "types/user"
 import { twMerge } from "tailwind-merge"
+import { BotDataTypeKey } from "@types"
 
 const DeleteData: React.FC<{
   botId: number
   ids: number[]
+  category: BotDataTypeKey
   trigger?: React.ReactNode
   isDisable?: boolean
-}> = ({ botId, ids, isDisable, trigger = <DeleteIcon /> }) => {
+}> = ({ botId, ids, category, isDisable, trigger = <DeleteIcon /> }) => {
   const [isOpen, setIsOpen] = useState(false)
   const queryClient = useQueryClient()
 
   const callbackDone = () => {
     setIsOpen(false)
     queryClient.setQueryData(
-      [`${QueryDataKeys.MY_BOT_DATA}-${botId}`],
+      [`${QueryDataKeys.MY_BOT_DATA}-${botId}-${category}`],
       (oldData: { pagePrams: number[]; pages: IBotData[][] }) => {
         const newData = oldData.pages.map((innerArray) =>
           innerArray.filter((item) => item.id !== ids[0]),

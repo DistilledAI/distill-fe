@@ -34,12 +34,12 @@ export const TxtIcon = ({ size = 24, color = "#A2845E" }: IconProps) => {
   )
 }
 
-export const CSVIcon = () => {
+export const CSVIcon = ({ size = 32 }: IconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="33"
-      height="32"
+      width={size}
+      height={size}
       viewBox="0 0 33 32"
       fill="none"
     >

@@ -1,7 +1,7 @@
 import AvatarCustom from "@components/AvatarCustom"
 import { PATH_NAMES } from "@constants/index"
 import { Skeleton } from "@nextui-org/react"
-import ShareProfile from "@pages/Account1/Profile/ShareProfile"
+import ShareProfile from "@pages/Account/ShareProfile"
 import { useQuery } from "@tanstack/react-query"
 import { useParams } from "react-router-dom"
 import { getUserPublicDetail } from "services/user"

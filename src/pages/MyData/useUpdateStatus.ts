@@ -1,8 +1,8 @@
+import { LIMIT_MY_DATA } from "@pages/AgentDetail/AgentContent/Knowledge/AddData/useFetchByCategory"
 import { useQueryClient } from "@tanstack/react-query"
 import { useSocket } from "providers/SocketProvider"
 import { useEffect } from "react"
 import { QueryDataKeys } from "types/queryDataKeys"
-import { LIMIT_MY_DATA } from "./useFetchByCategory"
 
 const useUpdateStatus = (botId: number) => {
   const { socket } = useSocket()

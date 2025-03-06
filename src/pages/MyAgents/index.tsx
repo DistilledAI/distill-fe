@@ -11,7 +11,6 @@ import { STATUS_AGENT } from "@constants/index"
 import { useAppSelector } from "@hooks/useAppRedux"
 import useAuthState from "@hooks/useAuthState"
 import { Button } from "@nextui-org/react"
-import MyAgents from "@pages/Account1/MyAgents"
 import { AGENT_TYPE_KEY } from "@pages/ChatPage/ChatContainer/RightContent/MyPrivateAgentContent/AgentInitialization/AgentType"
 import useGetPaymentHistory from "@pages/ChatPage/ChatContainer/RightContent/MyPrivateAgentContent/AgentInitialization/useGetPaymentHistory"
 import { findTokenByAddress } from "@pages/MyPrivateAgent/helpers"
@@ -176,7 +175,6 @@ const MyAgentPage = () => {
           }
         </>
       )}
-      <MyAgents agents={agents} />
     </div>
   )
 }
