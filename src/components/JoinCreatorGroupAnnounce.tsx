@@ -57,7 +57,7 @@ const JoinCreatorGroupAnnounce = () => {
   return (
     <div
       className={twMerge(
-        "fixed bottom-[60px] right-4 z-[51] flex h-[120px] w-[550px] flex-col items-center gap-2 rounded-[18px] bg-orange-100 bg-cover bg-center bg-no-repeat p-4 duration-300 max-sm:right-3 max-sm:h-fit max-sm:w-[calc(100%-24px)] md:flex-row",
+        "fixed bottom-[60px] right-4 z-[51] flex h-[120px] w-[550px] flex-col items-center gap-2 rounded-[18px] bg-mercury-950 bg-cover bg-center bg-no-repeat p-4 duration-300 max-sm:right-3 max-sm:h-fit max-sm:w-[calc(100%-24px)] md:flex-row",
       )}
       style={{
         backgroundImage: `url(${creatorCommunityBg})`,
@@ -65,7 +65,7 @@ const JoinCreatorGroupAnnounce = () => {
     >
       <div
         className="absolute right-4 top-2 flex cursor-pointer justify-end"
-        onClick={() => dispatch(updateTopChatAnnounce("close"))}
+        onClick={() => dispatch(updateTopChatAnnounce("dontShowAgain"))}
       >
         <CloseFilledIcon color="#FFFF" size={18} />
       </div>
