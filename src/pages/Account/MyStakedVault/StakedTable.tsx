@@ -13,6 +13,9 @@ import ItemTotalStaked from "./ItemTotalStaked"
 import ItemMyStaked from "./ItemMyStaked"
 import React from "react"
 import { IVaultData } from "."
+import { INVEST_ADDRESS } from "@pages/Stake/BlackRack/Investment/constants"
+import { StakeTokenAddress } from "@pages/Stake"
+import { CategoryRacksVault } from "@pages/Stake/BlackRack"
 
 enum ColumnKey {
   VaultName = "vault_name",
@@ -60,17 +63,22 @@ const StakedTable: React.FC<{
       case ColumnKey.MyStaked:
         return <ItemMyStaked data={item} />
 
-      case ColumnKey.Action:
+      case ColumnKey.Action: {
+        const isAgentFund = item.address === INVEST_ADDRESS.shareToken
+        const url = isAgentFund
+          ? `${PATH_NAMES.STAKING}?token=${StakeTokenAddress.BlackRack}&category=${CategoryRacksVault.AIFund2}`
+          : `${PATH_NAMES.STAKING}?token=${item.address}`
         return (
           <div className="flex items-center justify-end">
             <Link
               className="whitespace-nowrap rounded-full bg-mercury-950 px-4 py-1 font-semibold text-white max-md:px-3 max-md:text-13"
-              to={`${PATH_NAMES.STAKING}?token=${item.address}`}
+              to={url}
             >
               Go to Vault
             </Link>
           </div>
         )
+      }
 
       default:
         return null
