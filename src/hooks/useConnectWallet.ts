@@ -182,13 +182,13 @@ const useConnectWallet = () => {
       //@ts-ignore
       if (!isMobile) {
         //@ts-ignore
+        await window?.owallet.enable("0x01")
+        //@ts-ignore
         await window.eth_owallet.request!({
           method: "wallet_switchEthereumChain",
           chainId: "0x01",
           params: [{ chainId: "0x01" }],
         })
-        //@ts-ignore
-        await window?.owallet.enable("0x01")
       }
 
       await provider.send("eth_requestAccounts", [])
