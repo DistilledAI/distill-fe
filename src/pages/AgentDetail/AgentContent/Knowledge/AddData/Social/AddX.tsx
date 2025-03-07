@@ -5,6 +5,7 @@ import { TYPE_DATA_KEY } from "@pages/ChatPage/ChatContainer/RightContent/MyPriv
 import { uploadMyData } from "services/user"
 import { PlusIcon } from "@components/Icons/Plus"
 import useOutsideClick from "@hooks/useOutSideClick"
+import { getUserName } from "./helpers"
 
 const AddXSocial: React.FC<{
   moreCustomRequest: (data: any, callback: () => void) => void
@@ -18,16 +19,6 @@ const AddXSocial: React.FC<{
     setIsOpen(false)
     setLink("")
   })
-
-  const getUserName = (url: string) => {
-    if (!url) return null
-
-    const match = url.match(/x\.com\/([^/]+)/)
-    if (match && match[1] !== "home") {
-      return match[1]
-    }
-    return null
-  }
 
   const callGetProfileInfo = async (userName: string) => {
     if (loading || !link) return
