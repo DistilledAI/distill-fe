@@ -8,6 +8,7 @@ import React, { useEffect } from "react"
 import useLoadDataInfinite from "../useLoadMoreData"
 import SkeletonData from "../SkeletonData"
 import { MY_DATA_STATUS } from "@constants/index"
+import { getUserName } from "./helpers"
 
 const AddSocialProfile: React.FC<{
   onMoreCustomRequest: (data: any, callback: () => void) => void
@@ -54,7 +55,7 @@ const AddSocialProfile: React.FC<{
                 id={item.id}
                 key={item.id}
                 value={item.value}
-                title={item.value}
+                title={`@${getUserName(item.value)}`}
                 status={item.status}
                 category={BotDataTypeKey.SOCIAL_MEDIA}
               />
