@@ -15,6 +15,7 @@ import { Pagination, Skeleton } from "@nextui-org/react"
 import PaginationItemCustom from "./PaginationItemCustom"
 import { IGroup } from "@pages/ChatPage/ChatContainer/LeftBar/useFetchGroups"
 import AgentDescription from "@pages/ChatBoxLive/AgentDescription"
+import { VideoThumbnailWrapper } from "@components/VideoThumbnailWrapper"
 
 const agentType = {
   [AGENT_TYPE_KEY.DEFAULT]: <FilledBrainAIIcon size={14} />,
@@ -64,7 +65,6 @@ const AgentClansStore = () => {
 
   const onPageChange = useCallback(
     (newPage: number) => {
-      // Ensure page stays within valid bounds
       const validPage = Math.max(1, Math.min(newPage, totalPages))
       setPage(validPage)
     },
@@ -135,10 +135,31 @@ const AgentClansStore = () => {
                   onClick={() => handleChatAgentClan(item)}
                 >
                   <div className="flex gap-4">
-                    <div
-                      className="relative h-[120px] w-[100px] flex-shrink-0 overflow-hidden rounded-lg bg-cover bg-center bg-no-repeat"
-                      style={{ backgroundImage: `url(${imageUrl})` }}
-                    >
+                    <div className="relative h-[120px] w-[100px] flex-shrink-0 overflow-hidden rounded-lg bg-cover bg-center bg-no-repeat">
+                      <VideoThumbnailWrapper videoUrl={imageUrl}>
+                        {(thumbnail, _, isVideo) =>
+                          isVideo ? (
+                            <video
+                              preload="auto"
+                              muted
+                              autoPlay
+                              playsInline
+                              loop
+                              controls={false}
+                              className="h-full w-full object-cover"
+                            >
+                              <source src={imageUrl} type="video/mp4" />
+                              <track kind="captions" />
+                            </video>
+                          ) : (
+                            <img
+                              src={thumbnail || distilledAiPlaceholder}
+                              alt="avatar agent"
+                              className="h-full w-full object-cover"
+                            />
+                          )
+                        }
+                      </VideoThumbnailWrapper>
                       <div className="absolute inset-0 z-10 rounded-lg border-[2px] border-white/20" />
                       <div
                         className="absolute inset-0"
