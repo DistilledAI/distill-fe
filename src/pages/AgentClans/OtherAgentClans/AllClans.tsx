@@ -25,9 +25,16 @@ const AllClans = () => {
   const parentRef = useRef<HTMLDivElement>(null)
   const pinContainerRef = useRef<HTMLDivElement>(null)
   const [searchClanValue, setSearchClanValue] = useState<string>("")
+  const [debouncedSearchValue, setDebouncedSearchValue] = useState<string>("")
   const [pinContainerHeight, setPinContainerHeight] = useState(0)
 
-  const debouncedSearchValue = useDebounce(searchClanValue as any, 300)
+  const debounceSearch = useDebounce((value: string) => {
+    setDebouncedSearchValue(value)
+  }, 300)
+
+  useEffect(() => {
+    debounceSearch(searchClanValue)
+  }, [searchClanValue])
 
   const {
     data: groups,
@@ -36,7 +43,7 @@ const AllClans = () => {
     fetchMore: handleLoadMore,
   } = useFetchClan({
     limit: 20,
-    filter: { name: debouncedSearchValue },
+    filter: debouncedSearchValue ? { name: debouncedSearchValue } : {},
     sort: { totalMember: "DESC" },
     mode: "infinite",
   })

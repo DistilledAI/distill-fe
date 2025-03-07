@@ -37,15 +37,9 @@ const useFetchClan = ({
   sort: externalSort,
   mode = "infinite",
 }: UseFetchClanParams = {}) => {
-  const memoizedFilter = useMemo(
-    () => externalFilter || {},
-    [JSON.stringify(externalFilter)],
-  )
+  const memoizedFilter = useMemo(() => externalFilter || {}, [externalFilter])
 
-  const memoizedSort = useMemo(
-    () => externalSort || {},
-    [JSON.stringify(externalSort)],
-  )
+  const memoizedSort = useMemo(() => externalSort || {}, [externalSort])
 
   const infiniteResult = useInfiniteQuery({
     queryKey: [
