@@ -145,14 +145,21 @@ const Personality = () => {
             <div
               key={item.value}
               onClick={() => {
-                setValue("personality_traits", [item.value], {
-                  shouldDirty: true,
-                })
                 setValue("communication_style", [item.communication], {
                   shouldDirty: true,
                 })
-                if (item.type === "custom") setIsCustom(true)
-                else setIsCustom(false)
+                if (item.type === "custom") {
+                  setIsCustom(true)
+                  setValue("personality_traits", ["personality_traits"], {
+                    shouldDirty: true,
+                  })
+                } else {
+                  setIsCustom(false)
+
+                  setValue("personality_traits", [item.value], {
+                    shouldDirty: true,
+                  })
+                }
               }}
               className="flex cursor-pointer items-center justify-between rounded-[14px] border-1 border-white bg-mercury-30 p-3 max-md:p-2"
             >
@@ -173,12 +180,15 @@ const Personality = () => {
                   if (!check) return
                   if (item.type === "custom") {
                     setIsCustom(true)
+                    setValue("personality_traits", ["personality_traits"], {
+                      shouldDirty: true,
+                    })
                   } else {
                     setIsCustom(false)
+                    setValue("personality_traits", [item.value], {
+                      shouldDirty: true,
+                    })
                   }
-                  setValue("personality_traits", [item.value], {
-                    shouldDirty: true,
-                  })
                   setValue("communication_style", [item.communication], {
                     shouldDirty: true,
                   })
@@ -238,9 +248,14 @@ const Personality = () => {
                       ],
                       { shouldDirty: true },
                     )
+                    setValue("personality_traits", [""], {
+                      shouldDirty: true,
+                    })
                   } else {
                     setIsCustom(true)
-                    setValue("personality_traits", [""], { shouldDirty: true })
+                    setValue("personality_traits", ["personality_traits"], {
+                      shouldDirty: true,
+                    })
                   }
                 }}
                 value={selectedBehaviors.communication_style[0]}

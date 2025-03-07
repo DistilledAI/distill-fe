@@ -21,7 +21,7 @@ const BackButton: React.FC<{
     <button
       type="button"
       className={twMerge(
-        "group absolute left-8 top-[22px] z-20 flex items-center justify-start gap-x-2 bg-transparent",
+        "group absolute left-8 top-[3px] z-[51] flex items-center justify-start gap-x-2 bg-transparent",
         className,
       )}
       onClick={() => (onClick ? onClick() : onBack())}
