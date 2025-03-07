@@ -1,3 +1,4 @@
+import { INVEST_ADDRESS } from "@pages/Stake/BlackRack/Investment/constants"
 import { SPL_DECIMAL } from "@pages/Stake/config"
 import { Web3SolanaLockingToken } from "@pages/Stake/web3Locking"
 import { useWallet } from "@solana/wallet-adapter-react"
@@ -10,9 +11,10 @@ const ItemTotalStaked: React.FC<{
 }> = ({ data }) => {
   const [total, setTotal] = useState(data.totalStaked)
   const wallet = useWallet()
+  const isAgentFund = data.address === INVEST_ADDRESS.shareToken
 
   const getTotalStakeAll = async () => {
-    if (!data.address) return
+    if (!data.address || isAgentFund) return
     const web3Locking = new Web3SolanaLockingToken()
     const res = await web3Locking.getVaultInfo(data.address, wallet)
     if (res?.totalStaked)
@@ -28,8 +30,14 @@ const ItemTotalStaked: React.FC<{
   }, [])
 
   return (
-    <div className="flex items-center gap-2 text-14 font-medium">
-      {shortenNumber(total)} {data.tokenName}
+    <div className="flex items-center gap-2 text-14 font-medium uppercase">
+      {isAgentFund ? (
+        <>${shortenNumber(total)} (AUM)</>
+      ) : (
+        <>
+          {shortenNumber(total)} {data.tokenName}
+        </>
+      )}
     </div>
   )
 }

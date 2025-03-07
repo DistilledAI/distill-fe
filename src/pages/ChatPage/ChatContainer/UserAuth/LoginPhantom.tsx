@@ -30,12 +30,14 @@ const LoginPhantom = () => {
           </div>
         </div>
       ) : (
-        <Button
-          onPress={() => setVisible(true)}
-          className="rounded-full bg-mercury-950 font-medium text-white"
-        >
-          Connect Wallet
-        </Button>
+        <div className="flex items-center justify-end">
+          <Button
+            onPress={() => setVisible(true)}
+            className="rounded-full bg-mercury-950 font-medium text-white"
+          >
+            Connect Wallet
+          </Button>
+        </div>
       )}
     </>
   )
