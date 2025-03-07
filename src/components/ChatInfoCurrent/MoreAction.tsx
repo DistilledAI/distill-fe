@@ -1,5 +1,5 @@
-import React, { useState } from "react"
-import { useNavigate } from "react-router-dom"
+import { CloseFilledIcon } from "@components/Icons/DefiLens"
+import { PATH_NAMES } from "@constants/index"
 import {
   Button,
   Dropdown,
@@ -11,16 +11,16 @@ import {
   ModalContent,
   useDisclosure,
 } from "@nextui-org/react"
-import { CloseFilledIcon } from "@components/Icons/DefiLens"
-import { PATH_NAMES } from "@constants/index"
-import { deleteGroup } from "services/chat"
 import { TypeGroup } from "@pages/ChatPage/ChatContainer/LeftBar/useFetchGroups"
 import { useQueryClient } from "@tanstack/react-query"
+import React, { useState } from "react"
+import { useNavigate } from "react-router-dom"
+import { deleteGroup } from "services/chat"
 import { QueryDataKeys } from "types/queryDataKeys"
 
 interface MoreActionProps {
   groupId: number
-  groupType: TypeGroup
+  groupType?: TypeGroup
 }
 
 const DROPDOWN_CLASSES = { base: "mt-1" }
@@ -30,7 +30,7 @@ const MODAL_CLASSES = {
   backdrop: "z-[51]",
 }
 
-const MoreAction: React.FC<MoreActionProps> = ({ groupId, groupType }) => {
+const MoreAction: React.FC<MoreActionProps> = ({ groupId }) => {
   const [isLoading, setIsLoading] = useState(false)
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const navigate = useNavigate()
