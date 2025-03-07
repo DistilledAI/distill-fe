@@ -65,12 +65,12 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
               <DropdownTrigger>
                 <button
                   type="button"
-                  className="flex h-10 w-10 items-center justify-center rounded-full border border-white bg-mercury-30 !outline-none md:h-12 md:w-12"
+                  className="flex h-10 w-10 items-center justify-center rounded-full bg-mercury-30 p-1 !outline-none md:h-12 md:w-12"
                 >
                   <AvatarCustom
                     publicAddress={user.publicAddress}
                     src={user.avatar}
-                    className="h-fit w-fit"
+                    className="h-full w-full"
                   />
                 </button>
               </DropdownTrigger>
