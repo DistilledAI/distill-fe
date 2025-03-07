@@ -31,4 +31,6 @@ export enum QueryDataKeys {
   MESSAGE_EMOJI_REACTIONS = "message-emoji-reactions",
   HAS_JOINED_GROUP = "has-joined-group",
   IS_LOGGED_OUT = "is-logged-out",
+  PINNED_AGENT_CLANS = "pinned-agent-clans",
+  CLANS = "clans",
 }

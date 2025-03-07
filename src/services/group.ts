@@ -101,3 +101,29 @@ export const getFeaturedAgentClans = async () => {
   })
   return res?.data
 }
+
+export const postPinAgentClan = async ({
+  groupIds,
+  status,
+}: {
+  groupIds: string[]
+  status: boolean
+}) => {
+  const res = await fetchApiAuth({
+    method: "POST",
+    url: endpoint.PIN_AGENT_CLAN,
+    data: {
+      groupIds,
+      status,
+    },
+  })
+  return res?.data
+}
+
+export const getPinAgentClans = async () => {
+  const res = await fetchApiAuth({
+    method: "GET",
+    url: endpoint.GET_PIN_AGENT_CLANS,
+  })
+  return res?.data?.items
+}

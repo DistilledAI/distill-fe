@@ -38,8 +38,8 @@ const BindYourAccount: React.FC<{
         refetch()
         onClose()
       }
-    } catch (error) {
-      console.log("error", error)
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message)
     }
   }
 
@@ -50,8 +50,8 @@ const BindYourAccount: React.FC<{
         setXLoginInfo(res.data)
         return res.data
       }
-    } catch (error) {
-      console.log("error", error)
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message)
     }
   }
 

@@ -1,4 +1,7 @@
-import { updateModalStatus } from "@reducers/connectWalletSlice"
+import {
+  updateConnectedWalletStatus,
+  updateModalStatus,
+} from "@reducers/connectWalletSlice"
 import { loginSuccess } from "@reducers/userSlice"
 import bs58 from "bs58"
 import { ethers } from "ethers"
@@ -138,6 +141,7 @@ const useConnectWallet = () => {
 
       await login(input)
       dispatch(updateModalStatus(false))
+      dispatch(updateConnectedWalletStatus(true))
     } catch (error: any) {
       console.error(error, "error")
       toast.error(error?.message)
@@ -229,6 +233,7 @@ const useConnectWallet = () => {
 
       await login(input)
       dispatch(updateModalStatus(false))
+      dispatch(updateConnectedWalletStatus(true))
     } catch (error: any) {
       console.error(error, "error")
       toast.error(error?.message)
@@ -304,6 +309,7 @@ const useConnectWallet = () => {
 
       await login(input)
       dispatch(updateModalStatus(false))
+      dispatch(updateConnectedWalletStatus(true))
     } catch (error: any) {
       console.error(error, "error")
       toast.error(error?.message)
@@ -380,6 +386,7 @@ const useConnectWallet = () => {
 
       await login(input)
       dispatch(updateModalStatus(false))
+      dispatch(updateConnectedWalletStatus(true))
     } catch (error: any) {
       console.error(error, "error")
       toast.error(error?.message)

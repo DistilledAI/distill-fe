@@ -29,10 +29,10 @@ export interface IGroup {
   description?: string
   groupConfig?: any[]
   groupMemberStats?: {
-    id: number
-    groupId: number
-    total: number
-    createdAt: string
+    id?: number
+    groupId?: number
+    total?: number
+    createdAt?: string
   }
   groupUser?: Array<any>
   clanOfAgentId?: string | number

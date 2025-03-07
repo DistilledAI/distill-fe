@@ -29,12 +29,12 @@ const MyAgentClanButton = () => {
     <button
       type="button"
       className={twMerge(
-        "relative flex h-[64px] w-full items-center gap-4 rounded-full px-3 hover:bg-mercury-100",
+        "relative flex h-[64px] w-full items-center gap-2 rounded-full px-3 hover:bg-mercury-100",
         isSelected && "md:bg-mercury-100",
       )}
       onClick={handleClick}
     >
-      <VideoThumbnailWrapper videoUrl={imageUrl ?? null} size={32} time={0}>
+      <VideoThumbnailWrapper videoUrl={imageUrl} size={32} time={0}>
         {(thumbnail) => (
           <AvatarClanByList
             avatarUrl={thumbnail || distilledAiPlaceholder}

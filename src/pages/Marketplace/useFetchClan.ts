@@ -1,6 +1,7 @@
 import { useQuery, useInfiniteQuery } from "@tanstack/react-query"
 import { getListGroupAgentPublic } from "services/group"
 import { useMemo } from "react"
+import { QueryDataKeys } from "types/queryDataKeys"
 
 interface Filter {
   [key: string]: any
@@ -47,7 +48,13 @@ const useFetchClan = ({
   )
 
   const infiniteResult = useInfiniteQuery({
-    queryKey: ["clans", limit, memoizedFilter, memoizedSort, "infinite"],
+    queryKey: [
+      QueryDataKeys.CLANS,
+      limit,
+      memoizedFilter,
+      memoizedSort,
+      "infinite",
+    ],
     queryFn: fetchClans,
     getNextPageParam: (lastPage, allPages) => {
       const totalFetched = allPages.reduce(

@@ -21,11 +21,11 @@ const useInviteAgent = () => {
   const dispatch = useDispatch()
   const queryClient = useQueryClient()
   const { isMobile } = useWindowSize()
-  const params = useParams()
   const { pathname } = useLocation()
+  const { inviteAgentId } = useParams()
   const { user, isLogin } = useAuthState()
-  const agentId = Number(params?.inviteAgentId)
-  const isInvitePathName = pathname === `${PATH_NAMES.INVITE}/${agentId}`
+  const agentId = Number(inviteAgentId)
+  const isInvitePath = pathname === `${PATH_NAMES.INVITE}/${agentId}`
   const sessionAccessToken = cachedSessionStorage.getWithExpiry(
     storageKey.ACCESS_TOKEN,
   )
@@ -34,102 +34,75 @@ const useInviteAgent = () => {
 
   const handleInviteUserLoggedIn = async (agentId: number) => {
     try {
-      const checkGroupDirectResponse = await checkGroupDirect({
-        members: [agentId],
-      })
-      const groupId = checkGroupDirectResponse?.data?.group?.id
+      const { data } = await checkGroupDirect({ members: [agentId] })
+      let groupId = data?.group?.id
+
       if (!groupId) {
-        const createGroupResponse = await createGroupChat({
-          members: [agentId],
-        })
-        const newData = createGroupResponse.data
-        if (newData && isMobile)
-          queryClient.setQueryData(
+        const { data: newData } = await createGroupChat({ members: [agentId] })
+        groupId = newData?.groupId
+
+        if (newData && isMobile) {
+          queryClient.setQueryData<UserGroup[]>(
             [QueryDataKeys.MY_LIST_CHAT],
-            (oldData: UserGroup[]) => {
-              return [newData].concat(oldData ?? [])
-            },
+            (oldData) => [newData].concat(oldData ?? []),
           )
-        const newGroupId = newData?.groupId
-        if (newGroupId) {
-          if (agentId === myAgent?.id) {
-            navigate(`${PATH_NAMES.PRIVATE_AGENT}/${newGroupId}`)
-          } else {
-            navigate(`${PATH_NAMES.CHAT}/${newGroupId}`)
-          }
         }
-        return queryClient.invalidateQueries({
-          queryKey: [
-            QueryDataKeys.MY_LIST_CHAT,
-            {
-              typeGroup: TypeGroup.DIRECT,
-            },
-          ],
-        })
       }
 
-      if (agentId === myAgent?.id) {
-        navigate(`${PATH_NAMES.PRIVATE_AGENT}/${groupId}`)
-      } else {
-        navigate(`${PATH_NAMES.CHAT}/${groupId}`)
-      }
+      navigate(
+        agentId === myAgent?.id
+          ? `${PATH_NAMES.PRIVATE_AGENT}/${groupId}`
+          : `${PATH_NAMES.CHAT}/${groupId}`,
+      )
+
       queryClient.invalidateQueries({
-        queryKey: [
-          QueryDataKeys.MY_LIST_CHAT,
-          {
-            typeGroup: TypeGroup.DIRECT,
-          },
-        ],
+        queryKey: [QueryDataKeys.MY_LIST_CHAT, { typeGroup: TypeGroup.DIRECT }],
       })
     } catch (error) {
-      console.log("error", error)
+      console.error("Invite error:", error)
       navigate(PATH_NAMES.HOME)
     }
   }
 
   const handleInviteAnonymous = async () => {
     try {
-      const res = await postCreateAnonymous()
-      const accessToken = res.data?.accessToken
-      const userAnonymous = res.data?.user
-      const expiry = Date.now() + 24 * 60 * 60 * 1000
-
-      if (accessToken && userAnonymous) {
+      const { data } = await postCreateAnonymous()
+      if (data?.accessToken && data?.user) {
         dispatch(
           loginSuccessByAnonymous({
-            user: userAnonymous,
-            accessToken,
-            expiry,
+            user: data.user,
+            accessToken: data.accessToken,
+            expiry: Date.now() + 24 * 60 * 60 * 1000,
           }),
         )
-      } else {
-        console.log("Access token not found in response")
       }
     } catch (error) {
-      console.log("error", error)
+      console.error("Anonymous invite error:", error)
     }
   }
 
   useEffect(() => {
-    const isAnonymous = isInvitePathName && !isLogin && !sessionAccessToken
-    if (isAnonymous) {
+    if (isInvitePath && !isLogin && !sessionAccessToken) {
       handleInviteAnonymous()
     }
-  }, [isInvitePathName, isLogin, sessionAccessToken])
+  }, [isInvitePath, isLogin, sessionAccessToken])
 
   useEffect(() => {
-    const isRealUser =
-      isInvitePathName && user?.id !== agentId && isLogin && !sessionAccessToken
-    if (isRealUser) {
+    if (
+      isInvitePath &&
+      user?.id !== agentId &&
+      isLogin &&
+      !sessionAccessToken
+    ) {
       handleInviteUserLoggedIn(agentId)
     }
-  }, [isInvitePathName, agentId, user?.id, isLogin, sessionAccessToken])
+  }, [isInvitePath, agentId, user?.id, isLogin, sessionAccessToken])
 
   useEffect(() => {
-    const isAnonymousLogged =
-      sessionAccessToken && isLogin && isInvitePathName && agentId
-    if (isAnonymousLogged) handleInviteUserLoggedIn(agentId)
-  }, [agentId, sessionAccessToken, isLogin, isInvitePathName])
+    if (isInvitePath && sessionAccessToken && isLogin && agentId) {
+      handleInviteUserLoggedIn(agentId)
+    }
+  }, [agentId, sessionAccessToken, isLogin, isInvitePath])
 
   return { handleInviteUserLoggedIn, handleInviteAnonymous }
 }
