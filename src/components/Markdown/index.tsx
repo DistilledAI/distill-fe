@@ -26,7 +26,7 @@ const MarkdownMessage = ({ msg }: { msg: string }) => {
     if (tokenRegex.test(text)) {
       return "break-all"
     }
-    if (text.length > maxLength) {
+    if (text?.length > maxLength) {
       return "break-words whitespace-pre-wrap max-w-full"
     }
     return "break-words"
