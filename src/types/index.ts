@@ -7,6 +7,7 @@ export enum BotDataTypeKey {
   PHOTO_VIDEO_FILE = "photo-video-file",
   TXT_FILE = "txt-file",
   FAQ = "faq",
+  PLAIN_TEXT_FILE = "plain-text-file",
 }
 
 export enum ConfigBotType {

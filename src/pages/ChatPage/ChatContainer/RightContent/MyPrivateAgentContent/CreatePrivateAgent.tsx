@@ -18,6 +18,7 @@ export const TYPE_DATA_KEY = {
   PHOTO_VIDEO_FILE: "photo-video-file",
   TXT_FILE: "txt-file",
   FAQ: "faq",
+  PLAIN_TEXT_FILE: "plain-text-file",
 }
 
 const CreatePrivateAgent: React.FC<{

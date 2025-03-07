@@ -1,4 +1,4 @@
-import { UploadIcon } from "@components/Icons"
+import { PlusIcon } from "@components/Icons/Plus"
 import { Spinner } from "@nextui-org/react"
 import type { UploadFile, UploadProps } from "antd"
 import { Upload } from "antd"
@@ -30,11 +30,9 @@ const FILE_UPLOAD_STATUS = {
 
 const UploadCommon: React.FC<UploadCustomProps> = ({
   fileKey,
-  label,
-  accept = ".doc,.docx,application/pdf,.txt",
+  accept = "application/pdf,.txt",
   multiple,
   moreCustomRequest,
-  description,
 }) => {
   const [loading, setLoading] = useState(false)
   const [fileListValue, setFileList] = useState<UploadFile[]>([])
@@ -59,11 +57,7 @@ const UploadCommon: React.FC<UploadCustomProps> = ({
       )
       const res = await moreCustomRequest(newFileIdUploadDone)
       if (res) {
-        const newFileList = fileListDone?.map((item) => ({
-          ...item,
-          connectedToAgent: true,
-        }))
-        setFileList(newFileList)
+        setFileList([])
       }
     }
   }
@@ -95,6 +89,9 @@ const UploadCommon: React.FC<UploadCustomProps> = ({
         `The file ${file.name} size must be smaller than ${maxSizeUpload}MB!`,
       )
     }
+    if (!loading) {
+      setFileList([])
+    }
 
     return isLtSize
   }
@@ -115,18 +112,13 @@ const UploadCommon: React.FC<UploadCustomProps> = ({
       showUploadList={false}
       className="w-full"
     >
-      <div className="flex h-16 w-full cursor-pointer items-center justify-between rounded-2xl bg-mercury-950 px-6">
-        <div className="flex flex-col items-start">
-          <span className="text-base-b text-mercury-30">{label}</span>
-          <span className="text-[13px] font-medium text-mercury-500">
-            {description}
-          </span>
-        </div>
+      <div className="inline-flex h-[32px] cursor-pointer items-center gap-1 rounded-full bg-mercury-950 px-3 text-15 font-semibold text-white">
         {loading ? (
           <Spinner color="white" size="sm" />
         ) : (
-          <UploadIcon color="#FFFF" />
+          <PlusIcon color="white" />
         )}
+        Add Plain text files
       </div>
     </StyledUpload>
   )

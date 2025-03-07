@@ -73,11 +73,7 @@ const UploadCustom: React.FC<UploadCustomProps> = ({
       )
       const res = await moreCustomRequest(newFileIdUploadDone)
       if (res) {
-        const newFileList = fileListDone?.map((item) => ({
-          ...item,
-          connectedToAgent: true,
-        }))
-        setFileList(newFileList)
+        setFileList([])
       }
     }
   }
@@ -107,6 +103,7 @@ const UploadCustom: React.FC<UploadCustomProps> = ({
         `The file ${file.name} size must be smaller than ${maxSizeUpload}MB!`,
       )
     }
+    setFileList([])
 
     return isLtSize
   }
@@ -165,7 +162,6 @@ const UploadCustom: React.FC<UploadCustomProps> = ({
           </div>
         )}
       </StyledUpload>
-
       {fileListValue.length > 0 && (
         <div className="flex max-h-[150px] flex-col overflow-auto p-3">
           {fileListValue.map((item: any) => {
@@ -174,7 +170,7 @@ const UploadCustom: React.FC<UploadCustomProps> = ({
 
             return (
               <div
-                className="mb-3 grid w-full grid-cols-8 items-center gap-3"
+                className="mb-3 grid max-h-[100px] w-full grid-cols-8 items-center gap-3 overflow-y-auto"
                 key={item.uid}
               >
                 {isError || isUploading ? (
