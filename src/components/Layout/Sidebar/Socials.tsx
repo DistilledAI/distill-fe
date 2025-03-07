@@ -92,7 +92,7 @@ const Socials = () => {
                 <span
                   className={twMerge(
                     "whitespace-nowrap text-[16px] font-medium text-mercury-900 hover:underline",
-                    sidebarCollapsed && "hidden",
+                    sidebarCollapsed && "md:hidden",
                   )}
                 >
                   {item.name}

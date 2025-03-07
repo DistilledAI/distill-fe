@@ -9,19 +9,15 @@ import { postCreateAnonymous } from "services/auth"
 import { inviteUserJoinGroup } from "services/chat"
 import { QueryDataKeys } from "types/queryDataKeys"
 
-// Constants
 const ONE_DAY_IN_MS = 24 * 60 * 60 * 1000
 
-// Main Hook
 const useJoinGroupLive = () => {
-  // Hooks
   const dispatch = useAppDispatch()
   const { chatId: groupId, originalChatId } = useGetChatId()
   const { isLogin, user } = useAuthState()
   const { fetchGroups } = useFetchGroups()
   const queryClient = useQueryClient()
 
-  // Queries
   const { data: hasJoinedGroup = true } = useQuery<boolean>({
     initialData: true,
     queryKey: [QueryDataKeys.HAS_JOINED_GROUP],
@@ -32,7 +28,6 @@ const useJoinGroupLive = () => {
     queryKey: [QueryDataKeys.IS_LOGGED_OUT],
   })
 
-  // Handlers
   const joinGroupLive = async (userData: IUser, accessToken: string = "") => {
     try {
       const payload = { groupId: Number(groupId), member: [userData?.id] }
@@ -43,9 +38,6 @@ const useJoinGroupLive = () => {
       const res = await inviteUserJoinGroup(payload, headers)
       if (res?.data) {
         queryClient.setQueryData([QueryDataKeys.HAS_JOINED_GROUP], true)
-        queryClient.invalidateQueries({
-          queryKey: [QueryDataKeys.MY_LIST_CHAT],
-        })
         await fetchGroups()
         return true
       }
@@ -67,7 +59,6 @@ const useJoinGroupLive = () => {
 
       const isJoined = await joinGroupLive(userAnonymous, accessToken)
       if (isJoined) {
-        // Small delay to ensure state updates
         setTimeout(() => {
           dispatch(
             loginSuccessByAnonymous({
@@ -85,7 +76,6 @@ const useJoinGroupLive = () => {
     }
   }
 
-  // Effects
   useLayoutEffect(() => {
     if (originalChatId) {
       queryClient.setQueryData([QueryDataKeys.HAS_JOINED_GROUP], false)
@@ -104,7 +94,6 @@ const useJoinGroupLive = () => {
     }
   }, [isLogin, user?.id, hasJoinedGroup, groupId])
 
-  // No return value needed as per original
   return {}
 }
 

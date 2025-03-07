@@ -1,55 +1,56 @@
-import { useRef, useState, useEffect } from "react"
-import { distilledAiPlaceholder } from "@assets/images"
-import { AvatarClanByList } from "@components/AvatarContainer"
-import { PATH_NAMES } from "@constants/index"
-import useAuthState from "@hooks/useAuthState"
-import { getConfigClanValue } from "@pages/AgentStore/AgentClansStore"
+import { useRef, useState, useEffect, useMemo } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
 import { useVirtualizer } from "@tanstack/react-virtual"
+import useAuthState from "@hooks/useAuthState"
 import useDebounce from "@hooks/useDebounce"
-import SearchClanWrapper from "./SearchClanWrapper"
-import useFetchClan from "@pages/Marketplace/useFetchClan"
-import { IGroup } from "@pages/ChatPage/ChatContainer/LeftBar/useFetchGroups"
+import useWindowSize from "@hooks/useWindowSize"
+import { distilledAiPlaceholder } from "@assets/images"
+import { PATH_NAMES } from "@constants/index"
+import { AvatarClanByList } from "@components/AvatarContainer"
 import { VideoThumbnailWrapper } from "@components/VideoThumbnailWrapper"
+import SearchClanWrapper from "./SearchClanWrapper"
 import PinClanButton from "./PinClanButton"
 import PinAgentClans from "./PinAgentClans"
+import useFetchClan from "@pages/Marketplace/useFetchClan"
 import { usePinAgentClans } from "./useAgentPinClans"
-import useWindowSize from "@hooks/useWindowSize"
+import { IGroup } from "@pages/ChatPage/ChatContainer/LeftBar/useFetchGroups"
+import { getConfigClanValue } from "@pages/AgentStore/AgentClansStore"
 
 const AllClans = () => {
   const { chatId } = useParams()
   const navigate = useNavigate()
-  const { user } = useAuthState()
+  const { user, isAnonymous, isLogin } = useAuthState()
+  const { isMobile } = useWindowSize()
   const parentRef = useRef<HTMLDivElement>(null)
   const pinContainerRef = useRef<HTMLDivElement>(null)
   const [searchClanValue, setSearchClanValue] = useState<string>("")
   const [pinContainerHeight, setPinContainerHeight] = useState(0)
-  const { isMobile } = useWindowSize()
+
+  const debouncedSearchValue = useDebounce(searchClanValue as any, 300)
 
   const {
     data: groups,
     isFetching,
     hasMore,
     fetchMore: handleLoadMore,
-    refetch,
   } = useFetchClan({
     limit: 20,
-    filter: {
-      name: searchClanValue,
-    },
-    sort: {
-      totalMember: "DESC",
-    },
+    filter: { name: debouncedSearchValue },
+    sort: { totalMember: "DESC" },
     mode: "infinite",
   })
 
   const { data: pinnedClans = [] } = usePinAgentClans()
 
-  const filteredGroups = groups.filter(
-    (item: IGroup) =>
-      user?.id !== item.createBy &&
-      !pinnedClans.some((pinned) => pinned.group.id === item.id),
+  const filteredGroups = useMemo(
+    () =>
+      groups.filter(
+        (item: IGroup) =>
+          user?.id !== item.createBy &&
+          !pinnedClans.some((pinned) => pinned.group.id === item.id),
+      ),
+    [groups, user?.id, pinnedClans],
   )
 
   const virtualizer = useVirtualizer({
@@ -64,53 +65,106 @@ const AllClans = () => {
 
   const debouncedHandleScroll = useDebounce(() => {
     if (!parentRef.current || isFetching || !hasMore) return
-
     const { scrollTop, scrollHeight, clientHeight } = parentRef.current
     if (scrollTop + clientHeight >= scrollHeight - 100) {
       handleLoadMore()
     }
   }, 100)
 
-  const debouncedSearchValue = useDebounce(searchClanValue as any, 300)
-
-  const handleSearch = (value: string) => {
-    setSearchClanValue(value)
-  }
-
   useEffect(() => {
     if (pinContainerRef.current) {
-      const height = pinContainerRef.current.getBoundingClientRect().height
-      setPinContainerHeight(height)
+      setPinContainerHeight(
+        pinContainerRef.current.getBoundingClientRect().height,
+      )
     }
   }, [pinnedClans.length])
 
-  useEffect(() => {
-    refetch()
-  }, [debouncedSearchValue, refetch])
-
-  const calculateMainContainerHeight = () => {
+  const calculateMainContainerHeight = useMemo(() => {
     const baseHeight = 240
     const mdBaseHeight = 212
     return {
       mobile: `calc(100dvh - ${baseHeight + pinContainerHeight}px)`,
       desktop: `calc(100dvh - ${mdBaseHeight + pinContainerHeight}px)`,
     }
-  }
+  }, [pinContainerHeight])
 
-  const { mobile, desktop } = calculateMainContainerHeight()
+  const { mobile, desktop } = calculateMainContainerHeight
+
+  const renderItem = (virtualItem: any) => {
+    const isLoader = virtualItem.index >= filteredGroups.length
+
+    if (isLoader) {
+      return (
+        <div
+          key={virtualItem.key}
+          data-index={virtualItem.index}
+          ref={virtualizer.measureElement}
+          className="absolute left-0 top-0 w-full text-center text-14 text-mercury-800"
+          style={{
+            transform: `translateY(${virtualItem.start}px)`,
+            height: 64,
+          }}
+        >
+          {isFetching ? "Loading..." : null}
+        </div>
+      )
+    }
+
+    const group = filteredGroups[virtualItem.index]
+    const imageUrl = getConfigClanValue(group, "imageLive")
+
+    return (
+      <div
+        data-index={virtualItem.index}
+        key={group.id}
+        ref={virtualizer.measureElement}
+        className="absolute left-0 top-0 w-full"
+        style={{ top: `${virtualItem.start}px`, height: 72 }}
+      >
+        <div
+          className={twMerge(
+            "flex w-full flex-1 cursor-pointer items-center justify-between gap-1 rounded-full p-2 hover:bg-mercury-100",
+            chatId === group.label && "md:bg-mercury-100",
+          )}
+        >
+          <div
+            className="flex flex-1 items-center gap-2"
+            onClick={() => navigate(`${PATH_NAMES.CLAN}/${group.label}`)}
+          >
+            <VideoThumbnailWrapper videoUrl={imageUrl}>
+              {(thumbnail) => (
+                <AvatarClanByList
+                  avatarUrl={thumbnail || distilledAiPlaceholder}
+                  isNameDisplay={false}
+                  name=""
+                  className="h-8 w-8"
+                  member={group.groupMemberStats?.total}
+                />
+              )}
+            </VideoThumbnailWrapper>
+            <span className="line-clamp-1 max-w-[114px] break-all text-16 font-bold text-mercury-950">
+              {group.name}
+            </span>
+          </div>
+          {isLogin && !isAnonymous && (
+            <PinClanButton groupId={Number(group.id)} />
+          )}
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="-mx-3 mt-6 space-y-3 overflow-x-hidden px-3 pb-4">
-      <SearchClanWrapper onSearch={handleSearch} />
+      <SearchClanWrapper onSearch={setSearchClanValue} />
       <div ref={pinContainerRef}>
         <PinAgentClans />
       </div>
+
       <div
         ref={parentRef}
         className="overflow-y-auto scrollbar-hide"
-        style={{
-          height: !isMobile ? desktop : mobile,
-        }}
+        style={{ height: isMobile ? mobile : desktop }}
         onScroll={debouncedHandleScroll}
       >
         <div
@@ -121,75 +175,7 @@ const AllClans = () => {
             width: "100%",
           }}
         >
-          {items.map((virtualItem) => {
-            const isLoader = virtualItem.index >= filteredGroups.length
-
-            if (isLoader) {
-              return (
-                <div
-                  key={virtualItem.key}
-                  data-index={virtualItem.index}
-                  ref={virtualizer.measureElement}
-                  className="absolute left-0 top-0 w-full text-center text-14 text-mercury-800"
-                  style={{
-                    transform: `translateY(${virtualItem.start}px)`,
-                    height: 64,
-                  }}
-                >
-                  {isFetching ? "Loading..." : null}
-                </div>
-              )
-            }
-
-            const item = filteredGroups[virtualItem.index]
-            const group = item
-            const imageUrl = getConfigClanValue(group, "imageLive")
-
-            return (
-              <div
-                data-index={virtualItem.index}
-                key={group.id}
-                ref={virtualizer.measureElement}
-                className="absolute left-0 top-0 w-full"
-                style={{
-                  top: `${virtualItem.start}px`,
-                  height: 72,
-                }}
-              >
-                <div
-                  key={group.id}
-                  className={twMerge(
-                    "flex w-full flex-1 cursor-pointer items-center justify-between gap-1 rounded-full p-2 hover:bg-mercury-100",
-                    chatId === group.label && "md:bg-mercury-100",
-                  )}
-                >
-                  <div
-                    className="flex flex-1 items-center gap-2"
-                    onClick={() =>
-                      navigate(`${PATH_NAMES.CLAN}/${group.label}`)
-                    }
-                  >
-                    <VideoThumbnailWrapper videoUrl={imageUrl}>
-                      {(thumbnail) => (
-                        <AvatarClanByList
-                          avatarUrl={thumbnail || distilledAiPlaceholder}
-                          isNameDisplay={false}
-                          name=""
-                          className="h-8 w-8"
-                          member={group.groupMemberStats?.total}
-                        />
-                      )}
-                    </VideoThumbnailWrapper>
-                    <span className="line-clamp-1 max-w-[114px] break-all text-16 font-bold text-mercury-950">
-                      {group.name}
-                    </span>
-                  </div>
-
-                  <PinClanButton groupId={Number(group.id)} />
-                </div>
-              </div>
-            )
-          })}
+          {items.map(renderItem)}
         </div>
       </div>
     </div>

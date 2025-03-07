@@ -3,35 +3,40 @@ import { useParams } from "react-router-dom"
 import { getGroupDetailFromLabel } from "services/chat"
 import { QueryDataKeys } from "types/queryDataKeys"
 
+const SPECIAL_CHAT_ID = "@maxisbuyin"
+const SPECIAL_CHAT_ID_REPLACEMENT = "@maxisbuyin_"
+
 const useGetChatId = () => {
   const { chatId: chatIdParam } = useParams()
 
-  const getChatId = async () => {
-    try {
-      if (chatIdParam?.includes("@")) {
-        let newChatIdParam = chatIdParam?.split(" ")?.join("")
+  const fetchChatId = async (): Promise<string | undefined> => {
+    if (!chatIdParam || !chatIdParam.includes("@")) return chatIdParam
 
-        if (chatIdParam === "@maxisbuyin") {
-          newChatIdParam = "@maxisbuyin_"
-        }
-        const res = await getGroupDetailFromLabel(newChatIdParam)
-        return res?.data?.id?.toString()
+    try {
+      let normalizedChatId = chatIdParam.split(" ").join("")
+      if (normalizedChatId === SPECIAL_CHAT_ID) {
+        normalizedChatId = SPECIAL_CHAT_ID_REPLACEMENT
       }
 
-      return chatIdParam
+      const response = await getGroupDetailFromLabel(normalizedChatId)
+      return response?.data?.id?.toString()
     } catch (error) {
-      console.log("error", error)
+      console.error("Failed to fetch chat ID:", error)
+      return undefined
     }
   }
 
-  const { data: chatId } = useQuery<string>({
-    initialData: "",
+  const { data: chatId = "" } = useQuery({
     queryKey: [`${QueryDataKeys.CHAT_ID_BY_USERNAME}-${chatIdParam}`],
-    queryFn: getChatId,
+    queryFn: fetchChatId,
+    initialData: "",
     enabled: !!chatIdParam && !chatIdParam.includes(" "),
   })
 
-  return { chatId, originalChatId: chatIdParam }
+  return {
+    chatId,
+    originalChatId: chatIdParam,
+  }
 }
 
 export default useGetChatId
