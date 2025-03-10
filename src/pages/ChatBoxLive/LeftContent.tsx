@@ -252,7 +252,7 @@ const LeftContent: React.FC<{
           <BetModal onOpenChange={onOpenChange} isOpen={isOpenModal} />
         )}
         <button
-          className="absolute bottom-3 right-3"
+          className="absolute bottom-3 right-3 md:hidden"
           onClick={() => setMaximizeImage(!maximizeImage)}
         >
           {!maximizeImage ? (
