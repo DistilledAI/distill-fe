@@ -107,14 +107,12 @@ const AgentStore = () => {
             )
           })}
         </Swiper>
-        {tabId !== "ai-agents" && (
-          <>
-            <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-[30%] bg-gradient-to-l from-white via-white to-transparent" />
-            <div className="absolute right-0 top-[-70px] z-10 md:top-0">
-              <SortAgents />
-            </div>
-          </>
-        )}
+        <>
+          <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-[30%] bg-gradient-to-l from-white via-white to-transparent" />
+          <div className="absolute right-0 top-[-70px] z-10 md:top-0">
+            <SortAgents />
+          </div>
+        </>
       </div>
 
       {renderActiveComponent()}
