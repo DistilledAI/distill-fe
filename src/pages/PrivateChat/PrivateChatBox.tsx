@@ -56,14 +56,6 @@ const PrivateChatBox: FC = () => {
   const queryParams = new URLSearchParams(search)
 
   useEffect(() => {
-    if (
-      (isMobile && pathname === `${PATH_NAMES.PRIVATE_AGENT}/empty`) ||
-      (!isMobile && pathname === PATH_NAMES.PRIVATE_AGENT) ||
-      pathname.startsWith(PATH_NAMES.INVITE)
-    ) {
-      return
-    }
-
     const queryString = queryParams.toString()
     const appendQuery = queryString ? `?${queryString}` : ""
 
