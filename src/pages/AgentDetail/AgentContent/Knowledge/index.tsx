@@ -5,10 +5,15 @@ import useFetchMyData from "@pages/MyData/useFetch"
 import AddData from "./AddData"
 import { RefreshIcon } from "@components/Icons/RefreshIcon"
 import { useState } from "react"
+import AgentSetupStatus from "@components/AgentSetupStatus"
+import { useAppSelector } from "@hooks/useAppRedux"
+import { STATUS_AGENT } from "@constants/index"
 
 const Knowledge = () => {
   const { list, isFetched } = useFetchMyData()
   const [isWarningSync, setIsWarningSync] = useState(false)
+  const myAgent = useAppSelector((state) => state.agents.myAgent)
+  const isAgentActive = myAgent?.status === STATUS_AGENT.ACTIVE
 
   const isShowAddData = list.length === 0 && isFetched
 
@@ -22,6 +27,11 @@ const Knowledge = () => {
           </span>
         </div>
       </div>
+      {isShowAddData && (
+        <div className="mt-5">
+          <AgentSetupStatus isAgentActive={isAgentActive} />
+        </div>
+      )}
       {isFetched && (
         <AlertBox
           className="!mx-0 mt-5 w-full"
