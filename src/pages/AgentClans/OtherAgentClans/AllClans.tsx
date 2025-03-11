@@ -44,7 +44,7 @@ const AllClans = () => {
   } = useFetchClan({
     limit: 20,
     filter: debouncedSearchValue ? { name: debouncedSearchValue } : {},
-    sort: { totalMember: "DESC" },
+    sort: { totalMsg24h: "DESC" },
     mode: "infinite",
   })
 
