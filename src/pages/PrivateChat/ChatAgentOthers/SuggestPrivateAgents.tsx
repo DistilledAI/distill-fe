@@ -6,6 +6,7 @@ import { QueryDataKeys } from "types/queryDataKeys"
 import AvatarCustom from "@components/AvatarCustom"
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { useNavigate } from "react-router-dom"
+import { distilledAiPlaceholder } from "@assets/images"
 
 interface Props {
   privateAgentsLength: number
@@ -54,7 +55,7 @@ const SuggestPrivateAgents = ({ privateAgentsLength = 0 }: Props) => {
         >
           <div>
             <AvatarCustom
-              src={agent.avatar}
+              src={agent.avatar || distilledAiPlaceholder}
               badgeIcon={<FilledBrainAIIcon size={14} />}
               badgeClassName="bg-[#FC0]"
             />
