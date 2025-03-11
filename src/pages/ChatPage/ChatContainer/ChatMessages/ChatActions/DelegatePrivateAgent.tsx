@@ -4,7 +4,7 @@ import { FilledUserIcon } from "@components/Icons/UserIcon"
 import { useAppSelector } from "@hooks/useAppRedux"
 import useAuthState from "@hooks/useAuthState"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
-import { memo, useCallback, useEffect } from "react"
+import { useCallback, useEffect } from "react"
 import { useParams } from "react-router-dom"
 import {
   ChangeStatusBotInGroup,
