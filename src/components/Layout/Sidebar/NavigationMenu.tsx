@@ -17,6 +17,7 @@ import {
   maxAvatar,
   racksAvatar,
 } from "@assets/images"
+import { STATUS_AGENT } from "@constants/index"
 
 interface MenuItem {
   id: string
@@ -32,6 +33,12 @@ const NavigationMenu = ({ isMobile = false }: { isMobile?: boolean }) => {
   const { pathname: currentPath, search: currentSearch } = useLocation()
   const sidebarCollapsed = useAppSelector((state) => state.sidebarCollapsed)
   const myAgent = useAppSelector((state) => state.agents.myAgent)
+
+  const getPathnameMyAgent = () => {
+    if (!myAgent) return "/create-agent"
+    if (myAgent.status !== STATUS_AGENT.ACTIVE) return "/account"
+    return `/agent/${myAgent.id}`
+  }
 
   const BASE_MENU: MenuItem[] = [
     {
@@ -52,7 +59,7 @@ const NavigationMenu = ({ isMobile = false }: { isMobile?: boolean }) => {
           className="h-8 w-8 rounded-full object-cover"
         />
       ),
-      pathname: !myAgent ? "/create-agent" : `/agent/${myAgent.id}`,
+      pathname: getPathnameMyAgent(),
     },
     {
       id: "agent-clan",
