@@ -42,6 +42,10 @@ const useConnectWallet = () => {
     dispatch(updateModalStatus(true))
   }
 
+  const handleUpdateStatusConnectWallet = () => {
+    dispatch(updateConnectedWalletStatus(true))
+  }
+
   const login = async (input: IDataSignatureAuth) => {
     const res = await signatureAuth(input)
     if (res.data.accessToken && res.data.user) {
@@ -141,7 +145,7 @@ const useConnectWallet = () => {
 
       await login(input)
       dispatch(updateModalStatus(false))
-      dispatch(updateConnectedWalletStatus(true))
+      handleUpdateStatusConnectWallet()
     } catch (error: any) {
       console.error(error, "error")
       toast.error(error?.message)
@@ -233,7 +237,7 @@ const useConnectWallet = () => {
 
       await login(input)
       dispatch(updateModalStatus(false))
-      dispatch(updateConnectedWalletStatus(true))
+      handleUpdateStatusConnectWallet()
     } catch (error: any) {
       console.error(error, "error")
       toast.error(error?.message)
@@ -309,7 +313,7 @@ const useConnectWallet = () => {
 
       await login(input)
       dispatch(updateModalStatus(false))
-      dispatch(updateConnectedWalletStatus(true))
+      handleUpdateStatusConnectWallet()
     } catch (error: any) {
       console.error(error, "error")
       toast.error(error?.message)
@@ -386,7 +390,7 @@ const useConnectWallet = () => {
 
       await login(input)
       dispatch(updateModalStatus(false))
-      dispatch(updateConnectedWalletStatus(true))
+      handleUpdateStatusConnectWallet()
     } catch (error: any) {
       console.error(error, "error")
       toast.error(error?.message)

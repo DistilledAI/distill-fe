@@ -15,9 +15,14 @@ interface AgentInfoCardProps {
   groupId: string
   messages: IMessageBox[]
   getAgentOwner?: (agentOwner: any) => void
+  isLoading?: boolean
 }
 
-const AgentInfoCard = ({ messages, groupId }: AgentInfoCardProps) => {
+const AgentInfoCard = ({
+  messages,
+  groupId,
+  isLoading,
+}: AgentInfoCardProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   const { data: chatDetailResult } = useQuery<any>({
@@ -46,7 +51,7 @@ const AgentInfoCard = ({ messages, groupId }: AgentInfoCardProps) => {
     : chatDetailResult?.data?.group?.userB
   const agentInfo = isAgent ? chatDetailResult?.data?.group?.userB : data?.data
 
-  if (!agentInfo) {
+  if (!agentInfo && isLoading) {
     return (
       <div className="h-fit md:p-4">
         <Skeleton className="mx-auto min-h-[111px] max-w-[768px] md:rounded-[14px]" />
@@ -55,8 +60,8 @@ const AgentInfoCard = ({ messages, groupId }: AgentInfoCardProps) => {
   }
 
   return (
-    <div className="h-fit md:px-4">
-      <div className="mx-auto min-h-[111px] max-w-[768px] border border-mercury-100 bg-mercury-50 p-2 max-md:border-x-0 md:rounded-[14px]">
+    <>
+      <div className="mx-auto min-h-[111px] w-full max-w-[768px] border border-mercury-100 bg-mercury-50 px-3 py-2 max-md:border-x-0 md:rounded-[14px] md:px-2">
         <div className="flex gap-x-3 md:gap-x-4">
           <AvatarCustom
             publicAddress={agentInfo?.publicAddress}
@@ -116,7 +121,7 @@ const AgentInfoCard = ({ messages, groupId }: AgentInfoCardProps) => {
         shareUrl={`${window.location.origin}${PATH_NAMES.INVITE}/${agentInfo?.id}`}
         title="Agent QR"
       />
-    </div>
+    </>
   )
 }
 

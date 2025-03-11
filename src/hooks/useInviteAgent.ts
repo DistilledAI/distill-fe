@@ -15,6 +15,8 @@ import { QueryDataKeys } from "types/queryDataKeys"
 import useAuthState from "./useAuthState"
 import useWindowSize from "./useWindowSize"
 import { useAppSelector } from "./useAppRedux"
+import { PRIVATE_AGENT_STATUS } from "@pages/ChatPage/ChatContainer/RightContent/MyPrivateAgentContent/usePrivateAgent"
+import { envConfig } from "@configs/env"
 
 const useInviteAgent = () => {
   const navigate = useNavigate()
@@ -34,11 +36,20 @@ const useInviteAgent = () => {
 
   const handleInviteUserLoggedIn = async (agentId: number) => {
     try {
-      const { data } = await checkGroupDirect({ members: [agentId] })
+      let newAgentId = agentId
+      if (
+        agentId === myAgent?.id &&
+        myAgent?.status !== PRIVATE_AGENT_STATUS.ACTIVE
+      ) {
+        newAgentId = envConfig.groupDefaultForPrivateAgent
+      }
+      const { data } = await checkGroupDirect({ members: [newAgentId] })
       let groupId = data?.group?.id
 
       if (!groupId) {
-        const { data: newData } = await createGroupChat({ members: [agentId] })
+        const { data: newData } = await createGroupChat({
+          members: [newAgentId],
+        })
         groupId = newData?.groupId
 
         if (newData && isMobile) {
@@ -60,7 +71,7 @@ const useInviteAgent = () => {
       })
     } catch (error) {
       console.error("Invite error:", error)
-      navigate(PATH_NAMES.HOME)
+      // navigate(PATH_NAMES.HOME)
     }
   }
 

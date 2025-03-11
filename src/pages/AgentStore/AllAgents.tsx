@@ -8,7 +8,7 @@ import { ConfigBotType } from "@types"
 import { useNavigate, useLocation } from "react-router-dom"
 import { searchUsers } from "services/chat"
 import { QueryDataKeys } from "types/queryDataKeys"
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import { Pagination, Skeleton } from "@nextui-org/react"
 import PaginationItemCustom from "./PaginationItemCustom"
 import AvatarCustom from "@components/AvatarCustom"
@@ -22,6 +22,14 @@ const AllAgents = () => {
 
   const searchParams = new URLSearchParams(location.search)
   const searchValue = searchParams.get("search") || ""
+  const sortBy = searchParams.get("sortBy") || "Oldest"
+
+  const sort = useMemo(() => {
+    if (sortBy === "Newest") {
+      return { createdAt: "DESC" }
+    }
+    return { createdAt: "ASC" }
+  }, [sortBy])
 
   const fetchPrivateAgents = async () => {
     const payloadData = {
@@ -33,6 +41,7 @@ const AllAgents = () => {
 
     const res = await searchUsers({
       filter: payloadData,
+      sort,
       limit,
       offset: (page - 1) * limit,
     })
@@ -43,7 +52,7 @@ const AllAgents = () => {
   }
 
   const { data, error, isLoading } = useQuery({
-    queryKey: [QueryDataKeys.PRIVATE_AGENTS_MKL, page, searchValue],
+    queryKey: [QueryDataKeys.PRIVATE_AGENTS_MKL, page, searchValue, sort],
     queryFn: fetchPrivateAgents,
     refetchOnWindowFocus: false,
   })
