@@ -107,13 +107,12 @@ const NavigationMenu = ({ isMobile = false }: { isMobile?: boolean }) => {
         ) : (
           <FilledSquareCircleIcon size={20} color={color} />
         ),
-      name: "Agent Store",
+      name: isMobile ? "Store" : "Agent Store",
       rightContent: null,
       pathname: "/marketplace?tab=agent-clans",
     },
   ]
 
-  // Determine menu order based on device type
   const getMenuOrder = (isMobile: boolean): MenuItem[] =>
     isMobile
       ? [BASE_MENU[0], BASE_MENU[3], BASE_MENU[4], BASE_MENU[2], BASE_MENU[1]]
@@ -121,14 +120,12 @@ const NavigationMenu = ({ isMobile = false }: { isMobile?: boolean }) => {
 
   const menu = getMenuOrder(isMobile)
 
-  // Check if a menu item is active based on current path and query
   const isActive = (item: MenuItem): boolean => {
     const [itemBasePath, itemQuery] = item.pathname.split("?")
     const expectedSearch = itemQuery ? `?${itemQuery}` : ""
     const normalizedCurrentPath = currentPath.replace(/\/$/, "")
     const normalizedItemBasePath = itemBasePath.replace(/\/$/, "")
 
-    // Special handling for specific menu items
     switch (item.id) {
       case "agent-clan":
         return (
@@ -137,7 +134,6 @@ const NavigationMenu = ({ isMobile = false }: { isMobile?: boolean }) => {
         )
       case "private-agent":
       case "invite":
-        // Match both /private-agent and /chat/:id paths
         return (
           normalizedCurrentPath.includes("/invite") ||
           normalizedCurrentPath.includes("/private-agent") ||
@@ -146,7 +142,6 @@ const NavigationMenu = ({ isMobile = false }: { isMobile?: boolean }) => {
       case "marketplace":
         return normalizedCurrentPath === "/marketplace"
       default:
-        // Default case: exact match of path and query
         return (
           normalizedCurrentPath === normalizedItemBasePath &&
           currentSearch === expectedSearch
@@ -154,7 +149,6 @@ const NavigationMenu = ({ isMobile = false }: { isMobile?: boolean }) => {
     }
   }
 
-  // Render a single menu item
   const renderItem = (item: MenuItem, index: number) => {
     const active = isActive(item)
     const iconColor = active ? "#83664B" : isMobile ? "#999999" : "#545454"

@@ -111,7 +111,7 @@ const ChatMyAgentBox: React.FC<{
         style={{
           paddingBottom: `${spacing}px`,
         }}
-        className="h-[calc(100dvh-152px)] max-h-full md:max-h-[calc(100%-132px)]"
+        className="h-[calc(100dvh-146px)] max-h-full md:max-h-[calc(100%-136px)]"
         isChatActions={isChatActions}
       />
       {/* <div className="absolute bottom-[104px] left-1/2 w-[calc(100%-32px)] -translate-x-1/2 space-y-2 bg-white pb-0 md:bottom-[144px] md:pb-2">

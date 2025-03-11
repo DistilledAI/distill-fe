@@ -9,8 +9,8 @@ import useAuthState from "@hooks/useAuthState"
 import useConnectWallet from "@hooks/useConnectWallet"
 import { Button } from "@nextui-org/react"
 import { updateConnectedWalletStatus } from "@reducers/connectWalletSlice"
-import { useEffect, useCallback } from "react"
-import { useNavigate } from "react-router-dom"
+import { useCallback, useEffect } from "react"
+import { useNavigate, useLocation } from "react-router-dom"
 
 interface Props {
   imageUrl?: string
@@ -20,9 +20,10 @@ const BUTTON_BASE_CLASS = "h-14 rounded-full text-[16px] font-bold"
 const TEXT_BASE_CLASS = "text-16 font-semibold text-mercury-950 md:text-18"
 const HIGHLIGHT_TEXT_CLASS = "text-brown-500"
 
-const MyAgentClanEmpty = ({ imageUrl }: Props) => {
+const MyAgentClanEmpty: React.FC<Props> = ({ imageUrl }) => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
+  const location = useLocation()
 
   const agent = useAppSelector((state) => state.agents.myAgent)
   const isConnectedWallet = useAppSelector(
@@ -32,7 +33,10 @@ const MyAgentClanEmpty = ({ imageUrl }: Props) => {
   const { connectMultipleWallet, loading } = useConnectWallet()
 
   const isAgentActive = agent?.status === STATUS_AGENT.ACTIVE
-  const isUserLogged = user.publicAddress && user.role !== RoleUser.ANONYMOUS
+  const isUserLogged = user?.publicAddress && user.role !== RoleUser.ANONYMOUS
+
+  const queryParams = new URLSearchParams(location.search)
+  const action = queryParams.get("action")
 
   const navigateToCreateAgent = useCallback(() => {
     navigate(PATH_NAMES.CREATE_AGENT)
@@ -46,21 +50,21 @@ const MyAgentClanEmpty = ({ imageUrl }: Props) => {
 
   const handleNavCreateAgent = useCallback(() => {
     if (!isUserLogged) {
+      navigate({ search: "action=create-agent" }, { replace: true })
       connectMultipleWallet()
     } else {
       navigateToCreateAgent()
     }
-  }, [isUserLogged, connectMultipleWallet, navigateToCreateAgent])
+  }, [isUserLogged])
 
   useEffect(() => {
     if (isConnectedWallet) {
-      const targetPath = !agent?.id
-        ? PATH_NAMES.CREATE_AGENT
-        : `${PATH_NAMES.AGENT_DETAIL}/${agent?.id}`
-      navigate(targetPath)
+      if (!agent?.id && action === "create-agent") {
+        navigateToCreateAgent()
+      }
       dispatch(updateConnectedWalletStatus(false))
     }
-  }, [isConnectedWallet, agent?.id, navigate, dispatch])
+  }, [isConnectedWallet, action, agent?.id])
 
   const renderContent = () => {
     if (!agent) {

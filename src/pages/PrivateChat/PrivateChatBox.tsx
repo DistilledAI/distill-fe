@@ -9,13 +9,14 @@ import HeaderBack from "@components/Layout/Header/HeaderBack"
 import AvatarCustom from "@components/AvatarCustom"
 import { distilledAiPlaceholder } from "@assets/images"
 import ChatMyAgentBox from "./ChatMyAgent/ChatMyAgentBox"
-import ChatMyAgentEmpty from "./ChatMyAgent/ChatMyAgentEmpty"
+import MyAgentEmpty from "./ChatMyAgent/MyAgentEmpty"
 import ChatAgentOthersBox from "./ChatAgentOthers/ChatAgentOthersBox"
 import MoreAction from "@components/ChatInfoCurrent/MoreAction"
 import { TypeGroup } from "@pages/ChatPage/ChatContainer/LeftBar/useFetchGroups"
 import useAuthState from "@hooks/useAuthState"
 
 interface User {
+  id?: string
   publicAddress: string
   avatar?: string
   username: string
@@ -31,25 +32,41 @@ interface GroupDetail {
 }
 
 const PrivateChatBox: FC = () => {
-  const { pathname } = useLocation()
+  const { pathname, search } = useLocation()
   const navigate = useNavigate()
+  const { privateChatId, chatId } = useParams<{
+    privateChatId?: string
+    chatId?: string
+  }>()
   const { isMobile } = useWindowSize()
-  const { privateChatId, chatId } = useParams()
   const myAgent = useAppSelector((state) => state.agents.myAgent)
   const { user } = useAuthState()
   const groupId = privateChatId || chatId
 
   const isChatAgentOther = pathname.startsWith(PATH_NAMES.CHAT)
+  const isChatMyAgent =
+    pathname.startsWith(PATH_NAMES.PRIVATE_AGENT) && !!myAgent?.id
 
   const { data: groupDetail } = useQuery<GroupDetail>({
     queryKey: [`${QueryDataKeys.GROUP_DETAIL}-${groupId}`],
     enabled: isMobile && !!groupId,
   })
-  const isChatMyAgent =
-    pathname.startsWith(PATH_NAMES.PRIVATE_AGENT) && !!myAgent?.id
+
   const userB = groupDetail?.data?.group?.userB
+  const queryParams = new URLSearchParams(search)
 
   useEffect(() => {
+    if (
+      (isMobile && pathname === `${PATH_NAMES.PRIVATE_AGENT}/empty`) ||
+      (!isMobile && pathname === PATH_NAMES.PRIVATE_AGENT) ||
+      pathname.startsWith(PATH_NAMES.INVITE)
+    ) {
+      return
+    }
+
+    const queryString = queryParams.toString()
+    const appendQuery = queryString ? `?${queryString}` : ""
+
     if (
       !myAgent?.id &&
       !isChatAgentOther &&
@@ -58,13 +75,24 @@ const PrivateChatBox: FC = () => {
     ) {
       navigate(
         isMobile
-          ? `${PATH_NAMES.PRIVATE_AGENT}/empty`
-          : PATH_NAMES.PRIVATE_AGENT,
+          ? `${PATH_NAMES.PRIVATE_AGENT}/empty${appendQuery}`
+          : `${PATH_NAMES.PRIVATE_AGENT}${appendQuery}`,
+        { replace: true },
       )
     } else if (pathname === PATH_NAMES.PRIVATE_AGENT && myAgent?.id) {
-      navigate(`${PATH_NAMES.INVITE}/${myAgent?.id}`)
+      navigate(`${PATH_NAMES.INVITE}/${myAgent.id}${appendQuery}`, {
+        replace: true,
+      })
     }
-  }, [myAgent?.id, isChatAgentOther, isMobile, user?.id, pathname])
+  }, [
+    myAgent?.id,
+    isChatAgentOther,
+    isMobile,
+    user?.id,
+    pathname,
+    search,
+    navigate,
+  ])
 
   const getHeaderName = () => {
     return isChatAgentOther ? userB?.username : myAgent?.username
@@ -85,11 +113,9 @@ const PrivateChatBox: FC = () => {
         <AvatarCustom
           publicAddress={user.publicAddress || ""}
           src={avatarSrc}
-          className={`h-8 w-8 border-none`}
+          className="h-8 w-8 border-none"
         />
-        <span
-          className={`max-w-[120px}] line-clamp-1 text-16 font-bold text-mercury-950`}
-        >
+        <span className="line-clamp-1 max-w-[120px] text-16 font-bold text-mercury-950">
           {user.username}
         </span>
         {userB && (
@@ -104,7 +130,7 @@ const PrivateChatBox: FC = () => {
 
   const renderChatContent = () => {
     if (isChatAgentOther) return <ChatAgentOthersBox />
-    return myAgent?.id ? <ChatMyAgentBox /> : <ChatMyAgentEmpty />
+    return myAgent?.id ? <ChatMyAgentBox /> : <MyAgentEmpty />
   }
 
   return (
