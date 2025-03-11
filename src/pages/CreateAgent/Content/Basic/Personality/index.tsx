@@ -9,9 +9,9 @@ import {
 // import { LockFilledIcon } from "@components/Icons/AgentDetailIcon"
 import { StarUserIconOutline } from "@components/Icons/UserIcon"
 import { Checkbox, Textarea } from "@nextui-org/react"
-import CategoryLabel from "@pages/AgentDetail/CategoryLabel"
+import CategoryLabel, { FieldLabel } from "@pages/AgentDetail/CategoryLabel"
 import { useEffect, useState } from "react"
-import { useFormContext } from "react-hook-form"
+import { Controller, useFormContext } from "react-hook-form"
 
 const PERSONALITY_LIST = [
   {
@@ -83,7 +83,7 @@ export interface SelectedBehaviors {
 }
 
 const Personality = () => {
-  const { watch, setValue } = useFormContext()
+  const { watch, setValue, control } = useFormContext()
   const [isCustom, setIsCustom] = useState(false)
 
   const selectedBehaviors = {
@@ -121,19 +121,44 @@ const Personality = () => {
     <div className="mt-10">
       <div className="flex items-center justify-between">
         <CategoryLabel
-          text="Personality"
+          text="Characteristics"
           icon={<StarUserIconOutline color="#A2845E" />}
         />
-        {/* <div className="flex items-center gap-1 rounded-full bg-mercury-70 px-2">
-          <LockFilledIcon />
-          <span className="font-medium uppercase text-mercury-700 max-md:text-14">
-            private
-          </span>
-        </div> */}
       </div>
+
+      <div className="mt-4">
+        <Controller
+          name="description"
+          control={control}
+          render={({ field: { value, onChange } }: any) => {
+            return (
+              <div className="w-full">
+                <FieldLabel text="Personality" required />
+                <div className="flex items-center max-sm:h-auto">
+                  <Textarea
+                    key="agent-description"
+                    value={value}
+                    type="text"
+                    placeholder="Describe what your agent is and what it does"
+                    className="w-full"
+                    classNames={{
+                      inputWrapper:
+                        "!bg-mercury-30 border-1 border-mercury-400",
+                      input:
+                        "text-15 max-md:text-14 font-medium !text-mercury-950",
+                    }}
+                    onChange={(e) => onChange(e.target.value)}
+                  />
+                </div>
+              </div>
+            )
+          }}
+        />
+      </div>
+
       <div className="mt-3">
         <p className="font-semibold">
-          Templates<span className="text-red-500">*</span>
+          Tone of Voice<span className="text-red-500">*</span>
         </p>
         <p className="font-medium text-mercury-700 max-md:text-14">
           Select the trait that best describe your agent's personality.
