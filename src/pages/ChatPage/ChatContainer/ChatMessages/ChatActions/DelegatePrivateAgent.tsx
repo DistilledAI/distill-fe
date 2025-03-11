@@ -98,7 +98,7 @@ const DelegatePrivateAgent: React.FC<Props> = ({ isDelegateBtn }) => {
         <div className="flex h-[18px] w-[18px] items-center justify-center rounded-full bg-[#0FE9A4]">
           <FilledUserIcon size={14} />
         </div>
-        <div className={twMerge("rotate-180", enabled && "rotate-0")}>
+        <div className="rotate-180">
           <ArrowLeftFilledIcon size={16} color="#676767" />
         </div>
         <div className="flex h-[18px] w-[18px] items-center justify-center rounded-full bg-[#FC0]">
