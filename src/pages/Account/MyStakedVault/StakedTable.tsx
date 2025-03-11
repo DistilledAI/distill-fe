@@ -8,7 +8,7 @@ import {
   TableHeader,
   TableRow,
 } from "@nextui-org/react"
-import { Link } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import ItemTotalStaked from "./ItemTotalStaked"
 import ItemMyStaked from "./ItemMyStaked"
 import React from "react"
@@ -47,6 +47,8 @@ const StakedTable: React.FC<{
   list: IVaultData[]
   emptyContent?: string
 }> = ({ list, emptyContent = "Empty" }) => {
+  const navigate = useNavigate()
+
   const renderCell = (item: Record<string, any>, columnKey: string) => {
     switch (columnKey) {
       case ColumnKey.VaultName:
@@ -70,12 +72,12 @@ const StakedTable: React.FC<{
           : `${PATH_NAMES.STAKING}?token=${item.address}`
         return (
           <div className="flex items-center justify-end">
-            <Link
-              className="whitespace-nowrap rounded-full bg-mercury-950 px-4 py-1 font-semibold text-white max-md:px-3 max-md:text-13"
-              to={url}
+            <div
+              className="cursor-pointer whitespace-nowrap rounded-full bg-mercury-950 px-4 py-1 font-semibold text-white hover:opacity-70 max-md:px-3 max-md:text-13"
+              onClick={() => navigate(url, { state: { isHistory: "true" } })}
             >
               Go to Vault
-            </Link>
+            </div>
           </div>
         )
       }
