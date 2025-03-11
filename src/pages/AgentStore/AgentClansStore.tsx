@@ -89,7 +89,7 @@ const AgentClansStore = () => {
     ))
   ) : data.length === 0 ? (
     <div className="col-span-full py-10 text-center">
-      <p className="text-18 font-semibold text-mercury-950">No agents found</p>
+      <p className="text-18 font-semibold text-mercury-950">No clans found</p>
     </div>
   ) : (
     data.map((item: IGroup) => {
