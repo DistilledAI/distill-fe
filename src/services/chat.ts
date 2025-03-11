@@ -327,3 +327,15 @@ export const publishMarketplace = async (botId: number) => {
     url: endpoint.PUBLISH_MARKETPLACE(botId),
   })
 }
+
+interface IDataChatToPreviewAgent {
+  messages: string
+  chatHistory: any
+}
+export const postChatToPreviewAgent = async (data: IDataChatToPreviewAgent) => {
+  return fetchApiAuth({
+    method: "post",
+    url: endpoint.CHAT_TO_PREVIEW_AGENT,
+    data,
+  })
+}

@@ -65,6 +65,7 @@ const endpoint = {
     withBaseURL(`/user/${type}-crawl/${userName}`),
   GET_GROUP_DETAIL_FROM_LABEL: (label: string) =>
     withBaseURL(`/group/detail/label/${label}`),
+  CHAT_TO_PREVIEW_AGENT: withBaseURL("/group/preview-agent-default"),
 
   // group
   GET_LIST_GROUP_PUBLIC: withBaseURL("/group/public"),

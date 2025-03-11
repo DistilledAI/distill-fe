@@ -132,6 +132,8 @@ const useSubmitChat = ({
       return { newMessage }
     },
     onSuccess: (data, _, context) => {
+      console.log("🚀 ~ data:", data)
+      console.log("🚀 ~ context:", context)
       queryClient.setQueryData(
         chatMessagesKey(groupId),
         (cachedData: ICachedMessageData) =>

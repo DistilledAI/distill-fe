@@ -2,6 +2,7 @@ import { STATUS_AGENT } from "@constants/index"
 import { TYPE_LLM_MODEL } from "@pages/ChatPage/ChatContainer/RightContent/MyPrivateAgentContent/AgentInitialization/AgentType"
 import useGroupDetail from "@pages/ChatPage/hooks/useGroupDetail"
 import AgentNavTab from "@pages/CreateAgent/NavTab"
+import TestAgent from "@pages/CreateAgent/TestAgent"
 import { refreshFetchMyAgent } from "@reducers/agentSlice"
 import { useEffect, useState } from "react"
 import { FormProvider, useForm } from "react-hook-form"
@@ -197,7 +198,7 @@ const AgentDetail: React.FC = () => {
       <form onSubmit={methods.handleSubmit(onSubmit)}>
         <div>
           <HeaderDetailAgent isLoading={loading} />
-          <div className="relative mx-auto flex max-w-[1206px] items-start gap-[40px] px-6 py-6 max-md:flex-col max-md:gap-[20px] max-md:px-4 max-md:pb-[80px]">
+          <div className="relative mx-auto flex max-w-[1440px] items-start gap-[40px] px-6 py-6 max-md:flex-col max-md:gap-[20px] max-md:px-4 max-md:pb-[80px]">
             <div className="w-[260px] max-md:w-full">
               <AgentNavTab isEdit />
             </div>
@@ -211,17 +212,17 @@ const AgentDetail: React.FC = () => {
                 }}
               />
             </div>
-            {/* <div className="w-[330px] max-md:hidden">
-              {twitterUsername && (
+            <div className="w-[330px] max-md:hidden">
+              {/* {twitterUsername && (
                 <div className="flex items-center justify-between rounded-lg bg-brown-50 p-4">
                   <span className="text-base-b text-mercury-950">
                     @{twitterUsername}
                   </span>
                   <RepliesDashboard isDisabled={!twitterUsername} />
                 </div>
-              )}
-              <TestAgent />
-            </div> */}
+              )} */}
+              <TestAgent agentData={agentData} agentConfigs={agentConfigs} />
+            </div>
           </div>
         </div>
       </form>
