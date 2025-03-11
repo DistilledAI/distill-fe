@@ -6,6 +6,7 @@ import SyncData from "@pages/MyData/SyncData"
 import { BotDataTypeKey } from "@types"
 import React, { useEffect, useState } from "react"
 import { twMerge } from "tailwind-merge"
+import { getLinkXByURL } from "./Social/helpers"
 
 const ItemData: React.FC<{
   id: number
@@ -30,7 +31,7 @@ const ItemData: React.FC<{
       <div className="flex items-center gap-1">
         {icon && icon}
         <a
-          href={value}
+          href={getLinkXByURL(value)}
           target="_blank"
           className={twMerge(
             "max-w-[100px] truncate text-13 font-semibold hover:underline max-md:max-w-[170px]",
