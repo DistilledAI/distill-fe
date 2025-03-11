@@ -1,4 +1,4 @@
-export const getUserName = (input: string) => {
+export const getUserName = (input: any) => {
   if (!input) return null
 
   let url: string
@@ -10,9 +10,8 @@ export const getUserName = (input: string) => {
       return null
     }
   } catch (e) {
-    url = input
+    url = input.value ? input.value : input
   }
-
   const match = url.match(/x\.com\/([^/]+)/)
   if (match && match[1] !== "home") {
     return match[1]
