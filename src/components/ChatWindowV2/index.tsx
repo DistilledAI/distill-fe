@@ -1,25 +1,25 @@
+import DotLoading from "@components/DotLoading"
+import { IMessageBox } from "@pages/ChatPage/ChatContainer/ChatMessages/helpers"
+import { useVirtualizer } from "@tanstack/react-virtual"
 import React, {
+  UIEvent,
   useCallback,
   useEffect,
+  useLayoutEffect,
+  useMemo,
   useRef,
   useState,
-  useMemo,
-  UIEvent,
-  useLayoutEffect,
 } from "react"
-import { useVirtualizer } from "@tanstack/react-virtual"
 import { twMerge } from "tailwind-merge"
 import MessagesSkeleton from "./MessagesSkeleton"
-import DotLoading from "@components/DotLoading"
 import ScrollBottomChat from "./ScrollBottomChat"
-import { IMessageBox } from "@pages/ChatPage/ChatContainer/ChatMessages/helpers"
 
 interface ChatWindowProps {
   messages: IMessageBox[]
   itemContent: (index: number, message: IMessageBox) => JSX.Element
   className?: string
   isLoading?: boolean
-  onLoadPrevMessages: () => Promise<number | undefined>
+  onLoadPrevMessages?: () => Promise<number | undefined>
   chatId?: string
   msgBoxClassName?: string
   isFetched?: boolean
@@ -88,7 +88,8 @@ const ChatWindowV2: React.FC<ChatWindowProps> = ({
         const currentScrollHeight = parentRef.current?.scrollHeight ?? 0
         const currentScrollTop = parentRef.current?.scrollTop ?? 0
 
-        const newMessagesIndex = await onLoadPrevMessages()
+        const newMessagesIndex =
+          onLoadPrevMessages && (await onLoadPrevMessages())
 
         if (newMessagesIndex && parentRef.current) {
           const newScrollHeight = parentRef.current.scrollHeight
