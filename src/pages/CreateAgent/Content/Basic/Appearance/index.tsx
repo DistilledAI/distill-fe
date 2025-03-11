@@ -17,7 +17,7 @@ const Appearance = () => {
   const { control, setValue, watch } = useFormContext()
   const avatarWatch = watch("avatar")
   const websiteLink = watch("website_link")
-  console.log("🚀 ~ Appearance ~ websiteLink:", websiteLink)
+
   const [isShowWebsiteField, setIsShowWebsiteField] = useState<boolean>(false)
 
   const toggleShowWebsiteField = () => {

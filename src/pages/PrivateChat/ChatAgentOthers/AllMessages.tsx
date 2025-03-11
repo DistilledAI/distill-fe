@@ -30,6 +30,7 @@ import { useVirtualizer } from "@tanstack/react-virtual"
 import useDebounce from "@hooks/useDebounce"
 import SearchPrivateAgentWrapper from "./SearchPrivateAgentWrapper"
 import SuggestPrivateAgents from "./SuggestPrivateAgents"
+import { distilledAiPlaceholder } from "@assets/images"
 
 export const getIconGroup = (ownerId: number, userA: IUser, userB: IUser) =>
   getRoleUser(ownerId, userA, userB) === RoleUser.USER ? (
@@ -79,11 +80,13 @@ const AllMessages = () => {
             groupItem.group.userA,
             groupItem.group.userB,
           )}
-          avatarUrl={getAvatarGroupChat(
-            groupItem.userId,
-            groupItem.group.userA,
-            groupItem.group.userB,
-          )}
+          avatarUrl={
+            getAvatarGroupChat(
+              groupItem.userId,
+              groupItem.group.userA,
+              groupItem.group.userB,
+            ) || distilledAiPlaceholder
+          }
           publicAddress={getPublicAddressGroupChat(
             groupItem.userId,
             groupItem.group.userA,
