@@ -34,7 +34,7 @@ const MyAgentClanButton = () => {
       )}
       onClick={handleClick}
     >
-      <VideoThumbnailWrapper videoUrl={imageUrl ?? null} size={32} time={0}>
+      <VideoThumbnailWrapper videoUrl={imageUrl} size={32} time={0}>
         {(thumbnail) => (
           <AvatarClanByList
             avatarUrl={thumbnail || distilledAiPlaceholder}

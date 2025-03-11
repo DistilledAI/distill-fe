@@ -8,6 +8,10 @@ import React, { useEffect } from "react"
 import useLoadDataInfinite from "../useLoadMoreData"
 import SkeletonData from "../SkeletonData"
 import { MY_DATA_STATUS } from "@constants/index"
+import { getUserName } from "./helpers"
+import { PackageIcon } from "@components/Icons"
+import { useDisclosure } from "@nextui-org/react"
+import AddSocialBulkModal from "./AddInBulk"
 
 const AddSocialProfile: React.FC<{
   onMoreCustomRequest: (data: any, callback: () => void) => void
@@ -15,6 +19,7 @@ const AddSocialProfile: React.FC<{
 }> = ({ onMoreCustomRequest, setIsWarningSync }) => {
   const myAgent = useAppSelector((state) => state.agents.myAgent)
   const botId = myAgent?.id as number
+  const { onClose, onOpen, isOpen } = useDisclosure()
 
   const {
     list,
@@ -54,7 +59,7 @@ const AddSocialProfile: React.FC<{
                 id={item.id}
                 key={item.id}
                 value={item.value}
-                title={item.value}
+                title={`@${getUserName(item.value)}`}
                 status={item.status}
                 category={BotDataTypeKey.SOCIAL_MEDIA}
               />
@@ -80,6 +85,25 @@ const AddSocialProfile: React.FC<{
             })
           }
         />
+        <div
+          onClick={onOpen}
+          className="mt-2 inline-flex h-[32px] cursor-pointer items-center gap-1 rounded-full bg-mercury-100 px-3 text-15 font-semibold"
+        >
+          <PackageIcon />
+          Add links in bulk
+        </div>
+        {isOpen && (
+          <AddSocialBulkModal
+            isOpen={isOpen}
+            onClose={onClose}
+            onMoreCustomRequest={(data: any) => {
+              onMoreCustomRequest(data, () => {
+                refetch()
+                onClose()
+              })
+            }}
+          />
+        )}
       </div>
     </DataWrapper>
   )

@@ -13,6 +13,10 @@ import { centerTextEllipsis, copyClipboard } from "@utils/index"
 import { solanaCircleIcon } from "@assets/svg"
 import { CopyIcon } from "@components/Icons/Copy"
 import { LogoutIcon } from "@components/Icons/OutputIcon"
+import useGetVaultInfo from "@pages/Stake/BlackRack/Investment/useGetVaultInfo"
+import { INVEST_ADDRESS } from "@pages/Stake/BlackRack/Investment/constants"
+import { DECIMAL_SPL } from "@pages/BetingPage/constants"
+import { aiFund2Ava } from "@assets/images"
 
 export interface IVaultData {
   totalStaked: number
@@ -23,7 +27,7 @@ export interface IVaultData {
   decimals: number
   tokenName: string
   avatar: string
-  coinGeckoId: CoinGeckoId
+  coinGeckoId: CoinGeckoId | null
   avatar2?: string
 }
 
@@ -34,10 +38,22 @@ const MyStakedVault = () => {
   const { isLogin, isAnonymous } = useAuthState()
   const { setVisible } = useWalletModal()
   const [isAllVault, setIsAllVault] = useState(false)
-
   const disconnectWallet = async () => await wallet.disconnect()
-
   const [list, setList] = useState<IVaultData[]>([])
+  const { total, info } = useGetVaultInfo()
+  const aum = toBN(info.aum / 10 ** DECIMAL_SPL).toFixed(2)
+
+  const vaultAgentFundII: IVaultData = {
+    totalStaked: Number(aum),
+    myStaked: total,
+    id: -1,
+    address: INVEST_ADDRESS.shareToken as any,
+    label: "AI Agent Fund II",
+    decimals: 6,
+    tokenName: "SHARES",
+    avatar: aiFund2Ava,
+    coinGeckoId: null,
+  }
 
   const handleFetchData = async () => {
     const results = LIST_TOKEN_STAKE.filter(
@@ -81,6 +97,11 @@ const MyStakedVault = () => {
     if (!isLogin || isAnonymous) disconnectWallet()
   }, [isLogin, isAnonymous])
 
+  const getListVaultStake = () => {
+    const dt = list.concat([{ ...vaultAgentFundII }])
+    return isAllVault ? dt : dt.filter((item) => item.myStaked > 0)
+  }
+
   return (
     <div className="mt-6">
       <div className="flex items-center justify-between">
@@ -121,7 +142,7 @@ const MyStakedVault = () => {
       </div>
       <div className="mt-5">
         <StakedTable
-          list={isAllVault ? list : list.filter((item) => item.myStaked > 0)}
+          list={getListVaultStake()}
           emptyContent={
             wallet.publicKey ? "Empty" : "Connect wallet to show vaults"
           }

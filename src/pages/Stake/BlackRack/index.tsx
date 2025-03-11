@@ -9,7 +9,7 @@ const SimpleStaking = lazy(() => import("../SimpleStaking"))
 const InvestmentVault = lazy(() => import("./Investment"))
 const InvestInformation = lazy(() => import("./InvestInformation"))
 
-enum Category {
+export enum CategoryRacksVault {
   Simple = "simple_staking",
   AIFund1 = "aifund1_vault",
   AIFund2 = "aifund2_vault",
@@ -46,13 +46,13 @@ const BlackRackVault = () => {
   const tokenAddress = searchParams.get("token")
   const category = searchParams.get("category")
 
-  const simpleLink = `${PATH_NAMES.STAKING}?token=${tokenAddress}&category=${Category.Simple}`
-  const investLinkF2 = `${PATH_NAMES.STAKING}?token=${tokenAddress}&category=${Category.AIFund2}`
-  const investLinkF1 = `${PATH_NAMES.STAKING}?token=${tokenAddress}&category=${Category.AIFund1}`
+  const simpleLink = `${PATH_NAMES.STAKING}?token=${tokenAddress}&category=${CategoryRacksVault.Simple}`
+  const investLinkF2 = `${PATH_NAMES.STAKING}?token=${tokenAddress}&category=${CategoryRacksVault.AIFund2}`
+  const investLinkF1 = `${PATH_NAMES.STAKING}?token=${tokenAddress}&category=${CategoryRacksVault.AIFund1}`
 
-  if (category === Category.Simple) return <SimpleStaking />
-  if (category === Category.AIFund2) return <InvestmentVault />
-  if (category === Category.AIFund1) return <InvestInformation />
+  if (category === CategoryRacksVault.Simple) return <SimpleStaking />
+  if (category === CategoryRacksVault.AIFund2) return <InvestmentVault />
+  if (category === CategoryRacksVault.AIFund1) return <InvestInformation />
 
   return (
     <div>
