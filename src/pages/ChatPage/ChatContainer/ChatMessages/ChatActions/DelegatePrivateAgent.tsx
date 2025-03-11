@@ -3,125 +3,115 @@ import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { FilledUserIcon } from "@components/Icons/UserIcon"
 import { useAppSelector } from "@hooks/useAppRedux"
 import useAuthState from "@hooks/useAuthState"
-import { Button } from "@nextui-org/react"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
-import React, { useEffect } from "react"
+import { useCallback, useEffect } from "react"
 import { useParams } from "react-router-dom"
-import { changeStatusBotInGroup, checkStatusBotInGroup } from "services/chat"
+import {
+  ChangeStatusBotInGroup,
+  changeStatusBotInGroup,
+  checkStatusBotInGroup,
+} from "services/chat"
+import { twMerge } from "tailwind-merge"
 import { QueryDataKeys } from "types/queryDataKeys"
 
-export const BOT_STATUS = {
-  ENABLE: 1,
-  DISABLE: 0,
+export enum BOT_STATUS {
+  ENABLE = 1,
+  DISABLE = 0,
 }
 
-const DelegatePrivateAgent = () => {
-  const { chatId: groupId } = useParams()
+interface BotInfo {
+  status?: BOT_STATUS
+  myBot?: {
+    id: string
+  }
+}
+
+interface Props {
+  isDelegateBtn: boolean
+}
+
+const isBotEnabled = (status?: BOT_STATUS): boolean =>
+  status === BOT_STATUS.ENABLE
+
+const DelegatePrivateAgent: React.FC<Props> = ({ isDelegateBtn }) => {
+  const { chatId: groupId } = useParams<{ chatId: string }>()
   const queryClient = useQueryClient()
   const { isAnonymous, isLogin } = useAuthState()
-  const myAgentList = useAppSelector((state) => state.agents.myAgents)
-  const isMyAgents = !!myAgentList?.length
+  const myAgent = useAppSelector((state) => state.agents.myAgent)
 
-  const callCheckStatusBotInGroup = async () => {
-    if (!!groupId && !isAnonymous && isMyAgents) {
-      const response = await checkStatusBotInGroup(groupId)
-      if (response?.data) {
-        return response?.data
-      }
-    }
-    return {}
-  }
+  const isQueryEnabled = !!groupId && !!myAgent && !isAnonymous && isLogin
 
-  const { data: botInfo, refetch } = useQuery({
+  const fetchBotStatus = useCallback(async () => {
+    if (!isQueryEnabled) return {}
+    const response = await checkStatusBotInGroup(groupId)
+    return response?.data ?? {}
+  }, [groupId, isQueryEnabled])
+
+  const { data: botInfo, refetch } = useQuery<BotInfo>({
     queryKey: [QueryDataKeys.DELEGATE_PRIVATE_AGENT, groupId],
-    queryFn: callCheckStatusBotInGroup,
-    enabled: !!groupId && isMyAgents && !isAnonymous && isLogin,
+    queryFn: fetchBotStatus,
+    enabled: isQueryEnabled,
   })
 
   const botStatus = botInfo?.status
   const myBotData = botInfo?.myBot
   const botId = myBotData?.id
-  const isBotEnabled = botStatus === BOT_STATUS.ENABLE
+  const enabled = isBotEnabled(botStatus)
 
   useEffect(() => {
-    queryClient.setQueryData([QueryDataKeys.IS_CHATTING, groupId], () =>
-      botStatus && isBotEnabled ? isBotEnabled : false,
+    queryClient.setQueryData(
+      [QueryDataKeys.IS_CHATTING, groupId],
+      enabled && isDelegateBtn ? true : false,
     )
-  }, [isBotEnabled, botInfo])
+  }, [queryClient, groupId, enabled, isDelegateBtn])
 
-  const handleSetDelegate = async () => {
-    const status = isBotEnabled ? BOT_STATUS.DISABLE : BOT_STATUS.ENABLE
+  const handleSetDelegate = useCallback(async () => {
+    if (!groupId || !botId) return
+
+    const newStatus = enabled ? BOT_STATUS.DISABLE : BOT_STATUS.ENABLE
     try {
-      const payloadData = {
+      const payload: ChangeStatusBotInGroup = {
         groupId,
-        botId,
-        status,
+        botId: Number(botId),
+        status: newStatus,
       }
-      const response = await changeStatusBotInGroup(payloadData)
-      if (response) {
-        refetch()
-      }
+      const response = await changeStatusBotInGroup(payload)
+      if (response) refetch()
     } catch (error) {
-      console.error("error", error)
+      console.error("Failed to change bot status:", error)
     }
-  }
+  }, [groupId, botId, enabled, refetch])
 
-  if (!myBotData) return <></>
+  if (!myBotData || !isDelegateBtn) return null
 
   return (
-    <>
-      <div className="hidden w-fit items-center justify-end md:flex">
-        <Button
-          className="flex h-11 w-fit cursor-pointer items-center gap-2 rounded-3xl bg-mercury-70 p-3"
-          onPress={handleSetDelegate}
-        >
-          {isBotEnabled ? (
-            <FilledBrainAIIcon size={20} />
-          ) : (
-            <FilledUserIcon size={20} />
-          )}
-          <span className="text-base text-mercury-900 transition-all duration-500 ease-in-out">
-            {isBotEnabled
-              ? " Take over this chat by yourself"
-              : " Delegate to your Private Agent"}
-          </span>
-        </Button>
+    <button
+      className="group/item flex w-fit cursor-pointer items-center gap-2"
+      onClick={handleSetDelegate}
+    >
+      <div
+        className={twMerge(
+          "flex items-center gap-1 transition-transform",
+          enabled && "flex-row-reverse",
+        )}
+      >
+        <div className="flex h-[18px] w-[18px] items-center justify-center rounded-full bg-[#0FE9A4]">
+          <FilledUserIcon size={14} />
+        </div>
+        <div className={twMerge("rotate-180", enabled && "rotate-0")}>
+          <ArrowLeftFilledIcon size={16} color="#676767" />
+        </div>
+        <div className="flex h-[18px] w-[18px] items-center justify-center rounded-full bg-[#FC0]">
+          <FilledBrainAIIcon size={14} />
+        </div>
       </div>
-      <div className="block md:hidden">
-        <Button
-          onPress={handleSetDelegate}
-          className="flex h-11 items-center rounded-full bg-mercury-950"
-        >
-          {isBotEnabled ? (
-            <>
-              <span className="text-13 font-medium text-white">Delegate</span>
-              <div className="flex h-4 w-4 items-center justify-center rounded-full bg-[#0FE9A4]">
-                <FilledUserIcon size={12} />
-              </div>
-              <div className="rotate-180">
-                <ArrowLeftFilledIcon color="white" size={12} />
-              </div>
-              <div className="flex h-4 w-4 items-center justify-center rounded-full bg-[#FC0]">
-                <FilledBrainAIIcon size={12} />
-              </div>
-            </>
-          ) : (
-            <>
-              <span className="text-13 font-medium text-white">Take over</span>
-              <div className="flex h-4 w-4 items-center justify-center rounded-full bg-[#FC0]">
-                <FilledBrainAIIcon size={12} />
-              </div>
-              <div className="rotate-180">
-                <ArrowLeftFilledIcon color="white" size={12} />
-              </div>
-              <div className="flex h-4 w-4 items-center justify-center rounded-full bg-[#0FE9A4]">
-                <FilledUserIcon size={12} />
-              </div>
-            </>
-          )}
-        </Button>
-      </div>
-    </>
+      <span className="text-13 text-mercury-500 underline group-hover/item:text-mercury-950">
+        {enabled
+          ? "Take over this chat by yourself"
+          : "Delegate to your Private Agent"}
+      </span>
+    </button>
   )
 }
-export default React.memo(DelegatePrivateAgent)
+
+export default DelegatePrivateAgent

@@ -1,18 +1,35 @@
 import { distilledAiPlaceholder } from "@assets/images"
 import { PlusIcon } from "@components/Icons/Plus"
-import { WalletIcon } from "@components/Icons/Wallet"
 import { PATH_NAMES, RoleUser } from "@constants/index"
+import { useAppDispatch, useAppSelector } from "@hooks/useAppRedux"
 import useAuthState from "@hooks/useAuthState"
 import useConnectWallet from "@hooks/useConnectWallet"
 import { Button } from "@nextui-org/react"
+import { updateConnectedWalletStatus } from "@reducers/connectWalletSlice"
+import { useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 
-const ChatMyAgentEmpty = () => {
+const MyAgentEmpty = () => {
+  const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const { user } = useAuthState()
   const { connectMultipleWallet, loading } = useConnectWallet()
+  const isConnectedWallet = useAppSelector(
+    (state) => state.connectWalletReducer.isConnectedWallet,
+  )
+  const myAgent = useAppSelector((state) => state.agents.myAgent)
+  const isUserLogged = user?.publicAddress && user.role !== RoleUser.ANONYMOUS
+  const queryParams = new URLSearchParams(location.search)
+  const action = queryParams.get("action")
 
-  const isUserLogged = user.publicAddress && user.role !== RoleUser.ANONYMOUS
+  useEffect(() => {
+    if (isConnectedWallet) {
+      if (!myAgent?.id && action === "create-agent") {
+        navigate(PATH_NAMES.CREATE_AGENT)
+      }
+      dispatch(updateConnectedWalletStatus(false))
+    }
+  }, [isConnectedWallet, myAgent?.id, action])
 
   return (
     <div className="flex h-[calc(100dvh-112px)] w-full flex-col md:h-full">
@@ -52,30 +69,25 @@ const ChatMyAgentEmpty = () => {
           <span className="text-brown-500">Create Your First Agent.</span>
         </p>
 
-        {!isUserLogged ? (
-          <Button
-            className="mt-4 h-14 rounded-full bg-mercury-950 text-white max-md:h-[36px] md:mt-8"
-            isLoading={loading}
-            onPress={connectMultipleWallet}
-          >
-            <div className="flex items-center gap-1 max-md:hidden">
-              {!loading && <WalletIcon />} Connect Wallet
-            </div>
-            <span className="hidden max-md:block">Connect</span>
-          </Button>
-        ) : (
-          <Button
-            className="mt-4 h-14 rounded-full bg-mercury-950 text-[16px] font-bold text-mercury-30 md:mt-8"
-            isLoading={loading}
-            onPress={() => navigate(PATH_NAMES.CREATE_AGENT)}
-          >
-            <PlusIcon color="#FAFAFA" />
-            Create Agent
-          </Button>
-        )}
+        <Button
+          type="button"
+          className="mt-4 h-14 rounded-full bg-mercury-950 text-[16px] font-bold text-mercury-30 md:mt-8"
+          isLoading={loading}
+          onPress={() => {
+            if (!isUserLogged) {
+              navigate({ search: "action=create-agent" }, { replace: true })
+              connectMultipleWallet()
+            } else {
+              navigate(PATH_NAMES.CREATE_AGENT)
+            }
+          }}
+        >
+          <PlusIcon color="#FAFAFA" />
+          Create Agent
+        </Button>
       </div>
     </div>
   )
 }
 
-export default ChatMyAgentEmpty
+export default MyAgentEmpty

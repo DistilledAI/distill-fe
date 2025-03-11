@@ -2,19 +2,27 @@ import { distilledAiPlaceholder } from "@assets/images"
 import { CameraIcon } from "@components/Icons"
 import { ClipboardTextIcon } from "@components/Icons/ClipboardTextIcon"
 import { TelegramIcon } from "@components/Icons/RewardsIcons"
+import { TablerPlusIcon } from "@components/Icons/TablerPlusIcon"
 import { TwitterIcon } from "@components/Icons/Twitter"
 import { WorldGlobalIcon } from "@components/Icons/World"
 import { Input } from "@nextui-org/react"
 import CategoryLabel, { FieldLabel } from "@pages/AgentDetail/CategoryLabel"
 import ChangeAvatarContainer from "@pages/AgentDetail/ChangeAvatarContainer"
 import { fileToBase64, isPassFileSize } from "@utils/index"
+import { useState } from "react"
 import { Controller, useFormContext } from "react-hook-form"
 import { toast } from "react-toastify"
-// import ClanPublicChip from "../../ClanUtilities/ClanPublicChip"
 
 const Appearance = () => {
   const { control, setValue, watch } = useFormContext()
   const avatarWatch = watch("avatar")
+  const websiteLink = watch("website_link")
+  console.log("🚀 ~ Appearance ~ websiteLink:", websiteLink)
+  const [isShowWebsiteField, setIsShowWebsiteField] = useState<boolean>(false)
+
+  const toggleShowWebsiteField = () => {
+    setIsShowWebsiteField(!isShowWebsiteField)
+  }
 
   const handleUploadAvatar = async (file: File) => {
     try {
@@ -81,33 +89,6 @@ const Appearance = () => {
             />
           </div>
           <div className="mt-4">
-            <Controller
-              name="description"
-              control={control}
-              render={({ field: { value, onChange } }: any) => {
-                return (
-                  <div className="w-full">
-                    <FieldLabel text="Short Bio" required />
-                    <div className="flex items-center max-sm:h-auto">
-                      <Input
-                        key="agent-description"
-                        value={value}
-                        type="text"
-                        placeholder='e.g., "A helpful customer service agent"'
-                        className="w-full"
-                        classNames={{
-                          mainWrapper: "border border-mercury-400 rounded-xl",
-                          inputWrapper: " bg-mercury-70",
-                        }}
-                        onChange={(e) => onChange(e.target.value)}
-                      />
-                    </div>
-                  </div>
-                )
-              }}
-            />
-          </div>
-          <div className="mt-4">
             <div className="mb-2">
               <h4 className="text-16 font-semibold text-mercury-950 max-md:text-14">
                 Links
@@ -126,30 +107,6 @@ const Appearance = () => {
                           value={value}
                           type="text"
                           placeholder="https://x.com/username"
-                          className="w-full"
-                          classNames={{
-                            mainWrapper: "border border-mercury-400 rounded-xl",
-                            inputWrapper: " bg-mercury-70",
-                          }}
-                          onChange={(e) => onChange(e.target.value)}
-                        />
-                      </div>
-                    </div>
-                  )
-                }}
-              />
-              <Controller
-                name="website_link"
-                control={control}
-                render={({ field: { value, onChange } }: any) => {
-                  return (
-                    <div className="w-full">
-                      <div className="flex items-center max-sm:h-auto">
-                        <Input
-                          startContent={<WorldGlobalIcon />}
-                          value={value}
-                          type="text"
-                          placeholder="https://example.com/"
                           className="w-full"
                           classNames={{
                             mainWrapper: "border border-mercury-400 rounded-xl",
@@ -186,6 +143,44 @@ const Appearance = () => {
                   )
                 }}
               />
+
+              {isShowWebsiteField || !!websiteLink ? (
+                <Controller
+                  name="website_link"
+                  control={control}
+                  render={({ field: { value, onChange } }: any) => {
+                    return (
+                      <div className="w-full">
+                        <div className="flex items-center max-sm:h-auto">
+                          <Input
+                            startContent={<WorldGlobalIcon />}
+                            value={value}
+                            type="text"
+                            placeholder="https://example.com/"
+                            className="w-full"
+                            classNames={{
+                              mainWrapper:
+                                "border border-mercury-400 rounded-xl",
+                              inputWrapper: " bg-mercury-70",
+                            }}
+                            onChange={(e) => onChange(e.target.value)}
+                          />
+                        </div>
+                      </div>
+                    )
+                  }}
+                />
+              ) : (
+                <div
+                  onClick={toggleShowWebsiteField}
+                  className="flex cursor-pointer items-center gap-2"
+                >
+                  <TablerPlusIcon color="#A2845E" />
+                  <span className="text-14 font-medium text-[#A2845E]">
+                    Add Website
+                  </span>
+                </div>
+              )}
             </div>
           </div>
         </div>

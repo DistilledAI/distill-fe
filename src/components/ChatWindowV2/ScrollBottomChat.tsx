@@ -18,7 +18,7 @@ const ScrollBottomChat = ({
   return (
     <div
       className={twMerge(
-        "sticky inset-x-0 bottom-[-1px] z-10 flex h-[42px] w-full items-center justify-center bg-fading-white bg-cover bg-no-repeat",
+        "sticky inset-x-0 bottom-0 z-10 flex h-[42px] w-full items-center justify-center bg-fading-white bg-cover bg-no-repeat pb-2",
         scrollBottomClassName,
       )}
     >

@@ -20,13 +20,93 @@ import ContextCleared from "@components/ContextCleared"
 import { useQuery } from "@tanstack/react-query"
 import { QueryDataKeys } from "types/queryDataKeys"
 import useAuthState from "@hooks/useAuthState"
-import { useCallback, useEffect, useMemo } from "react"
+import { useEffect } from "react"
 import ChatWindowV2 from "@components/ChatWindowV2"
 import { useNavigate } from "react-router-dom"
-// import MessageActions from "./MessageActions"
+import { useAppSelector } from "@hooks/useAppRedux"
+import { UserGroup } from "../LeftBar/useFetchGroups"
+
+interface MessageItemProps {
+  message: IMessageBox
+  index: number
+  messages: IMessageBox[]
+  textColor: string
+  bgColor: string
+}
+
+const MessageItem = ({
+  message,
+  index,
+  messages,
+  textColor,
+  bgColor,
+}: MessageItemProps) => {
+  const { paddingBottomStyle, borderRadiusStyle } = groupedMessages(
+    index,
+    message,
+    messages,
+  )
+
+  if (message.content === CLEAR_CACHED_MESSAGE) {
+    return (
+      <ContextCleared
+        wrapperClassName={twMerge(
+          "max-w-[768px] mx-auto pb-4 px-3 md:px-0",
+          messages.length - 1 === index && "pb-10",
+        )}
+        textClassName={textColor}
+      />
+    )
+  }
+
+  const isOwner = message.role === RoleChat.OWNER
+  const isCustomer = message.role === RoleChat.CUSTOMER
+  const badgeIcon =
+    message.roleOwner === RoleUser.BOT ? (
+      <FilledBrainAIIcon size={14} />
+    ) : (
+      <FilledUserIcon size={14} />
+    )
+
+  return (
+    <div
+      className={twMerge(
+        "relative mx-auto w-full max-w-[768px] rounded-[22px] p-3",
+        isOwner && `${paddingBottomStyle} relative`,
+        isCustomer && "group/item pb-6",
+      )}
+    >
+      {isCustomer && (
+        <ReceiverMessage
+          avatar={{
+            src: message.avatar,
+            badgeIcon,
+            badgeClassName: getBadgeColor(message.roleOwner),
+            publicAddress: message.publicAddress,
+          }}
+          content={message.content}
+          isTyping={message.isTyping}
+          baseClassName="relative"
+        />
+      )}
+      {isOwner && (
+        <SenderMessage
+          content={message.content}
+          baseClassName={twMerge(bgColor, borderRadiusStyle)}
+        />
+      )}
+    </div>
+  )
+}
 
 const ChatMessages = () => {
   const navigate = useNavigate()
+  const { chatId: groupId } = useGetChatId()
+  const { bgColor, textColor } = getActiveColorRandomById(groupId)
+  const { spacing } = useStyleSpacing()
+  const { user, isLogin } = useAuthState()
+  const myAgent = useAppSelector((state) => state.agents.myAgent)
+
   const {
     isLoading,
     isFetched,
@@ -34,104 +114,57 @@ const ChatMessages = () => {
     messages,
     hasPreviousMore,
     isFetchingPreviousPage,
-    error: errorMessages,
+    error,
   } = useFetchMessages()
-  const { chatId: groupId } = useGetChatId()
-  const { bgColor, textColor } = getActiveColorRandomById(groupId)
-  const { spacing } = useStyleSpacing()
-  const { user, isLogin } = useAuthState()
-  const { data: groupDetailData, isFetched: isGroupDetailFetched } =
-    useQuery<any>({
-      queryKey: [QueryDataKeys.GROUP_DETAIL, groupId?.toString()],
-      enabled: !!groupId && isLogin,
-    })
-  const userBId = groupDetailData?.data?.group?.userBId
-  const isOwner = useMemo(() => {
-    return !isGroupDetailFetched && isLogin ? true : userBId === user?.id
-  }, [isGroupDetailFetched, userBId, user?.id, isLogin])
+
+  const { data: groupDetailData, isFetched: isGroupDetailFetched } = useQuery<{
+    data: UserGroup
+  }>({
+    queryKey: [`${QueryDataKeys.GROUP_DETAIL}-${groupId}`],
+    enabled: !!groupId && isLogin,
+  })
+
+  const userBId = groupDetailData?.data.group?.userBId
+  const isOwner = !isGroupDetailFetched && isLogin ? true : userBId === user?.id
+  const isMyAgent = myAgent?.id === userBId
 
   useEffect(() => {
-    if (errorMessages) {
-      navigate(PATH_NAMES.PRIVATE_AGENT)
-    }
-  }, [errorMessages])
+    if (error) navigate(PATH_NAMES.PRIVATE_AGENT)
+  }, [error, navigate])
 
-  const getBadgeIcon = (role: RoleUser) =>
-    role === RoleUser.BOT ? (
-      <FilledBrainAIIcon size={14} />
-    ) : (
-      <FilledUserIcon size={14} />
-    )
+  const adjustedMessages: IMessageBox[] = [
+    { id: "agent-info" } as IMessageBox,
+    ...messages,
+  ]
 
-  const renderMessage = useCallback(
-    (index: number, message: IMessageBox) => {
-      const { paddingBottomStyle, borderRadiusStyle } = groupedMessages(
-        index,
-        message,
-        messages,
-      )
-
-      if (message.content === CLEAR_CACHED_MESSAGE) {
-        return (
-          <ContextCleared
-            wrapperClassName={twMerge(
-              "max-w-[768px] mx-auto pb-4 px-3 md:px-0",
-              messages.length - 1 === index && "pb-10",
-            )}
-            textClassName={textColor}
-          />
-        )
-      }
-
-      const isOwner = message.role === RoleChat.OWNER
-      const isCustomer = message.role === RoleChat.CUSTOMER
-
+  const renderMessage = (index: number) => {
+    if (index === 0) {
       return (
-        <div
-          className={twMerge(
-            "relative mx-auto w-full max-w-[768px] rounded-[22px] p-3",
-            isOwner && `${paddingBottomStyle} relative`,
-            isCustomer && "group/item pb-6",
-          )}
-        >
-          {isCustomer && (
-            <>
-              {/* <MessageActions
-                groupId={groupId}
-                messageId={message.id}
-                reactionMsgStats={message.reactionMsgStats || []}
-              /> */}
-              <ReceiverMessage
-                avatar={{
-                  src: message.avatar,
-                  badgeIcon: getBadgeIcon(message.roleOwner),
-                  badgeClassName: getBadgeColor(message.roleOwner),
-                  publicAddress: message.publicAddress,
-                }}
-                content={message.content}
-                isTyping={message.isTyping}
-                baseClassName="relative"
-              />
-            </>
-          )}
-          {isOwner && (
-            <SenderMessage
-              content={message.content}
-              baseClassName={twMerge(bgColor, borderRadiusStyle)}
-            />
-          )}
+        <div className="mx-auto h-fit w-full max-w-[768px] md:px-3">
+          <AgentInfoCard
+            messages={messages}
+            groupId={groupId}
+            isLoading={isLoading}
+          />
         </div>
       )
-    },
-    [messages, textColor, bgColor],
-  )
+    }
+    const message = messages[index - 1]
+    return (
+      <MessageItem
+        message={message}
+        index={index - 1}
+        messages={messages}
+        textColor={textColor}
+        bgColor={bgColor}
+      />
+    )
+  }
 
   return (
     <>
-      <AgentInfoCard messages={messages} groupId={groupId} />
-
       <ChatWindowV2
-        messages={messages}
+        messages={adjustedMessages}
         itemContent={renderMessage}
         isLoading={isLoading}
         isFetched={isFetched}
@@ -139,17 +172,16 @@ const ChatMessages = () => {
         isFetchingPreviousPage={isFetchingPreviousPage}
         onLoadPrevMessages={onLoadPrevMessages}
         chatId={groupId}
-        className="h-[calc(100dvh-262px)] max-h-full md:h-dvh md:max-h-[calc(100%-260px)]"
-        msgBoxClassName="p-0 md:px-4 "
-        style={{
-          paddingBottom: `${spacing}px`,
-        }}
-        isChatActions={true}
+        className="h-[calc(100dvh-146px)] max-h-full md:h-full md:max-h-[calc(100%-136px)]"
+        msgBoxClassName="p-0 md:px-4"
+        style={{ paddingBottom: `${spacing}px` }}
+        isChatActions
+        scrollBottomClassName="bottom-0"
       />
       <ChatActions
         isClearContextBtn={!isOwner}
-        isDelegateBtn={false}
-        className="fixed bottom-0 justify-end md:absolute md:bottom-3"
+        isDelegateBtn={isMyAgent}
+        className="fixed bottom-1 md:absolute md:bottom-3"
       />
     </>
   )

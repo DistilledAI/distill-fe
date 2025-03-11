@@ -3,7 +3,7 @@ import AvatarCustom from "@components/AvatarCustom"
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { EditFilledIcon } from "@components/Icons/DefiLens"
 import { MessagePlusIcon } from "@components/Icons/Message"
-import { PATH_NAMES } from "@constants/index"
+import { PATH_NAMES, STATUS_AGENT } from "@constants/index"
 import { useAppSelector } from "@hooks/useAppRedux"
 import useAuthState from "@hooks/useAuthState"
 import useConnectWallet from "@hooks/useConnectWallet"
@@ -63,6 +63,7 @@ const MyAgentHome = () => {
             Chat
           </Button>
           <Button
+            isDisabled={myAgent.status !== STATUS_AGENT.ACTIVE}
             onPress={() => navigate(`${PATH_NAMES.AGENT_DETAIL}/${myAgent.id}`)}
             className="h-[56px] w-full rounded-full bg-mercury-950 text-[16px] font-semibold text-mercury-30 max-md:h-[44px] max-md:text-14"
           >

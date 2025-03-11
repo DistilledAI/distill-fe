@@ -16,6 +16,7 @@ import {
   ModalHeader,
 } from "@nextui-org/react"
 import { updateModalStatus } from "@reducers/connectWalletSlice"
+import { useLocation, useNavigate } from "react-router-dom"
 
 const ConnectWalletModal = () => {
   const {
@@ -29,6 +30,9 @@ const ConnectWalletModal = () => {
     connectOwalletEVM,
   } = useConnectWallet()
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
+  const location = useLocation()
+
   const isOpen = useAppSelector((state) => state.connectWalletReducer.isOpen)
 
   const CONNECTORS = [
@@ -88,6 +92,10 @@ const ConnectWalletModal = () => {
 
   const onClose = () => {
     dispatch(updateModalStatus(false))
+
+    const queryParams = new URLSearchParams(location.search)
+    queryParams.delete("action")
+    navigate({ search: queryParams.toString() }, { replace: true })
   }
 
   return (

@@ -95,53 +95,61 @@ const AllAgents = () => {
   return (
     <>
       <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4">
-        {isLoading
-          ? Array.from({ length: limit }).map((_, index) => (
-              <div key={index}>{renderSkeleton()}</div>
-            ))
-          : data?.agents.map((item) => (
-              <div
-                key={item.id}
-                className="flex cursor-pointer flex-col justify-between gap-2 rounded-[22px] border border-mercury-100 bg-mercury-50 p-2 hover:bg-mercury-100 md:p-4"
-                onClick={() => handleChatWithAgent(item)}
-              >
-                <div className="flex flex-col items-center">
-                  <div>
-                    <AvatarCustom
-                      src={item.avatar}
-                      badgeIcon={<FilledBrainAIIcon size={14} />}
-                      badgeClassName="bg-[#FC0]"
-                    />
-                  </div>
-
-                  <span className="text-14 font-bold text-mercury-950 md:text-16">
-                    {item.username}
-                  </span>
-
-                  <p className="line-clamp-3 text-center text-12 font-medium text-mercury-800 md:text-14">
-                    {item.description || "-"}
-                  </p>
-                </div>
-                <div className="line-clamp-1 flex items-center justify-center gap-2 text-12 font-medium text-mercury-600 md:text-14">
-                  Created by{" "}
+        {isLoading ? (
+          Array.from({ length: limit }).map((_, index) => (
+            <div key={index}>{renderSkeleton()}</div>
+          ))
+        ) : data?.agents.length === 0 ? (
+          <div className="col-span-full py-10 text-center">
+            <p className="text-18 font-semibold text-mercury-950">
+              No agents found
+            </p>
+          </div>
+        ) : (
+          data?.agents.map((item) => (
+            <div
+              key={item.id}
+              className="flex cursor-pointer flex-col justify-between gap-2 rounded-[22px] border border-mercury-100 bg-mercury-50 p-2 hover:bg-mercury-100 md:p-4"
+              onClick={() => handleChatWithAgent(item)}
+            >
+              <div className="flex flex-col items-center">
+                <div>
                   <AvatarCustom
-                    src={item?.ownerInfo?.avatar}
-                    publicAddress={item?.ownerInfo?.publicAddress}
-                    className="h-[18px] w-[18px] rounded-full"
+                    src={item.avatar}
+                    badgeIcon={<FilledBrainAIIcon size={14} />}
+                    badgeClassName="bg-[#FC0]"
                   />
-                  {item?.ownerInfo?.username || "-"}
                 </div>
+
+                <span className="text-14 font-bold text-mercury-950 md:text-16">
+                  {item.username}
+                </span>
+
+                <p className="line-clamp-3 text-center text-12 font-medium text-mercury-800 md:text-14">
+                  {item.description || "-"}
+                </p>
               </div>
-            ))}
+              <div className="line-clamp-1 flex items-center justify-center gap-2 text-12 font-medium text-mercury-600 md:text-14">
+                Created by{" "}
+                <AvatarCustom
+                  src={item?.ownerInfo?.avatar}
+                  publicAddress={item?.ownerInfo?.publicAddress}
+                  className="h-[18px] w-[18px] rounded-full"
+                />
+                {item?.ownerInfo?.username || "-"}
+              </div>
+            </div>
+          ))
+        )}
       </div>
 
-      {data && (
+      {data && data.total > 0 && (
         <Pagination
           showControls
           initialPage={1}
           radius="full"
           renderItem={PaginationItemCustom}
-          total={data.total ? Math.ceil(data.total / limit) : 1}
+          total={Math.ceil(data.total / limit)}
           variant="light"
           classNames={{
             base: "flex justify-center mt-4",

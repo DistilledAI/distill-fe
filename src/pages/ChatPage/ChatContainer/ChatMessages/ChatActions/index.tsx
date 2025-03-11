@@ -16,20 +16,13 @@ const ChatActions = ({
   return (
     <div
       className={twMerge(
-        "absolute bottom-[69px] left-1/2 z-10 mx-auto flex w-full max-w-[768px] -translate-x-1/2 items-center justify-between bg-white px-4 md:bottom-[96px] xl:px-0",
+        "absolute bottom-[69px] left-1/2 z-10 mx-auto flex h-[18px] w-full max-w-[768px] -translate-x-1/2 items-center justify-between bg-white px-4 md:bottom-[96px] xl:px-0",
         className,
       )}
     >
-      <div className={twMerge(!isClearContextBtn && "hidden")}>
+      <DelegatePrivateAgent isDelegateBtn={isDelegateBtn} />
+      <div className={twMerge("ml-auto", !isClearContextBtn && "hidden")}>
         <ClearContext />
-      </div>
-      <div
-        className={twMerge(
-          "ml-auto hidden md:block",
-          !isDelegateBtn && "!hidden",
-        )}
-      >
-        <DelegatePrivateAgent />
       </div>
     </div>
   )

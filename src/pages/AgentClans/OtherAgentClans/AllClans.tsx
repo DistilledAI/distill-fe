@@ -106,7 +106,7 @@ const AllClans = () => {
           key={virtualItem.key}
           data-index={virtualItem.index}
           ref={virtualizer.measureElement}
-          className="absolute left-0 top-0 w-full text-center text-14 text-mercury-800"
+          className="absolute left-0 top-0 w-full text-center text-16 text-mercury-950"
           style={{
             transform: `translateY(${virtualItem.start}px)`,
             height: 64,
@@ -174,16 +174,22 @@ const AllClans = () => {
         style={{ height: isMobile ? mobile : desktop }}
         onScroll={debouncedHandleScroll}
       >
-        <div
-          className="md:h-full"
-          style={{
-            height: `${virtualizer.getTotalSize()}px`,
-            position: "relative",
-            width: "100%",
-          }}
-        >
-          {items.map(renderItem)}
-        </div>
+        {filteredGroups.length === 0 && !isFetching ? (
+          <div className="flex h-full justify-center text-16 font-semibold text-mercury-950">
+            No clans found
+          </div>
+        ) : (
+          <div
+            className="md:h-full"
+            style={{
+              height: `${virtualizer.getTotalSize()}px`,
+              position: "relative",
+              width: "100%",
+            }}
+          >
+            {items.map(renderItem)}
+          </div>
+        )}
       </div>
     </div>
   )
