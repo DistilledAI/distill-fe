@@ -161,7 +161,7 @@ const Personality = () => {
           Tone of Voice<span className="text-red-500">*</span>
         </p>
         <p className="font-medium text-mercury-700 max-md:text-14">
-          Select the trait that best describe your agent's personality.
+          Select the trait that best describes your agent’s voice.
         </p>
       </div>
       <div className="mt-5 rounded-[22px] bg-[#E9E3D8] p-3 max-md:p-2">
