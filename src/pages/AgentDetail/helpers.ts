@@ -104,8 +104,8 @@ export const LIST_AGENT_CONFIG_KEYS = [
 
 export const getConfigAgentByDataForm = (data: any) => {
   return Object.entries(data)
-    .filter(([_, val]) => val !== null && val !== "" && val !== undefined)
-    .map(([key, val]) => ({ key, value: val ? val.toString() : "" }))
+    .filter(([_, val]) => val !== null && val !== undefined)
+    .map(([key, val]) => ({ key, value: val && val.toString() }))
     .filter((item) => LIST_AGENT_CONFIG_KEYS.includes(item.key))
 }
 
