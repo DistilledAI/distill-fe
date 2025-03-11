@@ -95,6 +95,26 @@ export const SettingIcon = () => {
   )
 }
 
+export const PackageIcon = () => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="20"
+      height="20"
+      viewBox="0 0 20 20"
+      fill="none"
+    >
+      <path
+        d="M16.6663 6.25L9.99967 2.5L3.33301 6.25M16.6663 6.25V13.75L9.99967 17.5M16.6663 6.25L9.99967 10M9.99967 17.5L3.33301 13.75V6.25M9.99967 17.5V10M3.33301 6.25L9.99967 10M13.333 4.375L6.66634 8.125"
+        stroke="#545454"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}
+
 export const LoadingDataIcon = () => {
   return (
     <svg

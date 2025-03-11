@@ -23,6 +23,7 @@ interface UploadCustomProps {
   isComingSoon?: boolean
   children?: React.ReactNode
   containerClassName?: string
+  isBulk?: boolean
 }
 
 const maxSizeUpload = 20
@@ -43,6 +44,7 @@ const UploadCustom: React.FC<UploadCustomProps> = ({
   isComingSoon = false,
   children,
   containerClassName,
+  isBulk = false,
 }) => {
   const messagesEndRef = useRef<any>()
   const [fileListValue, setFileList] = useState<UploadFile[]>([])
@@ -68,9 +70,11 @@ const UploadCustom: React.FC<UploadCustomProps> = ({
       const newFileUploadDone = fileListDone?.filter(
         (item: any) => !item?.connectedToAgent,
       )
-      const newFileIdUploadDone = newFileUploadDone.map(
-        (item) => item?.response?.id,
-      )
+
+      const newFileIdUploadDone = isBulk
+        ? newFileUploadDone[0]?.response?.map((item: any) => item.id)
+        : newFileUploadDone.map((item) => item?.response?.id)
+
       const res = await moreCustomRequest(newFileIdUploadDone)
       if (res) {
         setFileList([])
@@ -87,7 +91,7 @@ const UploadCustom: React.FC<UploadCustomProps> = ({
     try {
       const response = await uploadMyData(formData)
       if (response) {
-        onSuccess(response?.data?.[0])
+        onSuccess(isBulk ? response?.data : response?.data?.[0])
       }
     } catch (error) {
       console.error(error)
