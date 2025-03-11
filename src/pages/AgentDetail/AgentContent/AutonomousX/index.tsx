@@ -304,6 +304,7 @@ const AutonomousX: React.FC<{
                 return (
                   <div className="w-[20%] max-md:w-full">
                     <Select
+                      aria-labelledby="post interval"
                       radius="full"
                       classNames={{
                         trigger: "!bg-mercury-100",
@@ -356,6 +357,7 @@ const AutonomousX: React.FC<{
                 render={({ field: { value, onChange } }: any) => {
                   return (
                     <Select
+                      aria-labelledby="category"
                       className="max-w-[20%] max-md:max-w-full"
                       radius="full"
                       classNames={{

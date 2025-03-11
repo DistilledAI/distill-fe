@@ -157,6 +157,7 @@ const AgentType: React.FC<{
           const isDefaiType = item.key === AGENT_TYPE_KEY.DEFAI
           return (
             <Controller
+              key={item.key}
               name="typeAgent"
               control={control}
               render={({ field: { value, onChange } }: any) => {
@@ -269,9 +270,10 @@ const AgentType: React.FC<{
         <FieldLabel text="LLM Model" />
       </div>
       <div className="mt-2 flex w-full gap-3 max-md:flex-wrap">
-        {LLM_MODEL_OPTIONS.map((record) => {
+        {LLM_MODEL_OPTIONS.map((record, index) => {
           return (
             <Controller
+              key={index}
               name="llmModel"
               control={control}
               render={({ field: { value, onChange } }: any) => {
