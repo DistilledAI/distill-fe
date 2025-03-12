@@ -1,27 +1,27 @@
-import { useEffect, useState } from "react"
+import { IGroup } from "@pages/ChatPageOld/ChatContainer/LeftBar/useFetchGroups"
+import { AGENT_TYPE_KEY } from "@pages/ChatPageOld/ChatContainer/RightContent/MyPrivateAgentContent/AgentInitialization/AgentType"
+import { useQuery } from "@tanstack/react-query"
 import { getFeaturedAgentClans } from "services/group"
 
-const useFetchFeaturedAgentClan = () => {
-  const [data, setData] = useState<any[]>([])
-  const [loading, setLoading] = useState<boolean>(false)
-
-  const callGetFeaturedAgentClans = async () => {
-    try {
-      setLoading(true)
-      const res = await getFeaturedAgentClans()
-      if (res) setData(res.items)
-    } catch (error) {
-      console.log("error", error)
-    } finally {
-      setLoading(false)
-    }
+interface FeaturedClan extends IGroup {
+  owner: {
+    typeAgent: AGENT_TYPE_KEY
   }
+}
 
-  useEffect(() => {
-    callGetFeaturedAgentClans()
-  }, [])
+const useFetchFeaturedAgentClan = () => {
+  const { data, isLoading } = useQuery<FeaturedClan[]>({
+    queryKey: ["featuredAgentClans"],
+    queryFn: async () => {
+      const res = await getFeaturedAgentClans()
+      return res.items
+    },
+  })
 
-  return { data, loading }
+  return {
+    data: data || [],
+    loading: isLoading,
+  }
 }
 
 export default useFetchFeaturedAgentClan
