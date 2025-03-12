@@ -1,6 +1,6 @@
 import { STATUS_AGENT } from "@constants/index"
-import { TYPE_LLM_MODEL } from "@pages/ChatPage/ChatContainer/RightContent/MyPrivateAgentContent/AgentInitialization/AgentType"
-import useGroupDetail from "@pages/ChatPage/hooks/useGroupDetail"
+import { TYPE_LLM_MODEL } from "@pages/ChatPageOld/ChatContainer/RightContent/MyPrivateAgentContent/AgentInitialization/AgentType"
+import useGroupDetail from "@pages/ChatPageOld/hooks/useGroupDetail"
 import AgentNavTab from "@pages/CreateAgent/NavTab"
 import { refreshFetchMyAgent } from "@reducers/agentSlice"
 import { useEffect, useState } from "react"

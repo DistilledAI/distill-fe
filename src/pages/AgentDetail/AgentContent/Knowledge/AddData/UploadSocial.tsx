@@ -1,6 +1,6 @@
 import { UploadIcon } from "@components/Icons"
 import { Button } from "@nextui-org/react"
-import CreatPrivateAgentModal from "@pages/ChatPage/ChatContainer/RightContent/Modal/CreatPrivateAgentModal"
+import CreatPrivateAgentModal from "@pages/ChatPageOld/ChatContainer/RightContent/Modal/CreatPrivateAgentModal"
 import React, { useState } from "react"
 
 const UploadSocial: React.FC<{

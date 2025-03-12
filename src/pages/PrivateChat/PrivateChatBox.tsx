@@ -1,4 +1,4 @@
-import { useEffect, FC } from "react"
+import { useEffect } from "react"
 import { useLocation, useNavigate, useParams } from "react-router-dom"
 import { useAppSelector } from "@hooks/useAppRedux"
 import { useQuery } from "@tanstack/react-query"
@@ -12,26 +12,13 @@ import ChatMyAgentBox from "./ChatMyAgent/ChatMyAgentBox"
 import MyAgentEmpty from "./ChatMyAgent/MyAgentEmpty"
 import ChatAgentOthersBox from "./ChatAgentOthers/ChatAgentOthersBox"
 import MoreAction from "@components/ChatInfoCurrent/MoreAction"
-import { TypeGroup } from "@pages/ChatPage/ChatContainer/LeftBar/useFetchGroups"
+import {
+  TypeGroup,
+  UserGroup,
+} from "@pages/ChatPageOld/ChatContainer/LeftBar/useFetchGroups"
 import useAuthState from "@hooks/useAuthState"
 
-interface User {
-  id?: string
-  publicAddress: string
-  avatar?: string
-  username: string
-}
-
-interface GroupDetail {
-  data: {
-    group: {
-      typeGroup: TypeGroup
-      userB: User
-    }
-  }
-}
-
-const PrivateChatBox: FC = () => {
+const PrivateChatBox = () => {
   const { pathname, search } = useLocation()
   const navigate = useNavigate()
   const { privateChatId, chatId } = useParams<{
@@ -47,7 +34,9 @@ const PrivateChatBox: FC = () => {
   const isChatMyAgent =
     pathname.startsWith(PATH_NAMES.PRIVATE_AGENT) && !!myAgent?.id
 
-  const { data: groupDetail } = useQuery<GroupDetail>({
+  const { data: groupDetail } = useQuery<{
+    data: UserGroup
+  }>({
     queryKey: [`${QueryDataKeys.GROUP_DETAIL}-${groupId}`],
     enabled: isMobile && !!groupId,
   })

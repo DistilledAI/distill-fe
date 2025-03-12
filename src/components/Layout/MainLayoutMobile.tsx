@@ -4,11 +4,11 @@ import Header from "./Header"
 import { Outlet, useLocation, useParams } from "react-router-dom"
 import NavigationMenu from "./Sidebar/NavigationMenu"
 import { PATH_NAMES } from "@constants/index"
-import useGetChatId from "@pages/ChatPage/hooks/useGetChatId"
+import useGetChatId from "@pages/ChatPageOld/hooks/useGetChatId"
 import useInviteAgent from "@hooks/useInviteAgent"
 import useFetchMe from "@hooks/useFetchMe"
 import useReconnectWallet from "@hooks/useReconnectWallet"
-import useMessageSocket from "@pages/ChatPage/ChatContainer/useMessageSocket"
+import useMessageSocket from "@pages/ChatPageOld/ChatContainer/useMessageSocket"
 
 const MainLayoutMobile = () => {
   const { pathname } = useLocation()

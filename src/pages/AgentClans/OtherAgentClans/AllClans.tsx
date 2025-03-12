@@ -14,7 +14,7 @@ import PinClanButton from "./PinClanButton"
 import PinAgentClans from "./PinAgentClans"
 import useFetchClan from "@pages/Marketplace/useFetchClan"
 import { usePinAgentClans } from "./useAgentPinClans"
-import { IGroup } from "@pages/ChatPage/ChatContainer/LeftBar/useFetchGroups"
+import { IGroup } from "@pages/ChatPageOld/ChatContainer/LeftBar/useFetchGroups"
 import { getConfigClanValue } from "@pages/AgentStore/AgentClansStore"
 
 const AllClans = () => {

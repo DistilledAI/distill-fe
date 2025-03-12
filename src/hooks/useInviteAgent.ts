@@ -2,7 +2,7 @@ import { PATH_NAMES } from "@constants/index"
 import useFetchGroups, {
   TypeGroup,
   UserGroup,
-} from "@pages/ChatPage/ChatContainer/LeftBar/useFetchGroups"
+} from "@pages/ChatPageOld/ChatContainer/LeftBar/useFetchGroups"
 import { loginSuccessByAnonymous } from "@reducers/userSlice"
 import { useQueryClient } from "@tanstack/react-query"
 import { cachedSessionStorage, storageKey } from "@utils/storage"
@@ -15,7 +15,7 @@ import { QueryDataKeys } from "types/queryDataKeys"
 import useAuthState from "./useAuthState"
 import useWindowSize from "./useWindowSize"
 import { useAppSelector } from "./useAppRedux"
-import { PRIVATE_AGENT_STATUS } from "@pages/ChatPage/ChatContainer/RightContent/MyPrivateAgentContent/usePrivateAgent"
+import { PRIVATE_AGENT_STATUS } from "@pages/ChatPageOld/ChatContainer/RightContent/MyPrivateAgentContent/usePrivateAgent"
 import { envConfig } from "@configs/env"
 
 const useInviteAgent = () => {

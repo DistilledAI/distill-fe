@@ -12,7 +12,7 @@ import { twMerge } from "tailwind-merge"
 import MessagesSkeleton from "./MessagesSkeleton"
 import DotLoading from "@components/DotLoading"
 import ScrollBottomChat from "./ScrollBottomChat"
-import { IMessageBox } from "@pages/ChatPage/ChatContainer/ChatMessages/helpers"
+import { IMessageBox } from "@pages/ChatPageOld/ChatContainer/ChatMessages/helpers"
 
 interface ChatWindowProps {
   messages: IMessageBox[]

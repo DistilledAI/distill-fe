@@ -7,7 +7,7 @@ import { formatNumberWithComma } from "@utils/index"
 import { useRef } from "react"
 import { QueryDataKeys } from "types/queryDataKeys"
 import LeaderboardClan from "../LeaderboardClan"
-import useGetChatId from "@pages/ChatPage/hooks/useGetChatId"
+import useGetChatId from "@pages/ChatPageOld/hooks/useGetChatId"
 import useAuthState from "@hooks/useAuthState"
 
 const ClanShortInfo = () => {

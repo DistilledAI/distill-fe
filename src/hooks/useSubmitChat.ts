@@ -2,11 +2,11 @@ import { RoleUser } from "@constants/index"
 import {
   IMessageBox,
   RoleChat,
-} from "@pages/ChatPage/ChatContainer/ChatMessages/helpers"
+} from "@pages/ChatPageOld/ChatContainer/ChatMessages/helpers"
 import {
   chatMessagesKey,
   ICachedMessageData,
-} from "@pages/ChatPage/ChatContainer/ChatMessages/useFetchMessages"
+} from "@pages/ChatPageOld/ChatContainer/ChatMessages/useFetchMessages"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { makeId } from "@utils/index"
 import { useRef } from "react"

@@ -5,17 +5,17 @@ import { LiveIcon } from "@components/Icons"
 import TotalMemberBadge from "@components/TotalMemberBadge"
 import { PATH_NAMES } from "@constants/index"
 import useAuthState from "@hooks/useAuthState"
-import AgentShareButton from "@pages/ChatBoxLive/AgentShareButton"
+import AgentShareButton from "@pages/AgentClans/ChatBoxLive/AgentShareButton"
 import {
   getAvatarGroupChat,
   getNameGroup,
   getPublicAddressGroupChat,
-} from "@pages/ChatPage/ChatContainer/LeftBar/helpers"
-import { ORCHESTRATION_LIST } from "@pages/ChatPage/ChatContainer/LeftBar/OrchestrationSlider"
+} from "@pages/ChatPageOld/ChatContainer/LeftBar/helpers"
+import { ORCHESTRATION_LIST } from "@pages/ChatPageOld/ChatContainer/LeftBar/OrchestrationSlider"
 import {
   TypeGroup,
   UserGroup,
-} from "@pages/ChatPage/ChatContainer/LeftBar/useFetchGroups"
+} from "@pages/ChatPageOld/ChatContainer/LeftBar/useFetchGroups"
 import React from "react"
 import { Link, useLocation, useParams } from "react-router-dom"
 import { twMerge } from "tailwind-merge"

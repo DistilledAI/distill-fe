@@ -1,6 +1,6 @@
 import useConnectWallet from "@hooks/useConnectWallet"
 import useReconnectWallet from "@hooks/useReconnectWallet"
-import UserAuth from "@pages/ChatPage/ChatContainer/UserAuth"
+import UserAuth from "@pages/ChatPageOld/ChatContainer/UserAuth"
 import TitlePathName from "./TitlePathName"
 import { useAppSelector } from "@hooks/useAppRedux"
 import { twMerge } from "tailwind-merge"

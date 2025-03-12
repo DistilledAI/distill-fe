@@ -1,6 +1,6 @@
 import { PlusIcon } from "@components/Icons/Plus"
 import { Button, useDisclosure } from "@nextui-org/react"
-import AddFAQModal from "@pages/ChatPage/ChatContainer/RightContent/MyPrivateAgentContent/UploadFAQ/AddFAQModal"
+import AddFAQModal from "@pages/ChatPageOld/ChatContainer/RightContent/MyPrivateAgentContent/UploadFAQ/AddFAQModal"
 import React from "react"
 
 const UploadFAQ: React.FC<{
