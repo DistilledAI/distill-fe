@@ -89,6 +89,7 @@ const AgentDetail: React.FC = () => {
         imageLive: null,
         isEnableClan: 2,
       },
+      specific_language: "",
     },
   })
 
@@ -133,6 +134,7 @@ const AgentDetail: React.FC = () => {
   }, [agentData, methods.reset, agentConfigs, groupDetail?.group])
 
   const onSubmit = async (data: any) => {
+    console.log("🚀 ~ onSubmit ~ data:", data)
     if (!isPassRuleAgentInfo(data) || !isActive) return
     const changedData = Object.keys(methods.formState.dirtyFields).reduce(
       (acc: any, key) => {

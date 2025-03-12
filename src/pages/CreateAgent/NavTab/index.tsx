@@ -62,7 +62,7 @@ const AgentNavTab: React.FC<{
     },
     {
       key: TabKeyAgent.ClanUtilities,
-      title: "Clan & Utilities",
+      title: "Clan & Tokenization",
       icon: <ClanOutlineIcon color="#545454" size={24} />,
       iconActive: <ClanOutlineIcon color="#83664B" size={24} />,
       isLater: !agentId,
