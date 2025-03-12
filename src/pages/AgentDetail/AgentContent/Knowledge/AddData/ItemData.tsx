@@ -30,16 +30,27 @@ const ItemData: React.FC<{
     <div className="flex items-center justify-between rounded-[8px] border-1 border-brown-500 bg-brown-50 px-3 py-2">
       <div className="flex items-center gap-1">
         {icon && icon}
-        <a
-          href={getLinkXByURL(value)}
-          target="_blank"
-          className={twMerge(
-            "max-w-[100px] truncate text-13 font-semibold hover:underline max-md:max-w-[170px]",
-            className?.classNameTitle,
-          )}
-        >
-          {title}
-        </a>
+        {category === BotDataTypeKey.SOCIAL_MEDIA ? (
+          <a
+            href={getLinkXByURL(value)}
+            target="_blank"
+            className={twMerge(
+              "max-w-[100px] truncate text-13 font-semibold hover:underline max-md:max-w-[170px]",
+              className?.classNameTitle,
+            )}
+          >
+            {title}
+          </a>
+        ) : (
+          <p
+            className={twMerge(
+              "max-w-[100px] truncate text-13 font-semibold max-md:max-w-[170px]",
+              className?.classNameTitle,
+            )}
+          >
+            {title}
+          </p>
+        )}
       </div>
       <div className="flex items-center gap-[6px]">
         <div>
