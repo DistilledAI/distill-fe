@@ -11,7 +11,6 @@ import { useQueryClient } from "@tanstack/react-query"
 import { getActiveColorRandomById } from "@utils/index"
 import { useNavigate } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
-import { match } from "ts-pattern"
 import { QueryDataKeys } from "types/queryDataKeys"
 import DotNotification from "../../ChatPage/ChatContainer/DotNotification"
 import ActiveEffect from "../../ChatPage/ChatContainer/LeftBar/ActiveEffect"
@@ -60,52 +59,46 @@ const AllMessages = () => {
       return { ...group, bgColor }
     })
 
-  const renderInfoGroup = (groupItem: UserGroup) =>
-    match(groupItem.group.typeGroup)
-      .returnType<React.ReactNode>()
-      .with(TypeGroup.PRIVATE_GROUP, () => (
-        <AvatarGroup groupName={groupItem.group.name} />
-      ))
-      .with(TypeGroup.PUBLIC_GROUP, () => (
-        <AvatarClan
-          avatarUrl={groupItem.group.image}
-          publicAddress={groupItem.group.name}
-          name={groupItem.group.name}
-        />
-      ))
-      .otherwise(() => (
-        <AvatarContainer
-          badgeIcon={getIconGroup(
-            groupItem.userId,
-            groupItem.group.userA,
-            groupItem.group.userB,
-          )}
-          avatarUrl={
-            getAvatarGroupChat(
-              groupItem.userId,
-              groupItem.group.userA,
-              groupItem.group.userB,
-            ) || distilledAiPlaceholder
-          }
-          publicAddress={getPublicAddressGroupChat(
-            groupItem.userId,
-            groupItem.group.userA,
-            groupItem.group.userB,
-          )}
-          userName={getNameGroup(
-            user,
-            groupItem.group.userA,
-            groupItem.group.userB,
-          )}
-          badgeClassName={getColorGroupIcon(
-            groupItem.userId,
-            groupItem.group.userA,
-            groupItem.group.userB,
-          )}
-          wrapperClassName="w-full"
-          usernameClassName="text-[16px] font-bold text-mercury-950 flex-1"
-        />
-      ))
+  const renderInfoGroup = (groupItem: UserGroup) => {
+    const badgeColor = getColorGroupIcon(
+      groupItem.userId,
+      groupItem.group.userA,
+      groupItem.group.userB,
+    )
+
+    let avatarUrl = getAvatarGroupChat(
+      groupItem.userId,
+      groupItem.group.userA,
+      groupItem.group.userB,
+    )
+    if (!avatarUrl && badgeColor === "bg-[#FC0]") {
+      avatarUrl = distilledAiPlaceholder
+    }
+
+    return (
+      <AvatarContainer
+        badgeIcon={getIconGroup(
+          groupItem.userId,
+          groupItem.group.userA,
+          groupItem.group.userB,
+        )}
+        avatarUrl={avatarUrl}
+        publicAddress={getPublicAddressGroupChat(
+          groupItem.userId,
+          groupItem.group.userA,
+          groupItem.group.userB,
+        )}
+        userName={getNameGroup(
+          user,
+          groupItem.group.userA,
+          groupItem.group.userB,
+        )}
+        badgeClassName={badgeColor}
+        wrapperClassName="w-full"
+        usernameClassName="text-[16px] font-bold text-mercury-950 flex-1"
+      />
+    )
+  }
 
   const handleGroupClick = (groupItem: UserGroup, isBotLive: boolean) => {
     queryClient.setQueryData<number[]>(

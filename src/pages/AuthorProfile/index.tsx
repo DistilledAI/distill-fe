@@ -1,11 +1,11 @@
-import BackButton from "./BackButton"
 import PublicAgents from "./PublicAgents"
 import AuthorInfo from "./AuthorInfo"
+import HeaderBack from "@components/Layout/Header/HeaderBack"
 
 const AuthorProfile = () => {
   return (
     <>
-      <BackButton />
+      <HeaderBack />
       <div className="space-y-2">
         <AuthorInfo />
         <PublicAgents />
