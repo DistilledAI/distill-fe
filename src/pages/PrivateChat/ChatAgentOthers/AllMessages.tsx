@@ -1,6 +1,5 @@
 import { useRef, useState } from "react"
-import AvatarContainer, { AvatarClan } from "@components/AvatarContainer"
-import AvatarGroup from "@components/AvatarGroup"
+import AvatarContainer from "@components/AvatarContainer"
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { FilledUserIcon } from "@components/Icons/UserIcon"
 import { PATH_NAMES, RoleUser } from "@constants/index"

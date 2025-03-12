@@ -1,4 +1,4 @@
-import { useEffect, FC } from "react"
+import { useEffect } from "react"
 import { useLocation, useNavigate, useParams } from "react-router-dom"
 import { useAppSelector } from "@hooks/useAppRedux"
 import { useQuery } from "@tanstack/react-query"
