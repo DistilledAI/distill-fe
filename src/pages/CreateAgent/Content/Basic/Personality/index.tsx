@@ -8,7 +8,8 @@ import {
 } from "@assets/images"
 // import { LockFilledIcon } from "@components/Icons/AgentDetailIcon"
 import { StarUserIconOutline } from "@components/Icons/UserIcon"
-import { Checkbox, Textarea } from "@nextui-org/react"
+import { WorldGlobalIcon } from "@components/Icons/World"
+import { Checkbox, Select, SelectItem, Textarea } from "@nextui-org/react"
 import CategoryLabel, { FieldLabel } from "@pages/AgentDetail/CategoryLabel"
 import { useEffect, useState } from "react"
 import { Controller, useFormContext } from "react-hook-form"
@@ -69,6 +70,25 @@ const PERSONALITY_LIST = [
   },
 ]
 
+const SUPPORT_LANGUAGE_AGENT = [
+  {
+    label: "English",
+    value: "en",
+  },
+  {
+    label: "Japanese",
+    value: "ja",
+  },
+  {
+    label: "Thai",
+    value: "th",
+  },
+  {
+    label: "Portuguese",
+    value: "pt",
+  },
+]
+
 export interface BehaviorItem {
   value: string
   label: string
@@ -126,7 +146,7 @@ const Personality = () => {
         />
       </div>
 
-      <div className="mt-4">
+      <div className="mt-6">
         <Controller
           name="description"
           control={control}
@@ -156,7 +176,7 @@ const Personality = () => {
         />
       </div>
 
-      <div className="mt-3">
+      <div className="mt-6">
         <p className="font-semibold">
           Tone of Voice<span className="text-red-500">*</span>
         </p>
@@ -164,45 +184,22 @@ const Personality = () => {
           Select the trait that best describes your agent’s voice.
         </p>
       </div>
-      <div className="mt-5 rounded-[22px] bg-[#E9E3D8] p-3 max-md:p-2">
-        <div className="grid grid-cols-3 gap-4 max-md:grid-cols-2 max-md:gap-2">
-          {PERSONALITY_LIST.map((item) => (
-            <div
-              key={item.value}
-              onClick={() => {
-                setValue("communication_style", [item.communication], {
-                  shouldDirty: true,
-                })
-                if (item.type === "custom") {
-                  setIsCustom(true)
-                  setValue("personality_traits", ["personality_traits"], {
-                    shouldDirty: true,
-                  })
-                } else {
-                  setIsCustom(false)
 
-                  setValue("personality_traits", [item.value], {
+      <div className="mt-6 rounded-[22px] bg-[#E9E3D8] p-3 max-md:p-2">
+        <div className="grid grid-cols-3 gap-4 max-md:grid-cols-2 max-md:gap-2">
+          {PERSONALITY_LIST.map((item) => {
+            const isSelected =
+              (selectedBehaviors.personality_traits[0] === item.value &&
+                item.type !== "custom") ||
+              (item.type === "custom" && isCustom)
+
+            return (
+              <div
+                key={item.value}
+                onClick={() => {
+                  setValue("communication_style", [item.communication], {
                     shouldDirty: true,
                   })
-                }
-              }}
-              className="flex cursor-pointer items-center justify-between rounded-[14px] border-1 border-white bg-mercury-30 p-3 max-md:p-2"
-            >
-              <div className="flex items-center gap-3 max-md:gap-2">
-                <img
-                  className="h-10 w-10 rounded-[8px] object-cover"
-                  src={item.icon}
-                  alt="avatar"
-                />
-                <p className="truncate text-14 font-medium max-md:max-w-[70px]">
-                  {item.label}
-                </p>
-              </div>
-              <Checkbox
-                className="max-md:p-0"
-                radius="full"
-                onValueChange={(check) => {
-                  if (!check) return
                   if (item.type === "custom") {
                     setIsCustom(true)
                     setValue("personality_traits", ["personality_traits"], {
@@ -210,45 +207,55 @@ const Personality = () => {
                     })
                   } else {
                     setIsCustom(false)
+
                     setValue("personality_traits", [item.value], {
                       shouldDirty: true,
                     })
                   }
-                  setValue("communication_style", [item.communication], {
-                    shouldDirty: true,
-                  })
                 }}
-                isSelected={
-                  (selectedBehaviors.personality_traits[0] === item.value &&
-                    item.type !== "custom") ||
-                  (item.type === "custom" && isCustom)
-                }
-              />
-            </div>
-          ))}
+                aria-selected={isSelected}
+                className="group flex cursor-pointer items-center justify-between rounded-[14px] border-2 border-transparent bg-mercury-30 p-3 aria-selected:border-brown-500 aria-selected:bg-brown-50 max-md:p-2"
+              >
+                <div className="flex items-center gap-3 max-md:gap-2">
+                  <img
+                    className="h-10 w-10 rounded-[8px] object-cover"
+                    src={item.icon}
+                    alt="avatar"
+                  />
+                  <p className="truncate text-14 font-medium group-aria-selected:font-semibold group-aria-selected:text-brown-600 max-md:max-w-[70px]">
+                    {item.label}
+                  </p>
+                </div>
+                <Checkbox
+                  className="max-md:p-0"
+                  radius="full"
+                  onValueChange={(check) => {
+                    if (!check) return
+                    if (item.type === "custom") {
+                      setIsCustom(true)
+                      setValue("personality_traits", ["personality_traits"], {
+                        shouldDirty: true,
+                      })
+                    } else {
+                      setIsCustom(false)
+                      setValue("personality_traits", [item.value], {
+                        shouldDirty: true,
+                      })
+                    }
+                    setValue("communication_style", [item.communication], {
+                      shouldDirty: true,
+                    })
+                  }}
+                  isSelected={isSelected}
+                />
+              </div>
+            )
+          })}
         </div>
         {(selectedBehaviors.personality_traits[0] || isCustom) && (
           <>
-            {/* <div className="mt-5">
-              <p className="mb-1 font-semibold max-md:text-14">
-                Agent's Purpose
-              </p>
-              <Textarea
-                classNames={{
-                  inputWrapper: "!bg-mercury-30  border-1 border-mercury-400",
-                  input: "text-15 max-md:text-14 font-semibold !text-brown-600",
-                }}
-                onValueChange={(val) => {
-                  setValue("personality_traits", [val], { shouldDirty: true })
-                  if (PERSONALITY_LIST.find((item) => item.value === val))
-                    setIsCustom(false)
-                  else setIsCustom(true)
-                }}
-                value={selectedBehaviors.personality_traits[0]}
-              />
-            </div> */}
             <div className="mt-4">
-              <div className="flex items-center justify-between">
+              <div className="mb-2 flex items-center justify-between">
                 <p className="mb-1 font-semibold max-md:text-14">
                   Communication Style
                 </p>
@@ -288,6 +295,47 @@ const Personality = () => {
             </div>
           </>
         )}
+      </div>
+
+      <div className="mt-6 flex w-full justify-between rounded-[22px] border border-mercury-100 bg-mercury-30 p-6 max-sm:flex-col max-sm:p-4">
+        <div className="flex items-center gap-2 max-sm:mb-3">
+          <WorldGlobalIcon />
+          <span className="text-base-sb">Preferred Response Language</span>
+        </div>
+
+        <Controller
+          name="specific_language"
+          control={control}
+          render={({ field: { value, onChange } }: any) => {
+            return (
+              <div>
+                <Select
+                  aria-label="Select Language"
+                  placeholder="Select language"
+                  classNames={{
+                    trigger: "rounded-full !bg-mercury-100 w-[150px]",
+                    value: "!text-14 !text-mercury-950 !font-medium",
+                  }}
+                  disableSelectorIconRotation
+                  selectionMode="single"
+                  selectedKeys={value ? [value] : ""}
+                  onChange={(e) => onChange(e.target.value)}
+                >
+                  {SUPPORT_LANGUAGE_AGENT.map((record) => (
+                    <SelectItem
+                      key={record.value}
+                      classNames={{
+                        title: "text-14 text-mercury-950 font-medium",
+                      }}
+                    >
+                      {record.label}
+                    </SelectItem>
+                  ))}
+                </Select>
+              </div>
+            )
+          }}
+        />
       </div>
     </div>
   )
