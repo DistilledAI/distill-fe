@@ -24,6 +24,7 @@ const TestAgent: React.FC<{ agentData: any; agentConfigs: any }> = () => {
   const personalityTraits = watch("personality_traits")
   const communicationStyle = watch("communication_style")
   const [messages, setMessages] = useState<any[]>([])
+  console.log("🚀 ~ messages:", messages)
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const { isLogin } = useAuthState()
   const { spacing } = useStyleSpacing()
@@ -32,6 +33,7 @@ const TestAgent: React.FC<{ agentData: any; agentConfigs: any }> = () => {
     setMessages((prevMessages) => {
       const updatedMessage = {
         ...prevMessages[0],
+        role: PreviewRoleChat.ASSITANT,
         content: `Hello, I'm ${userNameData}. How can I help you?`,
       }
 
