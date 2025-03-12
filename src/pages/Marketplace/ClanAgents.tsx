@@ -8,7 +8,7 @@ import useFetchClan from "./useFetchClan"
 import { useQueryClient } from "@tanstack/react-query"
 import { QueryDataKeys } from "types/queryDataKeys"
 import AgentSkeleton from "./AgentSkeleton"
-import { IGroup } from "@pages/ChatPage/ChatContainer/LeftBar/useFetchGroups"
+import { IGroup } from "@pages/ChatPageOld/ChatContainer/LeftBar/useFetchGroups"
 
 const ClanAgents = () => {
   const navigate = useNavigate()

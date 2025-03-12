@@ -2,8 +2,8 @@ import { ArrowBottomSquareOutlineIcon } from "@components/Icons/Arrow"
 import { CloseFilledIcon } from "@components/Icons/DefiLens"
 import { CSVIcon } from "@components/Icons/TextIcon"
 import { Modal, ModalBody, ModalContent } from "@nextui-org/react"
-import { TYPE_DATA_KEY } from "@pages/ChatPage/ChatContainer/RightContent/MyPrivateAgentContent/CreatePrivateAgent"
-import UploadCustom from "@pages/ChatPage/ChatContainer/RightContent/MyPrivateAgentContent/UploadCustom"
+import { TYPE_DATA_KEY } from "@pages/ChatPageOld/ChatContainer/RightContent/MyPrivateAgentContent/CreatePrivateAgent"
+import UploadCustom from "@pages/ChatPageOld/ChatContainer/RightContent/MyPrivateAgentContent/UploadCustom"
 import { saveAs } from "file-saver"
 
 interface Props {

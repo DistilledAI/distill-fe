@@ -1,6 +1,6 @@
 import { PATH_NAMES } from "@constants/index"
 import { useAppSelector } from "@hooks/useAppRedux"
-import { ORCHESTRATION_LIST } from "@pages/ChatPage/ChatContainer/LeftBar/OrchestrationSlider"
+import { ORCHESTRATION_LIST } from "@pages/ChatPageOld/ChatContainer/LeftBar/OrchestrationSlider"
 import { Link } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
 

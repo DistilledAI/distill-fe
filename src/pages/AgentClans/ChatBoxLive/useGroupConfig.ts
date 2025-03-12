@@ -1,7 +1,7 @@
 import { useMemo } from "react"
 import { CLAN_CONFIG_KEYS } from "@pages/AgentDetail/AgentContent/ClanUtilities/types"
 import { StakeTokenAddress } from "@pages/Stake"
-import { IGroup } from "@pages/ChatPage/ChatContainer/LeftBar/useFetchGroups"
+import { IGroup } from "@pages/ChatPageOld/ChatContainer/LeftBar/useFetchGroups"
 
 interface GroupConfig {
   [CLAN_CONFIG_KEYS.IMAGES_LIVE]?: string

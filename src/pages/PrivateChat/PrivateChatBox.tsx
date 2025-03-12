@@ -15,7 +15,7 @@ import MoreAction from "@components/ChatInfoCurrent/MoreAction"
 import {
   TypeGroup,
   UserGroup,
-} from "@pages/ChatPage/ChatContainer/LeftBar/useFetchGroups"
+} from "@pages/ChatPageOld/ChatContainer/LeftBar/useFetchGroups"
 import useAuthState from "@hooks/useAuthState"
 
 const PrivateChatBox = () => {

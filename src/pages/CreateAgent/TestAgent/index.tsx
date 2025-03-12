@@ -1,7 +1,7 @@
 import { RefreshIcon } from "@components/Icons/RefreshIcon"
 import { PlayFilledIcon } from "@components/Icons/SocialLinkIcon"
 import { Button } from "@nextui-org/react"
-import ChatInput from "@pages/ChatPage/ChatContainer/ChatInput"
+import ChatInput from "@pages/ChatPageOld/ChatContainer/ChatInput"
 
 const TestAgent = () => {
   const onChatSubmit = () => {}

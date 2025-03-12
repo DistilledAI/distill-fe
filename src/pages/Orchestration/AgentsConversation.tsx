@@ -5,7 +5,7 @@ import {
   racksAvatar,
 } from "@assets/images"
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
-import useConversationSocket from "@pages/ChatPage/ChatContainer/useConversationSocket"
+import useConversationSocket from "@pages/ChatPageOld/ChatContainer/useConversationSocket"
 import { twMerge } from "tailwind-merge"
 import useFetchConversation from "./useFetchConversation"
 import ReceiverMessage from "@components/ReceiverMessage"

@@ -10,7 +10,7 @@ import {
   ModalHeader,
   useDisclosure,
 } from "@nextui-org/react"
-import { UserGroup } from "@pages/ChatPage/ChatContainer/LeftBar/useFetchGroups"
+import { UserGroup } from "@pages/ChatPageOld/ChatContainer/LeftBar/useFetchGroups"
 import React from "react"
 import AgentDescription from "./AgentDescription"
 import AgentSocials from "./AgentSocials"

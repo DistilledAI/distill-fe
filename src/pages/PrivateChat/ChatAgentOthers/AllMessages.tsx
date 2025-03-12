@@ -4,26 +4,26 @@ import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { FilledUserIcon } from "@components/Icons/UserIcon"
 import { PATH_NAMES, RoleUser } from "@constants/index"
 import useAuthState from "@hooks/useAuthState"
-import useGetChatId from "@pages/ChatPage/hooks/useGetChatId"
+import useGetChatId from "@pages/ChatPageOld/hooks/useGetChatId"
 import { IUser } from "@reducers/userSlice"
 import { useQueryClient } from "@tanstack/react-query"
 import { getActiveColorRandomById } from "@utils/index"
 import { useNavigate } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
 import { QueryDataKeys } from "types/queryDataKeys"
-import DotNotification from "../../ChatPage/ChatContainer/DotNotification"
-import ActiveEffect from "../../ChatPage/ChatContainer/LeftBar/ActiveEffect"
+import DotNotification from "../../ChatPageOld/ChatContainer/DotNotification"
+import ActiveEffect from "../../ChatPageOld/ChatContainer/LeftBar/ActiveEffect"
 import {
   getAvatarGroupChat,
   getColorGroupIcon,
   getNameGroup,
   getPublicAddressGroupChat,
   getRoleUser,
-} from "../../ChatPage/ChatContainer/LeftBar/helpers"
+} from "../../ChatPageOld/ChatContainer/LeftBar/helpers"
 import useFetchGroups, {
   TypeGroup,
   UserGroup,
-} from "../../ChatPage/ChatContainer/LeftBar/useFetchGroups"
+} from "../../ChatPageOld/ChatContainer/LeftBar/useFetchGroups"
 import { useVirtualizer } from "@tanstack/react-virtual"
 import useDebounce from "@hooks/useDebounce"
 import SearchPrivateAgentWrapper from "./SearchPrivateAgentWrapper"

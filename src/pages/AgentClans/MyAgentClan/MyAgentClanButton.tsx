@@ -1,6 +1,6 @@
 import { distilledAiPlaceholder } from "@assets/images"
 import { AvatarClanByList } from "@components/AvatarContainer"
-import ActiveEffect from "@pages/ChatPage/ChatContainer/LeftBar/ActiveEffect"
+import ActiveEffect from "@pages/ChatPageOld/ChatContainer/LeftBar/ActiveEffect"
 import { twMerge } from "tailwind-merge"
 import { PATH_NAMES } from "@constants/index"
 import { useNavigate } from "react-router-dom"

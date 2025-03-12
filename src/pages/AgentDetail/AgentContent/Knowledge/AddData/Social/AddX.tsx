@@ -1,7 +1,7 @@
 import { Button } from "@nextui-org/react"
 import React, { useRef, useState } from "react"
 import { toast } from "react-toastify"
-import { TYPE_DATA_KEY } from "@pages/ChatPage/ChatContainer/RightContent/MyPrivateAgentContent/CreatePrivateAgent"
+import { TYPE_DATA_KEY } from "@pages/ChatPageOld/ChatContainer/RightContent/MyPrivateAgentContent/CreatePrivateAgent"
 import { uploadMyData } from "services/user"
 import { PlusIcon } from "@components/Icons/Plus"
 import useOutsideClick from "@hooks/useOutSideClick"

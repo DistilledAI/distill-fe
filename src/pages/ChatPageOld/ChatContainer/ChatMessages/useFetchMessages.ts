@@ -7,7 +7,7 @@ import {
   InfiniteData,
 } from "@tanstack/react-query"
 import useAuthState from "@hooks/useAuthState"
-import useGetChatId from "@pages/ChatPage/hooks/useGetChatId"
+import useGetChatId from "@pages/ChatPageOld/hooks/useGetChatId"
 import { getChatHistoryById } from "services/chat"
 import { QueryDataKeys } from "types/queryDataKeys"
 import { IUser } from "@reducers/userSlice"

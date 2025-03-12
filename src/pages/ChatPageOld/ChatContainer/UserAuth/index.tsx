@@ -16,7 +16,7 @@ import {
   DropdownMenu,
   DropdownTrigger,
 } from "@nextui-org/react"
-import useGroupDetail from "@pages/ChatPage/hooks/useGroupDetail"
+import useGroupDetail from "@pages/ChatPageOld/hooks/useGroupDetail"
 import { numberWithCommas } from "@utils/format"
 import {
   centerTextEllipsis,

@@ -1,4 +1,4 @@
-import { IReactionMsgStats } from "@pages/ChatPage/ChatContainer/ChatMessages/useFetchMessages"
+import { IReactionMsgStats } from "@pages/ChatPageOld/ChatContainer/ChatMessages/useFetchMessages"
 import React from "react"
 import { twMerge } from "tailwind-merge"
 import { EmojiReaction } from "types/reactions"

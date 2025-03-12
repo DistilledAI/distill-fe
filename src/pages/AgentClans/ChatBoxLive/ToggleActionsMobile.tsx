@@ -6,7 +6,7 @@
 // import { QueryDataKeys } from "types/queryDataKeys"
 
 import TotalMemberBadge from "@components/TotalMemberBadge"
-import { UserGroup } from "@pages/ChatPage/ChatContainer/LeftBar/useFetchGroups"
+import { UserGroup } from "@pages/ChatPageOld/ChatContainer/LeftBar/useFetchGroups"
 
 interface Props {
   groupDetail?: UserGroup | null

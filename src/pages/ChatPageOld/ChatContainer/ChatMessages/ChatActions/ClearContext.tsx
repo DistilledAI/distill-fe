@@ -1,5 +1,5 @@
 import { Button } from "@nextui-org/react"
-import useGetChatId from "@pages/ChatPage/hooks/useGetChatId"
+import useGetChatId from "@pages/ChatPageOld/hooks/useGetChatId"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useParams } from "react-router-dom"
 import { ICachedMessageData, chatMessagesKey } from "../useFetchMessages"

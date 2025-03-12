@@ -1,4 +1,4 @@
-import { ORCHESTRATION_LIST } from "@pages/ChatPage/ChatContainer/LeftBar/OrchestrationSlider"
+import { ORCHESTRATION_LIST } from "@pages/ChatPageOld/ChatContainer/LeftBar/OrchestrationSlider"
 import { useParams } from "react-router-dom"
 import AgentsConversation from "./AgentsConversation"
 import HostsBox from "./HostsBox"

@@ -7,7 +7,7 @@ import {
 } from "@pages/AgentDetail/AgentBehaviors/constants"
 import AgentType, {
   TYPE_LLM_MODEL,
-} from "@pages/ChatPage/ChatContainer/RightContent/MyPrivateAgentContent/AgentInitialization/AgentType"
+} from "@pages/ChatPageOld/ChatContainer/RightContent/MyPrivateAgentContent/AgentInitialization/AgentType"
 import React, { useState } from "react"
 import { FormProvider, useForm } from "react-hook-form"
 import { useNavigate } from "react-router-dom"

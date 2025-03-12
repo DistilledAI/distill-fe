@@ -5,7 +5,7 @@
 // import { PATH_NAMES } from "@constants/index"
 // import { Button } from "@nextui-org/react"
 import ClanShortInfo from "@pages/Rank/ClanShortInfo"
-import { UserGroup } from "@pages/ChatPage/ChatContainer/LeftBar/useFetchGroups"
+import { UserGroup } from "@pages/ChatPageOld/ChatContainer/LeftBar/useFetchGroups"
 import React from "react"
 // import { useNavigate } from "react-router-dom"
 // import { twMerge } from "tailwind-merge"

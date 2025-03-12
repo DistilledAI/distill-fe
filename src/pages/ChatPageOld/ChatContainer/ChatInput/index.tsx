@@ -1,6 +1,6 @@
 import { PATH_NAMES } from "@constants/index"
 import useWindowSize from "@hooks/useWindowSize"
-import useGetChatId from "@pages/ChatPage/hooks/useGetChatId"
+import useGetChatId from "@pages/ChatPageOld/hooks/useGetChatId"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { useStyleSpacing } from "providers/StyleSpacingProvider"
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react"

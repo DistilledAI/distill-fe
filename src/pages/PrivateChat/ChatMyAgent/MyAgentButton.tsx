@@ -3,7 +3,7 @@ import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { PATH_NAMES } from "@constants/index"
 import { useAppSelector } from "@hooks/useAppRedux"
 import useWindowSize from "@hooks/useWindowSize"
-import ActiveEffect from "@pages/ChatPage/ChatContainer/LeftBar/ActiveEffect"
+import ActiveEffect from "@pages/ChatPageOld/ChatContainer/LeftBar/ActiveEffect"
 import { useLocation, useNavigate, useParams } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
 

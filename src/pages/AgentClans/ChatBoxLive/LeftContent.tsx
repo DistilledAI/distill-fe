@@ -8,7 +8,7 @@ import { Skeleton } from "@nextui-org/react"
 import {
   IGroup,
   UserGroup,
-} from "@pages/ChatPage/ChatContainer/LeftBar/useFetchGroups"
+} from "@pages/ChatPageOld/ChatContainer/LeftBar/useFetchGroups"
 import { StakeTokenAddress } from "@pages/Stake"
 import { getInfoTokenByAddress } from "@pages/Stake/helpers"
 import { useQueries, useQueryClient } from "@tanstack/react-query"
