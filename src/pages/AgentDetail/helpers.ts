@@ -103,12 +103,14 @@ export const LIST_AGENT_CONFIG_KEYS = [
 ]
 
 export const getConfigAgentByDataForm = (data: any) => {
-  const dt = {
-    ...data,
-    communication_style: data["communication_style"].map((item: string) =>
-      item.replace(/\n/g, ""),
-    ),
-  }
+  const dt = data["communication_style"]
+    ? {
+        ...data,
+        communication_style: data["communication_style"].map((item: string) =>
+          item.replace(/\n/g, ""),
+        ),
+      }
+    : { ...data }
   return Object.entries(dt)
     .filter(([_, val]) => val !== null && val !== "" && val !== undefined)
     .map(([key, val]) => ({ key, value: val ? val.toString() : "" }))

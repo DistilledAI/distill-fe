@@ -146,7 +146,7 @@ const CurrentAgent = () => {
           icon={null}
           extendButton={
             isPaid ? (
-              <Button className="mt-2 h-8 rounded-full bg-[#DEFAE5]">
+              <Button className="mt-2 h-8 flex-shrink-0 rounded-full bg-[#DEFAE5]">
                 <div className="flex items-center gap-1">
                   <CheckFilledIcon color="#20993F" />
                   <span className="text-14 font-bold text-[#20993F]">
