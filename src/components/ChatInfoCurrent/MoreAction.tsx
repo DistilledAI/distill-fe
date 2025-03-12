@@ -11,7 +11,7 @@ import {
   ModalContent,
   useDisclosure,
 } from "@nextui-org/react"
-import { TypeGroup } from "@pages/ChatPage/ChatContainer/LeftBar/useFetchGroups"
+import { TypeGroup } from "@pages/ChatPageOld/ChatContainer/LeftBar/useFetchGroups"
 import { useQueryClient } from "@tanstack/react-query"
 import React, { useState } from "react"
 import { useNavigate } from "react-router-dom"

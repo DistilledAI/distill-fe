@@ -2,7 +2,8 @@ import { distilledAiPlaceholder } from "@assets/images"
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { PATH_NAMES } from "@constants/index"
 import { useAppSelector } from "@hooks/useAppRedux"
-import ActiveEffect from "@pages/ChatPage/ChatContainer/LeftBar/ActiveEffect"
+import useWindowSize from "@hooks/useWindowSize"
+import ActiveEffect from "@pages/ChatPageOld/ChatContainer/LeftBar/ActiveEffect"
 import { useLocation, useNavigate, useParams } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
 
@@ -13,6 +14,7 @@ const MyPrivateAgent = () => {
   const isSelected = pathname.startsWith(PATH_NAMES.PRIVATE_AGENT)
   const myAgentId = myAgent?.id
   const { privateChatId } = useParams()
+  const { isMobile } = useWindowSize()
 
   return (
     <button
@@ -23,9 +25,12 @@ const MyPrivateAgent = () => {
       )}
       onClick={() => {
         if (!privateChatId) {
-          return myAgentId
-            ? navigate(`${PATH_NAMES.INVITE}/${myAgentId}`)
-            : navigate(`${PATH_NAMES.PRIVATE_AGENT}/empty`)
+          if (myAgentId && !isMobile) {
+            return navigate(`${PATH_NAMES.INVITE}/${myAgentId}`)
+          }
+          if (!myAgentId && isMobile) {
+            navigate(`${PATH_NAMES.PRIVATE_AGENT}/empty`)
+          }
         }
       }}
     >

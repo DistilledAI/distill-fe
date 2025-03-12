@@ -1,7 +1,7 @@
 import { PATH_NAMES } from "@constants/index"
 import { useNavigate } from "react-router-dom"
 import MyAgentClanEmpty from "./MyAgentClanEmpty"
-import ChatBoxLive from "@pages/ChatBoxLive"
+import ChatBoxLive from "@pages/AgentClans/ChatBoxLive"
 import useWindowSize from "@hooks/useWindowSize"
 import useAgentClanData from "./useAgentClanData"
 import { useEffect } from "react"

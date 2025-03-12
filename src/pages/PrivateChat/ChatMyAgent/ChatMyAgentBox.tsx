@@ -13,13 +13,13 @@ import { useParams } from "react-router-dom"
 import SpeechRecognition from "react-speech-recognition"
 import { twMerge } from "tailwind-merge"
 import { QueryDataKeys } from "types/queryDataKeys"
-import ChatInput from "../../ChatPage/ChatContainer/ChatInput"
-import ChatActions from "../../ChatPage/ChatContainer/ChatMessages/ChatActions"
+import ChatInput from "../../ChatPageOld/ChatContainer/ChatInput"
+import ChatActions from "../../ChatPageOld/ChatContainer/ChatMessages/ChatActions"
 import {
   IMessageBox,
   RoleChat,
-} from "../../ChatPage/ChatContainer/ChatMessages/helpers"
-import useFetchMessages from "../../ChatPage/ChatContainer/ChatMessages/useFetchMessages"
+} from "../../ChatPageOld/ChatContainer/ChatMessages/helpers"
+import useFetchMessages from "../../ChatPageOld/ChatContainer/ChatMessages/useFetchMessages"
 import ChatWindowV2 from "@components/ChatWindowV2"
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { distilledAiPlaceholder } from "@assets/images"

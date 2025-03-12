@@ -8,7 +8,7 @@ import { twMerge } from "tailwind-merge"
 import { QueryDataKeys } from "types/queryDataKeys"
 import RankExpCard from "./RankExpCard"
 import useRankExpList from "./useRankExpList"
-import useGetChatId from "@pages/ChatPage/hooks/useGetChatId"
+import useGetChatId from "@pages/ChatPageOld/hooks/useGetChatId"
 
 const RankExpList = () => {
   const { user, isAnonymous } = useAuthState()

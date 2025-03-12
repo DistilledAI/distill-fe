@@ -5,7 +5,7 @@ import {
 import CategoryLabel from "../CategoryLabel"
 import { useNavigate } from "react-router-dom"
 import { PATH_NAMES } from "@constants/index"
-import FYIModal from "@pages/ChatPage/ChatContainer/RightContent/Modal/FYIModal"
+import FYIModal from "@pages/ChatPageOld/ChatContainer/RightContent/Modal/FYIModal"
 import { useState } from "react"
 import { FilledShieldCheckedIcon } from "@components/Icons/FilledShieldCheck"
 import { DislikeFillIcon, LikeFillIcon } from "@components/Icons"

@@ -1,5 +1,5 @@
 import useAuthState from "@hooks/useAuthState"
-import { UserGroup } from "@pages/ChatPage/ChatContainer/LeftBar/useFetchGroups"
+import { UserGroup } from "@pages/ChatPageOld/ChatContainer/LeftBar/useFetchGroups"
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
 import { getPinAgentClans, postPinAgentClan } from "services/group"
 import { QueryDataKeys } from "types/queryDataKeys"

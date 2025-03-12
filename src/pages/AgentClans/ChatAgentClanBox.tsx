@@ -1,6 +1,6 @@
 import { useLocation } from "react-router-dom"
 import MyChatAgentClan from "./MyAgentClan/MyChatAgentClan"
-import ChatBoxLive from "@pages/ChatBoxLive"
+import ChatBoxLive from "@pages/AgentClans/ChatBoxLive"
 import { PATH_NAMES } from "@constants/index"
 
 const ChatAgentClanBox = () => {

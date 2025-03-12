@@ -1,4 +1,4 @@
-import AgentType from "@pages/ChatPage/ChatContainer/RightContent/MyPrivateAgentContent/AgentInitialization/AgentType"
+import AgentType from "@pages/ChatPageOld/ChatContainer/RightContent/MyPrivateAgentContent/AgentInitialization/AgentType"
 import AgentBasicInfo from "@pages/CreateAgent/Content/Basic"
 import { TabKeyAgent } from "@pages/CreateAgent/NavTab"
 import { defineElement } from "@utils/index"

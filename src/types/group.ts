@@ -1,4 +1,4 @@
-import { TypeGroup } from "@pages/ChatPage/ChatContainer/LeftBar/useFetchGroups"
+import { TypeGroup } from "@pages/ChatPageOld/ChatContainer/LeftBar/useFetchGroups"
 
 export interface IGroupDetail {
   id: number

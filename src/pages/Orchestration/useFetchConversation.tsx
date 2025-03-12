@@ -1,6 +1,6 @@
 import { PATH_NAMES } from "@constants/index"
-import { IMessageBox } from "@pages/ChatPage/ChatContainer/ChatMessages/helpers"
-import { IGroup } from "@pages/ChatPage/ChatContainer/LeftBar/useFetchGroups"
+import { IMessageBox } from "@pages/ChatPageOld/ChatContainer/ChatMessages/helpers"
+import { IGroup } from "@pages/ChatPageOld/ChatContainer/LeftBar/useFetchGroups"
 import { IUser } from "@reducers/userSlice"
 import {
   InfiniteData,

@@ -1,6 +1,6 @@
 import { STATUS_AGENT } from "@constants/index"
-import { TYPE_LLM_MODEL } from "@pages/ChatPage/ChatContainer/RightContent/MyPrivateAgentContent/AgentInitialization/AgentType"
-import useGroupDetail from "@pages/ChatPage/hooks/useGroupDetail"
+import { TYPE_LLM_MODEL } from "@pages/ChatPageOld/ChatContainer/RightContent/MyPrivateAgentContent/AgentInitialization/AgentType"
+import useGroupDetail from "@pages/ChatPageOld/hooks/useGroupDetail"
 import AgentNavTab from "@pages/CreateAgent/NavTab"
 import { refreshFetchMyAgent } from "@reducers/agentSlice"
 import { useEffect, useState } from "react"
@@ -89,6 +89,7 @@ const AgentDetail: React.FC = () => {
         imageLive: null,
         isEnableClan: 2,
       },
+      specific_language: "",
     },
   })
 
@@ -133,57 +134,75 @@ const AgentDetail: React.FC = () => {
   }, [agentData, methods.reset, agentConfigs, groupDetail?.group])
 
   const onSubmit = async (data: any) => {
+    console.log("🚀 ~ onSubmit ~ data:", data)
     if (!isPassRuleAgentInfo(data) || !isActive) return
-    const { avatar, avatarFile, clan, ...newData } = data
+    const changedData = Object.keys(methods.formState.dirtyFields).reduce(
+      (acc: any, key) => {
+        acc[key] = data[key]
+        return acc
+      },
+      {},
+    )
+
+    const { avatar, avatarFile, clan, ...newData } = changedData
     const agentIdNumber = Number(agentId)
-    const configData = getConfigAgentByDataForm(data)
+    const configData = getConfigAgentByDataForm(changedData)
 
     try {
       setLoading(true)
-      const res = await updateAgent({
-        ...newData,
-        botId: agentIdNumber,
-      })
-      if (data.avatarFile) {
+      //avatar
+      if (changedData.avatarFile) {
         const formData = new FormData()
-        formData.append("file", data.avatarFile)
+        formData.append("file", changedData.avatarFile)
         formData.append("userId", agentData?.id?.toString() ?? "")
         await updateAvatarUser(formData)
       }
+      //config
       if (configData.length > 0) {
         await updateAgentConfig({
           botId: agentIdNumber,
           data: [
             ...configData,
-            { key: "llm_model", value: newData?.llmModel?.toString() },
+            { key: "llm_model", value: data?.llmModel?.toString() },
           ],
         })
-      }
-      if (res.data) {
         refetchConfig()
-        refetch()
-        dispatch(refreshFetchMyAgent())
-        toast.success("Updated successfully!")
       }
 
-      // edit agent clan
-      if (data.clan.imageLive instanceof File) {
+      //image agent
+      if (changedData.clan?.imageLive instanceof File) {
         const formData = new FormData()
-        formData.append("file", data.clan.imageLive)
+        formData.append("file", changedData.clan.imageLive)
         formData.append("key", "imageLive")
         formData.append("groupId", clanIdOfAgent || "")
         formData.append("type", "clan")
         await uploadImageAgentClan(formData)
       }
+      //clan info
+      if (changedData.clan) {
+        await editAgentClan({
+          groupId: Number(clanIdOfAgent),
+          data: transformClanData({
+            ...changedData.clan,
+            label: changedData.clan.name,
+          }),
+        })
+        refetchGroup()
+      }
 
-      await editAgentClan({
-        groupId: Number(clanIdOfAgent),
-        data: transformClanData({
-          ...data.clan,
-          label: data.clan.name,
-        }),
-      })
-      refetchGroup()
+      //base info
+      if (Object.keys(newData).length > 0) {
+        await updateAgent({
+          ...newData,
+          username: data.username,
+          description: data.description,
+          botId: agentIdNumber,
+        })
+        refetch()
+        dispatch(refreshFetchMyAgent())
+      }
+
+      toast.success("Updated successfully!")
     } catch (error: any) {
       console.error("error", error)
       toast.error(error?.response?.data?.message)

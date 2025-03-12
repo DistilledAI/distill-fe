@@ -13,10 +13,10 @@ import { PATH_NAMES, Publish, STATUS_AGENT } from "@constants/index"
 import { useAppSelector } from "@hooks/useAppRedux"
 import useAuthState from "@hooks/useAuthState"
 import { Button, useDisclosure } from "@nextui-org/react"
-import ContractDisplay from "@pages/ChatBoxLive/ContractDisplay"
-import TradeTokenButton from "@pages/ChatBoxLive/TradeTokenButton"
-import { AGENT_TYPE_KEY } from "@pages/ChatPage/ChatContainer/RightContent/MyPrivateAgentContent/AgentInitialization/AgentType"
-import useGetPaymentHistory from "@pages/ChatPage/ChatContainer/RightContent/MyPrivateAgentContent/AgentInitialization/useGetPaymentHistory"
+import ContractDisplay from "@pages/AgentClans/ChatBoxLive/ContractDisplay"
+import TradeTokenButton from "@pages/AgentClans/ChatBoxLive/TradeTokenButton"
+import { AGENT_TYPE_KEY } from "@pages/ChatPageOld/ChatContainer/RightContent/MyPrivateAgentContent/AgentInitialization/AgentType"
+import useGetPaymentHistory from "@pages/ChatPageOld/ChatContainer/RightContent/MyPrivateAgentContent/AgentInitialization/useGetPaymentHistory"
 import { findTokenByAddress } from "@pages/MyPrivateAgent/helpers"
 import { Network } from "@pages/MyPrivateAgent/interface"
 import useSend from "@pages/MyPrivateAgent/Send/useSend"
@@ -146,7 +146,7 @@ const CurrentAgent = () => {
           icon={null}
           extendButton={
             isPaid ? (
-              <Button className="mt-2 h-8 rounded-full bg-[#DEFAE5]">
+              <Button className="mt-2 h-8 flex-shrink-0 rounded-full bg-[#DEFAE5]">
                 <div className="flex items-center gap-1">
                   <CheckFilledIcon color="#20993F" />
                   <span className="text-14 font-bold text-[#20993F]">
