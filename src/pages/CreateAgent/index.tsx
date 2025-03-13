@@ -5,6 +5,7 @@ import AgentNavTab from "./NavTab"
 import CreateAgentModal from "@components/CreateAgentModal"
 import { COMMUNICATION_STYLE_LIST, PATH_NAMES } from "@constants/index"
 import { useAppSelector } from "@hooks/useAppRedux"
+import { AGENT_TYPE_KEY } from "@pages/ChatPageOld/ChatContainer/RightContent/MyPrivateAgentContent/AgentInitialization/AgentType"
 import { refreshFetchMyAgent } from "@reducers/agentSlice"
 import { useEffect, useState } from "react"
 import { FormProvider, useForm } from "react-hook-form"
@@ -81,7 +82,7 @@ const CreateAgent = () => {
       const res = await createBot({
         ...newData,
         name: newData?.username,
-        typeAgent: state?.typeAgent,
+        typeAgent: AGENT_TYPE_KEY.DEFAI,
         llmModel: state?.llmModel,
       })
       const botId = res?.data?.id

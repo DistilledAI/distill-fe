@@ -233,7 +233,6 @@ const RepliesDashboard: React.FC<{ isDisabled: boolean }> = ({
         const tweetedUrl = item?.tweetedUrl
         const match = tweetedUrl?.match(/status\/(\d+)/)
         const tweetId = match?.[1]
-        console.log("🚀 ~ renderCell ~ tweetId:", tweetId)
 
         if (!tweetId) return <div />
 
