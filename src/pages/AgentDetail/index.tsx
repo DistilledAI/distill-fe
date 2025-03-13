@@ -134,7 +134,6 @@ const AgentDetail: React.FC = () => {
   }, [agentData, methods.reset, agentConfigs, groupDetail?.group])
 
   const onSubmit = async (data: any) => {
-    console.log("🚀 ~ onSubmit ~ data:", data)
     if (!isPassRuleAgentInfo(data) || !isActive) return
     const changedData = Object.keys(methods.formState.dirtyFields).reduce(
       (acc: any, key) => {
@@ -161,10 +160,7 @@ const AgentDetail: React.FC = () => {
       if (configData.length > 0) {
         await updateAgentConfig({
           botId: agentIdNumber,
-          data: [
-            ...configData,
-            { key: "llm_model", value: data?.llmModel?.toString() },
-          ],
+          data: configData,
         })
         refetchConfig()
       }

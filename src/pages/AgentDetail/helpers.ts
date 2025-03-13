@@ -101,6 +101,7 @@ export const LIST_AGENT_CONFIG_KEYS = [
   "x_keywords",
   "autonomous_reply",
   "specific_language",
+  "llmModel",
 ]
 
 export const getConfigAgentByDataForm = (data: any) => {
