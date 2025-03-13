@@ -169,7 +169,7 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
         <div className="flex items-center gap-1">
           <div
             onClick={connectWallet}
-            className="mr-1 flex cursor-pointer items-center gap-1"
+            className="mr-1 hidden cursor-pointer items-center gap-1 md:flex"
           >
             <img src={xDSTL} width={24} height={24} />
             <span className="text-13 font-semibold">Earn xDSTL</span>

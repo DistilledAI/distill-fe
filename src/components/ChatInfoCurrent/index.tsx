@@ -91,7 +91,9 @@ const ChatInfoCurrent: React.FC<{
         </VideoThumbnailWrapper>
 
         {isLive && (
-          <TotalMemberBadge groupId={groupDetail.groupId.toString()} />
+          <TotalMemberBadge
+            memberFixed={groupDetail?.group?.groupMemberStats?.total}
+          />
         )}
         {/* <MoreAction
           groupId={groupDetail.groupId}

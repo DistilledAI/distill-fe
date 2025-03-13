@@ -1,4 +1,9 @@
-import { bgBtcPrediction, bitmaxAva, btcIconRote } from "@assets/images"
+import {
+  bgBtcPrediction,
+  bitmaxAva,
+  btcIconRote,
+  distilledAiPlaceholder,
+} from "@assets/images"
 import { solanaCircleIcon } from "@assets/svg"
 import AudioClanCustom from "@components/AudioClanCustom"
 import { AgentDotLandIcon } from "@components/Icons/FilledSquareCircleIcon"
@@ -72,7 +77,7 @@ const LeftContent: React.FC<{
   })
   const isMuted = !!agentLiveVolume.data
 
-  const renderAgentLandButton = () => (
+  const renderAgentsLandButton = () => (
     <div
       className="absolute -top-3 right-[1px] z-50 flex h-7 cursor-pointer items-center gap-1 rounded-full border border-[#FC9880] bg-[#FF7A5A] px-3 py-[6px]"
       onClick={() => window.open("https://agents.land/", "_blank")}
@@ -148,14 +153,16 @@ const LeftContent: React.FC<{
     </div>
   )
 
-  const renderImageContent = () => <ImageLive groupConfig={groupConfig} />
+  const renderImageContent = () => (
+    <ImageLive groupConfig={groupConfig} isLoading={!isFetched} />
+  )
 
   const isVideo = (url?: string) => /\.(mp4|webm|ogg)$/i.test(url || "")
 
   return (
     <div
       className={twMerge(
-        "max-md:max-h-auto flex max-h-[calc(100dvh-68px)] w-full max-w-full flex-col overflow-y-auto transition-all duration-300 ease-linear scrollbar-hide md:relative md:pt-3 lg:max-w-[320px]",
+        "max-md:max-h-auto flex max-h-[calc(100dvh-68px)] w-full max-w-full flex-col transition-all duration-300 ease-linear scrollbar-hide md:relative md:overflow-y-auto md:pt-3 lg:max-w-[320px]",
         "max-md:absolute max-md:right-2 max-md:top-3 max-md:z-50 max-md:h-[182px] max-md:w-[146px]",
         maximizeImage &&
           "max-md:bottom-20 max-md:h-[calc(100%-80px)] max-md:w-[calc(100%-16px)]",
@@ -164,7 +171,8 @@ const LeftContent: React.FC<{
       <div className="relative h-full w-full">
         {!groupConfig[CLAN_CONFIG_KEYS.TRADE_LINK] &&
           !groupConfig[CLAN_CONFIG_KEYS.IS_PREDICTION] &&
-          renderAgentLandButton()}
+          groupDetail !== null &&
+          renderAgentsLandButton()}
         <div className="flex h-full flex-col md:h-fit">
           {isFetched && groupDetail !== null ? (
             isVideo(groupConfig[CLAN_CONFIG_KEYS.IMAGES_LIVE]) ? (
@@ -268,24 +276,26 @@ const LeftContent: React.FC<{
 
 export default LeftContent
 
-const ImageLive = ({ groupConfig }: { groupConfig: GroupConfig }) => {
-  const [isLoaded, setIsLoaded] = useState(false)
+const ImageLive = ({
+  groupConfig,
+  isLoading,
+}: {
+  groupConfig: GroupConfig
+  isLoading: boolean
+}) => {
+  const imageLive = groupConfig[CLAN_CONFIG_KEYS.IMAGES_LIVE]
 
   return (
     <div className="relative h-full w-full overflow-hidden rounded-lg bg-mercury-70 md:h-[400px] md:rounded-[32px]">
-      {groupConfig[CLAN_CONFIG_KEYS.IMAGES_LIVE] && (
+      {!isLoading && (
         <img
-          className={twMerge(
-            "h-full w-full object-cover",
-            !isLoaded && "hidden",
-          )}
-          src={groupConfig[CLAN_CONFIG_KEYS.IMAGES_LIVE]}
-          alt="agent avatar clan"
-          onLoad={() => setIsLoaded(true)}
+          className="h-full w-full object-cover"
+          src={imageLive || distilledAiPlaceholder}
+          alt="agent image"
           loading="lazy"
         />
       )}
-      {!isLoaded && (
+      {!isLoading && (
         <Skeleton className="h-[300px] rounded-lg md:h-[400px] md:rounded-[32px]" />
       )}
       {groupConfig[CLAN_CONFIG_KEYS.AUDIO_LIVE] && (
