@@ -10,8 +10,15 @@ import { PATH_NAMES } from "./src/constants/index"
 
 export default defineConfig(() => {
   const sentryAuthToken = ""
+  const isProduction =
+    process.env.VITE_BASE_API_URL === "https://prod-api.distilled.ai/distill"
 
   return {
+    base: isProduction ? "https://mesh.distilled.ai/" : "/",
+    build: {
+      outDir: "dist",
+      sourcemap: true,
+    },
     root: ".",
     plugins: [
       react(),
@@ -40,6 +47,9 @@ export default defineConfig(() => {
     },
     define: {
       global: "globalThis",
+    },
+    optimizeDeps: {
+      exclude: ["*.css"],
     },
   }
 })
