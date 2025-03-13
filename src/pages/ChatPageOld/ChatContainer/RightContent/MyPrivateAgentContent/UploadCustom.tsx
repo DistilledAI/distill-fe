@@ -93,10 +93,14 @@ const UploadCustom: React.FC<UploadCustomProps> = ({
       if (response) {
         onSuccess(isBulk ? response?.data : response?.data?.[0])
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error(error)
       onError(error)
-      toast.error(`${file.name} failed to upload.`)
+      if (error?.response?.data?.message) {
+        toast.error(error?.response?.data?.message)
+      } else {
+        toast.error(`${file.name} failed to upload.`)
+      }
     }
   }
 

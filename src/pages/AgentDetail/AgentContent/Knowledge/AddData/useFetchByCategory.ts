@@ -7,7 +7,7 @@ import { IBotData } from "types/user"
 
 export const LIMIT_MY_DATA = 20
 
-const useFetchByCategory = (category: BotDataTypeKey, botId: number) => {
+const useFetchByCategory = (categories: BotDataTypeKey[], botId: number) => {
   const { isLogin } = useAuthState()
 
   const handleFetch = async ({ pageParam = 1 }) => {
@@ -15,7 +15,7 @@ const useFetchByCategory = (category: BotDataTypeKey, botId: number) => {
     const res = await getMyBotData(botId, {
       limit: LIMIT_MY_DATA,
       offset,
-      filter: JSON.stringify({ key: category }),
+      filter: JSON.stringify({ key: categories }),
     })
     if (res.data) return res.data.items || []
     return []
@@ -31,10 +31,10 @@ const useFetchByCategory = (category: BotDataTypeKey, botId: number) => {
     refetch,
     fetchNextPage,
   } = useInfiniteQuery({
-    queryKey: [`${QueryDataKeys.MY_BOT_DATA}-${botId}-${category}`],
+    queryKey: [`${QueryDataKeys.MY_BOT_DATA}-${botId}-${categories}`],
     queryFn: handleFetch,
     initialPageParam: 1,
-    enabled: !!botId && isLogin && !!category,
+    enabled: !!botId && isLogin && !!categories,
     getNextPageParam: (lastPage, _, lastPageParam) => {
       if (lastPage.length === 0) {
         return undefined
