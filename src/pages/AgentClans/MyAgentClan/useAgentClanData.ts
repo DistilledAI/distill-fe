@@ -3,8 +3,8 @@ import { useParams } from "react-router-dom"
 import { useAppSelector } from "@hooks/useAppRedux"
 import useFetchAgentDetail from "@pages/AgentDetail/useFetchAgentDetail"
 import useGroupDetail from "@pages/ChatPageOld/hooks/useGroupDetail"
-import { getConfigClanValue } from "@pages/AgentStore/AgentClansStore"
 import { IGroupDetail } from "types/group"
+import { getConfigClanValue } from "@utils/clanConfig"
 
 interface AgentConfig {
   key: string

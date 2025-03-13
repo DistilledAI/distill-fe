@@ -21,11 +21,11 @@ import { Link, useLocation, useParams } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
 import MoreAction from "./MoreAction"
 import OrchestrationHeader from "./OrchestrationHeader"
-import { getConfigClanValue } from "@pages/AgentStore/AgentClansStore"
 import { useAppSelector } from "@hooks/useAppRedux"
 import { TabKeyAgent } from "@pages/CreateAgent/NavTab"
 import { distilledAiPlaceholder } from "@assets/images"
 import { VideoThumbnailWrapper } from "@components/VideoThumbnailWrapper"
+import { getConfigClanValue } from "@utils/clanConfig"
 
 const ChatInfoCurrent: React.FC<{
   groupDetail: UserGroup | null

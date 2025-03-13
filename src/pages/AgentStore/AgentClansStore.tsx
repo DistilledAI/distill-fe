@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useMemo } from "react" // Thay useEffect bằng useMemo
 import { useNavigate, useLocation } from "react-router-dom"
 import useFetchClan from "@pages/Marketplace/useFetchClan"
 import { PATH_NAMES } from "@constants/index"
@@ -14,15 +14,7 @@ import PaginationItemCustom from "./PaginationItemCustom"
 import { IGroup } from "@pages/ChatPageOld/ChatContainer/LeftBar/useFetchGroups"
 import AgentDescription from "@pages/AgentClans/ChatBoxLive/AgentDescription"
 import { VideoThumbnailWrapper } from "@components/VideoThumbnailWrapper"
-
-export const getConfigClanValue = (
-  item: IGroup,
-  key: string,
-  defaultValue: string = distilledAiPlaceholder,
-) => {
-  const config = item?.groupConfig?.find((val) => val.key === key)
-  return config?.value || defaultValue
-}
+import { getConfigClanValue } from "@utils/clanConfig"
 
 const AgentClansStore = () => {
   const navigate = useNavigate()
@@ -36,8 +28,12 @@ const AgentClansStore = () => {
 
   const sort =
     sortBy === "Newest" ? { createdAt: "DESC" } : { createdAt: "ASC" }
-
   const filter = searchValue ? { name: searchValue } : undefined
+
+  useMemo(() => {
+    setPage(1)
+    return 1
+  }, [searchValue])
 
   const { data, total, loading } = useFetchClan({
     limit,

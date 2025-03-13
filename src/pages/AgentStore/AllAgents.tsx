@@ -24,6 +24,11 @@ const AllAgents = () => {
   const searchValue = searchParams.get("search") || ""
   const sortBy = searchParams.get("sortBy") || "Oldest"
 
+  useMemo(() => {
+    setPage(1)
+    return 1
+  }, [searchValue])
+
   const sort = useMemo(() => {
     if (sortBy === "Newest") {
       return { createdAt: "DESC" }

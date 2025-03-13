@@ -44,7 +44,7 @@ const InputSearchClan = ({ onSearch, onClose, isOpen }: Props) => {
           <CloseFilledIcon size={20} color="#676767" />
         </button>
       }
-      placeholder="Search Clans.."
+      placeholder="Search clans.."
       value={searchValue}
       onValueChange={handleInputChange}
       classNames={{
