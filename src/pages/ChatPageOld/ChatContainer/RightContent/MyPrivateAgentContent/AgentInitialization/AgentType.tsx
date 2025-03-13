@@ -1,8 +1,5 @@
 import { maxAvatar } from "@assets/images"
-import {
-  DefaiAgentTypeIcon,
-  DefaultAgentTypeIcon,
-} from "@components/Icons/BrainAIIcon"
+import { DefaultAgentTypeIcon } from "@components/Icons/BrainAIIcon"
 import { CheckFilledIcon } from "@components/Icons/DefiLens"
 import {
   DeepSeekIcon,
@@ -18,7 +15,6 @@ import { toBN } from "@utils/format"
 import { useEffect, useState } from "react"
 import { Controller, useFormContext } from "react-hook-form"
 import { toast } from "react-toastify"
-import { twMerge } from "tailwind-merge"
 import useGetPaymentHistory from "./useGetPaymentHistory"
 
 export enum AGENT_TYPE_KEY {
@@ -31,28 +27,16 @@ export const TYPE_LLM_MODEL = {
   DEEPSEEK_MODEL: 2,
 }
 
-const AGENT_TYPE_OPTIONS = [
-  {
-    title: "Default Agent",
-    desc: [
-      "AI Agent trained on your private data",
-      "Customizable behaviors",
-      "Automation for X and Telegram activities",
-    ],
-    icon: <DefaultAgentTypeIcon />,
-    key: AGENT_TYPE_KEY.DEFAULT,
-  },
-  {
-    title: "DeFAI Agent",
-    desc: [
-      "Automation DeFi activities",
-      "All Default Agent utilities included",
-      "Creator does not control the agent wallet.",
-    ],
-    icon: <DefaiAgentTypeIcon />,
-    key: AGENT_TYPE_KEY.DEFAI,
-  },
-]
+const agentType = {
+  title: "AI Agent with Private Intelligence",
+  desc: [
+    "AI Agent trained on your private data",
+    "Customizable behaviors",
+    "Automation for X and Telegram activities",
+  ],
+  icon: <DefaultAgentTypeIcon />,
+  key: AGENT_TYPE_KEY.DEFAI,
+}
 
 const LLM_MODEL_OPTIONS = [
   {
@@ -82,18 +66,9 @@ const isStaging = urlStaging.includes(window.location.host)
 const AgentType: React.FC<{
   isDisabledTypeAgent?: boolean
   isDisabledLLMModel?: boolean
-  typeAgent?: number
   llmModel?: number
   setLlmModel?: React.Dispatch<React.SetStateAction<number>>
-  setTypeAgent?: React.Dispatch<React.SetStateAction<number>>
-}> = ({
-  isDisabledTypeAgent,
-  isDisabledLLMModel,
-  setLlmModel,
-  llmModel,
-  typeAgent,
-  setTypeAgent,
-}) => {
+}> = ({ isDisabledTypeAgent, isDisabledLLMModel, setLlmModel, llmModel }) => {
   const { isPaid, checkPayment } = useGetPaymentHistory()
   const { control } = useFormContext()
   const { handleSend } = useSend()
@@ -153,116 +128,74 @@ const AgentType: React.FC<{
   return (
     <div>
       <div className="mb-2 mt-4 flex items-center gap-3 max-md:flex-wrap">
-        {AGENT_TYPE_OPTIONS.map((item: any) => {
-          const isDefaiType = item.key === AGENT_TYPE_KEY.DEFAI
-          return (
-            <Controller
-              key={item.key}
-              name="typeAgent"
-              control={control}
-              render={({ field: { value, onChange } }: any) => {
-                const isSelected = value === item.key || typeAgent === item.key
-                return (
-                  <div
-                    className="flex h-fit items-start justify-between gap-3 rounded-[14px] border-[2px] border-transparent bg-mercury-30 p-4 hover:cursor-pointer aria-checked:opacity-60 aria-selected:border-brown-500 max-md:h-auto"
-                    key={item.key}
-                    aria-selected={isSelected}
-                    aria-checked={isDisabledTypeAgent}
-                    onClick={() => {
-                      if (isDisabledTypeAgent) return
-                      onChange(item.key)
-                      setIsLoading(false)
-                      if (setTypeAgent) setTypeAgent(item.key)
-                    }}
-                  >
-                    {item.icon}
-                    <div>
-                      <span className="text-base-b text-mercury-900">
-                        {item.title}
-                      </span>
-                      <div className="ml-4 mt-1">
-                        {item.desc.map((record: any, index: number) => {
-                          return (
-                            <ul key={index} className="list-disc">
-                              <li>
-                                <span
-                                  className={twMerge(
-                                    "text-[13px] font-medium text-mercury-700",
-                                    isDefaiType &&
-                                      index === 0 &&
-                                      "font-semibold text-[#7EB000]",
-                                  )}
-                                >
-                                  {record}
-                                </span>
-                              </li>
-                            </ul>
-                          )
-                        })}
-                      </div>
+        <div
+          className="flex h-fit w-full items-start justify-between gap-3 rounded-[14px] border-[2px] border-transparent bg-mercury-30 p-4 hover:cursor-pointer max-md:h-auto"
+          key={agentType.key}
+        >
+          <div className="flex gap-3">
+            {agentType.icon}
+            <div>
+              <span className="text-base-b text-mercury-900">
+                {agentType.title}
+              </span>
+              <div className="ml-4 mt-1">
+                {agentType.desc.map((record: any, index: number) => {
+                  return (
+                    <ul key={index} className="list-disc">
+                      <li>
+                        <span className="text-[13px] font-medium text-mercury-700">
+                          {record}
+                        </span>
+                      </li>
+                    </ul>
+                  )
+                })}
+              </div>
+            </div>
+          </div>
 
-                      {(isPaymentSuccess || isPaid) && isSelected ? (
-                        <Button className="mt-2 h-8 rounded-full bg-[#DEFAE5]">
-                          <div className="flex items-center gap-1">
-                            <CheckFilledIcon color="#20993F" />
-                            <span className="text-14 font-bold text-[#20993F]">
-                              Payment Successful
-                            </span>
-                          </div>
-                        </Button>
-                      ) : (
-                        <Button
-                          className="mt-2 h-8 rounded-full bg-mercury-950"
-                          onPress={() => {
-                            if (isDisabledTypeAgent) return
-                            handleSubmit({
-                              tokenAddress: maxTokenAddress,
-                              toAccountAddress: ADDRESS_PAYMENT_NETWORK_SOL,
-                              amount: amountMAX.toString(),
-                            })
-                          }}
-                          isLoading={isSelected && isLoading}
-                          isDisabled={!isSelected}
-                        >
-                          <div className="flex items-center gap-1">
-                            <img
-                              src={maxAvatar}
-                              width={16}
-                              className="rounded-full"
-                            />
-                            <span className="font-medium text-[#BCAA88]">
-                              <span className="font-bold">1,000 </span>
-                              MAX
-                            </span>
-                            <span className="text-14-base-b text-mercury-30">
-                              {" "}
-                              Pay Now*
-                            </span>
-                          </div>
-                        </Button>
-                      )}
-                    </div>
-                    <Checkbox
-                      radius="full"
-                      isSelected={isSelected}
-                      onChange={() => {
-                        if (isDisabledTypeAgent) return
-                        onChange(item.key)
-                        setIsLoading(false)
-                        if (setTypeAgent) setTypeAgent(item.key)
-                      }}
-                    />
-                  </div>
-                )
+          {isPaymentSuccess || isPaid ? (
+            <Button className="h-8 rounded-full bg-[#DEFAE5]">
+              <div className="flex items-center gap-1">
+                <CheckFilledIcon color="#20993F" />
+                <span className="text-14 font-bold text-[#20993F]">
+                  Payment Successful
+                </span>
+              </div>
+            </Button>
+          ) : (
+            <Button
+              className="h-8 rounded-full bg-mercury-950"
+              onPress={() => {
+                if (isDisabledTypeAgent) return
+                handleSubmit({
+                  tokenAddress: maxTokenAddress,
+                  toAccountAddress: ADDRESS_PAYMENT_NETWORK_SOL,
+                  amount: amountMAX.toString(),
+                })
               }}
-            />
-          )
-        })}
+              isLoading={isLoading}
+            >
+              <div className="flex items-center gap-1">
+                <img src={maxAvatar} width={16} className="rounded-full" />
+                <span className="font-medium text-[#BCAA88]">
+                  <span className="font-bold">1,000 </span>
+                  MAX
+                </span>
+                <span className="text-14-base font-bold uppercase text-mercury-30">
+                  {" "}
+                  Activate <span className="text-[#FF3B30]">*</span>
+                </span>
+              </div>
+            </Button>
+          )}
+        </div>
       </div>
 
       <div className="flex justify-end">
         <span className="text-base-sb italic text-mercury-900">
-          *Note: You can pay later to activate the agent type.
+          <span className="text-[#FF3B30]">*</span> Note: You can pay later, but
+          payment is required to activate your agent.
         </span>
       </div>
 
