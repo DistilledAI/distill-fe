@@ -18,6 +18,7 @@ import {
   racksAvatar,
 } from "@assets/images"
 import { STATUS_AGENT } from "@constants/index"
+import { useState, useEffect } from "react" // Thêm useState và useEffect
 
 interface MenuItem {
   id: string
@@ -33,6 +34,17 @@ const NavigationMenu = ({ isMobile = false }: { isMobile?: boolean }) => {
   const { pathname: currentPath, search: currentSearch } = useLocation()
   const sidebarCollapsed = useAppSelector((state) => state.sidebarCollapsed)
   const myAgent = useAppSelector((state) => state.agents.myAgent)
+
+  const [lastClanPath, setLastClanPath] = useState<string>("/my-agent-clan")
+
+  useEffect(() => {
+    if (
+      currentPath.includes("/clan") ||
+      currentPath.includes("/my-agent-clan")
+    ) {
+      setLastClanPath(currentPath + currentSearch)
+    }
+  }, [currentPath, currentSearch])
 
   const getPathnameMyAgent = () => {
     if (!myAgent) return "/create-agent"
@@ -96,7 +108,7 @@ const NavigationMenu = ({ isMobile = false }: { isMobile?: boolean }) => {
           </div>
         </div>
       ),
-      pathname: "/my-agent-clan",
+      pathname: lastClanPath, // Sử dụng lastClanPath thay vì hardcode "/my-agent-clan"
     },
     {
       id: "private-agent",

@@ -2,7 +2,6 @@ import { sentryVitePlugin } from "@sentry/vite-plugin"
 import react from "@vitejs/plugin-react"
 import path from "path"
 import { defineConfig } from "vite"
-import babel from "vite-plugin-babel"
 import { nodePolyfills } from "vite-plugin-node-polyfills"
 import Sitemap from "vite-plugin-sitemap"
 import tsconfigPaths from "vite-tsconfig-paths"
@@ -23,7 +22,6 @@ export default defineConfig(() => {
     plugins: [
       react(),
       tsconfigPaths(),
-      babel(),
       nodePolyfills(),
       Sitemap({
         hostname: "https://mesh.distilled.ai",
