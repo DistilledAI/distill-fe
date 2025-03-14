@@ -2,7 +2,6 @@ import useWindowSize from "@hooks/useWindowSize"
 import { twMerge } from "tailwind-merge"
 import LeftContent from "./LeftContent"
 import RightContent from "./RightContent"
-import useGroupDetail from "@pages/ChatPageOld/hooks/useGroupDetail"
 import useJoinGroupLive from "@hooks/useJoinGroupLive"
 import { lazy, useLayoutEffect } from "react"
 import { useNavigate, useParams } from "react-router-dom"
@@ -20,8 +19,7 @@ const ChatBoxLive = () => {
   const navigate = useNavigate()
   const { user } = useAuthState()
 
-  useJoinGroupLive()
-  const { groupDetail, isFetched } = useGroupDetail()
+  const { groupDetail, isGroupDetailFetched } = useJoinGroupLive()
 
   useLayoutEffect(() => {
     if (chatId?.includes(" ")) {
@@ -51,7 +49,10 @@ const ChatBoxLive = () => {
       {isMobile ? <ChatLiveHeader groupDetail={groupDetail} /> : null}
 
       <div className="relative flex h-[calc(100dvh-120px)] w-full gap-2 max-lg:flex-col md:h-full md:gap-5 md:pb-4">
-        <LeftContent groupDetail={groupDetail} isFetched={isFetched} />
+        <LeftContent
+          groupDetail={groupDetail}
+          isFetched={isGroupDetailFetched}
+        />
         <RightContent isClan groupDetail={groupDetail} />
       </div>
     </div>

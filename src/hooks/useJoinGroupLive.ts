@@ -13,7 +13,12 @@ const ONE_DAY_IN_MS = 24 * 60 * 60 * 1000
 
 const useJoinGroupLive = () => {
   const dispatch = useAppDispatch()
-  const { chatId: groupId, originalChatId } = useGetChatId()
+  const {
+    chatId: groupId,
+    originalChatId,
+    groupDetail,
+    isFetched: isGroupDetailFetched,
+  } = useGetChatId()
   const { isLogin, user } = useAuthState()
   const { fetchGroups } = useFetchGroups()
   const queryClient = useQueryClient()
@@ -94,7 +99,10 @@ const useJoinGroupLive = () => {
     }
   }, [isLogin, user?.id, hasJoinedGroup, groupId])
 
-  return {}
+  return {
+    groupDetail,
+    isGroupDetailFetched,
+  }
 }
 
 export default useJoinGroupLive

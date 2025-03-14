@@ -19,14 +19,14 @@ const useGetChatId = () => {
       }
 
       const response = await getGroupDetailFromLabel(normalizedChatId)
-      return response?.data?.id?.toString()
+      return response?.data
     } catch (error) {
       console.error("Failed to fetch chat ID:", error)
       return undefined
     }
   }
 
-  const { data: chatId = "" } = useQuery({
+  const { data, isFetched } = useQuery<any>({
     queryKey: [`${QueryDataKeys.CHAT_ID_BY_USERNAME}-${chatIdParam}`],
     queryFn: fetchChatId,
     initialData: "",
@@ -34,8 +34,10 @@ const useGetChatId = () => {
   })
 
   return {
-    chatId,
+    chatId: data?.id?.toString(),
     originalChatId: chatIdParam,
+    groupDetail: data,
+    isFetched,
   }
 }
 

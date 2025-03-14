@@ -16,7 +16,6 @@ import {
   DropdownMenu,
   DropdownTrigger,
 } from "@nextui-org/react"
-import useGroupDetail from "@pages/ChatPageOld/hooks/useGroupDetail"
 import { numberWithCommas } from "@utils/format"
 import {
   centerTextEllipsis,
@@ -27,6 +26,7 @@ import { useLocation, useNavigate } from "react-router-dom"
 import LoginPhantom from "./LoginPhantom"
 import useWindowSize from "@hooks/useWindowSize"
 import SidebarMobile from "@components/Layout/SidebarMobile"
+import useGetChatId from "@pages/ChatPageOld/hooks/useGetChatId"
 
 interface UserAuthProps {
   connectWallet: any
@@ -37,10 +37,10 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
   const navigate = useNavigate()
   const { isMobile } = useWindowSize()
   const { pathname } = useLocation()
-  const { groupDetail, groupId } = useGroupDetail()
   const { logout } = useAuthAction()
+  const { groupDetail, originalChatId } = useGetChatId()
 
-  const { textColor } = getActiveColorRandomById(groupId)
+  const { textColor } = getActiveColorRandomById(originalChatId)
   const isShowInfo =
     user && user.publicAddress && user.role !== RoleUser.ANONYMOUS
   const totalxDstlPoint = user?.xDstlPoint || 0

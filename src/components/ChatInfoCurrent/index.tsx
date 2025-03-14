@@ -13,8 +13,8 @@ import {
 } from "@pages/ChatPageOld/ChatContainer/LeftBar/helpers"
 import { ORCHESTRATION_LIST } from "@pages/ChatPageOld/ChatContainer/LeftBar/OrchestrationSlider"
 import {
+  IGroup,
   TypeGroup,
-  UserGroup,
 } from "@pages/ChatPageOld/ChatContainer/LeftBar/useFetchGroups"
 import React from "react"
 import { Link, useLocation, useParams } from "react-router-dom"
@@ -28,19 +28,19 @@ import { VideoThumbnailWrapper } from "@components/VideoThumbnailWrapper"
 import { getConfigClanValue } from "@utils/clanConfig"
 
 const ChatInfoCurrent: React.FC<{
-  groupDetail: UserGroup | null
+  groupDetail: IGroup | null
   textColor?: string
 }> = ({ groupDetail, textColor = "text-mercury-900" }) => {
   const { user } = useAuthState()
   const myAgent = useAppSelector((state) => state.agents.myAgent)
-  const isGroup = groupDetail?.group?.typeGroup === TypeGroup.PRIVATE_GROUP
-  const isGroupPublic = groupDetail?.group?.typeGroup === TypeGroup.PUBLIC_GROUP
-  const isLive = isGroupPublic && groupDetail?.group?.live === 1
+  const isGroup = groupDetail?.typeGroup === TypeGroup.PRIVATE_GROUP
+  const isGroupPublic = groupDetail?.typeGroup === TypeGroup.PUBLIC_GROUP
+  const isLive = isGroupPublic && groupDetail?.live === 1
   const location = useLocation()
   const isMyAgentClan = location.pathname.startsWith(PATH_NAMES.MY_AGENT_CLAN)
   const { chatId: conversationId } = useParams()
   const imageUrl = groupDetail
-    ? getConfigClanValue(groupDetail?.group, "imageLive")
+    ? getConfigClanValue(groupDetail, "imageLive")
     : ""
 
   if (!groupDetail) return null
@@ -78,8 +78,8 @@ const ChatInfoCurrent: React.FC<{
             <AvatarContainer
               badgeIcon={<LiveIcon />}
               avatarUrl={thumbnail || distilledAiPlaceholder}
-              publicAddress={groupDetail.group.name}
-              userName={groupDetail.group.name}
+              publicAddress={groupDetail.name}
+              userName={groupDetail.name}
               badgeClassName={isLive ? "bg-lgd-code-hot-ramp" : ""}
               isLive={isLive}
               usernameClassName={twMerge(
@@ -92,7 +92,7 @@ const ChatInfoCurrent: React.FC<{
 
         {isLive && (
           <TotalMemberBadge
-            memberFixed={groupDetail?.group?.groupMemberStats?.total}
+            memberFixed={groupDetail?.groupMemberStats?.total}
           />
         )}
         {/* <MoreAction
@@ -101,8 +101,8 @@ const ChatInfoCurrent: React.FC<{
         /> */}
         <AgentShareButton
           agentInfo={{
-            shareLink: `${window.location.origin}${PATH_NAMES.CLAN}/${groupDetail?.group?.label}`,
-            avatar: groupDetail.group.image,
+            shareLink: `${window.location.origin}${PATH_NAMES.CLAN}/${groupDetail?.label}`,
+            avatar: groupDetail.image,
           }}
           buttonClassName="w-fit !p-0 !bg-white !min-w-[40px]"
         />
@@ -120,19 +120,19 @@ const ChatInfoCurrent: React.FC<{
   return (
     <div className="flex items-center gap-2">
       {isGroup ? (
-        <AvatarGroup groupName={groupDetail.group.name} />
+        <AvatarGroup groupName={groupDetail.name} />
       ) : (
         <div className="flex items-center gap-2">
           <AvatarCustom
             src={getAvatarGroupChat(
-              groupDetail.userId,
-              groupDetail.group.userA,
-              groupDetail.group.userB,
+              groupDetail?.userId,
+              groupDetail.userA,
+              groupDetail.userB,
             )}
             publicAddress={getPublicAddressGroupChat(
-              groupDetail.userId,
-              groupDetail.group.userA,
-              groupDetail.group.userB,
+              groupDetail?.userId,
+              groupDetail.userA,
+              groupDetail.userB,
             )}
           />
           <span
@@ -141,18 +141,11 @@ const ChatInfoCurrent: React.FC<{
               textColor,
             )}
           >
-            {getNameGroup(
-              user,
-              groupDetail.group.userA,
-              groupDetail.group.userB,
-            )}
+            {getNameGroup(user, groupDetail.userA, groupDetail.userB)}
           </span>
         </div>
       )}
-      <MoreAction
-        groupId={groupDetail.groupId}
-        groupType={groupDetail.group.typeGroup}
-      />
+      <MoreAction groupId={groupDetail.id} groupType={groupDetail.typeGroup} />
     </div>
   )
 }
