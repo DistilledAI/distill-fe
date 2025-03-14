@@ -5,6 +5,7 @@ import { IGroupDetail } from "types/group"
 import { getConfigClanValue } from "@utils/clanConfig"
 import { getMyAgentClan } from "services/group"
 import { QueryDataKeys } from "types/queryDataKeys"
+import useAuthState from "@hooks/useAuthState"
 
 interface UseMyAgentClanReturn {
   imageUrl: string | undefined
@@ -16,10 +17,12 @@ interface UseMyAgentClanReturn {
 
 const useMyAgentClan = (): UseMyAgentClanReturn => {
   const { chatId } = useParams<{ chatId?: string }>()
+  const { isLogin, isAnonymous } = useAuthState()
 
   const { data: group, isLoading } = useQuery<any>({
     queryKey: [QueryDataKeys.MY_AGENT_CLAN],
     queryFn: getMyAgentClan,
+    enabled: isLogin && !isAnonymous,
     staleTime: 5 * 60 * 1000,
   })
 

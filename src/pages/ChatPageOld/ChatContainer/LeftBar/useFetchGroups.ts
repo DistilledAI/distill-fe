@@ -36,6 +36,7 @@ export interface IGroup {
   }
   groupUser?: Array<any>
   clanOfAgentId?: string | number
+  userId: number
 }
 
 export interface GroupConfig {
