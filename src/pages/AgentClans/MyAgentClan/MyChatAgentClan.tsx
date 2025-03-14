@@ -3,13 +3,13 @@ import { useNavigate } from "react-router-dom"
 import MyAgentClanEmpty from "./MyAgentClanEmpty"
 import ChatBoxLive from "@pages/AgentClans/ChatBoxLive"
 import useWindowSize from "@hooks/useWindowSize"
-import useAgentClanData from "./useAgentClanData"
+import useMyAgentClan from "./useMyAgentClan"
 import { useEffect } from "react"
 
 const MyChatAgentClan = () => {
   const navigate = useNavigate()
   const { isMobile } = useWindowSize()
-  const { nameAgentClan, isLoading, imageUrl, group } = useAgentClanData()
+  const { nameAgentClan, isLoading, imageUrl, group } = useMyAgentClan()
 
   useEffect(() => {
     if (!isLoading && !nameAgentClan) {

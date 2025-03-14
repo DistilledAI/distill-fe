@@ -33,4 +33,5 @@ export enum QueryDataKeys {
   IS_LOGGED_OUT = "is-logged-out",
   PINNED_AGENT_CLANS = "pinned-agent-clans",
   CLANS = "clans",
+  MY_AGENT_CLAN = "my-agent-clan",
 }

@@ -127,3 +127,11 @@ export const getPinAgentClans = async () => {
   })
   return res?.data?.items
 }
+
+export const getMyAgentClan = async () => {
+  const res = await fetchApiAuth({
+    method: "GET",
+    url: endpoint.GET_MY_AGENT_CLAN,
+  })
+  return res?.data
+}
