@@ -20,7 +20,7 @@ import { toast } from "react-toastify"
 import { updateAgentConfig } from "services/agent"
 import { createBot } from "services/chat"
 import { updateAvatarUser } from "services/user"
-import { TYPE_LLM_MODEL } from "./AgentType"
+import { AGENT_TYPE_KEY, TYPE_LLM_MODEL } from "./AgentType"
 import Header from "./Header"
 
 const AgentInitialization = () => {
@@ -41,7 +41,7 @@ const AgentInitialization = () => {
       website_link: "",
       x_link: "",
       telegram_link: "",
-      typeAgent: 0,
+      typeAgent: AGENT_TYPE_KEY.DEFAI,
       llmModel: TYPE_LLM_MODEL.LLM_MODEL_BASIC,
     },
   })

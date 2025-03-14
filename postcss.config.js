@@ -1,5 +1,5 @@
 const isProduction =
-  process.env.VITE_BASE_API_URL === "https://api-dev.distilled.ai/distill"
+  process.env.VITE_BASE_API_URL === "https://prod-api.distilled.ai/distill"
 
 export default {
   plugins: {
@@ -12,6 +12,7 @@ export default {
           {
             discardComments: { removeAll: true },
             normalizeWhitespace: true,
+            mergeRules: false,
           },
         ],
       },

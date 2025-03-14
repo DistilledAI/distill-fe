@@ -1,5 +1,8 @@
 import { STATUS_AGENT } from "@constants/index"
-import { TYPE_LLM_MODEL } from "@pages/ChatPageOld/ChatContainer/RightContent/MyPrivateAgentContent/AgentInitialization/AgentType"
+import {
+  AGENT_TYPE_KEY,
+  TYPE_LLM_MODEL,
+} from "@pages/ChatPageOld/ChatContainer/RightContent/MyPrivateAgentContent/AgentInitialization/AgentType"
 import useGroupDetail from "@pages/ChatPageOld/hooks/useGroupDetail"
 import AgentNavTab from "@pages/CreateAgent/NavTab"
 import { refreshFetchMyAgent } from "@reducers/agentSlice"
@@ -55,7 +58,6 @@ const AgentDetail: React.FC = () => {
   const descriptionData = agentData?.description
   const firstMsgData = agentData?.firstMsg
   const avatarData = agentData?.avatar
-  const typeAgentData = agentData?.typeAgent
   const llmModelData = agentData?.llmModel
   // const xBotData = agentConfigs?.find(
   //   (agent: any) => agent.key === "bindTwitterKey",
@@ -81,7 +83,7 @@ const AgentDetail: React.FC = () => {
       customization_instruction: "",
       post_interval: "30m",
       category: "crypto",
-      typeAgent: 0,
+      typeAgent: AGENT_TYPE_KEY.DEFAI,
       llmModel: TYPE_LLM_MODEL.LLM_MODEL_BASIC,
       clan: {
         description: "",
@@ -121,7 +123,7 @@ const AgentDetail: React.FC = () => {
       description: descriptionData,
       firstMsg: firstMsgData,
       avatar: avatarData,
-      typeAgent: typeAgentData,
+      typeAgent: AGENT_TYPE_KEY.DEFAI,
       llmModel: llmModelData,
       clan: methods.getValues("clan"),
       ...getConfigAgentValueByKeys(agentConfigs, LIST_AGENT_CONFIG_KEYS),

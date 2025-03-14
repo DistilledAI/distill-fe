@@ -1,3 +1,4 @@
+import { AGENT_TYPE_KEY } from "@pages/ChatPageOld/ChatContainer/RightContent/MyPrivateAgentContent/AgentInitialization/AgentType"
 import {
   updateMyAgent,
   updateMyAgents,
@@ -6,8 +7,8 @@ import {
 import { useEffect } from "react"
 import { useDispatch } from "react-redux"
 import { getMyPrivateAgent } from "services/chat"
-import useAuthState from "./useAuthState"
 import { useAppSelector } from "./useAppRedux"
+import useAuthState from "./useAuthState"
 
 const useFetchMyAgent = () => {
   const { isLogin, isAnonymous } = useAuthState()
@@ -30,7 +31,7 @@ const useFetchMyAgent = () => {
               description: firstAgent.description,
               avatar: firstAgent.avatar,
               publicAddress: firstAgent.publicAddress,
-              typeAgent: firstAgent.typeAgent,
+              typeAgent: AGENT_TYPE_KEY.DEFAI,
             }),
           )
         } else {

@@ -6,6 +6,7 @@ import {
   RESPONSE_LENGTH_KEY,
 } from "@pages/AgentDetail/AgentBehaviors/constants"
 import AgentType, {
+  AGENT_TYPE_KEY,
   TYPE_LLM_MODEL,
 } from "@pages/ChatPageOld/ChatContainer/RightContent/MyPrivateAgentContent/AgentInitialization/AgentType"
 import React, { useState } from "react"
@@ -18,7 +19,6 @@ const CreateAgentModal: React.FC<{
   isCanClose?: boolean
 }> = ({ isOpen, onClose, isCanClose = true }) => {
   const navigate = useNavigate()
-  const [typeAgent, setTypeAgent] = useState<number>(0)
   const [llmModel, setLlmModel] = useState<number>(
     TYPE_LLM_MODEL.LLM_MODEL_BASIC,
   )
@@ -41,7 +41,7 @@ const CreateAgentModal: React.FC<{
       customization_instruction: "",
       post_interval: "30m",
       category: "crypto",
-      typeAgent: 0,
+      typeAgent: AGENT_TYPE_KEY.DEFAI,
       llmModel: TYPE_LLM_MODEL.LLM_MODEL_BASIC,
     },
   })
@@ -76,19 +76,14 @@ const CreateAgentModal: React.FC<{
           </div>
           <div>
             <FormProvider {...methods}>
-              <AgentType
-                typeAgent={typeAgent}
-                setTypeAgent={setTypeAgent}
-                llmModel={llmModel}
-                setLlmModel={setLlmModel}
-              />
+              <AgentType llmModel={llmModel} setLlmModel={setLlmModel} />
             </FormProvider>
           </div>
           <div className="flex items-center justify-end">
             <Button
               onPress={() =>
                 navigate(PATH_NAMES.CREATE_AGENT, {
-                  state: { llmModel, typeAgent },
+                  state: { llmModel },
                 })
               }
               className="mt-5 h-[46px] rounded-full bg-mercury-950 font-semibold text-white"
