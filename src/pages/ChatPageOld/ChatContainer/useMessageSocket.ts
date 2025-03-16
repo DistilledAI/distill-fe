@@ -8,12 +8,13 @@ import { useEffect } from "react"
 import { useLocation, useParams } from "react-router-dom"
 import { getVoiceToText } from "services/chat"
 import { QueryDataKeys } from "types/queryDataKeys"
-import useGetChatId from "../hooks/useGetChatId"
 import { IMessageBox, RoleChat } from "./ChatMessages/helpers"
 import {
   ICachedMessageData,
   chatMessagesKey,
 } from "./ChatMessages/useFetchMessages"
+import useGroupDetailByLabel from "../hooks/useGroupDetailByLabel"
+import useMyAgentClan from "@pages/AgentClans/MyAgentClan/useMyAgentClan"
 
 interface IDataListen {
   event: string
@@ -48,13 +49,17 @@ export const removeLeadingDots = (text: string) => {
 }
 
 const useMessageSocket = () => {
-  const { privateChatId } = useParams()
-  const { chatId } = useGetChatId()
+  const { pathname } = useLocation()
   const { socket } = useSocket()
   const { user } = useAuthState()
   const queryClient = useQueryClient()
-  const groupId = chatId || privateChatId
-  const { pathname } = useLocation()
+  const { group: clan } = useMyAgentClan()
+
+  const { chatId = "", privateChatId } = useParams()
+  const { groupId: groupIdByLabel } = useGroupDetailByLabel(
+    clan?.status === 1 ? chatId : "",
+  )
+  const groupId = groupIdByLabel || privateChatId
 
   const setQueryIsChatting = (chattingId: string, status: boolean = false) => {
     return queryClient.setQueryData(

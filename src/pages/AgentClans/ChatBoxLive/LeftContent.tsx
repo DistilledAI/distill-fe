@@ -10,10 +10,7 @@ import { AgentDotLandIcon } from "@components/Icons/FilledSquareCircleIcon"
 import VideoCustom from "@components/VideoCustom"
 import { PATH_NAMES } from "@constants/index"
 import { Skeleton } from "@nextui-org/react"
-import {
-  IGroup,
-  UserGroup,
-} from "@pages/ChatPageOld/ChatContainer/LeftBar/useFetchGroups"
+import { IGroup } from "@pages/ChatPageOld/ChatContainer/LeftBar/useFetchGroups"
 import { StakeTokenAddress } from "@pages/Stake"
 import { getInfoTokenByAddress } from "@pages/Stake/helpers"
 import { useQueries, useQueryClient } from "@tanstack/react-query"
@@ -48,7 +45,7 @@ interface GroupConfig {
 }
 
 const LeftContent: React.FC<{
-  groupDetail: UserGroup | null
+  groupDetail: IGroup | null
   isFetched: boolean
 }> = ({ groupDetail, isFetched }) => {
   const queryClient = useQueryClient()
@@ -60,7 +57,7 @@ const LeftContent: React.FC<{
   const onOpenChange = () => setOpenModal(!isOpenModal)
   const onOpen = () => setOpenModal(true)
 
-  const groupConfig = useGroupConfig(groupDetail?.group as IGroup)
+  const groupConfig = useGroupConfig(groupDetail as IGroup)
 
   useEffect(() => {
     if (prediction && groupConfig[CLAN_CONFIG_KEYS.IS_PREDICTION]) onOpen()
@@ -235,10 +232,10 @@ const LeftContent: React.FC<{
           <div className="mt-3 flex items-center justify-between">
             <AgentSocials
               agentInfo={{
-                username: groupDetail?.group?.name ?? "",
+                username: groupDetail?.name ?? "",
                 xLink: groupConfig[CLAN_CONFIG_KEYS.X] ?? "",
                 teleLink: groupConfig[CLAN_CONFIG_KEYS.TELEGRAM] ?? "",
-                shareLink: `${window.location.origin}${PATH_NAMES.CLAN}/${groupDetail?.group?.label ?? ""}`,
+                shareLink: `${window.location.origin}${PATH_NAMES.CLAN}/${groupDetail?.label ?? ""}`,
                 contract: groupConfig[CLAN_CONFIG_KEYS.CONTRACT_ADDRESS] ?? "",
                 website: groupConfig[CLAN_CONFIG_KEYS.WEBSITE] ?? "",
               }}
@@ -249,7 +246,7 @@ const LeftContent: React.FC<{
             />
             <Link
               className="flex items-center gap-2 rounded-full bg-mercury-950 px-3 py-1 text-15 font-medium text-white hover:opacity-70"
-              to={`${PATH_NAMES.INVITE}/${groupDetail?.group?.clanOfAgentId}`}
+              to={`${PATH_NAMES.INVITE}/${groupDetail?.clanOfAgentId}`}
             >
               <MessagePlusIcon color="white" />
               <span>Chat private now</span>

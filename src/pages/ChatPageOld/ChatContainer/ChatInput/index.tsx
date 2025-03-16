@@ -1,6 +1,5 @@
 import { PATH_NAMES } from "@constants/index"
 import useWindowSize from "@hooks/useWindowSize"
-import useGetChatId from "@pages/ChatPageOld/hooks/useGetChatId"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { useStyleSpacing } from "providers/StyleSpacingProvider"
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react"
@@ -19,6 +18,7 @@ import { QueryDataKeys } from "types/queryDataKeys"
 import { BOT_STATUS } from "../ChatMessages/ChatActions/DelegatePrivateAgent"
 import VoiceChat from "./Voice"
 import { ArrowUpFilledIcon } from "@components/Icons/Arrow"
+import useGroupDetailByLabel from "@pages/ChatPageOld/hooks/useGroupDetailByLabel"
 import "./index.css"
 
 const MentionsInputAny =
@@ -55,11 +55,11 @@ const ChatInput = ({
   const boxRef = useRef<HTMLDivElement>(null)
   const heightBoxRef = useRef(0)
   const { setSpacing, spacing } = useStyleSpacing()
-  const { privateChatId } = useParams()
-  const { chatId } = useGetChatId()
+  const { chatId = "", privateChatId } = useParams()
+  const { groupId: groupIdByLabel } = useGroupDetailByLabel(chatId)
   const inputRef = useRef<any>(null)
   const queryClient = useQueryClient()
-  const groupId = chatId || privateChatId
+  const groupId = groupIdByLabel || privateChatId
 
   const { data: isChatting } = useQuery({
     initialData: false,

@@ -27,6 +27,9 @@ import { distilledAiPlaceholder } from "@assets/images"
 const ChatMyAgentBox: React.FC<{
   hasInputChat?: boolean
 }> = ({ hasInputChat = true }) => {
+  const reCaptchaRef = useRef<any>()
+  const { spacing } = useStyleSpacing()
+  const { privateChatId: groupId = "" } = useParams()
   const {
     isLoading,
     onLoadPrevMessages,
@@ -34,11 +37,8 @@ const ChatMyAgentBox: React.FC<{
     isFetched,
     isFetchingPreviousPage,
     hasPreviousMore,
-  } = useFetchMessages()
-  const reCaptchaRef = useRef<any>()
-  const { spacing } = useStyleSpacing()
-  const { privateChatId } = useParams()
-  const groupId = privateChatId
+  } = useFetchMessages(groupId)
+
   const { mutation } = useSubmitChat({
     groupId,
     callbackDone: SpeechRecognition.stopListening,
@@ -104,7 +104,7 @@ const ChatMyAgentBox: React.FC<{
         itemContent={renderMessage}
         isLoading={isLoading}
         onLoadPrevMessages={onLoadPrevMessages}
-        chatId={privateChatId}
+        chatId={groupId}
         isFetched={isFetched}
         hasPreviousMore={hasPreviousMore}
         isFetchingPreviousPage={isFetchingPreviousPage}

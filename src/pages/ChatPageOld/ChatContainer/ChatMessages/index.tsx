@@ -3,7 +3,6 @@ import { FilledUserIcon } from "@components/Icons/UserIcon"
 import ReceiverMessage from "@components/ReceiverMessage"
 import SenderMessage from "@components/SenderMessage"
 import { CLEAR_CACHED_MESSAGE, PATH_NAMES, RoleUser } from "@constants/index"
-import useGetChatId from "@pages/ChatPageOld/hooks/useGetChatId"
 import { getActiveColorRandomById } from "@utils/index"
 import { useStyleSpacing } from "providers/StyleSpacingProvider"
 import { twMerge } from "tailwind-merge"
@@ -22,7 +21,7 @@ import { QueryDataKeys } from "types/queryDataKeys"
 import useAuthState from "@hooks/useAuthState"
 import { useEffect } from "react"
 import ChatWindowV2 from "@components/ChatWindowV2"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { useAppSelector } from "@hooks/useAppRedux"
 import { UserGroup } from "../LeftBar/useFetchGroups"
 
@@ -101,7 +100,7 @@ const MessageItem = ({
 
 const ChatMessages = () => {
   const navigate = useNavigate()
-  const { chatId: groupId } = useGetChatId()
+  const { chatId: groupId = "" } = useParams()
   const { bgColor, textColor } = getActiveColorRandomById(groupId)
   const { spacing } = useStyleSpacing()
   const { user, isLogin } = useAuthState()
@@ -115,7 +114,7 @@ const ChatMessages = () => {
     hasPreviousMore,
     isFetchingPreviousPage,
     error,
-  } = useFetchMessages()
+  } = useFetchMessages(groupId)
 
   const { data: groupDetailData, isFetched: isGroupDetailFetched } = useQuery<{
     data: UserGroup

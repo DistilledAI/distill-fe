@@ -17,16 +17,11 @@ import {
   DropdownTrigger,
 } from "@nextui-org/react"
 import { numberWithCommas } from "@utils/format"
-import {
-  centerTextEllipsis,
-  copyClipboard,
-  getActiveColorRandomById,
-} from "@utils/index"
+import { centerTextEllipsis, copyClipboard } from "@utils/index"
 import { useLocation, useNavigate } from "react-router-dom"
 import LoginPhantom from "./LoginPhantom"
 import useWindowSize from "@hooks/useWindowSize"
 import SidebarMobile from "@components/Layout/SidebarMobile"
-import useGetChatId from "@pages/ChatPageOld/hooks/useGetChatId"
 
 interface UserAuthProps {
   connectWallet: any
@@ -38,9 +33,7 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
   const { isMobile } = useWindowSize()
   const { pathname } = useLocation()
   const { logout } = useAuthAction()
-  const { groupDetail, originalChatId } = useGetChatId()
 
-  const { textColor } = getActiveColorRandomById(originalChatId)
   const isShowInfo =
     user && user.publicAddress && user.role !== RoleUser.ANONYMOUS
   const totalxDstlPoint = user?.xDstlPoint || 0
@@ -54,7 +47,7 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
   return (
     <div className="flex items-center justify-between">
       <div className="max-md:hidden">
-        <ChatInfoCurrent groupDetail={groupDetail} textColor={textColor} />
+        <ChatInfoCurrent />
       </div>
       {isShowInfo ? (
         <div className="inline-flex items-center gap-2 md:gap-3">

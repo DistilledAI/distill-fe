@@ -25,7 +25,7 @@ const ListMessage: React.FC<ListMessageProps> = ({
     messages,
     hasPreviousMore,
     isFetchingPreviousPage,
-  } = useFetchMessages()
+  } = useFetchMessages(chatId)
 
   const renderMessage = useCallback(
     (index: number, message: IMessageBox) => {

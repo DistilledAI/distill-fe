@@ -12,11 +12,7 @@ import {
   getPublicAddressGroupChat,
 } from "@pages/ChatPageOld/ChatContainer/LeftBar/helpers"
 import { ORCHESTRATION_LIST } from "@pages/ChatPageOld/ChatContainer/LeftBar/OrchestrationSlider"
-import {
-  IGroup,
-  TypeGroup,
-} from "@pages/ChatPageOld/ChatContainer/LeftBar/useFetchGroups"
-import React from "react"
+import { TypeGroup } from "@pages/ChatPageOld/ChatContainer/LeftBar/useFetchGroups"
 import { Link, useLocation, useParams } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
 import MoreAction from "./MoreAction"
@@ -26,28 +22,41 @@ import { TabKeyAgent } from "@pages/CreateAgent/NavTab"
 import { distilledAiPlaceholder } from "@assets/images"
 import { VideoThumbnailWrapper } from "@components/VideoThumbnailWrapper"
 import { getConfigClanValue } from "@utils/clanConfig"
+import { getActiveColorRandomById } from "@utils/index"
+import useGroupDetail from "@pages/ChatPageOld/hooks/useGroupDetail"
+import useGroupDetailByLabel from "@pages/ChatPageOld/hooks/useGroupDetailByLabel"
+import useMyAgentClan from "@pages/AgentClans/MyAgentClan/useMyAgentClan"
 
-const ChatInfoCurrent: React.FC<{
-  groupDetail: IGroup | null
-  textColor?: string
-}> = ({ groupDetail, textColor = "text-mercury-900" }) => {
+const ChatInfoCurrent = () => {
+  const location = useLocation()
+  const { chatId = "" } = useParams()
   const { user } = useAuthState()
   const myAgent = useAppSelector((state) => state.agents.myAgent)
-  const isGroup = groupDetail?.typeGroup === TypeGroup.PRIVATE_GROUP
-  const isGroupPublic = groupDetail?.typeGroup === TypeGroup.PUBLIC_GROUP
-  const isLive = isGroupPublic && groupDetail?.live === 1
-  const location = useLocation()
+  const { group: clan } = useMyAgentClan()
+
+  const { groupDetailByLabel } = useGroupDetailByLabel(
+    clan?.status === 1 ? chatId : "",
+  )
+  const { groupDetail } = useGroupDetail(chatId)
+
+  const newGroupDetail = groupDetailByLabel || groupDetail?.group
+
+  const isGroup = newGroupDetail?.typeGroup === TypeGroup.PRIVATE_GROUP
+  const isGroupPublic = newGroupDetail?.typeGroup === TypeGroup.PUBLIC_GROUP
+  const isLive = isGroupPublic && newGroupDetail?.live === 1
+
   const isMyAgentClan = location.pathname.startsWith(PATH_NAMES.MY_AGENT_CLAN)
-  const { chatId: conversationId } = useParams()
-  const imageUrl = groupDetail
-    ? getConfigClanValue(groupDetail, "imageLive")
+  const imageUrl = newGroupDetail
+    ? getConfigClanValue(newGroupDetail, "imageLive")
     : ""
 
-  if (!groupDetail) return null
+  const { textColor = "text-mercury-900" } = getActiveColorRandomById(chatId)
+
+  if (!newGroupDetail) return null
 
   if (location.pathname.includes(PATH_NAMES.ORCHESTRATION)) {
     const conversationInfo = ORCHESTRATION_LIST.find(
-      (item: any) => item.conversationId.toString() === conversationId,
+      (item: any) => item.conversationId.toString() === chatId,
     )
 
     return (
@@ -62,7 +71,7 @@ const ChatInfoCurrent: React.FC<{
         }}
         name={conversationInfo?.name || "-"}
         tag={conversationInfo?.tag || "-"}
-        conversationId={conversationId}
+        conversationId={chatId}
         classNames={{
           textContainer: "flex gap-2",
         }}
@@ -78,8 +87,8 @@ const ChatInfoCurrent: React.FC<{
             <AvatarContainer
               badgeIcon={<LiveIcon />}
               avatarUrl={thumbnail || distilledAiPlaceholder}
-              publicAddress={groupDetail.name}
-              userName={groupDetail.name}
+              publicAddress={newGroupDetail.name}
+              userName={newGroupDetail.name}
               badgeClassName={isLive ? "bg-lgd-code-hot-ramp" : ""}
               isLive={isLive}
               usernameClassName={twMerge(
@@ -92,7 +101,7 @@ const ChatInfoCurrent: React.FC<{
 
         {isLive && (
           <TotalMemberBadge
-            memberFixed={groupDetail?.groupMemberStats?.total}
+            memberFixed={newGroupDetail?.groupMemberStats?.total}
           />
         )}
         {/* <MoreAction
@@ -101,8 +110,8 @@ const ChatInfoCurrent: React.FC<{
         /> */}
         <AgentShareButton
           agentInfo={{
-            shareLink: `${window.location.origin}${PATH_NAMES.CLAN}/${groupDetail?.label}`,
-            avatar: groupDetail.image,
+            shareLink: `${window.location.origin}${PATH_NAMES.CLAN}/${newGroupDetail?.label}`,
+            avatar: newGroupDetail.image,
           }}
           buttonClassName="w-fit !p-0 !bg-white !min-w-[40px]"
         />
@@ -120,19 +129,19 @@ const ChatInfoCurrent: React.FC<{
   return (
     <div className="flex items-center gap-2">
       {isGroup ? (
-        <AvatarGroup groupName={groupDetail.name} />
+        <AvatarGroup groupName={newGroupDetail.name} />
       ) : (
         <div className="flex items-center gap-2">
           <AvatarCustom
             src={getAvatarGroupChat(
-              groupDetail?.userId,
-              groupDetail.userA,
-              groupDetail.userB,
+              newGroupDetail?.createBy,
+              newGroupDetail.userA,
+              newGroupDetail.userB,
             )}
             publicAddress={getPublicAddressGroupChat(
-              groupDetail?.userId,
-              groupDetail.userA,
-              groupDetail.userB,
+              newGroupDetail?.createBy,
+              newGroupDetail.userA,
+              newGroupDetail.userB,
             )}
           />
           <span
@@ -141,11 +150,14 @@ const ChatInfoCurrent: React.FC<{
               textColor,
             )}
           >
-            {getNameGroup(user, groupDetail.userA, groupDetail.userB)}
+            {getNameGroup(user, newGroupDetail.userA, newGroupDetail.userB)}
           </span>
         </div>
       )}
-      <MoreAction groupId={groupDetail.id} groupType={groupDetail.typeGroup} />
+      <MoreAction
+        groupId={newGroupDetail.id}
+        groupType={newGroupDetail.typeGroup}
+      />
     </div>
   )
 }

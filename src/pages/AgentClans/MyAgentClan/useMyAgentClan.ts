@@ -23,7 +23,6 @@ const useMyAgentClan = (): UseMyAgentClanReturn => {
     queryKey: [QueryDataKeys.MY_AGENT_CLAN],
     queryFn: getMyAgentClan,
     enabled: isLogin && !isAnonymous,
-    staleTime: 5 * 60 * 1000,
   })
 
   const imageUrl = useMemo(
