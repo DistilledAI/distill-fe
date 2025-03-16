@@ -10,6 +10,7 @@ import ChatInput from "@pages/ChatPageOld/ChatContainer/ChatInput"
 import { IMessageBox } from "@pages/ChatPageOld/ChatContainer/ChatMessages/helpers"
 import useFetchMessages from "@pages/ChatPageOld/ChatContainer/ChatMessages/useFetchMessages"
 import { useRef, useState } from "react"
+import { useParams } from "react-router-dom"
 import SpeechRecognition from "react-speech-recognition"
 import { twMerge } from "tailwind-merge"
 
@@ -20,6 +21,7 @@ const UserConversation = () => {
   const [replyTxt, setReplyTxt] = useState<string>("")
   const [hasFocus, setHasFocus] = useState(false)
   const { isOpen, onOpenChange } = useDisclosure()
+  const { chatId: groupId = "" } = useParams()
 
   const {
     isLoading,
@@ -28,8 +30,7 @@ const UserConversation = () => {
     messages,
     hasPreviousMore,
     isFetchingPreviousPage,
-    groupId,
-  } = useFetchMessages()
+  } = useFetchMessages(groupId)
 
   const reCaptchaRef = useRef<any>()
   const { isLogin } = useAuthState()

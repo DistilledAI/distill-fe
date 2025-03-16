@@ -1,15 +1,15 @@
 import { useQuery } from "@tanstack/react-query"
 import { twMerge } from "tailwind-merge"
 import { QueryDataKeys } from "types/queryDataKeys"
-import useGetChatId from "../hooks/useGetChatId"
 import { isHasNotification } from "./LeftBar/helpers"
+import { useParams } from "react-router-dom"
 
 interface Props {
   groupId: number
 }
 
 const DotNotification = ({ groupId }: Props) => {
-  const { chatId } = useGetChatId()
+  const { chatId } = useParams()
   const { data: groupsHaveNotification = [] } = useQuery<number[]>({
     queryKey: [QueryDataKeys.NOTIFICATION_GROUPS],
   })

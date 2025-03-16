@@ -4,7 +4,6 @@ import Header from "./Header"
 import { Outlet, useLocation, useParams } from "react-router-dom"
 import NavigationMenu from "./Sidebar/NavigationMenu"
 import { PATH_NAMES } from "@constants/index"
-import useGetChatId from "@pages/ChatPageOld/hooks/useGetChatId"
 import useInviteAgent from "@hooks/useInviteAgent"
 import useFetchMe from "@hooks/useFetchMe"
 import useReconnectWallet from "@hooks/useReconnectWallet"
@@ -12,7 +11,6 @@ import useMessageSocket from "@pages/ChatPageOld/ChatContainer/useMessageSocket"
 
 const MainLayoutMobile = () => {
   const { pathname } = useLocation()
-  const { originalChatId } = useGetChatId()
   const { privateChatId, chatId } = useParams()
   useInviteAgent()
   useFetchMe()
@@ -23,11 +21,11 @@ const MainLayoutMobile = () => {
     () => [
       `${PATH_NAMES.CHAT}/${chatId}`,
       `${PATH_NAMES.PRIVATE_AGENT}/${privateChatId}`,
-      `${PATH_NAMES.CLAN}/${originalChatId}`,
-      `${PATH_NAMES.MY_AGENT_CLAN}/${originalChatId}`,
+      `${PATH_NAMES.CLAN}/${chatId}`,
+      `${PATH_NAMES.MY_AGENT_CLAN}/${chatId}`,
       `${PATH_NAMES.MY_AGENT_CLAN}/empty`,
     ],
-    [chatId, privateChatId, originalChatId],
+    [chatId, privateChatId],
   )
 
   const isHideBottomBar = useMemo(
@@ -47,11 +45,7 @@ const MainLayoutMobile = () => {
     )
   }
 
-  return (
-    <>
-      <StyleSpacingProvider>{renderContent()}</StyleSpacingProvider>
-    </>
-  )
+  return <StyleSpacingProvider>{renderContent()}</StyleSpacingProvider>
 }
 
 export default MainLayoutMobile

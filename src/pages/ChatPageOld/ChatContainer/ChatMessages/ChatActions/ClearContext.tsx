@@ -1,5 +1,4 @@
 import { Button } from "@nextui-org/react"
-import useGetChatId from "@pages/ChatPageOld/hooks/useGetChatId"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useParams } from "react-router-dom"
 import { ICachedMessageData, chatMessagesKey } from "../useFetchMessages"
@@ -20,8 +19,7 @@ const getDefaultCachedData = (): ICachedMessageData => ({
 
 const ClearContext = () => {
   const queryClient = useQueryClient()
-  const { privateChatId } = useParams()
-  const { chatId } = useGetChatId()
+  const { chatId, privateChatId } = useParams()
   const groupId = privateChatId || chatId
 
   const mutation = useMutation({

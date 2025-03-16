@@ -1,5 +1,4 @@
 import { useEffect } from "react"
-import { useParams } from "react-router-dom"
 import {
   useInfiniteQuery,
   useQuery,
@@ -7,7 +6,6 @@ import {
   InfiniteData,
 } from "@tanstack/react-query"
 import useAuthState from "@hooks/useAuthState"
-import useGetChatId from "@pages/ChatPageOld/hooks/useGetChatId"
 import { getChatHistoryById } from "services/chat"
 import { QueryDataKeys } from "types/queryDataKeys"
 import { IUser } from "@reducers/userSlice"
@@ -15,7 +13,6 @@ import { IGroup } from "../LeftBar/useFetchGroups"
 import { convertDataFetchToMessage, IMessageBox } from "./helpers"
 import { EmojiReaction } from "types/reactions"
 
-// Type Definitions
 export interface IMentions {
   id: number
   msgId: number
@@ -64,27 +61,19 @@ export interface ICachedMessageData {
   }>
 }
 
-// Query Key Helper
 export const chatMessagesKey = (chatId: string | undefined) => {
   if (!chatId) return []
   return [QueryDataKeys.CHAT_MESSAGES, chatId.toString()]
 }
 
-// Main Hook
-const useFetchMessages = () => {
-  // State and Hooks
+const useFetchMessages = (groupId: string) => {
   const { user, isLogin } = useAuthState()
-  const { chatId } = useGetChatId()
-  const { privateChatId } = useParams()
   const queryClient = useQueryClient()
-  const groupId = chatId || privateChatId || ""
 
-  // Group Membership Query
   const { data: hasJoinedGroup } = useQuery<boolean>({
     queryKey: [QueryDataKeys.HAS_JOINED_GROUP],
   })
 
-  // Fetch Messages Function
   const fetchMessages = async ({ pageParam = 0 }) => {
     if (!groupId) return
 
@@ -102,7 +91,6 @@ const useFetchMessages = () => {
     }
   }
 
-  // Infinite Query Setup
   const {
     data,
     fetchPreviousPage,
@@ -124,7 +112,6 @@ const useFetchMessages = () => {
     retry: 1,
   })
 
-  // Reset Pagination Logic
   const resetInfiniteQueryPagination = () => {
     queryClient.setQueryData(chatMessagesKey(groupId), (oldData: any) => {
       if (!oldData) return undefined
@@ -143,7 +130,6 @@ const useFetchMessages = () => {
     })
   }
 
-  // Event Listeners
   useEffect(() => {
     const handleEvents = () => resetInfiniteQueryPagination()
     window.addEventListener("focus", handleEvents)
@@ -168,13 +154,11 @@ const useFetchMessages = () => {
     }
   }
 
-  // Processed Messages
   const messages =
     (
       data as InfiniteData<{ messages: IMessageBox[] }> | undefined
     )?.pages.flatMap((page) => page.messages) || []
 
-  // Return Values
   return {
     onLoadPrevMessages,
     messages,

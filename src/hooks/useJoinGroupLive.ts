@@ -1,27 +1,25 @@
 import { useEffect, useLayoutEffect } from "react"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import useAuthState from "./useAuthState"
-import useGetChatId from "@pages/ChatPageOld/hooks/useGetChatId"
+import useGroupDetailByLabel from "@pages/ChatPageOld/hooks/useGroupDetailByLabel"
 import useFetchGroups from "@pages/ChatPageOld/ChatContainer/LeftBar/useFetchGroups"
 import { useAppDispatch } from "./useAppRedux"
 import { IUser, loginSuccessByAnonymous } from "@reducers/userSlice"
 import { postCreateAnonymous } from "services/auth"
 import { inviteUserJoinGroup } from "services/chat"
 import { QueryDataKeys } from "types/queryDataKeys"
+import { useParams } from "react-router-dom"
 
 const ONE_DAY_IN_MS = 24 * 60 * 60 * 1000
 
 const useJoinGroupLive = () => {
   const dispatch = useAppDispatch()
-  const {
-    chatId: groupId,
-    originalChatId,
-    groupDetail,
-    isFetched: isGroupDetailFetched,
-  } = useGetChatId()
-  const { isLogin, user } = useAuthState()
-  const { fetchGroups } = useFetchGroups()
   const queryClient = useQueryClient()
+  const { chatId: label = "" } = useParams()
+  const { isLogin, user } = useAuthState()
+  const { groupId, groupDetailByLabel, isFetched } =
+    useGroupDetailByLabel(label)
+  const { fetchGroups } = useFetchGroups()
 
   const { data: hasJoinedGroup = true } = useQuery<boolean>({
     initialData: true,
@@ -82,10 +80,10 @@ const useJoinGroupLive = () => {
   }
 
   useLayoutEffect(() => {
-    if (originalChatId) {
+    if (label) {
       queryClient.setQueryData([QueryDataKeys.HAS_JOINED_GROUP], false)
     }
-  }, [groupId, originalChatId, queryClient])
+  }, [label])
 
   useEffect(() => {
     if (groupId && !isLogin && !user?.id && !isLoggedOut) {
@@ -100,8 +98,8 @@ const useJoinGroupLive = () => {
   }, [isLogin, user?.id, hasJoinedGroup, groupId])
 
   return {
-    groupDetail,
-    isGroupDetailFetched,
+    groupDetailByLabel,
+    isFetched,
   }
 }
 
