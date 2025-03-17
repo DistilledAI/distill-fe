@@ -7,7 +7,7 @@ import { ThemeProvider as NextThemesProvider } from "next-themes"
 import { SocketProvider } from "providers/SocketProvider"
 import { SolanaWalletProvider } from "providers/SolanaWalletProvider"
 import SwiperProvider from "providers/SwiperProvider"
-import { HelmetProvider } from "react-helmet-async"
+import { Helmet, HelmetProvider } from "react-helmet-async"
 import { Provider } from "react-redux"
 import { BrowserRouter } from "react-router-dom"
 import { PersistGate } from "redux-persist/integration/react"
@@ -19,6 +19,11 @@ const Providers = ({ children }: { children: JSX.Element | JSX.Element[] }) => {
   return (
     <SolanaWalletProvider>
       <HelmetProvider>
+        <Helmet>
+          <title>
+            Distilled AI - A Decentralized Paradigm for Private Intelligence
+          </title>
+        </Helmet>
         <BrowserRouter>
           <Provider store={store}>
             <PersistGate persistor={persistor}>

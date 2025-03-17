@@ -7,6 +7,7 @@ import AgentClansStore from "./AgentClansStore"
 import AllAgents from "./AllAgents"
 import { useNavigate, useLocation } from "react-router-dom"
 import InputSearchAgent from "./InputSearchAgent"
+import DynamicTitleMeta from "@components/DynamicTitleMeta"
 
 const CATEGORIES = {
   "agent-clans": {
@@ -73,50 +74,57 @@ const AgentStore = () => {
     }
   }
 
+  const pageTitleMetadata = CATEGORIES[tabId]
+    ? `${CATEGORIES[tabId].name} Store`
+    : "Agent Store"
+
   return (
-    <div className="mx-auto mt-3 max-w-[1024px] max-lg:px-3 max-md:pb-16 md:mt-8">
-      <div className="flex items-center justify-between gap-2">
-        <InputSearchAgent />
-      </div>
+    <>
+      <DynamicTitleMeta title={pageTitleMetadata} />
+      <div className="mx-auto mt-3 max-w-[1024px] max-lg:px-3 max-md:pb-16 md:mt-8">
+        <div className="flex items-center justify-between gap-2">
+          <InputSearchAgent />
+        </div>
 
-      <div className="relative my-6 flex items-center md:pr-[160px]">
-        <Swiper
-          ref={swiperRef}
-          spaceBetween={8}
-          slidesPerView={"auto"}
-          loop={false}
-          modules={[Navigation]}
-          navigation={false}
-        >
-          {Object.keys(CATEGORIES).map((key, index) => {
-            const item = CATEGORIES[key as TabId]
-            return (
-              <SwiperSlide key={key} className="w-auto last:mr-14">
-                <button
-                  type="button"
-                  onClick={() => handleSlideClick(key as TabId, index)}
-                  className={twMerge(
-                    "h-14 flex-shrink-0 whitespace-nowrap rounded-full border border-transparent bg-mercury-30 px-4 text-[16px] font-bold text-mercury-700 transition-all duration-300 ease-linear",
-                    tabId === key &&
-                      "border-brown-500 bg-brown-50 text-brown-500",
-                  )}
-                >
-                  {item.name}
-                </button>
-              </SwiperSlide>
-            )
-          })}
-        </Swiper>
-        <>
-          <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-[30%] bg-gradient-to-l from-white via-white to-transparent" />
-          <div className="absolute right-0 top-[-70px] z-10 md:top-0">
-            <SortAgents />
-          </div>
-        </>
-      </div>
+        <div className="relative my-6 flex items-center md:pr-[160px]">
+          <Swiper
+            ref={swiperRef}
+            spaceBetween={8}
+            slidesPerView={"auto"}
+            loop={false}
+            modules={[Navigation]}
+            navigation={false}
+          >
+            {Object.keys(CATEGORIES).map((key, index) => {
+              const item = CATEGORIES[key as TabId]
+              return (
+                <SwiperSlide key={key} className="w-auto last:mr-14">
+                  <button
+                    type="button"
+                    onClick={() => handleSlideClick(key as TabId, index)}
+                    className={twMerge(
+                      "h-14 flex-shrink-0 whitespace-nowrap rounded-full border border-transparent bg-mercury-30 px-4 text-[16px] font-bold text-mercury-700 transition-all duration-300 ease-linear",
+                      tabId === key &&
+                        "border-brown-500 bg-brown-50 text-brown-500",
+                    )}
+                  >
+                    {item.name}
+                  </button>
+                </SwiperSlide>
+              )
+            })}
+          </Swiper>
+          <>
+            <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-[30%] bg-gradient-to-l from-white via-white to-transparent" />
+            <div className="absolute right-0 top-[-70px] z-10 md:top-0">
+              <SortAgents />
+            </div>
+          </>
+        </div>
 
-      {renderActiveComponent()}
-    </div>
+        {renderActiveComponent()}
+      </div>
+    </>
   )
 }
 

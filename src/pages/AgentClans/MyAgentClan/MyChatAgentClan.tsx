@@ -9,26 +9,26 @@ import { useEffect } from "react"
 const MyChatAgentClan = () => {
   const navigate = useNavigate()
   const { isMobile } = useWindowSize()
-  const { nameAgentClan, isLoading, imageUrl, group } = useMyAgentClan()
+  const { labelAgentClan, isLoading, imageUrl, group } = useMyAgentClan()
 
   useEffect(() => {
-    if (!isLoading && !nameAgentClan) {
+    if (!isLoading && !labelAgentClan) {
       navigate(
         isMobile
           ? `${PATH_NAMES.MY_AGENT_CLAN}/empty`
           : PATH_NAMES.MY_AGENT_CLAN,
       )
-    } else if (!isLoading && nameAgentClan) {
-      navigate(`${PATH_NAMES.MY_AGENT_CLAN}/${nameAgentClan}`)
+    } else if (!isLoading && labelAgentClan) {
+      navigate(`${PATH_NAMES.MY_AGENT_CLAN}/${labelAgentClan}`)
     }
-  }, [nameAgentClan, isMobile, isLoading])
+  }, [labelAgentClan, isMobile, isLoading])
 
   if (isLoading) {
     return null
   }
 
   const renderContent = () => {
-    return group?.status === 1 && nameAgentClan ? (
+    return group?.status === 1 && labelAgentClan ? (
       <ChatBoxLive />
     ) : (
       <MyAgentClanEmpty imageUrl={imageUrl} />

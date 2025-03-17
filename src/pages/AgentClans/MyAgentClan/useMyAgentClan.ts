@@ -10,7 +10,7 @@ import { PATH_NAMES } from "@constants/index"
 
 interface UseMyAgentClanReturn {
   imageUrl: string | undefined
-  nameAgentClan: string
+  labelAgentClan: string
   isSelected: boolean
   isLoading: boolean
   group: IGroupDetail | undefined
@@ -33,19 +33,19 @@ const useMyAgentClan = (): UseMyAgentClanReturn => {
     [group],
   )
 
-  const nameAgentClan = useMemo(
+  const labelAgentClan = useMemo(
     () => (group?.label ? group.label.split(" ").join("") : ""),
     [group?.label],
   )
 
   const isSelected = useMemo(
-    () => chatId === nameAgentClan || !chatId,
-    [chatId, nameAgentClan],
+    () => chatId === labelAgentClan || !chatId,
+    [chatId, labelAgentClan],
   )
 
   return {
     imageUrl,
-    nameAgentClan,
+    labelAgentClan,
     isSelected,
     isLoading,
     group,
