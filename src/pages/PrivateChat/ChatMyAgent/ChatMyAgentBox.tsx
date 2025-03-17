@@ -23,6 +23,7 @@ import useFetchMessages from "../../ChatPageOld/ChatContainer/ChatMessages/useFe
 import ChatWindowV2 from "@components/ChatWindowV2"
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { distilledAiPlaceholder } from "@assets/images"
+import DynamicTitleMeta from "@components/DynamicTitleMeta"
 
 const ChatMyAgentBox: React.FC<{
   hasInputChat?: boolean
@@ -97,8 +98,13 @@ const ChatMyAgentBox: React.FC<{
     mutation.mutate({ message: value, captchaValue: captchaRes })
   }
 
+  const pageTitleMeta = agent?.username
+    ? `Agent ${agent?.username} - Private Chat`
+    : ""
+
   return (
     <>
+      <DynamicTitleMeta title={pageTitleMeta} />
       <ChatWindowV2
         messages={messages}
         itemContent={renderMessage}

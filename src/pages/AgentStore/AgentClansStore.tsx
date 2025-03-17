@@ -214,30 +214,32 @@ const AgentClansStore = () => {
   )
 
   return (
-    <div className="space-y-5 md:space-y-10">
-      <div>
-        {title({ icon: <ClanIcon />, title: "Clans" })}
-        <div className="grid grid-cols-1 gap-3 md:grid-cols-2 md:gap-4">
-          {clanItems}
+    <>
+      <div className="space-y-5 md:space-y-10">
+        <div>
+          {title({ icon: <ClanIcon />, title: "Clans" })}
+          <div className="grid grid-cols-1 gap-3 md:grid-cols-2 md:gap-4">
+            {clanItems}
+          </div>
+          {data && total > 0 && (
+            <Pagination
+              showControls
+              page={page}
+              total={totalPages}
+              onChange={onPageChange}
+              radius="full"
+              renderItem={PaginationItemCustom}
+              variant="light"
+              classNames={{
+                base: "flex justify-center mt-4",
+                cursor: "bg-mercury-950 font-bold",
+              }}
+            />
+          )}
         </div>
-        {data && total > 0 && (
-          <Pagination
-            showControls
-            page={page}
-            total={totalPages}
-            onChange={onPageChange}
-            radius="full"
-            renderItem={PaginationItemCustom}
-            variant="light"
-            classNames={{
-              base: "flex justify-center mt-4",
-              cursor: "bg-mercury-950 font-bold",
-            }}
-          />
-        )}
+        {orchestrationSection}
       </div>
-      {orchestrationSection}
-    </div>
+    </>
   )
 }
 
