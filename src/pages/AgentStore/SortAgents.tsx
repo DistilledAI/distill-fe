@@ -8,25 +8,38 @@ import {
 } from "@nextui-org/react"
 import React, { useEffect } from "react"
 import { useNavigate, useLocation } from "react-router-dom"
+import { SortOptions } from "./types"
 
 const SortAgents: React.FC = () => {
   const navigate = useNavigate()
   const location = useLocation()
   const [selectedKeys, setSelectedKeys] = React.useState<Set<string>>(
-    new Set(["Oldest"]),
+    new Set([SortOptions.OLDEST]),
   )
+  const searchParams = new URLSearchParams(location.search)
+  const sortByFromUrl = searchParams.get("sortBy")
+  const tabByFromUrl = searchParams.get("tab")
 
   useEffect(() => {
-    const searchParams = new URLSearchParams(location.search)
-    const sortByFromUrl = searchParams.get("sortBy")
-    const validOptions = ["Oldest", "Newest"]
+    const validOptions = Object.values(SortOptions)
 
-    if (sortByFromUrl && validOptions.includes(sortByFromUrl)) {
+    if (
+      tabByFromUrl !== "agent-clans" &&
+      sortByFromUrl === SortOptions.TRENDING
+    ) {
+      setSelectedKeys(new Set([SortOptions.OLDEST]))
+      searchParams.set("sortBy", SortOptions.OLDEST)
+      return navigate(`${location.pathname}?${searchParams.toString()}`, {
+        replace: true,
+      })
+    }
+
+    if (sortByFromUrl && validOptions.includes(sortByFromUrl as SortOptions)) {
       setSelectedKeys(new Set([sortByFromUrl]))
     } else {
-      setSelectedKeys(new Set(["Oldest"]))
+      setSelectedKeys(new Set([SortOptions.OLDEST]))
     }
-  }, [location.search])
+  }, [sortByFromUrl, tabByFromUrl])
 
   const selectedValue = React.useMemo(
     () => Array.from(selectedKeys).join(", ").replace(/_/g, ""),
@@ -41,7 +54,6 @@ const SortAgents: React.FC = () => {
 
     setSelectedKeys(newSelectedKeys)
     const selectedSortBy = Array.from(newSelectedKeys)[0]
-    const searchParams = new URLSearchParams(location.search)
     searchParams.set("sortBy", selectedSortBy)
     navigate(`${location.pathname}?${searchParams.toString()}`, {
       replace: true,
@@ -76,8 +88,11 @@ const SortAgents: React.FC = () => {
           selectedIcon: "text-brown-500 w-4 h-4",
         }}
       >
-        <DropdownItem key="Oldest">Oldest</DropdownItem>
-        <DropdownItem key="Newest">Newest</DropdownItem>
+        <DropdownItem key={SortOptions.OLDEST}>Oldest</DropdownItem>
+        <DropdownItem key={SortOptions.NEWEST}>Newest</DropdownItem>
+        {tabByFromUrl === "agent-clans" ? (
+          <DropdownItem key={SortOptions.TRENDING}>Trending</DropdownItem>
+        ) : null}
       </DropdownMenu>
     </Dropdown>
   )
