@@ -12,6 +12,7 @@ import { useMemo, useState } from "react"
 import { Pagination, Skeleton } from "@nextui-org/react"
 import PaginationItemCustom from "./PaginationItemCustom"
 import AvatarCustom from "@components/AvatarCustom"
+import { distilledAiPlaceholder } from "@assets/images"
 
 const AllAgents = () => {
   const navigate = useNavigate()
@@ -120,7 +121,7 @@ const AllAgents = () => {
               <div className="flex flex-col items-center">
                 <div>
                   <AvatarCustom
-                    src={item.avatar}
+                    src={item.avatar || distilledAiPlaceholder}
                     badgeIcon={<FilledBrainAIIcon size={14} />}
                     badgeClassName="bg-[#FC0]"
                   />

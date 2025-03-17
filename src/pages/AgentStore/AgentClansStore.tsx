@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react" // Thay useEffect bằng useMemo
+import { useState, useMemo } from "react"
 import { useNavigate, useLocation } from "react-router-dom"
 import useFetchClan from "@pages/Marketplace/useFetchClan"
 import { PATH_NAMES } from "@constants/index"
@@ -15,6 +15,7 @@ import { IGroup } from "@pages/ChatPageOld/ChatContainer/LeftBar/useFetchGroups"
 import AgentDescription from "@pages/AgentClans/ChatBoxLive/AgentDescription"
 import { VideoThumbnailWrapper } from "@components/VideoThumbnailWrapper"
 import { getConfigClanValue } from "@utils/clanConfig"
+import { SortOptions } from "./types"
 
 const AgentClansStore = () => {
   const navigate = useNavigate()
@@ -24,10 +25,20 @@ const AgentClansStore = () => {
 
   const searchParams = new URLSearchParams(location.search)
   const searchValue = searchParams.get("search") || ""
-  const sortBy = searchParams.get("sortBy") || "Oldest"
+  const sortBy = searchParams.get("sortBy") || SortOptions.OLDEST
 
-  const sort =
-    sortBy === "Newest" ? { createdAt: "DESC" } : { createdAt: "ASC" }
+  const sort = useMemo(() => {
+    switch (sortBy) {
+      case SortOptions.NEWEST:
+        return { createdAt: "DESC" }
+      case SortOptions.TRENDING:
+        return { totalMsg24h: "DESC" }
+      case SortOptions.OLDEST:
+      default:
+        return { createdAt: "ASC" }
+    }
+  }, [sortBy])
+
   const filter = searchValue ? { name: searchValue } : undefined
 
   useMemo(() => {
