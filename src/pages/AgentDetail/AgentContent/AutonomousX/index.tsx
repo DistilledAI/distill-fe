@@ -8,7 +8,7 @@ import {
 } from "@components/Icons/SocialLinkIcon"
 import { TablerPlusIcon } from "@components/Icons/TablerPlusIcon"
 import { TwitterIcon } from "@components/Icons/Twitter"
-import { Button, Input, Select, SelectItem } from "@nextui-org/react"
+import { Button, Input, Select, SelectItem, Switch } from "@nextui-org/react"
 import RepliesDashboard from "@pages/AgentDetail/RepliesDashboard"
 import { isArray, uniq, uniqBy } from "lodash"
 import { useEffect, useState } from "react"
@@ -122,100 +122,102 @@ const AutonomousX: React.FC<{
 
   const renderFollowXAccount = () => {
     return (
-      <div className="">
-        <div className="flex items-center justify-between">
-          <span className="text-base-sb text-mercury-950">
-            Following X Account
-          </span>
-        </div>
-
-        <span className="text-mercury-700">
-          Your agent will follow follow, reply & quote to this X account:
-        </span>
-
-        <div className="my-2 flex items-center justify-between rounded-lg bg-mercury-70 p-2 max-md:flex-col max-md:items-start">
-          <div className="mb-2 flex w-1/2 flex-wrap items-center gap-1">
-            {isUsernameData &&
-              xUserNameValues.map((item: any) => {
-                const userName = item?.user_name
-                return (
-                  <div
-                    className="flex items-center gap-1 rounded-lg border-[2px] border-brown-500 bg-brown-100 p-1"
-                    key={userName}
-                  >
-                    <span className="text-base-b text-mercury-900">
-                      @{userName}
-                    </span>
-                    <div
-                      className="cursor-pointer"
-                      onClick={() => removeUserFollow(userName)}
-                    >
-                      <CloseFilledIcon size={20} color="#A2845E" />
-                    </div>
-                  </div>
-                )
-              })}
+      <div className="mt-2">
+        <div className="h-7 w-4 border-b-1 border-l-1 border-dashed border-mercury-600" />
+        <div className="-mt-3 ml-6">
+          <div className="mb-1 flex items-center justify-between">
+            <span className="text-base-sb text-mercury-950">
+              Following X Accounts
+            </span>
           </div>
 
-          <div className="w-1/2 max-md:w-full">
-            {isShowInput && (
-              <Input
-                type="text"
-                placeholder="Enter X (Twitter) profile link or username"
-                className="w-full"
-                classNames={{
-                  mainWrapper: "border border-mercury-400 rounded-lg ",
-                  inputWrapper: " bg-mercury-70 ",
-                }}
-                endContent={
-                  <Button
-                    className="h-[30px] rounded-full border border-mercury-50 bg-mercury-950 max-sm:h-[38px]"
-                    onPress={() => {
-                      if (!inputValue) return
-                      const newXUserNames = [
-                        ...xUserNameValues,
-                        { user_name: inputValue },
-                      ]
-                      const uniqueNewXUserNames = uniqBy(
-                        newXUserNames,
-                        "user_name",
-                      )
-                      if (uniqueNewXUserNames.length > 10)
-                        return toast.warning(
-                          "You have reached the limit for following X accounts",
+          <div className="h-8 w-4 border-b-1 border-l-1 border-dashed border-mercury-600" />
+          <div className="h-14 w-4 border-b-1 border-l-1 border-dashed border-mercury-600" />
+
+          <div className="my-2 -mt-[84px] ml-6 flex items-center justify-between rounded-lg bg-mercury-70 px-2 py-3 max-md:flex-col max-md:items-start">
+            <div className="flex w-1/2 flex-wrap items-center gap-1">
+              {isUsernameData &&
+                xUserNameValues.map((item: any) => {
+                  const userName = item?.user_name
+                  return (
+                    <div
+                      className="flex items-center gap-1 rounded-lg border-[2px] border-brown-500 bg-brown-100 p-1"
+                      key={userName}
+                    >
+                      <span className="text-base-b text-mercury-900">
+                        @{userName}
+                      </span>
+                      <div
+                        className="cursor-pointer"
+                        onClick={() => removeUserFollow(userName)}
+                      >
+                        <CloseFilledIcon size={20} color="#A2845E" />
+                      </div>
+                    </div>
+                  )
+                })}
+            </div>
+
+            <div className="w-1/2 max-md:w-full">
+              {isShowInput && (
+                <Input
+                  type="text"
+                  placeholder="Enter X (Twitter) profile link or username"
+                  className="w-full"
+                  classNames={{
+                    mainWrapper: "border border-mercury-400 rounded-lg ",
+                    inputWrapper: " bg-mercury-70 ",
+                  }}
+                  endContent={
+                    <Button
+                      className="h-[30px] rounded-full border border-mercury-50 bg-mercury-950 max-sm:h-[38px]"
+                      onPress={() => {
+                        if (!inputValue) return
+                        const newXUserNames = [
+                          ...xUserNameValues,
+                          { user_name: inputValue },
+                        ]
+                        const uniqueNewXUserNames = uniqBy(
+                          newXUserNames,
+                          "user_name",
                         )
-                      setValue(
-                        "x_user_names",
-                        JSON.stringify(uniqueNewXUserNames),
-                        { shouldDirty: true },
-                      )
-                      setInputValue("")
-                      toggleShowInput()
-                    }}
-                  >
-                    <span className="text-base text-mercury-30 max-sm:text-[14px]">
-                      Add
-                    </span>
-                  </Button>
-                }
-                onChange={(e) => {
-                  const value = e.target.value
-                  const newValue = getUserName(value)
-                  setInputValue(newValue)
-                }}
-              />
-            )}
-            {!isShowInput && (
-              <div
-                onClick={() => toggleShowInput()}
-                className="flex cursor-pointer items-center justify-end gap-1"
-              >
-                <TablerPlusIcon color="#A2845E" size={20} />
-                <span className="text-base-md text-brown-10">
-                  Add account (Max. 10)
-                </span>
-              </div>
-            )}
+                        if (uniqueNewXUserNames.length > 10)
+                          return toast.warning(
+                            "You have reached the limit for following X accounts",
+                          )
+                        setValue(
+                          "x_user_names",
+                          JSON.stringify(uniqueNewXUserNames),
+                          { shouldDirty: true },
+                        )
+                        setInputValue("")
+                        toggleShowInput()
+                      }}
+                    >
+                      <span className="text-base text-mercury-30 max-sm:text-[14px]">
+                        Add
+                      </span>
+                    </Button>
+                  }
+                  onChange={(e) => {
+                    const value = e.target.value
+                    const newValue = getUserName(value)
+                    setInputValue(newValue)
+                  }}
+                />
+              )}
+              {!isShowInput && (
+                <div
+                  onClick={() => toggleShowInput()}
+                  className="flex cursor-pointer items-center justify-end gap-1"
+                >
+                  <TablerPlusIcon color="#A2845E" size={20} />
+                  <span className="text-base-md text-brown-10">
+                    Add account (Max. 10)
+                  </span>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
@@ -277,9 +279,7 @@ const AutonomousX: React.FC<{
         <BindYourAccount agentConfigs={agentConfigs} refetch={refetch} />
         {twitterUsername && <AutonomousMode />}
       </div>
-
-      <span className="text-base-sb text-mercury-950">Feeds Configuration</span>
-
+      <span className="text-base-sb text-mercury-950">Posting Setup</span>
       <ComingSoon
         childrenClassName={twitterUsername ? "" : "opacity-50"}
         content="You need to bind an X account to use this feature"
@@ -387,14 +387,16 @@ const AutonomousX: React.FC<{
 
       <div className="mt-4 rounded-[22px] border-1 border-mercury-100 bg-mercury-30 p-4">
         <div className="mb-4 flex w-full items-center justify-between border-b border-dashed border-mercury-400 pb-4">
-          <span className="text-base-sb text-mercury-950 opacity-50">
-            Reply Interval:
-          </span>
-          <div className="rounded-full bg-mercury-100 px-4 py-2 opacity-50">
-            <span className="text-14 font-medium text-mercury-950">
-              ~5 minutes
+          <div className="flex flex-col">
+            <span className="text-base-sb text-mercury-950">
+              Auto-Reply to Mentions:
+            </span>
+            <span className="text-[15px] font-medium text-mercury-700">
+              Allows your agent to automatically reply to users who mention it
+              anywhere on X.
             </span>
           </div>
+          <Switch isSelected />
         </div>
 
         <ComingSoon
@@ -402,7 +404,21 @@ const AutonomousX: React.FC<{
           content="You need to bind an X account to use this feature"
           isOffComing={!!twitterUsername}
         >
-          {renderFollowXAccount()}
+          <>
+            <div className="flex w-full items-center justify-between">
+              <div className="flex flex-col">
+                <span className="text-base-sb text-mercury-950">
+                  Auto-Reply to Posts:
+                </span>
+                <span className="text-[15px] font-medium text-mercury-700">
+                  Continuously follows, quotes, and replies to posts from
+                  followed accounts (minimum 5-min interval).
+                </span>
+              </div>
+              <Switch isSelected />
+            </div>
+            {renderFollowXAccount()}
+          </>
         </ComingSoon>
 
         <ComingSoon
@@ -412,14 +428,14 @@ const AutonomousX: React.FC<{
           content="You need to follow an X account to use this feature"
           isOffComing={!!isUsernameData && !!twitterUsername}
         >
-          <>
-            <span className="text-mercury-700">
+          <div className="ml-12">
+            <span className="text-[15px] font-medium text-mercury-700">
               Your agents will reply & quote posts that contain these keywords
               (from followed accounts):
             </span>
 
             <div className="my-2 flex items-center justify-between rounded-lg bg-mercury-70 p-2 max-md:flex-col max-md:items-start">
-              <div className="mb-2 flex w-1/2 flex-wrap items-center gap-1">
+              <div className="flex w-1/2 flex-wrap items-center gap-1">
                 {isArray(xKeywordsValues) &&
                   xKeywordsValues?.length > 0 &&
                   xKeywordsValues.map((keyword: string) => {
@@ -496,7 +512,7 @@ const AutonomousX: React.FC<{
                 )}
               </div>
             </div>
-          </>
+          </div>
         </ComingSoon>
       </div>
 
