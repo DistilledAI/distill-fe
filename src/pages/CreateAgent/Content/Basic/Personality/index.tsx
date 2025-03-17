@@ -8,8 +8,7 @@ import {
 } from "@assets/images"
 // import { LockFilledIcon } from "@components/Icons/AgentDetailIcon"
 import { StarUserIconOutline } from "@components/Icons/UserIcon"
-import { WorldGlobalIcon } from "@components/Icons/World"
-import { Checkbox, Select, SelectItem, Textarea } from "@nextui-org/react"
+import { Checkbox, Textarea } from "@nextui-org/react"
 import CategoryLabel, { FieldLabel } from "@pages/AgentDetail/CategoryLabel"
 import { useEffect, useState } from "react"
 import { Controller, useFormContext } from "react-hook-form"
@@ -70,24 +69,24 @@ const PERSONALITY_LIST = [
   },
 ]
 
-const SUPPORT_LANGUAGE_AGENT = [
-  {
-    label: "English",
-    value: "en",
-  },
-  {
-    label: "Japanese",
-    value: "ja",
-  },
-  {
-    label: "Thai",
-    value: "th",
-  },
-  {
-    label: "Portuguese",
-    value: "pt",
-  },
-]
+// const SUPPORT_LANGUAGE_AGENT = [
+//   {
+//     label: "English",
+//     value: "en",
+//   },
+//   {
+//     label: "Japanese",
+//     value: "ja",
+//   },
+//   {
+//     label: "Thai",
+//     value: "th",
+//   },
+//   {
+//     label: "Portuguese",
+//     value: "pt",
+//   },
+// ]
 
 export interface BehaviorItem {
   value: string
@@ -297,7 +296,7 @@ const Personality = () => {
         )}
       </div>
 
-      <div className="mt-6 flex w-full justify-between rounded-[22px] border border-mercury-100 bg-mercury-30 p-6 max-sm:flex-col max-sm:p-4">
+      {/* <div className="mt-6 flex w-full justify-between rounded-[22px] border border-mercury-100 bg-mercury-30 p-6 max-sm:flex-col max-sm:p-4">
         <div className="flex items-center gap-2 max-sm:mb-3">
           <WorldGlobalIcon />
           <span className="text-base-sb">Preferred Response Language</span>
@@ -336,7 +335,7 @@ const Personality = () => {
             )
           }}
         />
-      </div>
+      </div> */}
     </div>
   )
 }
