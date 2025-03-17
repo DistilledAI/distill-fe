@@ -32,7 +32,7 @@ const FeaturedAgent = () => {
       ) : (
         <div className="overflow-x-auto scrollbar-hide">
           <div className="mt-5 grid grid-cols-6 gap-[2px] max-md:flex">
-            {data.map((item) => {
+            {data.slice(0, 6).map((item) => {
               const thumbnailAgent = getConfigClanValue(
                 item,
                 "imageLive",
