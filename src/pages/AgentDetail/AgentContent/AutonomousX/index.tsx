@@ -506,7 +506,7 @@ const AutonomousX: React.FC<{
                   >
                     <SettingIcon />
                     <span className="text-base-md text-brown-10">
-                      Add Following keywords (Max. 10)
+                      Add keywords (Max. 10)
                     </span>
                   </div>
                 )}
