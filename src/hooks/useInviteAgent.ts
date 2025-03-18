@@ -73,7 +73,7 @@ const useInviteAgent = () => {
       })
     } catch (error) {
       console.error("Invite error:", error)
-      // navigate(PATH_NAMES.HOME)
+      navigate(PATH_NAMES.HOME)
     }
   }
 
