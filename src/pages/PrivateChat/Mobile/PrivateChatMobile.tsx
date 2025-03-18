@@ -1,4 +1,4 @@
-import MyPrivateAgent from "../ChatMyAgent/MyAgentButton"
+import MyPrivateAgentButton from "../ChatMyAgent/MyPrivateAgentButton"
 import ChatAgentOthers from "../ChatAgentOthers/AllMessages"
 import DynamicTitleMeta from "@components/DynamicTitleMeta"
 
@@ -10,7 +10,7 @@ const PrivateChatMobile = () => {
         <h3 className="tex-14 mb-2 font-medium text-mercury-800">
           Chat with My Agent
         </h3>
-        <MyPrivateAgent />
+        <MyPrivateAgentButton />
         <ChatAgentOthers />
       </div>
     </>

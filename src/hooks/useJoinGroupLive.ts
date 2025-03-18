@@ -2,7 +2,6 @@ import { useEffect, useLayoutEffect } from "react"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import useAuthState from "./useAuthState"
 import useGroupDetailByLabel from "@pages/ChatPageOld/hooks/useGroupDetailByLabel"
-import useFetchGroups from "@pages/ChatPageOld/ChatContainer/LeftBar/useFetchGroups"
 import { useAppDispatch } from "./useAppRedux"
 import { IUser, loginSuccessByAnonymous } from "@reducers/userSlice"
 import { postCreateAnonymous } from "services/auth"
@@ -19,11 +18,15 @@ const useJoinGroupLive = () => {
   const { isLogin, user } = useAuthState()
   const { groupId, groupDetailByLabel, isFetched } =
     useGroupDetailByLabel(label)
-  const { fetchGroups } = useFetchGroups()
 
-  const { data: hasJoinedGroup = true } = useQuery<boolean>({
-    initialData: true,
-    queryKey: [QueryDataKeys.HAS_JOINED_GROUP],
+  const getHasJoinedGroupKey = (groupId?: string | number) => [
+    QueryDataKeys.HAS_JOINED_GROUP,
+    groupId?.toString(),
+  ]
+
+  const { data: hasJoinedGroup = false } = useQuery<boolean>({
+    initialData: false,
+    queryKey: getHasJoinedGroupKey(groupId),
   })
 
   const { data: isLoggedOut = false } = useQuery<boolean>({
@@ -32,6 +35,10 @@ const useJoinGroupLive = () => {
   })
 
   const joinGroupLive = async (userData: IUser, accessToken: string = "") => {
+    if (hasJoinedGroup) {
+      return true
+    }
+
     try {
       const payload = { groupId: Number(groupId), member: [userData?.id] }
       const headers = accessToken
@@ -40,8 +47,7 @@ const useJoinGroupLive = () => {
 
       const res = await inviteUserJoinGroup(payload, headers)
       if (res?.data) {
-        queryClient.setQueryData([QueryDataKeys.HAS_JOINED_GROUP], true)
-        await fetchGroups()
+        queryClient.setQueryData(getHasJoinedGroupKey(groupId), true)
         return true
       }
       return false
@@ -52,6 +58,10 @@ const useJoinGroupLive = () => {
   }
 
   const anonymousJoinGroupLive = async () => {
+    if (hasJoinedGroup) {
+      return
+    }
+
     try {
       const res = await postCreateAnonymous()
       const accessToken = res?.data?.accessToken
@@ -70,8 +80,7 @@ const useJoinGroupLive = () => {
               expiry,
             }),
           )
-          queryClient.setQueryData([QueryDataKeys.HAS_JOINED_GROUP], true)
-          fetchGroups()
+          queryClient.setQueryData(getHasJoinedGroupKey(groupId), true)
         }, 10)
       }
     } catch (error) {
@@ -80,10 +89,14 @@ const useJoinGroupLive = () => {
   }
 
   useLayoutEffect(() => {
-    if (label) {
-      queryClient.setQueryData([QueryDataKeys.HAS_JOINED_GROUP], false)
+    if (label && groupId) {
+      if (
+        queryClient.getQueryData(getHasJoinedGroupKey(groupId)) === undefined
+      ) {
+        queryClient.setQueryData(getHasJoinedGroupKey(groupId), false)
+      }
     }
-  }, [label])
+  }, [label, groupId])
 
   useEffect(() => {
     if (groupId && !isLogin && !user?.id && !isLoggedOut) {

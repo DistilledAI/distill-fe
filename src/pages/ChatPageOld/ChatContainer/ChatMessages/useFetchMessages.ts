@@ -71,7 +71,7 @@ const useFetchMessages = (groupId: string) => {
   const queryClient = useQueryClient()
 
   const { data: hasJoinedGroup } = useQuery<boolean>({
-    queryKey: [QueryDataKeys.HAS_JOINED_GROUP],
+    queryKey: [QueryDataKeys.HAS_JOINED_GROUP, groupId],
   })
 
   const fetchMessages = async ({ pageParam = 0 }) => {
@@ -108,7 +108,7 @@ const useFetchMessages = (groupId: string) => {
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
     initialPageParam: 0,
-    staleTime: 0,
+    staleTime: 5 * 60 * 1000,
     retry: 1,
   })
 

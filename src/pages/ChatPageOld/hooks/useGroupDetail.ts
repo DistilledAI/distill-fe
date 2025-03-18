@@ -15,6 +15,7 @@ const useGroupDetail = (groupId: string = "") => {
           : `{"groupId":${groupId}}`,
       }),
     enabled: !!groupId && isLogin,
+    staleTime: 5 * 60 * 1000,
   })
 
   return {

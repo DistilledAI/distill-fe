@@ -24,20 +24,24 @@ import { VideoThumbnailWrapper } from "@components/VideoThumbnailWrapper"
 import { getConfigClanValue } from "@utils/clanConfig"
 import { getActiveColorRandomById } from "@utils/index"
 import useGroupDetail from "@pages/ChatPageOld/hooks/useGroupDetail"
-import useGroupDetailByLabel from "@pages/ChatPageOld/hooks/useGroupDetailByLabel"
-import useMyAgentClan from "@pages/AgentClans/MyAgentClan/useMyAgentClan"
+import { useQuery } from "@tanstack/react-query"
+import { QueryDataKeys } from "types/queryDataKeys"
 
 const ChatInfoCurrent = () => {
   const location = useLocation()
   const { chatId = "" } = useParams()
   const { user } = useAuthState()
   const myAgent = useAppSelector((state) => state.agents.myAgent)
-  const { group: clan } = useMyAgentClan()
 
-  const { groupDetailByLabel } = useGroupDetailByLabel(
-    clan?.status === 1 ? chatId : "",
+  const { data: groupDetailByLabel } = useQuery<any>({
+    queryKey: [`${QueryDataKeys.CHAT_ID_BY_USERNAME}-${chatId}`],
+    enabled: chatId.includes("@"),
+    staleTime: 5 * 60 * 1000,
+  })
+
+  const { groupDetail } = useGroupDetail(
+    !chatId.includes("@") ? chatId : undefined,
   )
-  const { groupDetail } = useGroupDetail(chatId)
 
   const newGroupDetail = groupDetailByLabel || groupDetail?.group
 

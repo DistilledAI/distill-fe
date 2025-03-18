@@ -2,7 +2,7 @@ import HowToEarnEXP from "./HowToEarnEXP"
 import { twMerge } from "tailwind-merge"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { QueryDataKeys } from "types/queryDataKeys"
-import RankExpList from "./RankExpList"
+// import RankExpList from "./RankExpList"
 import ToggleLeaderboardClan from "./ToggleLeaderboardClan"
 import useOutsideClick from "@hooks/useOutSideClick"
 import { useRef } from "react"
@@ -38,7 +38,7 @@ const LeaderboardClan = ({
         )}
       >
         <HowToEarnEXP />
-        <RankExpList />
+        {/* <RankExpList /> */}
       </div>
     </div>
   )
