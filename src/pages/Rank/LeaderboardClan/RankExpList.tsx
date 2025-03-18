@@ -42,6 +42,7 @@ const RankExpList = () => {
   })
   const expPointGroup = queries[0]?.data
   const expPointUser = queries[1]?.data
+
   const xDSTLTotalPoint = groupDetailByLabel?.event?.totalPoint
 
   const getXDSTL = (totalExpPointUser: number) => {

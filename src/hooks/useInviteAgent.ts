@@ -32,7 +32,9 @@ const useInviteAgent = () => {
     storageKey.ACCESS_TOKEN,
   )
   const myAgent = useAppSelector((state) => state.agents.myAgent)
-  useFetchGroups()
+  useFetchGroups({
+    isFetch: isInvitePath,
+  })
 
   const handleInviteUserLoggedIn = async (agentId: number) => {
     try {

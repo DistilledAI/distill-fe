@@ -29,6 +29,7 @@ const useGroupDetailByLabel = (label: string) => {
     queryKey: [`${QueryDataKeys.CHAT_ID_BY_USERNAME}-${label}`],
     queryFn: fetchGroupDetail,
     enabled: !!label && label.includes("@") && !label.includes(" "),
+    staleTime: 5 * 60 * 1000,
   })
 
   return {
