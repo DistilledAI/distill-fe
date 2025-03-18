@@ -6,10 +6,11 @@ import { getBadgeColor, IMessageBox } from "./helpers"
 // import { ThreeDotsCircleIcon } from "@components/Icons/SocialLinkIcon"
 import { Button, Skeleton, useDisclosure } from "@nextui-org/react"
 import { useQuery } from "@tanstack/react-query"
-import { Link } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 import { getUserPublicDetail } from "services/user"
 import { QueryDataKeys } from "types/queryDataKeys"
 import ShareQRModal from "@components/ShareQRModal"
+import useGroupDetail from "@pages/ChatPageOld/hooks/useGroupDetail"
 
 interface AgentInfoCardProps {
   groupId: string
@@ -18,21 +19,13 @@ interface AgentInfoCardProps {
   isLoading?: boolean
 }
 
-const AgentInfoCard = ({
-  messages,
-  groupId,
-  isLoading,
-}: AgentInfoCardProps) => {
+const AgentInfoCard = ({ messages, isLoading }: AgentInfoCardProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const { chatId } = useParams()
+  const { groupDetail } = useGroupDetail(chatId)
 
-  const { data: chatDetailResult } = useQuery<any>({
-    queryKey: [`${QueryDataKeys.GROUP_DETAIL}-${groupId}`],
-    enabled: !!groupId,
-    staleTime: 60 * 60 * 1000,
-  })
-
-  const userBId = chatDetailResult?.data?.group?.userBId
-  const isAgent = chatDetailResult?.data?.group?.userB?.role === RoleUser.BOT
+  const userBId = groupDetail?.group?.userBId
+  const isAgent = groupDetail?.group?.userB?.role === RoleUser.BOT
 
   const { data } = useQuery<any>({
     queryKey: [QueryDataKeys.USER_PUBLIC_DETAIL, userBId?.toString()],
@@ -47,9 +40,9 @@ const AgentInfoCard = ({
   })
 
   const agentOwner = isAgent
-    ? chatDetailResult?.data?.group?.userB?.ownerInfo
-    : chatDetailResult?.data?.group?.userB
-  const agentInfo = isAgent ? chatDetailResult?.data?.group?.userB : data?.data
+    ? groupDetail?.group?.userB?.ownerInfo
+    : groupDetail?.group?.userB
+  const agentInfo = isAgent ? groupDetail?.group?.userB : data?.data
 
   if (!agentInfo && isLoading) {
     return (

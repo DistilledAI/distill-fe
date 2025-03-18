@@ -28,7 +28,7 @@ const AddSocialProfile: React.FC<{
     refetch,
     isFetchingNextPage,
     isLoading,
-  } = useFetchByCategory(BotDataTypeKey.SOCIAL_MEDIA, botId)
+  } = useFetchByCategory([BotDataTypeKey.SOCIAL_MEDIA], botId)
 
   useEffect(() => {
     const isWarning = list.some((item) => item.status === MY_DATA_STATUS.ACTIVE)

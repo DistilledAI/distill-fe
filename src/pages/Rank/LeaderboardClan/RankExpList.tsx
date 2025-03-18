@@ -8,7 +8,8 @@ import { twMerge } from "tailwind-merge"
 import { QueryDataKeys } from "types/queryDataKeys"
 import RankExpCard from "./RankExpCard"
 import useRankExpList from "./useRankExpList"
-import useGetChatId from "@pages/ChatPageOld/hooks/useGetChatId"
+import useGroupDetailByLabel from "@pages/ChatPageOld/hooks/useGroupDetailByLabel"
+import { useParams } from "react-router-dom"
 
 const RankExpList = () => {
   const { user, isAnonymous } = useAuthState()
@@ -17,12 +18,13 @@ const RankExpList = () => {
     staleTime: 0,
   })
   const { isLogin } = useAuthState()
-  const { chatId: groupId } = useGetChatId()
+  const { chatId = "" } = useParams()
+  const { groupId, groupDetailByLabel } = useGroupDetailByLabel(chatId)
   const { rankList, isLoading } = useRankExpList({
     groupId,
     isToggleLeaderboard,
   })
-  const queries = useQueries<[{ data: any }, { data: any }, { data: any }]>({
+  const queries = useQueries<[{ data: any }, { data: any }]>({
     queries: [
       {
         queryKey: [QueryDataKeys.TOTAL_EXP_POINT_GROUP, groupId],
@@ -36,16 +38,12 @@ const RankExpList = () => {
         enabled: !!groupId && isLogin,
         staleTime: 0,
       },
-      {
-        queryKey: [`${QueryDataKeys.GROUP_DETAIL}-${groupId}`],
-        enabled: !!groupId && isLogin,
-        staleTime: 0,
-      },
     ],
   })
   const expPointGroup = queries[0]?.data
   const expPointUser = queries[1]?.data
-  const xDSTLTotalPoint = queries[2]?.data?.data?.group?.event?.totalPoint
+
+  const xDSTLTotalPoint = groupDetailByLabel?.event?.totalPoint
 
   const getXDSTL = (totalExpPointUser: number) => {
     if (totalExpPointUser && expPointGroup?.totalPoint && xDSTLTotalPoint) {

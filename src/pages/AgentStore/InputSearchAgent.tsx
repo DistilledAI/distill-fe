@@ -39,7 +39,7 @@ const InputSearchAgent = () => {
   return (
     <Input
       startContent={<FilledSearchIcon size={24} color="#363636" />}
-      placeholder="Search Agents.."
+      placeholder="Search by name or utilities…"
       value={searchValue}
       onValueChange={handleInputChange}
       classNames={{

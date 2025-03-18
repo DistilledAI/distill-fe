@@ -13,6 +13,7 @@ import {
 } from "services/chat"
 import { twMerge } from "tailwind-merge"
 import { QueryDataKeys } from "types/queryDataKeys"
+import { PRIVATE_AGENT_STATUS } from "../../RightContent/MyPrivateAgentContent/usePrivateAgent"
 
 export enum BOT_STATUS {
   ENABLE = 1,
@@ -39,7 +40,11 @@ const DelegatePrivateAgent: React.FC<Props> = ({ isDelegateBtn }) => {
   const { isAnonymous, isLogin } = useAuthState()
   const myAgent = useAppSelector((state) => state.agents.myAgent)
 
-  const isQueryEnabled = !!groupId && !!myAgent && !isAnonymous && isLogin
+  const isQueryEnabled =
+    !!groupId &&
+    myAgent?.status === PRIVATE_AGENT_STATUS.ACTIVE &&
+    !isAnonymous &&
+    isLogin
 
   const fetchBotStatus = useCallback(async () => {
     if (!isQueryEnabled) return {}

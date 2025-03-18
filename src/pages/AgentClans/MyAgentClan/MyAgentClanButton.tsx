@@ -4,18 +4,18 @@ import ActiveEffect from "@pages/ChatPageOld/ChatContainer/LeftBar/ActiveEffect"
 import { twMerge } from "tailwind-merge"
 import { PATH_NAMES } from "@constants/index"
 import { useNavigate } from "react-router-dom"
-import useAgentClanData from "./useAgentClanData"
+import useMyAgentClan from "./useMyAgentClan"
 import useWindowSize from "@hooks/useWindowSize"
 import { VideoThumbnailWrapper } from "@components/VideoThumbnailWrapper"
 
 const MyAgentClanButton = () => {
   const navigate = useNavigate()
-  const { imageUrl, nameAgentClan, isSelected, group } = useAgentClanData()
+  const { imageUrl, labelAgentClan, isSelected, group } = useMyAgentClan()
   const { isMobile } = useWindowSize()
 
   const handleClick = () => {
-    if (nameAgentClan) {
-      navigate(`${PATH_NAMES.MY_AGENT_CLAN}/${nameAgentClan}`)
+    if (labelAgentClan) {
+      navigate(`${PATH_NAMES.MY_AGENT_CLAN}/${labelAgentClan}`)
     } else {
       if (!isMobile) {
         navigate(PATH_NAMES.MY_AGENT_CLAN)

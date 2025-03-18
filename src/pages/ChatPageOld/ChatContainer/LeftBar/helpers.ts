@@ -28,7 +28,7 @@ export const isHasNotification = (
   groupId: number,
   chatId: number,
 ) => {
-  if (groupId === Number(chatId)) return false
+  if (groupId === chatId) return false
   return groupsHaveNotification.includes(groupId)
 }
 

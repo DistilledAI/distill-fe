@@ -1,14 +1,16 @@
-import { bgBtcPrediction, bitmaxAva, btcIconRote } from "@assets/images"
+import {
+  bgBtcPrediction,
+  bitmaxAva,
+  btcIconRote,
+  distilledAiPlaceholder,
+} from "@assets/images"
 import { solanaCircleIcon } from "@assets/svg"
 import AudioClanCustom from "@components/AudioClanCustom"
 import { AgentDotLandIcon } from "@components/Icons/FilledSquareCircleIcon"
 import VideoCustom from "@components/VideoCustom"
 import { PATH_NAMES } from "@constants/index"
 import { Skeleton } from "@nextui-org/react"
-import {
-  IGroup,
-  UserGroup,
-} from "@pages/ChatPageOld/ChatContainer/LeftBar/useFetchGroups"
+import { IGroup } from "@pages/ChatPageOld/ChatContainer/LeftBar/useFetchGroups"
 import { StakeTokenAddress } from "@pages/Stake"
 import { getInfoTokenByAddress } from "@pages/Stake/helpers"
 import { useQueries, useQueryClient } from "@tanstack/react-query"
@@ -43,7 +45,7 @@ interface GroupConfig {
 }
 
 const LeftContent: React.FC<{
-  groupDetail: UserGroup | null
+  groupDetail: IGroup | null
   isFetched: boolean
 }> = ({ groupDetail, isFetched }) => {
   const queryClient = useQueryClient()
@@ -55,7 +57,7 @@ const LeftContent: React.FC<{
   const onOpenChange = () => setOpenModal(!isOpenModal)
   const onOpen = () => setOpenModal(true)
 
-  const groupConfig = useGroupConfig(groupDetail?.group as IGroup)
+  const groupConfig = useGroupConfig(groupDetail as IGroup)
 
   useEffect(() => {
     if (prediction && groupConfig[CLAN_CONFIG_KEYS.IS_PREDICTION]) onOpen()
@@ -72,7 +74,7 @@ const LeftContent: React.FC<{
   })
   const isMuted = !!agentLiveVolume.data
 
-  const renderAgentLandButton = () => (
+  const renderAgentsLandButton = () => (
     <div
       className="absolute -top-3 right-[1px] z-50 flex h-7 cursor-pointer items-center gap-1 rounded-full border border-[#FC9880] bg-[#FF7A5A] px-3 py-[6px]"
       onClick={() => window.open("https://agents.land/", "_blank")}
@@ -148,14 +150,16 @@ const LeftContent: React.FC<{
     </div>
   )
 
-  const renderImageContent = () => <ImageLive groupConfig={groupConfig} />
+  const renderImageContent = () => (
+    <ImageLive groupConfig={groupConfig} isLoading={!isFetched} />
+  )
 
   const isVideo = (url?: string) => /\.(mp4|webm|ogg)$/i.test(url || "")
 
   return (
     <div
       className={twMerge(
-        "max-md:max-h-auto flex max-h-[calc(100dvh-68px)] w-full max-w-full flex-col overflow-y-auto transition-all duration-300 ease-linear scrollbar-hide md:relative md:pt-3 lg:max-w-[320px]",
+        "max-md:max-h-auto flex max-h-[calc(100dvh-68px)] w-full max-w-full flex-col transition-all duration-300 ease-linear scrollbar-hide md:relative md:overflow-y-auto md:pt-3 lg:max-w-[320px]",
         "max-md:absolute max-md:right-2 max-md:top-3 max-md:z-50 max-md:h-[182px] max-md:w-[146px]",
         maximizeImage &&
           "max-md:bottom-20 max-md:h-[calc(100%-80px)] max-md:w-[calc(100%-16px)]",
@@ -164,7 +168,8 @@ const LeftContent: React.FC<{
       <div className="relative h-full w-full">
         {!groupConfig[CLAN_CONFIG_KEYS.TRADE_LINK] &&
           !groupConfig[CLAN_CONFIG_KEYS.IS_PREDICTION] &&
-          renderAgentLandButton()}
+          groupDetail !== null &&
+          renderAgentsLandButton()}
         <div className="flex h-full flex-col md:h-fit">
           {isFetched && groupDetail !== null ? (
             isVideo(groupConfig[CLAN_CONFIG_KEYS.IMAGES_LIVE]) ? (
@@ -227,10 +232,10 @@ const LeftContent: React.FC<{
           <div className="mt-3 flex items-center justify-between">
             <AgentSocials
               agentInfo={{
-                username: groupDetail?.group?.name ?? "",
+                username: groupDetail?.name ?? "",
                 xLink: groupConfig[CLAN_CONFIG_KEYS.X] ?? "",
                 teleLink: groupConfig[CLAN_CONFIG_KEYS.TELEGRAM] ?? "",
-                shareLink: `${window.location.origin}${PATH_NAMES.CLAN}/${groupDetail?.group?.label ?? ""}`,
+                shareLink: `${window.location.origin}${PATH_NAMES.CLAN}/${groupDetail?.label ?? ""}`,
                 contract: groupConfig[CLAN_CONFIG_KEYS.CONTRACT_ADDRESS] ?? "",
                 website: groupConfig[CLAN_CONFIG_KEYS.WEBSITE] ?? "",
               }}
@@ -241,7 +246,7 @@ const LeftContent: React.FC<{
             />
             <Link
               className="flex items-center gap-2 rounded-full bg-mercury-950 px-3 py-1 text-15 font-medium text-white hover:opacity-70"
-              to={`${PATH_NAMES.INVITE}/${groupDetail?.group?.clanOfAgentId}`}
+              to={`${PATH_NAMES.INVITE}/${groupDetail?.clanOfAgentId}`}
             >
               <MessagePlusIcon color="white" />
               <span>Chat private now</span>
@@ -268,24 +273,26 @@ const LeftContent: React.FC<{
 
 export default LeftContent
 
-const ImageLive = ({ groupConfig }: { groupConfig: GroupConfig }) => {
-  const [isLoaded, setIsLoaded] = useState(false)
+const ImageLive = ({
+  groupConfig,
+  isLoading,
+}: {
+  groupConfig: GroupConfig
+  isLoading: boolean
+}) => {
+  const imageLive = groupConfig[CLAN_CONFIG_KEYS.IMAGES_LIVE]
 
   return (
     <div className="relative h-full w-full overflow-hidden rounded-lg bg-mercury-70 md:h-[400px] md:rounded-[32px]">
-      {groupConfig[CLAN_CONFIG_KEYS.IMAGES_LIVE] && (
+      {!isLoading && (
         <img
-          className={twMerge(
-            "h-full w-full object-cover",
-            !isLoaded && "hidden",
-          )}
-          src={groupConfig[CLAN_CONFIG_KEYS.IMAGES_LIVE]}
-          alt="agent avatar clan"
-          onLoad={() => setIsLoaded(true)}
+          className="h-full w-full object-cover"
+          src={imageLive || distilledAiPlaceholder}
+          alt="agent image"
           loading="lazy"
         />
       )}
-      {!isLoaded && (
+      {!isLoading && (
         <Skeleton className="h-[300px] rounded-lg md:h-[400px] md:rounded-[32px]" />
       )}
       {groupConfig[CLAN_CONFIG_KEYS.AUDIO_LIVE] && (

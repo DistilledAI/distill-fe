@@ -12,6 +12,7 @@ import { useMemo, useState } from "react"
 import { Pagination, Skeleton } from "@nextui-org/react"
 import PaginationItemCustom from "./PaginationItemCustom"
 import AvatarCustom from "@components/AvatarCustom"
+import { distilledAiPlaceholder } from "@assets/images"
 
 const AllAgents = () => {
   const navigate = useNavigate()
@@ -23,6 +24,11 @@ const AllAgents = () => {
   const searchParams = new URLSearchParams(location.search)
   const searchValue = searchParams.get("search") || ""
   const sortBy = searchParams.get("sortBy") || "Oldest"
+
+  useMemo(() => {
+    setPage(1)
+    return 1
+  }, [searchValue])
 
   const sort = useMemo(() => {
     if (sortBy === "Newest") {
@@ -115,7 +121,7 @@ const AllAgents = () => {
               <div className="flex flex-col items-center">
                 <div>
                   <AvatarCustom
-                    src={item.avatar}
+                    src={item.avatar || distilledAiPlaceholder}
                     badgeIcon={<FilledBrainAIIcon size={14} />}
                     badgeClassName="bg-[#FC0]"
                   />

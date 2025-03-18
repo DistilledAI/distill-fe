@@ -2,11 +2,11 @@ import ContextCleared from "@components/ContextCleared"
 import { ChatResumeIcon } from "@components/Icons/Chat"
 import { ChevronDownIcon } from "@components/Icons/ChevronDownIcon"
 import { Button } from "@nextui-org/react"
-import useGetChatId from "@pages/ChatPageOld/hooks/useGetChatId"
 import { getActiveColorRandomById } from "@utils/index"
+import { useParams } from "react-router-dom"
 
 const MessageCleared = () => {
-  const { chatId } = useGetChatId()
+  const { chatId } = useParams()
   const { textColor } = getActiveColorRandomById(chatId)
 
   return (

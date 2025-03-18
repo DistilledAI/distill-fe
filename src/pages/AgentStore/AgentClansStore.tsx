@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useMemo } from "react"
 import { useNavigate, useLocation } from "react-router-dom"
 import useFetchClan from "@pages/Marketplace/useFetchClan"
 import { PATH_NAMES } from "@constants/index"
@@ -14,15 +14,8 @@ import PaginationItemCustom from "./PaginationItemCustom"
 import { IGroup } from "@pages/ChatPageOld/ChatContainer/LeftBar/useFetchGroups"
 import AgentDescription from "@pages/AgentClans/ChatBoxLive/AgentDescription"
 import { VideoThumbnailWrapper } from "@components/VideoThumbnailWrapper"
-
-export const getConfigClanValue = (
-  item: IGroup,
-  key: string,
-  defaultValue: string = distilledAiPlaceholder,
-) => {
-  const config = item?.groupConfig?.find((val) => val.key === key)
-  return config?.value || defaultValue
-}
+import { getConfigClanValue } from "@utils/clanConfig"
+import { SortOptions } from "./types"
 
 const AgentClansStore = () => {
   const navigate = useNavigate()
@@ -32,12 +25,26 @@ const AgentClansStore = () => {
 
   const searchParams = new URLSearchParams(location.search)
   const searchValue = searchParams.get("search") || ""
-  const sortBy = searchParams.get("sortBy") || "Oldest"
+  const sortBy = searchParams.get("sortBy") || SortOptions.OLDEST
 
-  const sort =
-    sortBy === "Newest" ? { createdAt: "DESC" } : { createdAt: "ASC" }
+  const sort = useMemo(() => {
+    switch (sortBy) {
+      case SortOptions.NEWEST:
+        return { createdAt: "DESC" }
+      case SortOptions.TRENDING:
+        return { totalMsg24h: "DESC" }
+      case SortOptions.OLDEST:
+      default:
+        return { createdAt: "ASC" }
+    }
+  }, [sortBy])
 
   const filter = searchValue ? { name: searchValue } : undefined
+
+  useMemo(() => {
+    setPage(1)
+    return 1
+  }, [searchValue])
 
   const { data, total, loading } = useFetchClan({
     limit,
@@ -207,30 +214,32 @@ const AgentClansStore = () => {
   )
 
   return (
-    <div className="space-y-5 md:space-y-10">
-      <div>
-        {title({ icon: <ClanIcon />, title: "Clans" })}
-        <div className="grid grid-cols-1 gap-3 md:grid-cols-2 md:gap-4">
-          {clanItems}
+    <>
+      <div className="space-y-5 md:space-y-10">
+        <div>
+          {title({ icon: <ClanIcon />, title: "Clans" })}
+          <div className="grid grid-cols-1 gap-3 md:grid-cols-2 md:gap-4">
+            {clanItems}
+          </div>
+          {data && total > 0 && (
+            <Pagination
+              showControls
+              page={page}
+              total={totalPages}
+              onChange={onPageChange}
+              radius="full"
+              renderItem={PaginationItemCustom}
+              variant="light"
+              classNames={{
+                base: "flex justify-center mt-4",
+                cursor: "bg-mercury-950 font-bold",
+              }}
+            />
+          )}
         </div>
-        {data && total > 0 && (
-          <Pagination
-            showControls
-            page={page}
-            total={totalPages}
-            onChange={onPageChange}
-            radius="full"
-            renderItem={PaginationItemCustom}
-            variant="light"
-            classNames={{
-              base: "flex justify-center mt-4",
-              cursor: "bg-mercury-950 font-bold",
-            }}
-          />
-        )}
+        {orchestrationSection}
       </div>
-      {orchestrationSection}
-    </div>
+    </>
   )
 }
 

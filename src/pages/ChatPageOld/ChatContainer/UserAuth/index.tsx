@@ -16,13 +16,8 @@ import {
   DropdownMenu,
   DropdownTrigger,
 } from "@nextui-org/react"
-import useGroupDetail from "@pages/ChatPageOld/hooks/useGroupDetail"
 import { numberWithCommas } from "@utils/format"
-import {
-  centerTextEllipsis,
-  copyClipboard,
-  getActiveColorRandomById,
-} from "@utils/index"
+import { centerTextEllipsis, copyClipboard } from "@utils/index"
 import { useLocation, useNavigate } from "react-router-dom"
 import LoginPhantom from "./LoginPhantom"
 import useWindowSize from "@hooks/useWindowSize"
@@ -37,10 +32,8 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
   const navigate = useNavigate()
   const { isMobile } = useWindowSize()
   const { pathname } = useLocation()
-  const { groupDetail, groupId } = useGroupDetail()
   const { logout } = useAuthAction()
 
-  const { textColor } = getActiveColorRandomById(groupId)
   const isShowInfo =
     user && user.publicAddress && user.role !== RoleUser.ANONYMOUS
   const totalxDstlPoint = user?.xDstlPoint || 0
@@ -54,7 +47,7 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
   return (
     <div className="flex items-center justify-between">
       <div className="max-md:hidden">
-        <ChatInfoCurrent groupDetail={groupDetail} textColor={textColor} />
+        <ChatInfoCurrent />
       </div>
       {isShowInfo ? (
         <div className="inline-flex items-center gap-2 md:gap-3">
@@ -169,7 +162,7 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
         <div className="flex items-center gap-1">
           <div
             onClick={connectWallet}
-            className="mr-1 flex cursor-pointer items-center gap-1"
+            className="mr-1 hidden cursor-pointer items-center gap-1 md:flex"
           >
             <img src={xDSTL} width={24} height={24} />
             <span className="text-13 font-semibold">Earn xDSTL</span>

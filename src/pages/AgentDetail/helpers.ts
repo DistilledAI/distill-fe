@@ -102,6 +102,8 @@ export const LIST_AGENT_CONFIG_KEYS = [
   "autonomous_reply",
   "specific_language",
   "llm_model",
+  "autonomous_reply_to_mentions",
+  "autonomous_reply_to_post",
 ]
 
 export const getConfigAgentByDataForm = (data: any) => {
@@ -116,7 +118,13 @@ export const getConfigAgentByDataForm = (data: any) => {
       }
     : { ...data }
   return Object.entries(dt)
-    .filter(([_, val]) => val !== null && val !== "" && val !== undefined)
+    .filter(
+      ([key, val]) =>
+        (val !== null && val !== "" && val !== undefined) ||
+        key === "website_link" ||
+        key === "x_link" ||
+        key === "telegram_link",
+    )
     .map(([key, val]) => ({ key, value: val ? val.toString() : "" }))
     .filter((item) => LIST_AGENT_CONFIG_KEYS.includes(item.key))
 }

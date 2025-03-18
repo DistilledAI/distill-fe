@@ -1,9 +1,7 @@
 import { useEffect } from "react"
 import { useLocation, useNavigate, useParams } from "react-router-dom"
 import { useAppSelector } from "@hooks/useAppRedux"
-import { useQuery } from "@tanstack/react-query"
 import { PATH_NAMES } from "@constants/index"
-import { QueryDataKeys } from "types/queryDataKeys"
 import useWindowSize from "@hooks/useWindowSize"
 import HeaderBack from "@components/Layout/Header/HeaderBack"
 import AvatarCustom from "@components/AvatarCustom"
@@ -12,19 +10,14 @@ import ChatMyAgentBox from "./ChatMyAgent/ChatMyAgentBox"
 import MyAgentEmpty from "./ChatMyAgent/MyAgentEmpty"
 import ChatAgentOthersBox from "./ChatAgentOthers/ChatAgentOthersBox"
 import MoreAction from "@components/ChatInfoCurrent/MoreAction"
-import {
-  TypeGroup,
-  UserGroup,
-} from "@pages/ChatPageOld/ChatContainer/LeftBar/useFetchGroups"
+import { TypeGroup } from "@pages/ChatPageOld/ChatContainer/LeftBar/useFetchGroups"
 import useAuthState from "@hooks/useAuthState"
+import useGroupDetail from "@pages/ChatPageOld/hooks/useGroupDetail"
 
 const PrivateChatBox = () => {
   const { pathname, search } = useLocation()
   const navigate = useNavigate()
-  const { privateChatId, chatId } = useParams<{
-    privateChatId?: string
-    chatId?: string
-  }>()
+  const { privateChatId, chatId } = useParams()
   const { isMobile } = useWindowSize()
   const myAgent = useAppSelector((state) => state.agents.myAgent)
   const { user } = useAuthState()
@@ -33,15 +26,9 @@ const PrivateChatBox = () => {
   const isChatAgentOther = pathname.startsWith(PATH_NAMES.CHAT)
   const isChatMyAgent =
     pathname.startsWith(PATH_NAMES.PRIVATE_AGENT) && !!myAgent?.id
+  const { groupDetail } = useGroupDetail(isMobile ? groupId : undefined)
 
-  const { data: groupDetail } = useQuery<{
-    data: UserGroup
-  }>({
-    queryKey: [`${QueryDataKeys.GROUP_DETAIL}-${groupId}`],
-    enabled: isMobile && !!groupId,
-  })
-
-  const userB = groupDetail?.data?.group?.userB
+  const userB = groupDetail?.group?.userB
   const queryParams = new URLSearchParams(search)
 
   useEffect(() => {
@@ -102,7 +89,7 @@ const PrivateChatBox = () => {
         {userB && (
           <MoreAction
             groupId={Number(groupId)}
-            groupType={groupDetail?.data?.group?.typeGroup as TypeGroup}
+            groupType={groupDetail?.group?.typeGroup as TypeGroup}
           />
         )}
       </div>

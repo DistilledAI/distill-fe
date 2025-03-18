@@ -8,10 +8,9 @@ import SendMessage from "./SendMessage"
 
 const ChatContainer = () => {
   const { loading, connectMultipleWallet } = useConnectWallet()
-  const { inviteAgentId, privateChatId, chatId } = useParams()
+  const { inviteAgentId, chatId } = useParams()
   const { isLogin } = useAuthState()
   const navigate = useNavigate()
-  const groupId = chatId || privateChatId
 
   useEffect(() => {
     if (chatId && !isLogin) navigate("/")
@@ -22,7 +21,7 @@ const ChatContainer = () => {
       {(isLogin && chatId) || inviteAgentId ? (
         <>
           <ChatMessages />
-          <SendMessage groupId={groupId} />
+          <SendMessage />
         </>
       ) : (
         <MyPrivateAgentContent

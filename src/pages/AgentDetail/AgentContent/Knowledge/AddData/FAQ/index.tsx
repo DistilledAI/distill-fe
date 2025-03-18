@@ -24,7 +24,7 @@ const FaqData: React.FC<{
     refetch,
     isFetchingNextPage,
     isLoading,
-  } = useFetchByCategory(BotDataTypeKey.FAQ, botId)
+  } = useFetchByCategory([BotDataTypeKey.FAQ], botId)
 
   useEffect(() => {
     const isWarning = list.some((item) => item.status === MY_DATA_STATUS.ACTIVE)
