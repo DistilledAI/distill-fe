@@ -102,6 +102,8 @@ export const LIST_AGENT_CONFIG_KEYS = [
   "autonomous_reply",
   "specific_language",
   "llmModel",
+  "autonomous_reply_to_mentions",
+  "autonomous_reply_to_post",
 ]
 
 export const getConfigAgentByDataForm = (data: any) => {
