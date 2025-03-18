@@ -62,6 +62,7 @@ const AutonomousX: React.FC<{
   const xUserNameValues = JSON.parse(watch("x_user_names") || "[]")
   const xKeywordsValues = JSON.parse(watch("x_keywords") || "[]")
   const autonomousReply = watch("autonomous_reply")
+  const autonomousReplyToMentions = watch("autonomous_reply_to_mentions")
   const xBotData = agentConfigs?.find(
     (agent: any) => agent.key === "bindTwitterKey",
   )
@@ -118,6 +119,11 @@ const AutonomousX: React.FC<{
     }
 
     return url
+  }
+
+  const onChangeAutoReplyMention = (value: boolean) => {
+    let newValue = !!value ? "1" : "0"
+    setValue("autonomous_reply_to_mentions", newValue, { shouldDirty: true })
   }
 
   const renderFollowXAccount = () => {
@@ -396,7 +402,10 @@ const AutonomousX: React.FC<{
               anywhere on X.
             </span>
           </div>
-          <Switch isSelected />
+          <Switch
+            isSelected={autonomousReplyToMentions === "1"}
+            onValueChange={onChangeAutoReplyMention}
+          />
         </div>
 
         <ComingSoon
@@ -415,7 +424,7 @@ const AutonomousX: React.FC<{
                   followed accounts (minimum 5-min interval).
                 </span>
               </div>
-              <Switch isSelected />
+              <Switch isSelected isDisabled />
             </div>
             {renderFollowXAccount()}
           </>
