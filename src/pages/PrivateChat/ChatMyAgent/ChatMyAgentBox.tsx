@@ -2,10 +2,14 @@ import ContextCleared from "@components/ContextCleared"
 import ReCaptchaWraper from "@components/ReCaptchaWraper"
 import ReceiverMessage from "@components/ReceiverMessage"
 import SenderMessage from "@components/SenderMessage"
-import { CLEAR_CACHED_MESSAGE, STATUS_AGENT } from "@constants/index"
+import {
+  CLEAR_CACHED_MESSAGE,
+  PATH_NAMES,
+  STATUS_AGENT,
+} from "@constants/index"
 import { useAppSelector } from "@hooks/useAppRedux"
 import useSubmitChat from "@hooks/useSubmitChat"
-import useFetchMyData from "@pages/MyData/useFetch"
+// import useFetchMyData from "@pages/MyData/useFetch"
 import { useQuery } from "@tanstack/react-query"
 import { useStyleSpacing } from "providers/StyleSpacingProvider"
 import { useRef } from "react"
@@ -24,6 +28,7 @@ import ChatWindowV2 from "@components/ChatWindowV2"
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { distilledAiPlaceholder } from "@assets/images"
 import DynamicTitleMeta from "@components/DynamicTitleMeta"
+import AlertBox from "@components/AlertBox"
 
 const ChatMyAgentBox: React.FC<{
   hasInputChat?: boolean
@@ -44,7 +49,7 @@ const ChatMyAgentBox: React.FC<{
     groupId,
     callbackDone: SpeechRecognition.stopListening,
   })
-  const { list: listMyData, isFetched: isFetchedMyData } = useFetchMyData()
+  // const { list: listMyData, isFetched: isFetchedMyData } = useFetchMyData()
   const { data: isChatting } = useQuery<boolean>({
     initialData: false,
     queryKey: [QueryDataKeys.IS_CHATTING, groupId],
@@ -52,8 +57,8 @@ const ChatMyAgentBox: React.FC<{
   })
   const agent = useAppSelector((state) => state.agents.myAgent)
   const isBotActive = !!agent && agent?.status === STATUS_AGENT.ACTIVE
-  const isShowAddData =
-    listMyData.length === 0 && isFetchedMyData && isBotActive
+  // const isShowAddData =
+  //   listMyData.length === 0 && isFetchedMyData && isBotActive
 
   const renderMessage = (index: number, message: IMessageBox) => {
     if (message.content === CLEAR_CACHED_MESSAGE) {
@@ -91,7 +96,7 @@ const ChatMyAgentBox: React.FC<{
     )
   }
 
-  const isChatActions = isBotActive && !isShowAddData
+  const isChatActions = isBotActive
 
   const onChatSubmit = async (value: string) => {
     const captchaRes = await reCaptchaRef.current.execute()
@@ -117,10 +122,13 @@ const ChatMyAgentBox: React.FC<{
         style={{
           paddingBottom: `${spacing}px`,
         }}
-        className="h-[calc(100dvh-146px)] max-h-full md:max-h-[calc(100%-136px)]"
+        className={twMerge(
+          "h-[calc(100dvh-146px)] max-h-full md:max-h-[calc(100%-136px)]",
+          !isBotActive && "h-[calc(100dvh-238px)] md:max-h-[calc(100%-204px)]",
+        )}
         isChatActions={isChatActions}
       />
-      {/* <div className="absolute bottom-[104px] left-1/2 w-[calc(100%-32px)] -translate-x-1/2 space-y-2 bg-white pb-0 md:bottom-[144px] md:pb-2">
+      <div className="absolute bottom-[100px] left-1/2 w-[calc(100%-24px)] -translate-x-1/2 space-y-2 bg-white pb-0 md:bottom-[132px] md:pb-2">
         {!isBotActive ? (
           <AlertBox
             className="mx-auto max-w-[768px]"
@@ -133,7 +141,7 @@ const ChatMyAgentBox: React.FC<{
             ]}
           />
         ) : null}
-        {isShowAddData ? (
+        {/* {isShowAddData ? (
           <AlertBox
             className="mx-auto max-w-[768px]"
             isVisible={true}
@@ -143,8 +151,8 @@ const ChatMyAgentBox: React.FC<{
             ]}
             links={[{ to: PATH_NAMES.ADD_MY_DATA, label: "Add Data" }]}
           />
-        ) : null}
-      </div> */}
+        ) : null} */}
+      </div>
       {hasInputChat && (
         <>
           <ChatInput

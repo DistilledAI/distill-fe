@@ -45,10 +45,11 @@ const AllMessages = () => {
   const itemRef = useRef<HTMLDivElement>(null)
   const [searchClanValue, setSearchClanValue] = useState("")
 
-  const { groups, isLoadingMore, handleLoadMore, hasMore } = useFetchGroups({
-    initialLimit: 10,
-    initialFilter: { typeGroup: TypeGroup.DIRECT, username: searchClanValue },
-  })
+  const { groups, isLoadingMore, handleLoadMore, hasMore, isFetched } =
+    useFetchGroups({
+      initialLimit: 15,
+      initialFilter: { typeGroup: TypeGroup.DIRECT, username: searchClanValue },
+    })
 
   const mapColorsToGroups = (groups: UserGroup[]) =>
     groups.map((group) => {
@@ -149,7 +150,7 @@ const AllMessages = () => {
         />
       </div>
 
-      {!groups.length ? (
+      {!groups.length && isFetched ? (
         <SuggestPrivateAgents privateAgentsLength={groups.length} />
       ) : (
         <div

@@ -10,6 +10,7 @@ import { useLocation } from "react-router-dom"
 const CLAN_SIDEBAR_PATH_NAMES = [
   PATH_NAMES.CLAN,
   PATH_NAMES.PRIVATE_AGENT,
+  PATH_NAMES.INVITE,
   PATH_NAMES.CHAT,
   PATH_NAMES.MY_AGENT_CLAN,
 ]

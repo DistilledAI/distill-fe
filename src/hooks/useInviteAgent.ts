@@ -1,5 +1,5 @@
 import { PATH_NAMES } from "@constants/index"
-import useFetchGroups, {
+import {
   TypeGroup,
   UserGroup,
 } from "@pages/ChatPageOld/ChatContainer/LeftBar/useFetchGroups"
@@ -32,9 +32,6 @@ const useInviteAgent = () => {
     storageKey.ACCESS_TOKEN,
   )
   const myAgent = useAppSelector((state) => state.agents.myAgent)
-  useFetchGroups({
-    isFetch: isInvitePath,
-  })
 
   const handleInviteUserLoggedIn = async (agentId: number) => {
     try {
@@ -67,10 +64,14 @@ const useInviteAgent = () => {
           ? `${PATH_NAMES.PRIVATE_AGENT}/${groupId}`
           : `${PATH_NAMES.CHAT}/${groupId}`,
       )
-
-      queryClient.invalidateQueries({
-        queryKey: [QueryDataKeys.MY_LIST_CHAT, { typeGroup: TypeGroup.DIRECT }],
-      })
+      if (agentId !== myAgent?.id) {
+        queryClient.invalidateQueries({
+          queryKey: [
+            QueryDataKeys.MY_LIST_CHAT,
+            { typeGroup: TypeGroup.DIRECT },
+          ],
+        })
+      }
     } catch (error) {
       console.error("Invite error:", error)
       navigate(PATH_NAMES.HOME)

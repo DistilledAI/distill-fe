@@ -11,7 +11,7 @@ import useMessageSocket from "@pages/ChatPageOld/ChatContainer/useMessageSocket"
 
 const MainLayoutMobile = () => {
   const { pathname } = useLocation()
-  const { privateChatId, chatId } = useParams()
+  const { privateChatId, chatId, inviteAgentId } = useParams()
   useInviteAgent()
   useFetchMe()
   useReconnectWallet()
@@ -21,11 +21,13 @@ const MainLayoutMobile = () => {
     () => [
       `${PATH_NAMES.CHAT}/${chatId}`,
       `${PATH_NAMES.PRIVATE_AGENT}/${privateChatId}`,
+      `${PATH_NAMES.INVITE}/${inviteAgentId}`,
       `${PATH_NAMES.CLAN}/${chatId}`,
       `${PATH_NAMES.MY_AGENT_CLAN}/${chatId}`,
       `${PATH_NAMES.MY_AGENT_CLAN}/empty`,
+      `${PATH_NAMES.PRIVATE_AGENT}/empty`,
     ],
-    [chatId, privateChatId],
+    [chatId, privateChatId, inviteAgentId],
   )
 
   const isHideBottomBar = useMemo(

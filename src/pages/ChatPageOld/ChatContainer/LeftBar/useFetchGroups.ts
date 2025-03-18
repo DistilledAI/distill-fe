@@ -89,7 +89,6 @@ const useFetchGroups = (options: UseFetchGroupsOptions = {}) => {
   const { isLogin } = useAuthState()
   const [hasMore, setHasMore] = useState(true)
   const [offset, setOffset] = useState(initialOffset)
-  const [isFetched, setIsFetched] = useState(false)
   const [isLoadingMore, setIsLoadingMore] = useState(false)
   const queryClient = useQueryClient()
 
@@ -100,7 +99,6 @@ const useFetchGroups = (options: UseFetchGroupsOptions = {}) => {
     filter = initialFilter,
   }: FetchConfig = {}) => {
     try {
-      setIsFetched(true)
       const res = await getGroupList(offset, limit, filter)
 
       if (!res.data.items) {
@@ -133,7 +131,7 @@ const useFetchGroups = (options: UseFetchGroupsOptions = {}) => {
     }
   }
 
-  const { data, refetch, isSuccess } = useQuery<UserGroup[]>({
+  const { data, refetch, isSuccess, isFetched } = useQuery<UserGroup[]>({
     queryKey: [QueryDataKeys.MY_LIST_CHAT, initialFilter],
     queryFn: () =>
       fetchGroups({
@@ -142,7 +140,7 @@ const useFetchGroups = (options: UseFetchGroupsOptions = {}) => {
         filter: initialFilter,
       }),
     enabled: isLogin && isFetch,
-    refetchOnWindowFocus: false,
+    staleTime: 5 * 60 * 1000,
   })
 
   const handleLoadMore = async () => {

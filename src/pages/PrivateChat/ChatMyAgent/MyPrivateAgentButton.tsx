@@ -14,7 +14,9 @@ const MyPrivateAgentButton = () => {
   const { isAnonymous } = useAuthState()
   const myAgent = useAppSelector((state) => state.agents.myAgent)
 
-  const isSelected = pathname.startsWith(PATH_NAMES.PRIVATE_AGENT)
+  const isSelected =
+    pathname.startsWith(PATH_NAMES.PRIVATE_AGENT) ||
+    (!!myAgent?.id && pathname.startsWith(PATH_NAMES.INVITE))
   const myAgentId = myAgent?.id
 
   return (
