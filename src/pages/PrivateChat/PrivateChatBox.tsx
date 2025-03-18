@@ -20,6 +20,9 @@ const PrivateChatBox = () => {
   const { privateChatId, chatId } = useParams()
   const { isMobile } = useWindowSize()
   const myAgent = useAppSelector((state) => state.agents.myAgent)
+  const isStatusFetchMyAgent = useAppSelector(
+    (state) => state.agents.isStatusFetchMyAgent,
+  )
   const { user } = useAuthState()
   const groupId = privateChatId || chatId
 
@@ -30,6 +33,8 @@ const PrivateChatBox = () => {
 
   const userB = groupDetail?.group?.userB
   const queryParams = new URLSearchParams(search)
+  const myAgentFetched =
+    isStatusFetchMyAgent === "fetched" || !isStatusFetchMyAgent
 
   useEffect(() => {
     const queryString = queryParams.toString()
@@ -39,7 +44,8 @@ const PrivateChatBox = () => {
       !myAgent?.id &&
       !isChatAgentOther &&
       user?.id &&
-      !pathname.startsWith(PATH_NAMES.INVITE)
+      !pathname.startsWith(PATH_NAMES.INVITE) &&
+      myAgentFetched
     ) {
       navigate(
         isMobile
@@ -59,7 +65,7 @@ const PrivateChatBox = () => {
     user?.id,
     pathname,
     search,
-    navigate,
+    myAgentFetched,
   ])
 
   const getHeaderName = () => {
@@ -98,7 +104,13 @@ const PrivateChatBox = () => {
 
   const renderChatContent = () => {
     if (isChatAgentOther) return <ChatAgentOthersBox />
-    return myAgent?.id ? <ChatMyAgentBox /> : <MyAgentEmpty />
+    if (!myAgent?.id && myAgentFetched) {
+      return <MyAgentEmpty />
+    }
+    if (myAgent?.id && myAgentFetched) {
+      return <ChatMyAgentBox />
+    }
+    return null
   }
 
   return (

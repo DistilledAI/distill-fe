@@ -37,7 +37,7 @@ export const getIconGroup = (ownerId: number, userA: IUser, userB: IUser) =>
   )
 
 const AllMessages = () => {
-  const { user } = useAuthState()
+  const { user, isLogin } = useAuthState()
   const navigate = useNavigate()
   const { chatId } = useParams()
   const queryClient = useQueryClient()
@@ -141,6 +141,8 @@ const AllMessages = () => {
     setSearchClanValue(value)
   }
 
+  const isSuggestPrivateAgents = (!groups.length && isFetched) || !isLogin
+
   return (
     <>
       <div className="mt-4 md:mt-6">
@@ -150,7 +152,7 @@ const AllMessages = () => {
         />
       </div>
 
-      {!groups.length && isFetched ? (
+      {isSuggestPrivateAgents ? (
         <SuggestPrivateAgents privateAgentsLength={groups.length} />
       ) : (
         <div
