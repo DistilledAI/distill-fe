@@ -211,7 +211,7 @@ const AgentType: React.FC<{
               control={control}
               render={({ field: { value, onChange } }: any) => {
                 const isSelected =
-                  value == record.value || llmModel === record.value
+                  value == record.value || llmModel == record.value
                 return (
                   <div
                     className="flex h-[80px] w-1/2 items-start justify-between gap-3 rounded-[14px] border-[2px] border-transparent bg-mercury-30 p-4 hover:cursor-pointer aria-checked:opacity-50 aria-selected:border-brown-500 max-md:h-auto max-md:w-full"
