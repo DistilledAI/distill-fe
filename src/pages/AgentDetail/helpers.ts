@@ -101,12 +101,14 @@ export const LIST_AGENT_CONFIG_KEYS = [
   "x_keywords",
   "autonomous_reply",
   "specific_language",
-  "llmModel",
+  "llm_model",
   "autonomous_reply_to_mentions",
   "autonomous_reply_to_post",
 ]
 
 export const getConfigAgentByDataForm = (data: any) => {
+  if (data.llmModel) data.llm_model = data.llmModel
+
   const dt = data["communication_style"]
     ? {
         ...data,

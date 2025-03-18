@@ -164,7 +164,6 @@ const AgentDetail: React.FC = () => {
           botId: agentIdNumber,
           data: configData,
         })
-        refetchConfig()
       }
 
       //image agent
@@ -185,7 +184,6 @@ const AgentDetail: React.FC = () => {
             label: changedData.clan.name,
           }),
         })
-        refetchGroup()
       }
 
       //base info
@@ -196,9 +194,15 @@ const AgentDetail: React.FC = () => {
           description: data.description,
           botId: agentIdNumber,
         })
+      }
+
+      //refresh
+      if (Object.keys(newData).length > 0) {
         refetch()
         dispatch(refreshFetchMyAgent())
       }
+      if (configData.length > 0) refetchConfig()
+      if (changedData.clan) refetchGroup()
 
       toast.success("Updated successfully!")
     } catch (error: any) {
