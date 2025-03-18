@@ -3,7 +3,6 @@ import { FilledUserIcon } from "@components/Icons/UserIcon"
 import ReceiverMessage from "@components/ReceiverMessage"
 import SenderMessage from "@components/SenderMessage"
 import { CLEAR_CACHED_MESSAGE, PATH_NAMES, RoleUser } from "@constants/index"
-import useGetChatId from "@pages/ChatPageOld/hooks/useGetChatId"
 import { getActiveColorRandomById } from "@utils/index"
 import { useStyleSpacing } from "providers/StyleSpacingProvider"
 import { twMerge } from "tailwind-merge"
@@ -17,14 +16,13 @@ import {
 import useFetchMessages from "./useFetchMessages"
 import AgentInfoCard from "./AgentInfoCard"
 import ContextCleared from "@components/ContextCleared"
-import { useQuery } from "@tanstack/react-query"
-import { QueryDataKeys } from "types/queryDataKeys"
 import useAuthState from "@hooks/useAuthState"
 import { useEffect } from "react"
 import ChatWindowV2 from "@components/ChatWindowV2"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { useAppSelector } from "@hooks/useAppRedux"
-import { UserGroup } from "../LeftBar/useFetchGroups"
+import useGroupDetail from "@pages/ChatPageOld/hooks/useGroupDetail"
+import DynamicTitleMeta from "@components/DynamicTitleMeta"
 
 interface MessageItemProps {
   message: IMessageBox
@@ -101,7 +99,7 @@ const MessageItem = ({
 
 const ChatMessages = () => {
   const navigate = useNavigate()
-  const { chatId: groupId } = useGetChatId()
+  const { chatId: groupId = "" } = useParams()
   const { bgColor, textColor } = getActiveColorRandomById(groupId)
   const { spacing } = useStyleSpacing()
   const { user, isLogin } = useAuthState()
@@ -115,16 +113,13 @@ const ChatMessages = () => {
     hasPreviousMore,
     isFetchingPreviousPage,
     error,
-  } = useFetchMessages()
+  } = useFetchMessages(groupId)
 
-  const { data: groupDetailData, isFetched: isGroupDetailFetched } = useQuery<{
-    data: UserGroup
-  }>({
-    queryKey: [`${QueryDataKeys.GROUP_DETAIL}-${groupId}`],
-    enabled: !!groupId && isLogin,
-  })
+  const { groupDetail, isFetched: isGroupDetailFetched } =
+    useGroupDetail(groupId)
 
-  const userBId = groupDetailData?.data.group?.userBId
+  const userB = groupDetail?.group?.userB
+  const userBId = userB?.id
   const isOwner = !isGroupDetailFetched && isLogin ? true : userBId === user?.id
   const isMyAgent = myAgent?.id === userBId
 
@@ -161,8 +156,14 @@ const ChatMessages = () => {
     )
   }
 
+  const pageTitleMeta =
+    userB?.role === RoleUser.BOT && userB?.username
+      ? `Agent ${userB?.username} - Private Chat`
+      : ""
+
   return (
     <>
+      <DynamicTitleMeta title={pageTitleMeta} />
       <ChatWindowV2
         messages={adjustedMessages}
         itemContent={renderMessage}

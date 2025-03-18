@@ -9,8 +9,8 @@ import FeaturedSkeleton from "./Skeleton"
 import useWindowSize from "@hooks/useWindowSize"
 import { AGENT_TYPE_KEY } from "@pages/ChatPageOld/ChatContainer/RightContent/MyPrivateAgentContent/AgentInitialization/AgentType"
 import { distilledAiPlaceholder } from "@assets/images"
-import { getConfigClanValue } from "@pages/AgentStore/AgentClansStore"
 import { VideoThumbnailWrapper } from "@components/VideoThumbnailWrapper"
+import { getConfigClanValue } from "@utils/clanConfig"
 
 const FeaturedAgent = () => {
   const { isMobile } = useWindowSize()

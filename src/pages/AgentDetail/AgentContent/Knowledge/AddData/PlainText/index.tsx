@@ -26,7 +26,15 @@ const PlainTextFile: React.FC<{
     refetch,
     isFetchingNextPage,
     isLoading,
-  } = useFetchByCategory(BotDataTypeKey.PLAIN_TEXT_FILE, botId)
+  } = useFetchByCategory(
+    [
+      BotDataTypeKey.PLAIN_TEXT_FILE,
+      BotDataTypeKey.CV_FILE,
+      BotDataTypeKey.PDF_FILE,
+      BotDataTypeKey.TXT_FILE,
+    ],
+    botId,
+  )
 
   useEffect(() => {
     const isWarning = list.some((item) => item.status === MY_DATA_STATUS.ACTIVE)

@@ -7,24 +7,21 @@ import { formatNumberWithComma } from "@utils/index"
 import { useRef } from "react"
 import { QueryDataKeys } from "types/queryDataKeys"
 import LeaderboardClan from "../LeaderboardClan"
-import useGetChatId from "@pages/ChatPageOld/hooks/useGetChatId"
 import useAuthState from "@hooks/useAuthState"
+import useGroupDetailByLabel from "@pages/ChatPageOld/hooks/useGroupDetailByLabel"
+import { useParams } from "react-router-dom"
 
 const ClanShortInfo = () => {
   const queryClient = useQueryClient()
   const rewardRef = useRef<any>()
-  const { chatId: groupId } = useGetChatId()
+  const { chatId = "" } = useParams()
+  const { groupId, groupDetailByLabel } = useGroupDetailByLabel(chatId)
   const { isLogin } = useAuthState()
 
-  const queries = useQueries<[{ data: any }, { data: any }, { data: any }]>({
+  const queries = useQueries<[{ data: any }, { data: any }]>({
     queries: [
       {
         queryKey: [QueryDataKeys.TOTAL_EXP_POINT_USER, groupId],
-        enabled: !!groupId && isLogin,
-        staleTime: 0,
-      },
-      {
-        queryKey: [`${QueryDataKeys.GROUP_DETAIL}-${groupId}`],
         enabled: !!groupId && isLogin,
         staleTime: 0,
       },
@@ -35,9 +32,10 @@ const ClanShortInfo = () => {
       },
     ],
   })
+
   const expPointUser = queries[0]?.data
-  const xDSTLTotalPoint = queries[1]?.data?.data?.group?.event?.totalPoint
-  const remainingDays = queries[2]?.data
+  const remainingDays = queries[1]?.data
+  const xDSTLTotalPoint = groupDetailByLabel?.event?.totalPoint
 
   const handleOpenLeaderboard = () => {
     queryClient.setQueryData<boolean>(

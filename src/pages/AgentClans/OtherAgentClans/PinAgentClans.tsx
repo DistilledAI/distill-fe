@@ -6,7 +6,7 @@ import { PATH_NAMES } from "@constants/index"
 import { useNavigate, useParams } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
 import { usePinAgentClans } from "./useAgentPinClans"
-import { getConfigClanValue } from "@pages/AgentStore/AgentClansStore"
+import { getConfigClanValue } from "@utils/clanConfig"
 
 const PinAgentClans = () => {
   const { chatId } = useParams<{ chatId?: string }>()

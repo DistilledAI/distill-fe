@@ -23,10 +23,14 @@ import useFetchMessages from "../../ChatPageOld/ChatContainer/ChatMessages/useFe
 import ChatWindowV2 from "@components/ChatWindowV2"
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { distilledAiPlaceholder } from "@assets/images"
+import DynamicTitleMeta from "@components/DynamicTitleMeta"
 
 const ChatMyAgentBox: React.FC<{
   hasInputChat?: boolean
 }> = ({ hasInputChat = true }) => {
+  const reCaptchaRef = useRef<any>()
+  const { spacing } = useStyleSpacing()
+  const { privateChatId: groupId = "" } = useParams()
   const {
     isLoading,
     onLoadPrevMessages,
@@ -34,11 +38,8 @@ const ChatMyAgentBox: React.FC<{
     isFetched,
     isFetchingPreviousPage,
     hasPreviousMore,
-  } = useFetchMessages()
-  const reCaptchaRef = useRef<any>()
-  const { spacing } = useStyleSpacing()
-  const { privateChatId } = useParams()
-  const groupId = privateChatId
+  } = useFetchMessages(groupId)
+
   const { mutation } = useSubmitChat({
     groupId,
     callbackDone: SpeechRecognition.stopListening,
@@ -97,14 +98,19 @@ const ChatMyAgentBox: React.FC<{
     mutation.mutate({ message: value, captchaValue: captchaRes })
   }
 
+  const pageTitleMeta = agent?.username
+    ? `Agent ${agent?.username} - Private Chat`
+    : ""
+
   return (
     <>
+      <DynamicTitleMeta title={pageTitleMeta} />
       <ChatWindowV2
         messages={messages}
         itemContent={renderMessage}
         isLoading={isLoading}
         onLoadPrevMessages={onLoadPrevMessages}
-        chatId={privateChatId}
+        chatId={groupId}
         isFetched={isFetched}
         hasPreviousMore={hasPreviousMore}
         isFetchingPreviousPage={isFetchingPreviousPage}

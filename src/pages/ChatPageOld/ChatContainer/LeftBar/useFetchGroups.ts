@@ -36,6 +36,7 @@ export interface IGroup {
   }
   groupUser?: Array<any>
   clanOfAgentId?: string | number
+  userId: number
 }
 
 export interface GroupConfig {
@@ -75,10 +76,16 @@ interface UseFetchGroupsOptions {
   initialLimit?: number
   initialOffset?: number
   initialFilter?: { [key: string]: any }
+  isFetch?: boolean
 }
 
 const useFetchGroups = (options: UseFetchGroupsOptions = {}) => {
-  const { initialLimit = LIMIT, initialOffset = 0, initialFilter } = options
+  const {
+    initialLimit = LIMIT,
+    initialOffset = 0,
+    initialFilter,
+    isFetch = true,
+  } = options
   const { isLogin } = useAuthState()
   const [hasMore, setHasMore] = useState(true)
   const [offset, setOffset] = useState(initialOffset)
@@ -134,8 +141,7 @@ const useFetchGroups = (options: UseFetchGroupsOptions = {}) => {
         limit: initialLimit,
         filter: initialFilter,
       }),
-    enabled: isLogin,
-    staleTime: 5 * 60 * 1000,
+    enabled: isLogin && isFetch,
     refetchOnWindowFocus: false,
   })
 

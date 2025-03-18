@@ -2,7 +2,6 @@ import { useAppSelector } from "@hooks/useAppRedux"
 import useWindowSize from "@hooks/useWindowSize"
 import { IMessageBox } from "@pages/ChatPageOld/ChatContainer/ChatMessages/helpers"
 import { UserGroup } from "@pages/ChatPageOld/ChatContainer/LeftBar/useFetchGroups"
-import useGetChatId from "@pages/ChatPageOld/hooks/useGetChatId"
 import { useQuery } from "@tanstack/react-query"
 import React, { lazy, useState } from "react"
 import { twMerge } from "tailwind-merge"
@@ -10,6 +9,8 @@ import { QueryDataKeys } from "types/queryDataKeys"
 import ListMessage from "./ListMessage"
 import SendMessage from "./SendMessage"
 import { useGroupConfig } from "./useGroupConfig"
+import useGroupDetailByLabel from "@pages/ChatPageOld/hooks/useGroupDetailByLabel"
+import { useParams } from "react-router-dom"
 
 const ClanShortInfo = lazy(() => import("@pages/Rank/ClanShortInfo"))
 const ToggleActionsMobile = lazy(() => import("./ToggleActionsMobile"))
@@ -22,7 +23,8 @@ const RightContent: React.FC<{
   const { isMobile } = useWindowSize()
   const sidebarCollapsed = useAppSelector((state) => state.sidebarCollapsed)
   // const instructBanner = useAppSelector((state) => state.instructBanner)
-  const { chatId } = useGetChatId()
+  const { chatId = " " } = useParams()
+  const { groupId } = useGroupDetailByLabel(chatId)
   const [replyUsername, setReplyUsername] = useState<string>("")
   const [replyId, setReplyId] = useState<number>(NaN)
   const [replyTxt, setReplyTxt] = useState<string>("")
@@ -68,7 +70,7 @@ const RightContent: React.FC<{
             message.username ? `@[${message.username}] ` : "@[Unnamed] ",
           )
         }}
-        chatId={chatId}
+        chatId={groupId}
         isClan={isClan}
         isCloseLiveChat={isCloseLiveChat}
       />
@@ -76,7 +78,7 @@ const RightContent: React.FC<{
         sidebarCollapsed={sidebarCollapsed}
         tradeLink={groupConfig?.tradeLink as string}
         resetReply={resetReply}
-        chatId={chatId}
+        chatId={groupId}
         replyId={replyId}
         replyTxt={replyTxt}
         replyUsername={replyUsername}

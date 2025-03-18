@@ -4,11 +4,10 @@ import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { FilledUserIcon } from "@components/Icons/UserIcon"
 import { PATH_NAMES, RoleUser } from "@constants/index"
 import useAuthState from "@hooks/useAuthState"
-import useGetChatId from "@pages/ChatPageOld/hooks/useGetChatId"
 import { IUser } from "@reducers/userSlice"
 import { useQueryClient } from "@tanstack/react-query"
 import { getActiveColorRandomById } from "@utils/index"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
 import { QueryDataKeys } from "types/queryDataKeys"
 import DotNotification from "../../ChatPageOld/ChatContainer/DotNotification"
@@ -40,7 +39,7 @@ export const getIconGroup = (ownerId: number, userA: IUser, userB: IUser) =>
 const AllMessages = () => {
   const { user } = useAuthState()
   const navigate = useNavigate()
-  const { chatId } = useGetChatId()
+  const { chatId } = useParams()
   const queryClient = useQueryClient()
   const containerRef = useRef<HTMLDivElement>(null)
   const itemRef = useRef<HTMLDivElement>(null)

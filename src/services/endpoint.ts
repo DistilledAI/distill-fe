@@ -79,6 +79,7 @@ const endpoint = {
   GET_FEATURED_AGENT_CLANS: () => withBaseURL("/dashboard/feature-agent-clan"),
   PIN_AGENT_CLAN: withBaseURL(`/group/pin`),
   GET_PIN_AGENT_CLANS: withBaseURL(`/group/pin/list`),
+  GET_MY_AGENT_CLAN: withBaseURL(`/group/detail/my-agent-clan`),
 
   // my data
   UPLOAD_MY_DATA: withBaseURL("/my-data/upload"),

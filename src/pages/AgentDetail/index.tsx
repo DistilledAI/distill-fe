@@ -214,25 +214,26 @@ const AgentDetail: React.FC = () => {
   }
 
   return (
-    <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(onSubmit)}>
-        <div>
-          <HeaderDetailAgent isLoading={loading} />
-          <div className="relative mx-auto flex max-w-[1206px] items-start gap-[40px] px-6 py-6 max-md:flex-col max-md:gap-[20px] max-md:px-4 max-md:pb-[80px]">
-            <div className="w-[260px] max-md:w-full">
-              <AgentNavTab isEdit />
-            </div>
-            <div className="flex-1">
-              <AgentContent
-                agentData={agentData}
-                agentConfigs={agentConfigs}
-                refetch={() => {
-                  refetch()
-                  refetchConfig()
-                }}
-              />
-            </div>
-            {/* <div className="w-[330px] max-md:hidden">
+    <>
+      <FormProvider {...methods}>
+        <form onSubmit={methods.handleSubmit(onSubmit)}>
+          <div>
+            <HeaderDetailAgent isLoading={loading} />
+            <div className="relative mx-auto flex max-w-[1206px] items-start gap-[40px] px-6 py-6 max-md:flex-col max-md:gap-[20px] max-md:px-4 max-md:pb-[80px]">
+              <div className="w-[260px] max-md:w-full">
+                <AgentNavTab isEdit />
+              </div>
+              <div className="flex-1">
+                <AgentContent
+                  agentData={agentData}
+                  agentConfigs={agentConfigs}
+                  refetch={() => {
+                    refetch()
+                    refetchConfig()
+                  }}
+                />
+              </div>
+              {/* <div className="w-[330px] max-md:hidden">
               {twitterUsername && (
                 <div className="flex items-center justify-between rounded-lg bg-brown-50 p-4">
                   <span className="text-base-b text-mercury-950">
@@ -243,10 +244,11 @@ const AgentDetail: React.FC = () => {
               )}
               <TestAgent />
             </div> */}
+            </div>
           </div>
-        </div>
-      </form>
-    </FormProvider>
+        </form>
+      </FormProvider>
+    </>
   )
 }
 export default AgentDetail

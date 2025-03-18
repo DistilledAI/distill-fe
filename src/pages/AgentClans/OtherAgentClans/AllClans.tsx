@@ -4,7 +4,6 @@ import { twMerge } from "tailwind-merge"
 import { useVirtualizer } from "@tanstack/react-virtual"
 import useAuthState from "@hooks/useAuthState"
 import useDebounce from "@hooks/useDebounce"
-import useWindowSize from "@hooks/useWindowSize"
 import { distilledAiPlaceholder } from "@assets/images"
 import { PATH_NAMES } from "@constants/index"
 import { AvatarClanByList } from "@components/AvatarContainer"
@@ -15,18 +14,16 @@ import PinAgentClans from "./PinAgentClans"
 import useFetchClan from "@pages/Marketplace/useFetchClan"
 import { usePinAgentClans } from "./useAgentPinClans"
 import { IGroup } from "@pages/ChatPageOld/ChatContainer/LeftBar/useFetchGroups"
-import { getConfigClanValue } from "@pages/AgentStore/AgentClansStore"
+import { getConfigClanValue } from "@utils/clanConfig"
 
 const AllClans = () => {
   const { chatId } = useParams()
   const navigate = useNavigate()
   const { user, isAnonymous, isLogin } = useAuthState()
-  const { isMobile } = useWindowSize()
   const parentRef = useRef<HTMLDivElement>(null)
   const pinContainerRef = useRef<HTMLDivElement>(null)
   const [searchClanValue, setSearchClanValue] = useState<string>("")
   const [debouncedSearchValue, setDebouncedSearchValue] = useState<string>("")
-  const [pinContainerHeight, setPinContainerHeight] = useState(0)
 
   const debounceSearch = useDebounce((value: string) => {
     setDebouncedSearchValue(value)
@@ -77,25 +74,6 @@ const AllClans = () => {
       handleLoadMore()
     }
   }, 100)
-
-  useEffect(() => {
-    if (pinContainerRef.current) {
-      setPinContainerHeight(
-        pinContainerRef.current.getBoundingClientRect().height,
-      )
-    }
-  }, [pinnedClans.length])
-
-  const calculateMainContainerHeight = useMemo(() => {
-    const baseHeight = 240
-    const mdBaseHeight = 212
-    return {
-      mobile: `calc(100dvh - ${baseHeight + pinContainerHeight}px)`,
-      desktop: `calc(100dvh - ${mdBaseHeight + pinContainerHeight}px)`,
-    }
-  }, [pinContainerHeight])
-
-  const { mobile, desktop } = calculateMainContainerHeight
 
   const renderItem = (virtualItem: any) => {
     const isLoader = virtualItem.index >= filteredGroups.length
@@ -162,34 +140,36 @@ const AllClans = () => {
   }
 
   return (
-    <div className="-mx-3 mt-6 space-y-3 overflow-x-hidden px-3 pb-4">
-      <SearchClanWrapper onSearch={setSearchClanValue} />
-      <div ref={pinContainerRef}>
-        <PinAgentClans />
+    <div className="-mx-3 mt-6 space-y-3 overflow-x-hidden">
+      <div className="px-3">
+        <SearchClanWrapper onSearch={setSearchClanValue} />
       </div>
-
       <div
-        ref={parentRef}
-        className="overflow-y-auto scrollbar-hide"
-        style={{ height: isMobile ? mobile : desktop }}
+        className="max-h-[calc(100dvh-200px)] overflow-y-auto px-3 pb-8 md:pb-4"
         onScroll={debouncedHandleScroll}
       >
-        {filteredGroups.length === 0 && !isFetching ? (
-          <div className="flex h-full justify-center text-16 font-semibold text-mercury-950">
-            No clans found
-          </div>
-        ) : (
-          <div
-            className="md:h-full"
-            style={{
-              height: `${virtualizer.getTotalSize()}px`,
-              position: "relative",
-              width: "100%",
-            }}
-          >
-            {items.map(renderItem)}
-          </div>
-        )}
+        <div ref={pinContainerRef}>
+          <PinAgentClans />
+        </div>
+
+        <div ref={parentRef} className="mt-3">
+          {filteredGroups.length === 0 && !isFetching ? (
+            <div className="flex h-full justify-center text-16 font-semibold text-mercury-950">
+              No clans found
+            </div>
+          ) : (
+            <div
+              className="md:h-full"
+              style={{
+                height: `${virtualizer.getTotalSize()}px`,
+                position: "relative",
+                width: "100%",
+              }}
+            >
+              {items.map(renderItem)}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   )
