@@ -116,7 +116,7 @@ const MyAgentClanEmpty: React.FC<Props> = ({ imageUrl }) => {
           ) : (
             <img
               src={thumbnail || distilledAiPlaceholder}
-              className="my-4 h-[300px] w-auto rounded-[32px] object-cover px-3 md:mt-10 md:h-[419px]"
+              className="my-4 h-[300px] w-auto rounded-[32px] object-cover px-3 md:mt-10 md:h-[419px] md:w-[419px]"
               alt="avatar placeholder"
             />
           )
