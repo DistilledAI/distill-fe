@@ -154,7 +154,31 @@ const LeftContent: React.FC<{
     <ImageLive groupConfig={groupConfig} isLoading={!isFetched} />
   )
 
+  const renderYoutubeContent = (videoId: string) => {
+    const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&rel=0&modestbranding`
+    return (
+      <iframe
+        className="h-full w-full rounded-lg object-cover md:h-[400px] md:max-h-[400px] md:rounded-[32px]"
+        src={embedUrl}
+        title="YouTube Livestream"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowFullScreen
+      ></iframe>
+    )
+  }
+
   const isVideo = (url?: string) => /\.(mp4|webm|ogg)$/i.test(url || "")
+
+  function getYouTubeId(url: string) {
+    const youtubeRegex =
+      /^(https?:\/\/)?(www\.)?(youtube\.com\/(watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/
+
+    if (youtubeRegex.test(url)) {
+      const match = url.match(youtubeRegex)
+      return match?.[5] ?? null
+    }
+    return null
+  }
 
   return (
     <div
@@ -172,7 +196,11 @@ const LeftContent: React.FC<{
           renderAgentsLandButton()}
         <div className="flex h-full flex-col md:h-fit">
           {isFetched && groupDetail !== null ? (
-            isVideo(groupConfig[CLAN_CONFIG_KEYS.IMAGES_LIVE]) ? (
+            getYouTubeId(groupConfig[CLAN_CONFIG_KEYS.IMAGES_LIVE] || "") ? (
+              renderYoutubeContent(
+                getYouTubeId(groupConfig[CLAN_CONFIG_KEYS.IMAGES_LIVE] || "")!,
+              )
+            ) : isVideo(groupConfig[CLAN_CONFIG_KEYS.IMAGES_LIVE]) ? (
               renderVideoContent()
             ) : (
               renderImageContent()
