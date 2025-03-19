@@ -1,5 +1,17 @@
 import { useState, useEffect, useRef } from "react"
 
+const getYouTubeVideoId = (url: string): string | null => {
+  const patterns = [
+    /(?:youtube.com\/watch\?v=|youtu.be\/|youtube.com\/embed\/)([^"&?/s]{11})/i,
+  ]
+
+  for (const pattern of patterns) {
+    const match = url.match(pattern)
+    if (match) return match[1]
+  }
+  return null
+}
+
 const generateVideoThumbnail = (
   video: HTMLVideoElement,
   size: number = 32,
@@ -66,6 +78,16 @@ export const useVideoThumbnail = (
   useEffect(() => {
     if (!videoUrl) {
       setThumbnail(null)
+      setLoading(false)
+      return
+    }
+
+    // Check if it's a YouTube URL
+    const youtubeId = getYouTubeVideoId(videoUrl)
+    if (youtubeId) {
+      // Use YouTube thumbnail API
+      const thumbnailUrl = `https://img.youtube.com/vi/${youtubeId}/maxresdefault.jpg`
+      setThumbnail(thumbnailUrl)
       setLoading(false)
       return
     }
