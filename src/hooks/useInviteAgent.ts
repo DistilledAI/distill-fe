@@ -6,7 +6,7 @@ import {
 import { loginSuccessByAnonymous } from "@reducers/userSlice"
 import { useQueryClient } from "@tanstack/react-query"
 import { cachedSessionStorage, storageKey } from "@utils/storage"
-import { useEffect } from "react"
+import { useEffect, useCallback } from "react"
 import { useDispatch } from "react-redux"
 import { useLocation, useNavigate, useParams } from "react-router-dom"
 import { postCreateAnonymous } from "services/auth"
@@ -33,15 +33,8 @@ const useInviteAgent = () => {
   )
   const myAgent = useAppSelector((state) => state.agents.myAgent)
 
-  const handleInviteUserLoggedIn = async (agentId: number) => {
-    try {
-      let newAgentId = agentId
-      if (
-        agentId === myAgent?.id &&
-        myAgent?.status !== PRIVATE_AGENT_STATUS.ACTIVE
-      ) {
-        newAgentId = envConfig.groupDefaultForPrivateAgent
-      }
+  const handleCreateOrGetGroupChat = useCallback(
+    async (newAgentId: number) => {
       const { data } = await checkGroupDirect({ members: [newAgentId] })
       let groupId = data?.group?.id
 
@@ -59,26 +52,48 @@ const useInviteAgent = () => {
         }
       }
 
-      navigate(
-        agentId === myAgent?.id
-          ? `${PATH_NAMES.PRIVATE_AGENT}/${groupId}`
-          : `${PATH_NAMES.CHAT}/${groupId}`,
-      )
-      if (agentId !== myAgent?.id) {
-        queryClient.invalidateQueries({
-          queryKey: [
-            QueryDataKeys.MY_LIST_CHAT,
-            { typeGroup: TypeGroup.DIRECT },
-          ],
-        })
-      }
-    } catch (error) {
-      console.error("Invite error:", error)
-      navigate(PATH_NAMES.HOME)
-    }
-  }
+      return groupId
+    },
+    [isMobile, queryClient],
+  )
 
-  const handleInviteAnonymous = async () => {
+  const handleInviteUserLoggedIn = useCallback(
+    async (agentId: number) => {
+      try {
+        let newAgentId = agentId
+        if (
+          agentId === myAgent?.id &&
+          myAgent?.status !== PRIVATE_AGENT_STATUS.ACTIVE
+        ) {
+          newAgentId = envConfig.groupDefaultForPrivateAgent
+        }
+
+        const groupId = await handleCreateOrGetGroupChat(newAgentId)
+
+        const chatPath =
+          agentId === myAgent?.id
+            ? `${PATH_NAMES.PRIVATE_AGENT}/${groupId}`
+            : `${PATH_NAMES.CHAT}/${groupId}`
+
+        navigate(chatPath)
+
+        if (agentId !== myAgent?.id) {
+          queryClient.invalidateQueries({
+            queryKey: [
+              QueryDataKeys.MY_LIST_CHAT,
+              { typeGroup: TypeGroup.DIRECT },
+            ],
+          })
+        }
+      } catch (error) {
+        console.error("Invite error:", error)
+        navigate(PATH_NAMES.HOME)
+      }
+    },
+    [myAgent, navigate, queryClient],
+  )
+
+  const handleInviteAnonymous = useCallback(async () => {
     try {
       const { data } = await postCreateAnonymous()
       if (data?.accessToken && data?.user) {
@@ -93,30 +108,23 @@ const useInviteAgent = () => {
     } catch (error) {
       console.error("Anonymous invite error:", error)
     }
-  }
+  }, [])
 
   useEffect(() => {
-    if (isInvitePath && !isLogin && !sessionAccessToken) {
-      handleInviteAnonymous()
+    const handleInvite = async () => {
+      if (isInvitePath) {
+        if (!isLogin && !sessionAccessToken) {
+          await handleInviteAnonymous()
+        } else if (sessionAccessToken && isLogin && agentId) {
+          await handleInviteUserLoggedIn(agentId)
+        } else if (user?.id !== agentId && isLogin && !sessionAccessToken) {
+          await handleInviteUserLoggedIn(agentId)
+        }
+      }
     }
-  }, [isInvitePath, isLogin, sessionAccessToken])
 
-  useEffect(() => {
-    if (
-      isInvitePath &&
-      user?.id !== agentId &&
-      isLogin &&
-      !sessionAccessToken
-    ) {
-      handleInviteUserLoggedIn(agentId)
-    }
-  }, [isInvitePath, agentId, user?.id, isLogin, sessionAccessToken])
-
-  useEffect(() => {
-    if (isInvitePath && sessionAccessToken && isLogin && agentId) {
-      handleInviteUserLoggedIn(agentId)
-    }
-  }, [agentId, sessionAccessToken, isLogin, isInvitePath])
+    handleInvite()
+  }, [isInvitePath, isLogin, sessionAccessToken, agentId, user?.id])
 
   return { handleInviteUserLoggedIn, handleInviteAnonymous }
 }

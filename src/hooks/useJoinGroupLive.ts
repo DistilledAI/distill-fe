@@ -34,18 +34,18 @@ const useJoinGroupLive = () => {
     queryKey: [QueryDataKeys.IS_LOGGED_OUT],
   })
 
-  const joinGroupLive = async (userData: IUser, accessToken: string = "") => {
-    if (hasJoinedGroup) {
-      return true
-    }
+  const handleJoinGroup = async (userData: IUser, accessToken?: string) => {
+    if (hasJoinedGroup || !groupId) return true
 
     try {
-      const payload = { groupId: Number(groupId), member: [userData?.id] }
       const headers = accessToken
         ? { Authorization: `Bearer ${accessToken}` }
         : {}
+      const res = await inviteUserJoinGroup(
+        { groupId: Number(groupId), member: [userData.id] },
+        headers,
+      )
 
-      const res = await inviteUserJoinGroup(payload, headers)
       if (res?.data) {
         queryClient.setQueryData(getHasJoinedGroupKey(groupId), true)
         return true
@@ -57,26 +57,21 @@ const useJoinGroupLive = () => {
     }
   }
 
-  const anonymousJoinGroupLive = async () => {
-    if (hasJoinedGroup) {
-      return
-    }
+  const handleAnonymousJoin = async () => {
+    if (hasJoinedGroup) return
 
     try {
-      const res = await postCreateAnonymous()
-      const accessToken = res?.data?.accessToken
-      const userAnonymous = res?.data?.user
-      const expiry = Date.now() + ONE_DAY_IN_MS
+      const { data } = await postCreateAnonymous()
+      if (!data?.user || !data?.accessToken) return
 
-      if (!userAnonymous || !accessToken) return
-
-      const isJoined = await joinGroupLive(userAnonymous, accessToken)
+      const isJoined = await handleJoinGroup(data.user, data.accessToken)
       if (isJoined) {
+        const expiry = Date.now() + ONE_DAY_IN_MS
         setTimeout(() => {
           dispatch(
             loginSuccessByAnonymous({
-              user: userAnonymous,
-              accessToken,
+              user: data.user,
+              accessToken: data.accessToken,
               expiry,
             }),
           )
@@ -89,24 +84,24 @@ const useJoinGroupLive = () => {
   }
 
   useLayoutEffect(() => {
-    if (label && groupId) {
-      if (
-        queryClient.getQueryData(getHasJoinedGroupKey(groupId)) === undefined
-      ) {
-        queryClient.setQueryData(getHasJoinedGroupKey(groupId), false)
-      }
+    if (
+      label &&
+      groupId &&
+      queryClient.getQueryData(getHasJoinedGroupKey(groupId)) === undefined
+    ) {
+      queryClient.setQueryData(getHasJoinedGroupKey(groupId), false)
     }
   }, [label, groupId])
 
   useEffect(() => {
     if (groupId && !isLogin && !user?.id && !isLoggedOut) {
-      anonymousJoinGroupLive()
+      handleAnonymousJoin()
     }
   }, [groupId, isLogin, user?.id, isLoggedOut])
 
   useEffect(() => {
     if (isLogin && !hasJoinedGroup && groupId && user?.id) {
-      joinGroupLive(user)
+      handleJoinGroup(user)
     }
   }, [isLogin, user?.id, hasJoinedGroup, groupId])
 
