@@ -1,19 +1,22 @@
-import { distilledAIIcon } from "@assets/svg"
-import { CaretUpFilledIcon } from "@components/Icons/TrendingPage"
-import { Image } from "@nextui-org/react"
+import { loadingBrain } from "@assets/lotties"
+import { CircleCheckFilled } from "@components/Icons"
+import { ChevronUpOutlineIcon } from "@components/Icons/ChevronDownIcon"
 import { useQueryClient } from "@tanstack/react-query"
 import { getActiveColorRandomById, isImageUrl } from "@utils/index"
+import Lottie from "lottie-react"
 import { useState } from "react"
 import Markdown from "react-markdown"
 import { useParams } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
 import { QueryDataKeys } from "types/queryDataKeys"
+import CitationsList from "./CitationsList"
 
 const MarkdownMessage = ({ msg }: { msg: string }) => {
   const { chatId } = useParams()
   const { textColor } = getActiveColorRandomById(chatId)
   const queryClient = useQueryClient()
-  const [isCollapsed, setIsCollapsed] = useState(false)
+  const [isSourceCollapsed, setIsSourceCollapsed] = useState(false)
+  const [isThinkCollapsed, setIsThinkCollapsed] = useState(false)
 
   const checkTextBreak = (text: string) => {
     const tokenRegex = /[a-zA-Z0-9/]{40,}/
@@ -138,48 +141,131 @@ const MarkdownMessage = ({ msg }: { msg: string }) => {
     )
   }
 
-  const regex = /<think>\s*([\s\S]*?)(?:\s*<\/think>\s*([\s\S]*)|$)/
-  const match = msg.match(regex)
+  let newMsg = `<source>
+- Information from training data:
+- The weighted TVL formula sums individual vault TVLs and multiplies them by their respective point multipliers.
+- Points are earned based on deposit size, vault multipliers, a loyalty bonus for existing users, and a time-based factor that incentivizes long-term commitment.
+- Season 2 of the Harmonix Point Program starts at 12 PM UTC on March 4 and will conclude in 90 days after the start date.
+- The total number of Harmonix Points available in Season 2 is 30,000,000.
+[private_data][document_id_1,document_id_2]
+- Information from tool call:</source> 
+${msg}`
 
-  if (match) {
-    const insideThink = match ? match[1].trim() : null
-    const message = match && match[2] !== undefined ? match[2].trim() : ""
-    const processedMessage = breakLine(enhancedMessage(message))
+  let sourceContent = ""
+  let thinkContent = ""
+  let outsideThinkContent = newMsg
+  let privateData = [] as any[]
 
-    return (
-      <>
-        <button
-          type="button"
-          onClick={() => setIsCollapsed(!isCollapsed)}
-          className="mb-2 flex items-center gap-1 rounded-full bg-mercury-100 px-4 py-2"
-        >
-          <Image src={distilledAIIcon} alt="distilled AI icon" />
-          <span className="font-medium text-mercury-950">
-            {!!processedMessage ? "Thought" : "Thinking..."}
-          </span>
-          <div className={twMerge(isCollapsed && "rotate-180")}>
-            <CaretUpFilledIcon color="#363636" />
-          </div>
-        </button>
-        <div
-          className={twMerge(
-            `overflow-hidden transition-all duration-300 ease-in-out`,
-            isCollapsed ? "max-h-0 opacity-0" : "max-h-96 opacity-100",
-            "mb-2 border-l-2 border-mercury-100 px-3",
-          )}
-          aria-expanded={isCollapsed}
-        >
-          <p className="whitespace-pre-line text-14 text-mercury-900">
-            {insideThink}
-          </p>
-        </div>
-        <Markdown components={renderers}>{processedMessage}</Markdown>
-      </>
-    )
+  let sourceMatch = newMsg.match(
+    /<source>([\s\S]*?)<\/source>|<source>([\s\S]*)/,
+  )
+
+  if (sourceMatch) {
+    sourceContent = (sourceMatch[1] || sourceMatch[2]).trim()
+    outsideThinkContent = outsideThinkContent.replace(sourceMatch[0], "").trim()
+
+    let regex = /\[private_data\]\[([^\]]+)\]/
+    let match = sourceContent.match(regex)
+
+    if (match) {
+      privateData = match[1]?.split(",")?.map((id) => id?.trim())
+      sourceContent = sourceContent.replace(match[0], "").trim()
+    }
   }
 
-  const processedMessage = breakLine(enhancedMessage(msg))
-  return <Markdown components={renderers}>{processedMessage}</Markdown>
+  let thinkMatch = newMsg.match(/<think>([\s\S]*?)<\/think>|<think>([\s\S]*)/)
+  if (thinkMatch) {
+    thinkContent = (thinkMatch[1] || thinkMatch[2]).trim()
+    outsideThinkContent = outsideThinkContent.replace(thinkMatch[0], "").trim()
+  }
+
+  const processedMessage = breakLine(enhancedMessage(outsideThinkContent))
+
+  return (
+    <>
+      {sourceContent && (
+        <>
+          <button
+            type="button"
+            onClick={() => setIsSourceCollapsed(!isSourceCollapsed)}
+            className="mb-4 flex items-center gap-1 rounded-full"
+          >
+            <div className="h-4 w-4">
+              {outsideThinkContent ? (
+                <CircleCheckFilled color="#888888" />
+              ) : (
+                <Lottie animationData={loadingBrain} />
+              )}
+            </div>
+            <span className="text-14 font-normal leading-[150%] tracking-[-0.14px] text-mercury-600">
+              {outsideThinkContent
+                ? "Research completed based on related citations"
+                : "Researching based on related citations.…"}
+            </span>
+            <div className={twMerge(isSourceCollapsed && "rotate-180")}>
+              <ChevronUpOutlineIcon />
+            </div>
+          </button>
+
+          <div
+            className={twMerge(
+              `mb-4 ml-5 overflow-hidden border-l-3 border-brown-600 bg-brown-50 px-4 py-2 transition-all duration-300 ease-in-out`,
+              isSourceCollapsed
+                ? "m-0 max-h-0 p-0 opacity-0"
+                : "max-h-96 opacity-100",
+            )}
+            aria-expanded={isSourceCollapsed}
+          >
+            <p className="whitespace-pre-line text-14 font-medium leading-[140%] tracking-[-0.325px] text-brown-600">
+              {sourceContent}
+            </p>
+          </div>
+
+          <CitationsList privateData={privateData} />
+        </>
+      )}
+
+      {thinkContent && (
+        <>
+          <button
+            type="button"
+            onClick={() => setIsThinkCollapsed(!isThinkCollapsed)}
+            className="mb-4 flex items-center gap-1 rounded-full"
+          >
+            <div className="h-4 w-4">
+              {outsideThinkContent ? (
+                <CircleCheckFilled color="#888888" />
+              ) : (
+                <Lottie animationData={loadingBrain} />
+              )}
+            </div>
+            <span className="text-14 font-normal leading-[150%] tracking-[-0.14px] text-mercury-600">
+              {outsideThinkContent ? "Thought" : "Thinking…"}
+            </span>
+            <div className={twMerge(isThinkCollapsed && "rotate-180")}>
+              <ChevronUpOutlineIcon />
+            </div>
+          </button>
+
+          <div
+            className={twMerge(
+              `mb-4 ml-5 overflow-hidden border-l-3 border-mercury-500 bg-mercury-30 px-4 py-2 transition-all duration-300 ease-in-out`,
+              isThinkCollapsed
+                ? "m-0 max-h-0 p-0 opacity-0"
+                : "max-h-96 opacity-100",
+            )}
+            aria-expanded={isThinkCollapsed}
+          >
+            <p className="whitespace-pre-line text-14 font-medium leading-[140%] tracking-[-0.325px] text-mercury-700">
+              {thinkContent}
+            </p>
+          </div>
+        </>
+      )}
+
+      <Markdown components={renderers}>{processedMessage}</Markdown>
+    </>
+  )
 }
 
 export default MarkdownMessage
