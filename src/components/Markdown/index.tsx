@@ -5,13 +5,75 @@ import { useQueryClient } from "@tanstack/react-query"
 import { getActiveColorRandomById, isImageUrl } from "@utils/index"
 import Lottie from "lottie-react"
 import { useState } from "react"
-import Markdown from "react-markdown"
+import Markdown, { Components } from "react-markdown"
 import { useParams } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
 import { QueryDataKeys } from "types/queryDataKeys"
 import CitationsList from "./CitationsList"
 
-const MarkdownMessage = ({ msg }: { msg: string }) => {
+interface MarkdownMessageProps {
+  msg: string
+  isSenderMessage?: boolean
+}
+
+interface CollapsibleSectionProps {
+  isCollapsed: boolean
+  setIsCollapsed: (value: boolean) => void
+  icon: React.ReactNode
+  title: string
+  children: React.ReactNode
+  borderColor: string
+  bgColor: string
+  textColor: string
+}
+
+const CollapsibleSection = ({
+  isCollapsed,
+  setIsCollapsed,
+  icon,
+  title,
+  children,
+  borderColor,
+  bgColor,
+  textColor,
+}: CollapsibleSectionProps) => (
+  <>
+    <button
+      type="button"
+      onClick={() => setIsCollapsed(!isCollapsed)}
+      className="mb-4 flex items-center gap-1 rounded-full"
+    >
+      <div className="h-4 w-4">{icon}</div>
+      <span className="text-14 font-normal leading-[150%] tracking-[-0.14px] text-mercury-600">
+        {title}
+      </span>
+      <div className={twMerge(isCollapsed && "rotate-180")}>
+        <ChevronUpOutlineIcon />
+      </div>
+    </button>
+
+    <div
+      className={twMerge(
+        `mb-4 ml-5 overflow-hidden border-l-3 px-4 py-2 transition-all duration-300 ease-in-out`,
+        isCollapsed ? "m-0 max-h-0 p-0 opacity-0" : "opacity-100",
+        borderColor,
+        bgColor,
+      )}
+      aria-expanded={!isCollapsed}
+    >
+      <p
+        className={twMerge(
+          "whitespace-pre-line text-14 font-medium leading-[140%] tracking-[-0.325px]",
+          textColor,
+        )}
+      >
+        {children}
+      </p>
+    </div>
+  </>
+)
+
+const MarkdownMessage = ({ msg, isSenderMessage }: MarkdownMessageProps) => {
   const { chatId } = useParams()
   const { textColor } = getActiveColorRandomById(chatId)
   const queryClient = useQueryClient()
@@ -37,11 +99,10 @@ const MarkdownMessage = ({ msg }: { msg: string }) => {
 
   const replaceSrcImage = (src: string) => {
     if (src.includes("https://defi-lens.s3.us-east-2.amazonaws.com/")) {
-      const imageSrc = src?.replace(
+      return src?.replace(
         /https:\/\/defi-lens\.s3\.us-east-2\.amazonaws\.com\/media\/(.*\.jpeg)/,
         "https://static.distilled.ai/media/$1",
       )
-      return imageSrc
     }
     return src
   }
@@ -65,18 +126,18 @@ const MarkdownMessage = ({ msg }: { msg: string }) => {
     })
   }
 
-  const renderers = {
-    ol: ({ children }: any) => (
+  const renderers: Partial<Components> = {
+    ol: ({ children }) => (
       <ol style={{ listStyleType: "decimal", paddingLeft: "16px" }}>
         {children}
       </ol>
     ),
-    li: ({ children }: any) => {
-      const wordBreakStyle = checkTextBreak(children)
+    li: ({ children }) => {
+      const wordBreakStyle = checkTextBreak(children as string)
       return <li className={wordBreakStyle}>{children}</li>
     },
-    img: ({ src, alt }: any) => {
-      const imageSrc = replaceSrcImage(src)
+    img: ({ src, alt }) => {
+      const imageSrc = replaceSrcImage(src || "")
       return (
         <img
           src={imageSrc}
@@ -85,13 +146,13 @@ const MarkdownMessage = ({ msg }: { msg: string }) => {
           onClick={() =>
             queryClient.setQueryData<string>(
               [QueryDataKeys.MEDIA_PREVIEW],
-              () => imageSrc || "",
+              () => imageSrc,
             )
           }
         />
       )
     },
-    a: ({ href, children }: any) => (
+    a: ({ href, children }) => (
       <a
         href={href}
         target="_blank"
@@ -101,16 +162,16 @@ const MarkdownMessage = ({ msg }: { msg: string }) => {
         {children}
       </a>
     ),
-    p: ({ children }: any) => {
-      const wordBreakStyle = checkTextBreak(children)
+    p: ({ children }) => {
+      const wordBreakStyle = checkTextBreak(children as string)
       return (
         <p className={twMerge(wordBreakStyle, "text-[16px] font-medium")}>
           {children}
         </p>
       )
     },
-    h4: ({ children }: any) => {
-      const wordBreakStyle = checkTextBreak(children)
+    h4: ({ children }) => {
+      const wordBreakStyle = checkTextBreak(children as string)
       return (
         <p className={twMerge(wordBreakStyle, "text-[16px] font-medium")}>
           {children}
@@ -141,20 +202,17 @@ const MarkdownMessage = ({ msg }: { msg: string }) => {
     )
   }
 
-  let newMsg = `<source>
-- Information from training data:
-- The weighted TVL formula sums individual vault TVLs and multiplies them by their respective point multipliers.
-- Points are earned based on deposit size, vault multipliers, a loyalty bonus for existing users, and a time-based factor that incentivizes long-term commitment.
-- Season 2 of the Harmonix Point Program starts at 12 PM UTC on March 4 and will conclude in 90 days after the start date.
-- The total number of Harmonix Points available in Season 2 is 30,000,000.
-[private_data][document_id_1,document_id_2]
-- Information from tool call:</source> 
-${msg}`
+  if (isSenderMessage) {
+    const processedMessage = breakLine(enhancedMessage(msg))
+    return <Markdown components={renderers}>{processedMessage}</Markdown>
+  }
 
+  let newMsg = msg
   let sourceContent = ""
   let thinkContent = ""
   let outsideThinkContent = newMsg
-  let privateData = [] as any[]
+  let privateData = [] as string[]
+  let isSourceLoading = true
 
   let sourceMatch = newMsg.match(
     /<source>([\s\S]*?)<\/source>|<source>([\s\S]*)/,
@@ -171,6 +229,7 @@ ${msg}`
       privateData = match[1]?.split(",")?.map((id) => id?.trim())
       sourceContent = sourceContent.replace(match[0], "").trim()
     }
+    isSourceLoading = false
   }
 
   let thinkMatch = newMsg.match(/<think>([\s\S]*?)<\/think>|<think>([\s\S]*)/)
@@ -181,86 +240,48 @@ ${msg}`
 
   const processedMessage = breakLine(enhancedMessage(outsideThinkContent))
 
+  const getStatusIcon = (hasContent: boolean) =>
+    hasContent ? (
+      <CircleCheckFilled color="#888888" />
+    ) : (
+      <Lottie animationData={loadingBrain} />
+    )
+
   return (
     <>
       {sourceContent && (
         <>
-          <button
-            type="button"
-            onClick={() => setIsSourceCollapsed(!isSourceCollapsed)}
-            className="mb-4 flex items-center gap-1 rounded-full"
+          <CollapsibleSection
+            isCollapsed={isSourceCollapsed}
+            setIsCollapsed={setIsSourceCollapsed}
+            icon={getStatusIcon(!isSourceLoading)}
+            title={
+              isSourceLoading
+                ? "Researching based on related citations.…"
+                : "Research completed based on related citations"
+            }
+            borderColor="border-brown-600"
+            bgColor="bg-brown-50"
+            textColor="text-brown-600"
           >
-            <div className="h-4 w-4">
-              {outsideThinkContent ? (
-                <CircleCheckFilled color="#888888" />
-              ) : (
-                <Lottie animationData={loadingBrain} />
-              )}
-            </div>
-            <span className="text-14 font-normal leading-[150%] tracking-[-0.14px] text-mercury-600">
-              {outsideThinkContent
-                ? "Research completed based on related citations"
-                : "Researching based on related citations.…"}
-            </span>
-            <div className={twMerge(isSourceCollapsed && "rotate-180")}>
-              <ChevronUpOutlineIcon />
-            </div>
-          </button>
-
-          <div
-            className={twMerge(
-              `mb-4 ml-5 overflow-hidden border-l-3 border-brown-600 bg-brown-50 px-4 py-2 transition-all duration-300 ease-in-out`,
-              isSourceCollapsed
-                ? "m-0 max-h-0 p-0 opacity-0"
-                : "max-h-96 opacity-100",
-            )}
-            aria-expanded={isSourceCollapsed}
-          >
-            <p className="whitespace-pre-line text-14 font-medium leading-[140%] tracking-[-0.325px] text-brown-600">
-              {sourceContent}
-            </p>
-          </div>
-
+            {sourceContent}
+          </CollapsibleSection>
           <CitationsList privateData={privateData} />
         </>
       )}
 
       {thinkContent && (
-        <>
-          <button
-            type="button"
-            onClick={() => setIsThinkCollapsed(!isThinkCollapsed)}
-            className="mb-4 flex items-center gap-1 rounded-full"
-          >
-            <div className="h-4 w-4">
-              {outsideThinkContent ? (
-                <CircleCheckFilled color="#888888" />
-              ) : (
-                <Lottie animationData={loadingBrain} />
-              )}
-            </div>
-            <span className="text-14 font-normal leading-[150%] tracking-[-0.14px] text-mercury-600">
-              {outsideThinkContent ? "Thought" : "Thinking…"}
-            </span>
-            <div className={twMerge(isThinkCollapsed && "rotate-180")}>
-              <ChevronUpOutlineIcon />
-            </div>
-          </button>
-
-          <div
-            className={twMerge(
-              `mb-4 ml-5 overflow-hidden border-l-3 border-mercury-500 bg-mercury-30 px-4 py-2 transition-all duration-300 ease-in-out`,
-              isThinkCollapsed
-                ? "m-0 max-h-0 p-0 opacity-0"
-                : "max-h-96 opacity-100",
-            )}
-            aria-expanded={isThinkCollapsed}
-          >
-            <p className="whitespace-pre-line text-14 font-medium leading-[140%] tracking-[-0.325px] text-mercury-700">
-              {thinkContent}
-            </p>
-          </div>
-        </>
+        <CollapsibleSection
+          isCollapsed={isThinkCollapsed}
+          setIsCollapsed={setIsThinkCollapsed}
+          icon={getStatusIcon(!!outsideThinkContent)}
+          title={outsideThinkContent ? "Thought" : "Thinking…"}
+          borderColor="border-mercury-500"
+          bgColor="bg-mercury-30"
+          textColor="text-mercury-700"
+        >
+          {thinkContent}
+        </CollapsibleSection>
       )}
 
       <Markdown components={renderers}>{processedMessage}</Markdown>
