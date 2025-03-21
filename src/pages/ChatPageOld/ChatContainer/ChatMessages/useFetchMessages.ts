@@ -66,7 +66,7 @@ export const chatMessagesKey = (chatId: string | undefined) => {
   return [QueryDataKeys.CHAT_MESSAGES, chatId.toString()]
 }
 
-const useFetchMessages = (groupId: string) => {
+const useFetchMessages = (groupId: string, groupDetailError?: boolean) => {
   const { user, isLogin } = useAuthState()
   const queryClient = useQueryClient()
 
@@ -111,6 +111,7 @@ const useFetchMessages = (groupId: string) => {
     staleTime: 5 * 60 * 1000,
     retry: 1,
   })
+  const adjustedIsFetched = groupDetailError ? true : isFetched
 
   const resetInfiniteQueryPagination = () => {
     queryClient.setQueryData(chatMessagesKey(groupId), (oldData: any) => {
@@ -164,7 +165,7 @@ const useFetchMessages = (groupId: string) => {
     messages,
     hasPreviousMore: hasPreviousPage,
     isLoading,
-    isFetched,
+    isFetched: adjustedIsFetched,
     isFetchingPreviousPage,
     groupId,
     error,

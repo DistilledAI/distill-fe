@@ -25,7 +25,7 @@ const useGroupDetailByLabel = (label: string) => {
     }
   }
 
-  const { data, isFetched } = useQuery<any>({
+  const { data, isFetched, isError } = useQuery<any>({
     queryKey: [`${QueryDataKeys.CHAT_ID_BY_USERNAME}-${label}`],
     queryFn: fetchGroupDetail,
     enabled: !!label && label.includes("@") && !label.includes(" "),
@@ -36,6 +36,7 @@ const useGroupDetailByLabel = (label: string) => {
     groupId: data?.id?.toString(),
     groupDetailByLabel: data || undefined,
     isFetched,
+    isError,
   }
 }
 

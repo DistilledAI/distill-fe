@@ -16,7 +16,7 @@ const useJoinGroupLive = () => {
   const queryClient = useQueryClient()
   const { chatId: label = "" } = useParams()
   const { isLogin, user } = useAuthState()
-  const { groupId, groupDetailByLabel, isFetched } =
+  const { groupId, groupDetailByLabel, isFetched, isError } =
     useGroupDetailByLabel(label)
 
   const getHasJoinedGroupKey = (groupId?: string | number) => [
@@ -108,6 +108,7 @@ const useJoinGroupLive = () => {
   return {
     groupDetailByLabel,
     isFetched,
+    isError,
   }
 }
 

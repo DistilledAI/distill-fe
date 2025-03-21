@@ -19,7 +19,8 @@ const ToggleActionsMobile = lazy(() => import("./ToggleActionsMobile"))
 const RightContent: React.FC<{
   isClan?: boolean
   groupDetail?: UserGroup | null
-}> = ({ isClan = false, groupDetail }) => {
+  groupDetailError?: boolean
+}> = ({ isClan = false, groupDetail, groupDetailError }) => {
   const { isMobile } = useWindowSize()
   const sidebarCollapsed = useAppSelector((state) => state.sidebarCollapsed)
   // const instructBanner = useAppSelector((state) => state.instructBanner)
@@ -73,6 +74,7 @@ const RightContent: React.FC<{
         chatId={groupId}
         isClan={isClan}
         isCloseLiveChat={isCloseLiveChat}
+        groupDetailError={groupDetailError}
       />
       <SendMessage
         sidebarCollapsed={sidebarCollapsed}
