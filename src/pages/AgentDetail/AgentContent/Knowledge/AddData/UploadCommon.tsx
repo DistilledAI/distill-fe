@@ -1,11 +1,9 @@
 import { PlusIcon } from "@components/Icons/Plus"
 import { Spinner } from "@nextui-org/react"
-import type { UploadFile, UploadProps } from "antd"
-import { Upload } from "antd"
-import React, { useState } from "react"
+import React, { useState, useRef } from "react"
 import { toast } from "react-toastify"
 import { uploadMyData } from "services/user"
-import styled from "styled-components"
+import FileTipModal from "./FileTipModal"
 
 interface UploadCustomProps {
   fileKey: string
@@ -14,19 +12,13 @@ interface UploadCustomProps {
   accept?: string
   maxCount?: number
   multiple?: boolean
-  moreCustomRequest?: any
+  moreCustomRequest?: (data: any) => void
   children?: React.ReactNode
   containerClassName?: string
   description?: string
 }
 
 const maxSizeUpload = 20
-
-const FILE_UPLOAD_STATUS = {
-  UPLOADING: "uploading",
-  ERROR: "error",
-  DONE: "done",
-} as any
 
 const UploadCommon: React.FC<UploadCustomProps> = ({
   fileKey,
@@ -35,101 +27,102 @@ const UploadCommon: React.FC<UploadCustomProps> = ({
   moreCustomRequest,
 }) => {
   const [loading, setLoading] = useState(false)
-  const [fileListValue, setFileList] = useState<UploadFile[]>([])
+  const [showModal, setShowModal] = useState(false)
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
-  const handleChange: UploadProps["onChange"] = async ({ fileList }) => {
-    const newFileList = fileList.filter((item) => item.status !== undefined)
-    const fileListDone = newFileList?.filter(
-      (item) => item?.status === FILE_UPLOAD_STATUS.DONE,
-    )
-    setFileList(newFileList)
+  const handleTriggerClick = () => {
+    setShowModal(true)
+  }
 
-    const isExistfileListUploading = newFileList
-      ?.map((item) => item?.status)
-      ?.includes(FILE_UPLOAD_STATUS.UPLOADING)
-
-    if (!isExistfileListUploading) {
-      const newFileUploadDone = fileListDone?.filter(
-        (item: any) => !item?.connectedToAgent,
-      )
-      const newFileIdUploadDone = newFileUploadDone.map(
-        (item) => item?.response?.id,
-      )
-      const res = await moreCustomRequest(newFileIdUploadDone)
-      if (res) {
-        setFileList([])
-      }
+  const handleModalConfirm = () => {
+    setShowModal(false)
+    if (fileInputRef.current) {
+      fileInputRef.current.click()
     }
   }
 
-  const handleCustomRequest = async (options: any) => {
-    const { onSuccess, onError, file } = options
-    const formData = new FormData()
-    formData.append("file", file)
-    formData.append("key", fileKey)
-    try {
-      setLoading(true)
-      const response = await uploadMyData(formData)
-      if (response) {
-        onSuccess(response?.data?.[0])
-      }
-    } catch (error) {
-      console.error(error)
-      onError(error)
-      toast.error(`${file.name} failed to upload.`)
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  const beforeUpload = async (file: any) => {
+  const beforeUpload = (file: File): boolean => {
     const isLtSize = file.size / 1024 / 1024 < maxSizeUpload
     if (!isLtSize) {
       toast.error(
         `The file ${file.name} size must be smaller than ${maxSizeUpload}MB!`,
       )
     }
-    if (!loading) {
-      setFileList([])
-    }
-
     return isLtSize
   }
 
-  const props: UploadProps = {
-    name: "file",
-    onChange: handleChange,
-    fileList: fileListValue,
-    customRequest: handleCustomRequest,
-    beforeUpload,
+  const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files
+    if (files) {
+      const validFiles = Array.from(files).filter(beforeUpload)
+      if (validFiles.length > 0) {
+        setLoading(true)
+
+        // Process each file individually
+        const uploadPromises = validFiles.map((file) => {
+          const formData = new FormData()
+          formData.append("file", file)
+          formData.append("key", fileKey)
+          return uploadMyData(formData)
+        })
+
+        // Handle all uploads at once
+        Promise.all(uploadPromises)
+          .then((responses) => {
+            const fileIds = responses
+              .filter((response) => response)
+              .map((response) => response?.data?.[0]?.id)
+              .filter(Boolean)
+
+            if (fileIds.length > 0 && moreCustomRequest) {
+              return moreCustomRequest(fileIds)
+            }
+            return null
+          })
+          .catch((error) => {
+            console.error(error)
+            toast.error("Failed to upload.")
+          })
+          .finally(() => {
+            setLoading(false)
+          })
+      }
+      e.target.value = ""
+    }
   }
 
   return (
-    <StyledUpload
-      {...props}
-      accept={accept}
-      multiple={multiple}
-      showUploadList={false}
-      className="w-full"
-    >
-      <div className="inline-flex h-[32px] cursor-pointer items-center gap-1 rounded-full bg-mercury-950 px-3 text-15 font-semibold text-white">
+    <div className="w-full">
+      <button
+        type="button"
+        onClick={handleTriggerClick}
+        className="inline-flex h-[32px] cursor-pointer items-center gap-1 rounded-full bg-mercury-950 px-3 text-15 font-semibold text-white"
+        disabled={loading}
+      >
         {loading ? (
           <Spinner color="white" size="sm" />
         ) : (
           <PlusIcon color="white" />
         )}
         Add Plain text files
-      </div>
-    </StyledUpload>
+      </button>
+
+      <FileTipModal
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        onPress={handleModalConfirm}
+      />
+
+      <input
+        type="file"
+        ref={fileInputRef}
+        style={{ display: "none" }}
+        multiple={multiple}
+        accept={accept}
+        onChange={handleFileInputChange}
+      />
+    </div>
   )
 }
-
-const StyledUpload = styled(Upload)`
-  &&& {
-    .ant-upload {
-      width: 100%;
-    }
-  }
-`
 
 export default UploadCommon
