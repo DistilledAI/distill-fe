@@ -1,5 +1,6 @@
 import {
   bankerLogo,
+  bitmaxLogo,
   blackrackAvartar2,
   gnrtAvatar,
   guardLogo,
@@ -26,6 +27,7 @@ export enum StakeTokenAddress {
   Guard = "oraiUNrTQmeuc13JoMFSyNcJCnXYpqErfp9v5diy64b",
   Banker = "oraiBbhuMd7MeVxyBjtnK8sggprf2NpHkeJaeHzpBFK",
   JPOW = "orairHM3Yw2PbTfCty1PXy7tEUx3uBMfjouNbm4KnRJ",
+  BitMax = "oraif4S1S2xbc3Mym4uD392uVYEDHkP6ubCovbcXqKL",
 }
 
 export const LIST_TOKEN_STAKE = [
@@ -92,6 +94,15 @@ export const LIST_TOKEN_STAKE = [
     tokenName: "JPOW",
     avatar: jpowLogo,
     coinGeckoId: CoinGeckoId["jpow-ai"],
+  },
+  {
+    id: 8,
+    address: StakeTokenAddress.BitMax,
+    label: "BITMAX",
+    decimals: 6,
+    tokenName: "BITMAX",
+    avatar: bitmaxLogo,
+    coinGeckoId: null,
   },
 ]
 

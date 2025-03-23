@@ -15,6 +15,7 @@ export const getDurationByAddress = (
   switch (address) {
     case StakeTokenAddress.LeeQuid:
     case StakeTokenAddress.JPOW:
+    case StakeTokenAddress.BitMax:
       return 30 * 24 * 60 * 60 * 2
 
     case StakeTokenAddress.Banker:
