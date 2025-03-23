@@ -10,7 +10,7 @@ const SelectToken = () => {
   return (
     <div className="flex h-[46px] min-w-[100px] items-center gap-1 rounded-full bg-mercury-100 px-2">
       <img
-        className="h-8 w-8 rounded-full object-cover"
+        className="h-8 w-8 shrink-0 rounded-full object-cover"
         src={tokenInfo?.avatar}
       />
       <span>{tokenInfo?.tokenName}</span>
