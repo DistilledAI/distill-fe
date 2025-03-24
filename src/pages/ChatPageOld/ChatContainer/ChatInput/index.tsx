@@ -98,7 +98,7 @@ const ChatInput = ({
     queryClient.setQueryData([QueryDataKeys.IS_CHATTING, groupId], () =>
       botInfo?.myBot && pathname !== PATH_NAMES.PRIVATE_AGENT
         ? isBotEnabled
-        : true,
+        : false,
     )
 
     await onSubmit(message)

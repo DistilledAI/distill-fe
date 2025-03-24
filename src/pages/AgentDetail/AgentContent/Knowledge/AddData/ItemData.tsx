@@ -13,7 +13,7 @@ const ItemData: React.FC<{
   title: string
   value: string
   status: any
-  category: BotDataTypeKey
+  category: BotDataTypeKey | string
   className?: {
     classNameTitle?: string
   }

@@ -28,6 +28,7 @@ interface ChatWindowProps {
   isChatActions?: boolean
   style?: React.CSSProperties
   scrollBottomClassName?: string
+  textEmptyState?: string
 }
 
 const CONSTANTS = {
@@ -51,6 +52,7 @@ const ChatWindowV2: React.FC<ChatWindowProps> = ({
   isChatActions = false,
   style,
   scrollBottomClassName,
+  textEmptyState = "NO MESSAGE",
 }) => {
   const parentRef = useRef<HTMLDivElement>(null)
   const [isScrollBottom, setIsScrollBottom] = useState(true)
@@ -174,10 +176,10 @@ const ChatWindowV2: React.FC<ChatWindowProps> = ({
     () =>
       isFetched && !messages.length ? (
         <div className="flex h-full items-center justify-center">
-          NO MESSAGE
+          {textEmptyState}
         </div>
       ) : null,
-    [isFetched, messages.length],
+    [isFetched, messages.length, textEmptyState],
   )
 
   return (

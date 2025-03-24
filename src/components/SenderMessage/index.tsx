@@ -22,7 +22,7 @@ const SenderMessage = ({
       <div
         className={twMerge("text-base-md text-mercury-30", contentClassName)}
       >
-        <MarkdownMessage msg={content} />
+        <MarkdownMessage msg={content} isSenderMessage />
       </div>
     </div>
   )
