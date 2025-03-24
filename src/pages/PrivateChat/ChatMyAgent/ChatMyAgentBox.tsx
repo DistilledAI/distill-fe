@@ -10,6 +10,11 @@ import {
 import { useAppSelector } from "@hooks/useAppRedux"
 import useSubmitChat from "@hooks/useSubmitChat"
 // import useFetchMyData from "@pages/MyData/useFetch"
+import { distilledAiPlaceholder } from "@assets/images"
+import AlertBox from "@components/AlertBox"
+import ChatWindowV2 from "@components/ChatWindowV2"
+import DynamicTitleMeta from "@components/DynamicTitleMeta"
+import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { useQuery } from "@tanstack/react-query"
 import { useStyleSpacing } from "providers/StyleSpacingProvider"
 import { useRef } from "react"
@@ -24,11 +29,6 @@ import {
   RoleChat,
 } from "../../ChatPageOld/ChatContainer/ChatMessages/helpers"
 import useFetchMessages from "../../ChatPageOld/ChatContainer/ChatMessages/useFetchMessages"
-import ChatWindowV2 from "@components/ChatWindowV2"
-import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
-import { distilledAiPlaceholder } from "@assets/images"
-import DynamicTitleMeta from "@components/DynamicTitleMeta"
-import AlertBox from "@components/AlertBox"
 
 const ChatMyAgentBox: React.FC<{
   hasInputChat?: boolean
@@ -84,6 +84,7 @@ const ChatMyAgentBox: React.FC<{
             }}
             content={message.content}
             isTyping={message.isTyping}
+            isPrivateChat
           />
         ) : null}
         {message.role === RoleChat.OWNER ? (

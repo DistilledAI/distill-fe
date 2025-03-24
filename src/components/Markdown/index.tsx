@@ -14,6 +14,7 @@ import CitationsList from "./CitationsList"
 interface MarkdownMessageProps {
   msg: string
   isSenderMessage?: boolean
+  isPrivateChat?: boolean
 }
 
 interface CollapsibleSectionProps {
@@ -73,7 +74,11 @@ const CollapsibleSection = ({
   </>
 )
 
-const MarkdownMessage = ({ msg, isSenderMessage }: MarkdownMessageProps) => {
+const MarkdownMessage = ({
+  msg,
+  isSenderMessage,
+  isPrivateChat,
+}: MarkdownMessageProps) => {
   const { chatId } = useParams()
   const { textColor } = getActiveColorRandomById(chatId)
   const queryClient = useQueryClient()
@@ -266,7 +271,10 @@ const MarkdownMessage = ({ msg, isSenderMessage }: MarkdownMessageProps) => {
           >
             {sourceContent}
           </CollapsibleSection>
-          <CitationsList privateData={privateData} />
+          <CitationsList
+            privateData={privateData}
+            isPrivateChat={isPrivateChat}
+          />
         </>
       )}
 

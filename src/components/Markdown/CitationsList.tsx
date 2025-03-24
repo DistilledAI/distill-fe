@@ -13,7 +13,10 @@ import { BotDataTypeKey } from "@types"
 import { useEffect, useState } from "react"
 import { getMyBotData } from "services/user"
 
-const Citations: React.FC<{ privateData: any[] }> = ({ privateData }) => {
+const Citations: React.FC<{ privateData: any[]; isPrivateChat?: boolean }> = ({
+  privateData,
+  isPrivateChat,
+}) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
   const myAgent = useAppSelector((state) => state.agents.myAgent) as any
   const [citaionsData, setCitaionsData] = useState<any[]>([])
@@ -61,7 +64,10 @@ const Citations: React.FC<{ privateData: any[] }> = ({ privateData }) => {
       <button
         type="button"
         className="mb-4 flex items-center gap-1 rounded-md bg-brown-50 px-2 py-[6px] text-13 font-medium text-brown-600"
-        onClick={onOpen}
+        onClick={() => {
+          if (isPrivateChat) return
+          onOpen()
+        }}
       >
         <DatabaseIcon size={14} color="#83664B" />
         <span>{privateData.length} connected sources</span>
