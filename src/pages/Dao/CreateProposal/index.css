@@ -1,0 +1,12 @@
+.cm-gutters {
+  display: none !important;
+}
+.cm-editor {
+  background-color: #f4f4f5;
+}
+.md-editor-preview {
+  border-bottom-right-radius: 15px !important;
+}
+.cm-placeholder {
+  font-size: 14px;
+}

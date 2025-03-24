@@ -1,4 +1,4 @@
-import { Button, Input, Tab, Tabs, Textarea, Tooltip } from "@nextui-org/react"
+import { Button, Input, Tab, Tabs, Tooltip } from "@nextui-org/react"
 import React, { useState } from "react"
 import { PlusIcon } from "@components/Icons/Plus"
 import { CheckFilledIcon, CloseFilledIcon } from "@components/Icons/DefiLens"
@@ -10,6 +10,9 @@ import { useParams } from "react-router-dom"
 import useStakerInfo from "./useStakerInfo"
 import { getInfoTokenByAddress } from "@pages/Stake/helpers"
 import { StakeTokenAddress } from "@pages/Stake"
+import MarkdownEditor from "@uiw/react-markdown-editor"
+import "../reset.css"
+import "./index.css"
 
 const CreateProposal: React.FC = () => {
   const [tab, setTab] = useState<ProposalType>(ProposalType.YesNo)
@@ -85,14 +88,16 @@ const CreateProposal: React.FC = () => {
           <p className="mb-2 text-18 font-semibold max-md:text-16">
             Description <span className="font-medium text-red-500">(*)</span>
           </p>
-          <Textarea
-            rows={6}
-            minRows={6}
-            maxRows={6}
-            onValueChange={setDescription}
-            value={description}
-            placeholder="Give your proposal a description (supports Markdown)..."
-          />
+          <div className="styleReset rounded-[20px] bg-[#f4f4f5] p-2">
+            <MarkdownEditor
+              value={description}
+              onChange={(val) => setDescription(val)}
+              height="200px"
+              visible={true}
+              className="!bg-[#f4f4f5]"
+              placeholder="Give your proposal a description"
+            />
+          </div>
         </div>
       </div>
       <div className="mt-4">
@@ -122,7 +127,7 @@ const CreateProposal: React.FC = () => {
                   <p className="mb-1 font-bold leading-none">How it works:</p>
                   <ul className="list-outside list-disc pl-5 text-[15px] text-mercury-800">
                     <li>
-                      <b>Stake into an agent’s vault</b> to unlock governance.
+                      <b>Stake into an agent's vault</b> to unlock governance.
                     </li>
                     <li>
                       Proposals pass with <b>50% threshold & 10% quorum</b>.
@@ -186,7 +191,7 @@ const CreateProposal: React.FC = () => {
                     <p className="mb-1 font-bold leading-none">How it works:</p>
                     <ul className="list-outside list-disc pl-5 text-[15px] text-mercury-800">
                       <li>
-                        <b>Stake into an agent’s vault</b> to unlock governance.
+                        <b>Stake into an agent's vault</b> to unlock governance.
                       </li>
                       <li>
                         Proposals pass with{" "}
