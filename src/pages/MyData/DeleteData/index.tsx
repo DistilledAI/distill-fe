@@ -16,7 +16,7 @@ import { BotDataTypeKey } from "@types"
 const DeleteData: React.FC<{
   botId: number
   ids: number[]
-  category: BotDataTypeKey
+  category: BotDataTypeKey | string
   trigger?: React.ReactNode
   isDisable?: boolean
 }> = ({ botId, ids, category, isDisable, trigger = <DeleteIcon /> }) => {
@@ -31,6 +31,7 @@ const DeleteData: React.FC<{
         const newData = oldData.pages.map((innerArray) =>
           innerArray.filter((item) => item.id !== ids[0]),
         )
+
         return {
           ...oldData,
           pages: newData,

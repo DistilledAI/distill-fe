@@ -26,6 +26,7 @@ const ProposalsHistory = ({ proposals, searchValue }: Props) => {
       >
         <AccordionItem
           key="1"
+          textValue={`History • ${newProposals.length} proposals`}
           title={
             <div className="group ml-3 flex cursor-pointer items-center gap-2">
               <div
