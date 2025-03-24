@@ -6,6 +6,7 @@ import moment from "moment"
 import { IDataProposal } from "../CreateProposal/useCreateProposal"
 import { Skeleton } from "@nextui-org/react"
 import { twMerge } from "tailwind-merge"
+import "./index.css"
 
 interface Props {
   proposalContent: IProposal | null
@@ -25,7 +26,7 @@ const ProposalContent = ({ proposalContent, proposalIpfs }: Props) => {
       <Skeleton
         isLoaded={!!proposalContent}
         className={twMerge(
-          "h-[50dvh] rounded-2xl",
+          "styleReset h-[50dvh] rounded-2xl",
           !!proposalContent && "h-auto",
         )}
       >
