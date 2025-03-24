@@ -11,6 +11,7 @@ const WithdrawAll: React.FC<{
       case StakeTokenAddress.LeeQuid:
       case StakeTokenAddress.BlackRack:
       case StakeTokenAddress.JPOW:
+      case StakeTokenAddress.BitMax:
         return "60"
 
       default:
