@@ -14,7 +14,7 @@ import { v4 as uuidv4 } from "uuid"
 
 export enum PreviewRoleChat {
   USER = "user",
-  ASSITANT = "assistant",
+  ASSISTANT = "assistant",
 }
 const TestAgent: React.FC<{ agentData: any; agentConfigs: any }> = () => {
   const { watch } = useFormContext()
@@ -33,7 +33,7 @@ const TestAgent: React.FC<{ agentData: any; agentConfigs: any }> = () => {
     setMessages((prevMessages) => {
       const updatedMessage = {
         ...prevMessages[0],
-        role: PreviewRoleChat.ASSITANT,
+        role: PreviewRoleChat.ASSISTANT,
         content: `Hello, I'm ${userNameData}. How can I help you?`,
       }
 
@@ -79,7 +79,7 @@ const TestAgent: React.FC<{ agentData: any; agentConfigs: any }> = () => {
           const newReceiverMessages = prevState.map((message: any, index) => {
             if (index === prevState.length - 1) {
               return {
-                role: PreviewRoleChat.ASSITANT,
+                role: PreviewRoleChat.ASSISTANT,
                 content: res?.data?.data,
                 isTyping: false,
               }
@@ -105,7 +105,7 @@ const TestAgent: React.FC<{ agentData: any; agentConfigs: any }> = () => {
       const paddingBottomStyle = ""
 
       const isUser = message.role === PreviewRoleChat.USER
-      const isAssistant = message.role === PreviewRoleChat.ASSITANT
+      const isAssistant = message.role === PreviewRoleChat.ASSISTANT
 
       return (
         <div
