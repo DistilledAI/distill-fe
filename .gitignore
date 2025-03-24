@@ -24,6 +24,7 @@ dist-ssr
 *.sw?
 
 .cursor
+.cursorrules
 
 .env
 .env.local
