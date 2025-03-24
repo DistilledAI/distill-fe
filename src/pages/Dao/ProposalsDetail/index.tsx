@@ -32,7 +32,7 @@ const ProposalsDetail = () => {
           isLoaded={!!proposalDetail}
           className={twMerge(
             "h-[58.5dvh] rounded-2xl",
-            !!proposalDetail && "h-auto",
+            !!proposalDetail && "h-fit",
           )}
         >
           <ProposalSidebar
