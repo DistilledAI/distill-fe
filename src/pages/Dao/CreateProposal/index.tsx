@@ -11,6 +11,7 @@ import useStakerInfo from "./useStakerInfo"
 import { getInfoTokenByAddress } from "@pages/Stake/helpers"
 import { StakeTokenAddress } from "@pages/Stake"
 import MarkdownEditor from "@uiw/react-markdown-editor"
+import "../reset.css"
 import "./index.css"
 
 const CreateProposal: React.FC = () => {

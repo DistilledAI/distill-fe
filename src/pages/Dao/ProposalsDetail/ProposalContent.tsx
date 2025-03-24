@@ -6,7 +6,7 @@ import moment from "moment"
 import { IDataProposal } from "../CreateProposal/useCreateProposal"
 import { Skeleton } from "@nextui-org/react"
 import { twMerge } from "tailwind-merge"
-import "./index.css"
+import "../reset.css"
 
 interface Props {
   proposalContent: IProposal | null
