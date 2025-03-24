@@ -31,7 +31,7 @@ const ReceiverMessage = ({
         {isTyping ? (
           <DotLoading className="mt-2" />
         ) : (
-          <MarkdownMessage msg={content} isPrivateChat />
+          <MarkdownMessage msg={content} isPrivateChat={isPrivateChat} />
         )}
       </div>
     </div>
