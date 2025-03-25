@@ -20,7 +20,6 @@ const ListMessage: React.FC<ListMessageProps> = ({
   isClan,
   groupDetailError,
 }) => {
-  console.log({ groupDetailError })
   const {
     isLoading,
     isFetched,
