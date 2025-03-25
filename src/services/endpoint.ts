@@ -99,6 +99,8 @@ const endpoint = {
 
   // messages
   POST_REACTION_MESSAGE: withBaseURL("/messages/reaction-msg"),
+  GET_LIKED_AGENT_MESSAGE: (groupId: number) =>
+    withBaseURL(`/group/pin-message/${groupId}`),
 
   //game
   // TODO: update later

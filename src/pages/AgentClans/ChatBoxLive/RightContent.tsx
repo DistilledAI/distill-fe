@@ -11,6 +11,7 @@ import SendMessage from "./SendMessage"
 import { useGroupConfig } from "./useGroupConfig"
 import useGroupDetailByLabel from "@pages/ChatPageOld/hooks/useGroupDetailByLabel"
 import { useParams } from "react-router-dom"
+import { LikedAgentMessage } from "@pages/AgentClans/ChatBoxLive/LikedAgentMessage"
 
 const ClanShortInfo = lazy(() => import("@pages/Rank/ClanShortInfo"))
 const ToggleActionsMobile = lazy(() => import("./ToggleActionsMobile"))
@@ -50,7 +51,7 @@ const RightContent: React.FC<{
   return (
     <div
       className={twMerge(
-        "flex-1",
+        "relative flex-1",
         "z-[11] bg-white max-md:rounded-[14px] max-md:border-t max-md:border-t-white max-md:shadow-7",
         "md:px-5",
         "max-2xl:px-0",
@@ -62,6 +63,8 @@ const RightContent: React.FC<{
     >
       {isMobile && <ToggleActionsMobile groupDetail={groupDetail} />}
       {!isMobile && isClan && <ClanShortInfo />}
+      <LikedAgentMessage groupId={groupId} />
+
       <ListMessage
         onReply={(message: IMessageBox) => {
           setHasFocus(true)
