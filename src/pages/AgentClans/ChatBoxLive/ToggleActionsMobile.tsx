@@ -6,10 +6,10 @@
 // import { QueryDataKeys } from "types/queryDataKeys"
 
 import TotalMemberBadge from "@components/TotalMemberBadge"
-import { UserGroup } from "@pages/ChatPageOld/ChatContainer/LeftBar/useFetchGroups"
+import { IGroup } from "@pages/ChatPageOld/ChatContainer/LeftBar/useFetchGroups"
 
 interface Props {
-  groupDetail?: UserGroup | null
+  groupDetail?: IGroup | null
 }
 
 const ToggleActionsMobile = ({ groupDetail }: Props) => {
@@ -45,7 +45,7 @@ const ToggleActionsMobile = ({ groupDetail }: Props) => {
   return (
     <div className="flex items-center gap-2 border-b border-b-mercury-100 px-4 py-2 md:hidden">
       <h4 className="text-16 font-bold text-mercury-950">Live Chat</h4>
-      <TotalMemberBadge groupId={groupDetail?.groupId?.toString() || ""} />
+      <TotalMemberBadge groupId={groupDetail?.id?.toString() || ""} />
 
       {/* <div className="flex items-center gap-4">
         <button

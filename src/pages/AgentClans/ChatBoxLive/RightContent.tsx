@@ -1,7 +1,7 @@
 import { useAppSelector } from "@hooks/useAppRedux"
 import useWindowSize from "@hooks/useWindowSize"
 import { IMessageBox } from "@pages/ChatPageOld/ChatContainer/ChatMessages/helpers"
-import { UserGroup } from "@pages/ChatPageOld/ChatContainer/LeftBar/useFetchGroups"
+import { IGroup } from "@pages/ChatPageOld/ChatContainer/LeftBar/useFetchGroups"
 import { useQuery } from "@tanstack/react-query"
 import React, { lazy, useState } from "react"
 import { twMerge } from "tailwind-merge"
@@ -12,6 +12,8 @@ import { useGroupConfig } from "./useGroupConfig"
 import useGroupDetailByLabel from "@pages/ChatPageOld/hooks/useGroupDetailByLabel"
 import { useParams } from "react-router-dom"
 import { LikedAgentMessage } from "@pages/AgentClans/ChatBoxLive/LikedAgentMessage"
+import { getYouTubeId } from "./helpers"
+import { CLAN_CONFIG_KEYS } from "@pages/AgentDetail/AgentContent/ClanUtilities/types"
 
 const ClanShortInfo = lazy(() => import("@pages/Rank/ClanShortInfo"))
 const ToggleActionsMobile = lazy(() => import("./ToggleActionsMobile"))
@@ -19,7 +21,7 @@ const ToggleActionsMobile = lazy(() => import("./ToggleActionsMobile"))
 
 const RightContent: React.FC<{
   isClan?: boolean
-  groupDetail?: UserGroup | null
+  groupDetail?: IGroup | null
   groupDetailError?: boolean
 }> = ({ isClan = false, groupDetail, groupDetailError }) => {
   const { isMobile } = useWindowSize()
@@ -31,7 +33,10 @@ const RightContent: React.FC<{
   const [replyId, setReplyId] = useState<number>(NaN)
   const [replyTxt, setReplyTxt] = useState<string>("")
   const [hasFocus, setHasFocus] = useState(false)
-  const groupConfig = useGroupConfig(groupDetail?.group)
+  const groupConfig = useGroupConfig(groupDetail as IGroup)
+  const youtubeId = getYouTubeId(
+    groupConfig[CLAN_CONFIG_KEYS.IMAGES_LIVE] || "",
+  )
 
   const resetReply = () => {
     setReplyId(NaN)
@@ -63,7 +68,7 @@ const RightContent: React.FC<{
     >
       {isMobile && <ToggleActionsMobile groupDetail={groupDetail} />}
       {!isMobile && isClan && <ClanShortInfo />}
-      <LikedAgentMessage groupId={groupId} />
+      <LikedAgentMessage groupId={groupId} youtubeId={youtubeId} />
 
       <ListMessage
         onReply={(message: IMessageBox) => {

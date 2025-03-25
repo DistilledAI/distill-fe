@@ -9,3 +9,14 @@ export const emojiReactionsMap: EmojiReactionsMap = EMOJI_REACTIONS.reduce(
 export const replaceAtBrackets = (input: string) => {
   return input?.replace(/\[(.*?)\]/g, "$1")
 }
+
+export const getYouTubeId = (url: string) => {
+  const youtubeRegex =
+    /^(https?:\/\/)?(www\.)?(youtube\.com\/(watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/
+
+  if (youtubeRegex.test(url)) {
+    const match = url.match(youtubeRegex)
+    return match?.[5] ?? null
+  }
+  return null
+}
