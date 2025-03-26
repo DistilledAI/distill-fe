@@ -83,7 +83,7 @@ export const LikedAgentMessage = ({
           : "h-0 translate-y-4 scale-95 overflow-hidden opacity-0 duration-75",
       )}
     >
-      <h4 className="text-14 font-semibold text-mercury-950">
+      <h4 className="text-14 font-bold text-brown-500">
         Max's favorite question:
       </h4>
       {likedMessage && (
@@ -94,14 +94,14 @@ export const LikedAgentMessage = ({
             className="relative h-6 w-6 md:h-9 md:w-9"
           />
           <div className="flex flex-1 flex-col">
-            <span className="text-12 font-semibold text-brown-500 md:text-14">
+            <span className="text-12 font-bold text-mercury-950 md:text-14">
               {likedMessage?.user?.username}
             </span>
             <div className="relative">
               <p
                 ref={messageRef}
                 className={twMerge(
-                  "max-h-[300px] overflow-auto text-[12px] font-medium text-mercury-950 md:text-[14px]",
+                  "max-h-[300px] overflow-auto text-[12px] font-medium text-mercury-900 md:text-[14px]",
                   !isExpanded && "line-clamp-1",
                 )}
               >
