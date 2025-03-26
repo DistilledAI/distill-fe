@@ -103,7 +103,7 @@ export const LikedAgentMessage = ({
       {likedMessage && (
         <div className="flex gap-2 md:gap-4">
           <AvatarCustom
-            src={likedMessage?.user?.avatarSrc}
+            src={likedMessage?.user?.avatar}
             publicAddress={likedMessage?.user?.publicAddress}
             className="relative h-6 w-6 md:h-9 md:w-9"
           />
