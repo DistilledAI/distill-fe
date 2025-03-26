@@ -3,6 +3,8 @@ import AvatarCustom from "@components/AvatarCustom"
 import { twMerge } from "tailwind-merge"
 import { useQuery } from "@tanstack/react-query"
 import { getLikedAgentMessage } from "services/messages"
+import { Tooltip } from "@nextui-org/react"
+import { InfoCircleIcon } from "@components/Icons/InfoCircleIcon"
 
 function usePrevious(value: string | undefined) {
   const [current, setCurrent] = useState<string | undefined>(value)
@@ -83,8 +85,20 @@ export const LikedAgentMessage = ({
           : "h-0 translate-y-4 scale-95 overflow-hidden opacity-0 duration-75",
       )}
     >
-      <h4 className="text-14 font-bold text-brown-500">
-        Max's favorite question:
+      <h4 className="flex items-center gap-1 text-14 font-bold text-brown-500">
+        Max's favorite question
+        <Tooltip
+          placement="right"
+          showArrow
+          classNames={{
+            base: "max-w-[300px]",
+          }}
+          content="MAX will select her favorite comment in real time. The top comment will be pinned, and the best one at the end will be awarded a prize."
+        >
+          <div>
+            <InfoCircleIcon color="#a2845e" />
+          </div>
+        </Tooltip>
       </h4>
       {likedMessage && (
         <div className="flex gap-2 md:gap-4">
