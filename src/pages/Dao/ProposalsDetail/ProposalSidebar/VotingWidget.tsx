@@ -167,7 +167,7 @@ const VotingWidget = ({
           </Button>
           {isCanAction !== null && isCanAction === false && (
             <div className="mt-2 italic text-red-500">
-              To vote you need to stake ${vaultInfo?.tokenName} vault!
+              To vote, you need to stake in the ${vaultInfo?.tokenName}'s vault!
             </div>
           )}
         </>
