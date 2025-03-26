@@ -178,6 +178,17 @@ const LeftContent: React.FC<{
 
   const isVideo = (url?: string) => /\.(mp4|webm|ogg)$/i.test(url || "")
 
+  function getYouTubeId(url: string) {
+    const youtubeRegex =
+      /^(https?:\/\/)?(www\.)?(youtube\.com\/(watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/
+
+    if (youtubeRegex.test(url)) {
+      const match = url.match(youtubeRegex)
+      return match?.[5] ?? null
+    }
+    return null
+  }
+
   return (
     <div
       className={twMerge(

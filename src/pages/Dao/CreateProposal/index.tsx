@@ -70,8 +70,7 @@ const CreateProposal: React.FC = () => {
         </Tooltip>
       </div>
       <p className="font-medium text-mercury-800 max-md:mt-2 max-md:text-14">
-        Creating a proposal will cost a fee of 100 $MAX, and that $MAX will be
-        burned.
+        Creating a proposal will cost a fee of 100 $MAX, which will be burned.
       </p>
       <div className="mt-6">
         <div>
