@@ -10,6 +10,7 @@ interface ListMessageProps {
   onReply: (message: IMessageBox) => void
   isCloseLiveChat: boolean
   isClan: boolean
+  groupDetailError?: boolean
 }
 
 const ListMessage: React.FC<ListMessageProps> = ({
@@ -17,6 +18,7 @@ const ListMessage: React.FC<ListMessageProps> = ({
   onReply,
   isCloseLiveChat,
   isClan,
+  groupDetailError,
 }) => {
   const {
     isLoading,
@@ -25,7 +27,7 @@ const ListMessage: React.FC<ListMessageProps> = ({
     messages,
     hasPreviousMore,
     isFetchingPreviousPage,
-  } = useFetchMessages(chatId)
+  } = useFetchMessages(chatId, groupDetailError)
 
   const renderMessage = useCallback(
     (index: number, message: IMessageBox) => {
@@ -61,6 +63,7 @@ const ListMessage: React.FC<ListMessageProps> = ({
         isClan && "md:max-h-[calc(100%-130px)]",
       )}
       scrollBottomClassName="max-md:!bottom-[98px] max-md:bg-none"
+      textEmptyState={groupDetailError ? "CLAN NOT FOUND" : undefined}
     />
   )
 }

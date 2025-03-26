@@ -29,7 +29,7 @@ const AlertBox = ({
   return (
     <div
       className={twMerge(
-        "flex flex-col justify-between gap-1 rounded-lg bg-brown-50 px-3 py-2 md:flex-row md:items-center md:gap-2 md:px-4 md:py-3",
+        "flex flex-col justify-between gap-[1px] rounded-lg bg-brown-50 px-3 py-2 md:flex-row md:items-center md:gap-2 md:px-4 md:py-3",
         className,
       )}
     >
@@ -39,7 +39,7 @@ const AlertBox = ({
           {messages.map((message, index) => (
             <div
               key={index}
-              className="text-14 font-medium text-brown-600 md:text-16"
+              className="text-13 font-medium text-brown-600 md:text-16"
             >
               {message}
             </div>
@@ -56,7 +56,7 @@ const AlertBox = ({
                 to={to}
                 target={external ? "_blank" : "_self"}
                 onClick={onClick}
-                className="whitespace-nowrap text-14 font-bold text-brown-600 hover:underline md:text-16"
+                className="whitespace-nowrap text-13 font-bold text-brown-600 hover:underline md:text-16"
               >
                 {label}
               </Link>

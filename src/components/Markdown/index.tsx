@@ -1,19 +1,89 @@
-import { distilledAIIcon } from "@assets/svg"
-import { CaretUpFilledIcon } from "@components/Icons/TrendingPage"
-import { Image } from "@nextui-org/react"
+import { loadingBrain } from "@assets/lotties"
+import { CircleCheckFilled } from "@components/Icons"
+import { ChevronUpOutlineIcon } from "@components/Icons/ChevronDownIcon"
 import { useQueryClient } from "@tanstack/react-query"
 import { getActiveColorRandomById, isImageUrl } from "@utils/index"
+import Lottie from "lottie-react"
 import { useState } from "react"
-import Markdown from "react-markdown"
+import Markdown, { Components } from "react-markdown"
 import { useParams } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
 import { QueryDataKeys } from "types/queryDataKeys"
+import CitationsList from "./CitationsList"
 
-const MarkdownMessage = ({ msg }: { msg: string }) => {
+interface MarkdownMessageProps {
+  msg: string
+  isSenderMessage?: boolean
+  isPrivateChat?: boolean
+}
+
+interface CollapsibleSectionProps {
+  isCollapsed: boolean
+  setIsCollapsed: (value: boolean) => void
+  icon: React.ReactNode
+  title: string
+  children: React.ReactNode
+  borderColor: string
+  bgColor: string
+  textColor: string
+}
+
+const CollapsibleSection = ({
+  isCollapsed,
+  setIsCollapsed,
+  icon,
+  title,
+  children,
+  borderColor,
+  bgColor,
+  textColor,
+}: CollapsibleSectionProps) => (
+  <>
+    <button
+      type="button"
+      onClick={() => setIsCollapsed(!isCollapsed)}
+      className="mb-4 flex items-center gap-1 rounded-full"
+    >
+      <div className="h-4 w-4">{icon}</div>
+      <span className="text-14 font-normal leading-[150%] tracking-[-0.14px] text-mercury-600">
+        {title}
+      </span>
+      <div className={twMerge(isCollapsed && "rotate-180")}>
+        <ChevronUpOutlineIcon />
+      </div>
+    </button>
+
+    <div
+      className={twMerge(
+        `mb-4 ml-5 overflow-hidden border-l-3 px-4 py-2 transition-all duration-300 ease-in-out`,
+        isCollapsed ? "m-0 max-h-0 p-0 opacity-0" : "opacity-100",
+        borderColor,
+        bgColor,
+      )}
+      aria-expanded={!isCollapsed}
+    >
+      <p
+        className={twMerge(
+          "whitespace-pre-line text-14 font-medium leading-[140%] tracking-[-0.325px]",
+          textColor,
+        )}
+      >
+        {children}
+      </p>
+    </div>
+  </>
+)
+
+const MarkdownMessage = ({
+  msg,
+  isSenderMessage,
+  isPrivateChat,
+}: MarkdownMessageProps) => {
   const { chatId } = useParams()
   const { textColor } = getActiveColorRandomById(chatId)
   const queryClient = useQueryClient()
-  const [isCollapsed, setIsCollapsed] = useState(false)
+  const [isSourceCollapsed, setIsSourceCollapsed] = useState(false)
+  const [isThinkCollapsed, setIsThinkCollapsed] = useState(false)
 
   const checkTextBreak = (text: string) => {
     const tokenRegex = /[a-zA-Z0-9/]{40,}/
@@ -34,11 +104,10 @@ const MarkdownMessage = ({ msg }: { msg: string }) => {
 
   const replaceSrcImage = (src: string) => {
     if (src.includes("https://defi-lens.s3.us-east-2.amazonaws.com/")) {
-      const imageSrc = src?.replace(
+      return src?.replace(
         /https:\/\/defi-lens\.s3\.us-east-2\.amazonaws\.com\/media\/(.*\.jpeg)/,
         "https://static.distilled.ai/media/$1",
       )
-      return imageSrc
     }
     return src
   }
@@ -62,18 +131,18 @@ const MarkdownMessage = ({ msg }: { msg: string }) => {
     })
   }
 
-  const renderers = {
-    ol: ({ children }: any) => (
+  const renderers: Partial<Components> = {
+    ol: ({ children }) => (
       <ol style={{ listStyleType: "decimal", paddingLeft: "16px" }}>
         {children}
       </ol>
     ),
-    li: ({ children }: any) => {
-      const wordBreakStyle = checkTextBreak(children)
+    li: ({ children }) => {
+      const wordBreakStyle = checkTextBreak(children as string)
       return <li className={wordBreakStyle}>{children}</li>
     },
-    img: ({ src, alt }: any) => {
-      const imageSrc = replaceSrcImage(src)
+    img: ({ src, alt }) => {
+      const imageSrc = replaceSrcImage(src || "")
       return (
         <img
           src={imageSrc}
@@ -82,13 +151,13 @@ const MarkdownMessage = ({ msg }: { msg: string }) => {
           onClick={() =>
             queryClient.setQueryData<string>(
               [QueryDataKeys.MEDIA_PREVIEW],
-              () => imageSrc || "",
+              () => imageSrc,
             )
           }
         />
       )
     },
-    a: ({ href, children }: any) => (
+    a: ({ href, children }) => (
       <a
         href={href}
         target="_blank"
@@ -98,16 +167,16 @@ const MarkdownMessage = ({ msg }: { msg: string }) => {
         {children}
       </a>
     ),
-    p: ({ children }: any) => {
-      const wordBreakStyle = checkTextBreak(children)
+    p: ({ children }) => {
+      const wordBreakStyle = checkTextBreak(children as string)
       return (
         <p className={twMerge(wordBreakStyle, "text-[16px] font-medium")}>
           {children}
         </p>
       )
     },
-    h4: ({ children }: any) => {
-      const wordBreakStyle = checkTextBreak(children)
+    h4: ({ children }) => {
+      const wordBreakStyle = checkTextBreak(children as string)
       return (
         <p className={twMerge(wordBreakStyle, "text-[16px] font-medium")}>
           {children}
@@ -138,48 +207,94 @@ const MarkdownMessage = ({ msg }: { msg: string }) => {
     )
   }
 
-  const regex = /<think>\s*([\s\S]*?)(?:\s*<\/think>\s*([\s\S]*)|$)/
-  const match = msg.match(regex)
-
-  if (match) {
-    const insideThink = match ? match[1].trim() : null
-    const message = match && match[2] !== undefined ? match[2].trim() : ""
-    const processedMessage = breakLine(enhancedMessage(message))
-
-    return (
-      <>
-        <button
-          type="button"
-          onClick={() => setIsCollapsed(!isCollapsed)}
-          className="mb-2 flex items-center gap-1 rounded-full bg-mercury-100 px-4 py-2"
-        >
-          <Image src={distilledAIIcon} alt="distilled AI icon" />
-          <span className="font-medium text-mercury-950">
-            {!!processedMessage ? "Thought" : "Thinking..."}
-          </span>
-          <div className={twMerge(isCollapsed && "rotate-180")}>
-            <CaretUpFilledIcon color="#363636" />
-          </div>
-        </button>
-        <div
-          className={twMerge(
-            `overflow-hidden transition-all duration-300 ease-in-out`,
-            isCollapsed ? "max-h-0 opacity-0" : "max-h-96 opacity-100",
-            "mb-2 border-l-2 border-mercury-100 px-3",
-          )}
-          aria-expanded={isCollapsed}
-        >
-          <p className="whitespace-pre-line text-14 text-mercury-900">
-            {insideThink}
-          </p>
-        </div>
-        <Markdown components={renderers}>{processedMessage}</Markdown>
-      </>
-    )
+  if (isSenderMessage) {
+    const processedMessage = breakLine(enhancedMessage(msg))
+    return <Markdown components={renderers}>{processedMessage}</Markdown>
   }
 
-  const processedMessage = breakLine(enhancedMessage(msg))
-  return <Markdown components={renderers}>{processedMessage}</Markdown>
+  let newMsg = msg
+  let sourceContent = ""
+  let thinkContent = ""
+  let outsideThinkContent = newMsg
+  let privateData = [] as string[]
+  let isSourceLoading = true
+
+  let sourceMatch = newMsg.match(
+    /<source>([\s\S]*?)<\/source>|<source>([\s\S]*)/,
+  )
+
+  if (sourceMatch) {
+    sourceContent = (sourceMatch[1] || sourceMatch[2]).trim()
+    outsideThinkContent = outsideThinkContent.replace(sourceMatch[0], "").trim()
+
+    let regex = /\[private_data\]\[([^\]]+)\]/
+    let match = sourceContent.match(regex)
+
+    if (match) {
+      privateData = match[1]?.split(",")?.map((id) => id?.trim())
+      sourceContent = sourceContent.replace(match[0], "").trim()
+    }
+    isSourceLoading = false
+  }
+
+  let thinkMatch = newMsg.match(/<think>([\s\S]*?)<\/think>|<think>([\s\S]*)/)
+  if (thinkMatch) {
+    thinkContent = (thinkMatch[1] || thinkMatch[2]).trim()
+    outsideThinkContent = outsideThinkContent.replace(thinkMatch[0], "").trim()
+  }
+
+  const processedMessage = breakLine(enhancedMessage(outsideThinkContent))
+
+  const getStatusIcon = (hasContent: boolean) =>
+    hasContent ? (
+      <CircleCheckFilled color="#888888" />
+    ) : (
+      <Lottie animationData={loadingBrain} />
+    )
+
+  return (
+    <>
+      {sourceContent && (
+        <>
+          <CollapsibleSection
+            isCollapsed={isSourceCollapsed}
+            setIsCollapsed={setIsSourceCollapsed}
+            icon={getStatusIcon(!isSourceLoading)}
+            title={
+              isSourceLoading
+                ? "Researching based on related citations.…"
+                : "Research completed based on related citations"
+            }
+            borderColor="border-brown-600"
+            bgColor="bg-brown-50"
+            textColor="text-brown-600"
+          >
+            {sourceContent}
+          </CollapsibleSection>
+          <CitationsList
+            privateData={privateData}
+            isPrivateChat={isPrivateChat}
+          />
+        </>
+      )}
+
+      {thinkContent && (
+        <CollapsibleSection
+          isCollapsed={isThinkCollapsed}
+          setIsCollapsed={setIsThinkCollapsed}
+          icon={getStatusIcon(!!outsideThinkContent)}
+          title={outsideThinkContent ? "Thought" : "Thinking…"}
+          borderColor="border-mercury-500"
+          bgColor="bg-mercury-30"
+          textColor="text-mercury-700"
+        >
+          {thinkContent}
+        </CollapsibleSection>
+      )}
+
+      <Markdown components={renderers}>{processedMessage}</Markdown>
+    </>
+  )
 }
 
 export default MarkdownMessage

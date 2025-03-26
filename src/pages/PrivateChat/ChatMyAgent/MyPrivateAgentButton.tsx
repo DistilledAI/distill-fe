@@ -2,7 +2,6 @@ import { distilledAiPlaceholder } from "@assets/images"
 import { FilledBrainAIIcon } from "@components/Icons/BrainAIIcon"
 import { PATH_NAMES } from "@constants/index"
 import { useAppSelector } from "@hooks/useAppRedux"
-import useAuthState from "@hooks/useAuthState"
 import ActiveEffect from "@pages/ChatPageOld/ChatContainer/LeftBar/ActiveEffect"
 import { useLocation, useNavigate, useParams } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
@@ -11,11 +10,12 @@ const MyPrivateAgentButton = () => {
   const navigate = useNavigate()
   const { pathname } = useLocation()
   const { privateChatId } = useParams()
-  const { isAnonymous } = useAuthState()
   const myAgent = useAppSelector((state) => state.agents.myAgent)
-
-  const isSelected = pathname.startsWith(PATH_NAMES.PRIVATE_AGENT)
   const myAgentId = myAgent?.id
+
+  const isSelected =
+    pathname.startsWith(PATH_NAMES.PRIVATE_AGENT) ||
+    (!!myAgent?.id && pathname.startsWith(PATH_NAMES.INVITE))
 
   return (
     <button
@@ -25,9 +25,6 @@ const MyPrivateAgentButton = () => {
         isSelected && "md:bg-mercury-100",
       )}
       onClick={() => {
-        if (isAnonymous && isSelected) {
-          return
-        }
         if (!privateChatId) {
           if (myAgentId) {
             return navigate(`${PATH_NAMES.INVITE}/${myAgentId}`)

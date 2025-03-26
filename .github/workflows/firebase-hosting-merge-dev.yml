@@ -42,6 +42,7 @@ jobs:
           VITE_BASE_API_URL: https://stg-api.distilled.ai/distill
           VITE_SOCKET_URL: wss://stg-api.distilled.ai
           VITE_GROUP_DEFAULT_FOR_PRIVATE_AGENT: 5
+          VITE_OWNER_PIN_MESSAGE_IN_GROUP_ID: 2020
           VITE_AGENTLAND_BACKEND_URL: https://backend-release.agents.land
           VITE_MEME_BACKEND_URL: https://backend-meme.agents.land
           VITE_STAKING_AIRDROP_BACKEND_URL: https://airdrop-be-stag.agents.land

@@ -27,7 +27,7 @@ const ProposalContent = ({ proposalContent, proposalIpfs }: Props) => {
         isLoaded={!!proposalContent}
         className={twMerge(
           "styleReset h-[50dvh] rounded-2xl",
-          !!proposalContent && "h-auto",
+          !!proposalContent && "h-fit",
         )}
       >
         <div className="mb-1 flex items-center gap-1">
@@ -49,7 +49,7 @@ const ProposalContent = ({ proposalContent, proposalIpfs }: Props) => {
         isLoaded={!!proposalContent}
         className={twMerge(
           "h-[25dvh] rounded-2xl",
-          !!proposalContent && "h-auto",
+          !!proposalContent && "h-fit",
         )}
       >
         <VotingStats

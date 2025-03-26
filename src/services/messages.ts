@@ -1,6 +1,7 @@
 import { ReactionTypes } from "types/reactions"
 import endpoint from "./endpoint"
 import { fetchApiAuth } from "./fetchApi"
+import { envConfig } from "@configs/env"
 
 interface ReactionMsg {
   msgId: number | string
@@ -22,4 +23,17 @@ export const postReactionMsg = async ({
       reactionType,
     },
   })
+}
+
+export const getLikedAgentMessage = async (groupId: number) => {
+  const res = await fetchApiAuth({
+    method: "GET",
+    url: endpoint.GET_LIKED_AGENT_MESSAGE(groupId),
+    params: {
+      filter: JSON.stringify({
+        userId: envConfig.ownerPinMessageGroupId,
+      }),
+    },
+  })
+  return res?.data
 }

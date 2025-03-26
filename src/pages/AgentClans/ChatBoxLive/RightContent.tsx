@@ -1,7 +1,7 @@
 import { useAppSelector } from "@hooks/useAppRedux"
 import useWindowSize from "@hooks/useWindowSize"
 import { IMessageBox } from "@pages/ChatPageOld/ChatContainer/ChatMessages/helpers"
-import { UserGroup } from "@pages/ChatPageOld/ChatContainer/LeftBar/useFetchGroups"
+import { IGroup } from "@pages/ChatPageOld/ChatContainer/LeftBar/useFetchGroups"
 import { useQuery } from "@tanstack/react-query"
 import React, { lazy, useState } from "react"
 import { twMerge } from "tailwind-merge"
@@ -11,6 +11,9 @@ import SendMessage from "./SendMessage"
 import { useGroupConfig } from "./useGroupConfig"
 import useGroupDetailByLabel from "@pages/ChatPageOld/hooks/useGroupDetailByLabel"
 import { useParams } from "react-router-dom"
+import { LikedAgentMessage } from "@pages/AgentClans/ChatBoxLive/LikedAgentMessage"
+import { getYouTubeId } from "./helpers"
+import { CLAN_CONFIG_KEYS } from "@pages/AgentDetail/AgentContent/ClanUtilities/types"
 
 const ClanShortInfo = lazy(() => import("@pages/Rank/ClanShortInfo"))
 const ToggleActionsMobile = lazy(() => import("./ToggleActionsMobile"))
@@ -18,8 +21,9 @@ const ToggleActionsMobile = lazy(() => import("./ToggleActionsMobile"))
 
 const RightContent: React.FC<{
   isClan?: boolean
-  groupDetail?: UserGroup | null
-}> = ({ isClan = false, groupDetail }) => {
+  groupDetail?: IGroup | null
+  groupDetailError?: boolean
+}> = ({ isClan = false, groupDetail, groupDetailError }) => {
   const { isMobile } = useWindowSize()
   const sidebarCollapsed = useAppSelector((state) => state.sidebarCollapsed)
   // const instructBanner = useAppSelector((state) => state.instructBanner)
@@ -29,7 +33,10 @@ const RightContent: React.FC<{
   const [replyId, setReplyId] = useState<number>(NaN)
   const [replyTxt, setReplyTxt] = useState<string>("")
   const [hasFocus, setHasFocus] = useState(false)
-  const groupConfig = useGroupConfig(groupDetail?.group)
+  const groupConfig = useGroupConfig(groupDetail as IGroup)
+  const youtubeId = getYouTubeId(
+    groupConfig[CLAN_CONFIG_KEYS.IMAGES_LIVE] || "",
+  )
 
   const resetReply = () => {
     setReplyId(NaN)
@@ -49,7 +56,7 @@ const RightContent: React.FC<{
   return (
     <div
       className={twMerge(
-        "flex-1",
+        "relative flex-1",
         "z-[11] bg-white max-md:rounded-[14px] max-md:border-t max-md:border-t-white max-md:shadow-7",
         "md:px-5",
         "max-2xl:px-0",
@@ -61,6 +68,8 @@ const RightContent: React.FC<{
     >
       {isMobile && <ToggleActionsMobile groupDetail={groupDetail} />}
       {!isMobile && isClan && <ClanShortInfo />}
+      <LikedAgentMessage groupId={groupId} youtubeId={youtubeId} />
+
       <ListMessage
         onReply={(message: IMessageBox) => {
           setHasFocus(true)
@@ -73,6 +82,7 @@ const RightContent: React.FC<{
         chatId={groupId}
         isClan={isClan}
         isCloseLiveChat={isCloseLiveChat}
+        groupDetailError={groupDetailError}
       />
       <SendMessage
         sidebarCollapsed={sidebarCollapsed}

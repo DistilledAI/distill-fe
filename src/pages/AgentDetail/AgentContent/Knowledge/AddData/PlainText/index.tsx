@@ -74,7 +74,12 @@ const PlainTextFile: React.FC<{
                   title={item.name}
                   status={item.status}
                   icon={getIconDisplay(item.type)}
-                  category={BotDataTypeKey.PLAIN_TEXT_FILE}
+                  category={[
+                    BotDataTypeKey.PLAIN_TEXT_FILE,
+                    BotDataTypeKey.CV_FILE,
+                    BotDataTypeKey.PDF_FILE,
+                    BotDataTypeKey.TXT_FILE,
+                  ].join()}
                   className={{ classNameTitle: "max-w-[150px]" }}
                 />
               ))}

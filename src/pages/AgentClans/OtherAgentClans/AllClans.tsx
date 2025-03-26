@@ -114,7 +114,11 @@ const AllClans = () => {
         >
           <div
             className="flex flex-1 items-center gap-2"
-            onClick={() => navigate(`${PATH_NAMES.CLAN}/${group.label}`)}
+            onClick={() => {
+              setTimeout(() => {
+                navigate(`${PATH_NAMES.CLAN}/${group?.label}`)
+              }, 1)
+            }}
           >
             <VideoThumbnailWrapper videoUrl={imageUrl}>
               {(thumbnail) => (

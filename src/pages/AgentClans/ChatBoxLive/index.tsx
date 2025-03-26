@@ -16,7 +16,7 @@ const ChatBoxLive = () => {
   const { chatId } = useParams()
   const navigate = useNavigate()
 
-  const { groupDetailByLabel, isFetched } = useJoinGroupLive()
+  const { groupDetailByLabel, isFetched, isError } = useJoinGroupLive()
 
   useLayoutEffect(() => {
     if (chatId?.includes(" ")) {
@@ -46,7 +46,11 @@ const ChatBoxLive = () => {
 
         <div className="relative flex h-[calc(100dvh-120px)] w-full gap-2 max-lg:flex-col md:h-full md:gap-5 md:pb-4">
           <LeftContent groupDetail={groupDetailByLabel} isFetched={isFetched} />
-          <RightContent isClan groupDetail={groupDetailByLabel} />
+          <RightContent
+            isClan
+            groupDetail={groupDetailByLabel}
+            groupDetailError={isError}
+          />
         </div>
       </div>
     </>

@@ -29,6 +29,7 @@ import { SkeletonDesc } from "./SkeletonInfo"
 import { CLAN_CONFIG_KEYS } from "@pages/AgentDetail/AgentContent/ClanUtilities/types"
 import { useGroupConfig } from "./useGroupConfig"
 import { MessagePlusIcon } from "@components/Icons/Message"
+import { getYouTubeId } from "./helpers"
 
 const BetModal = lazy(() => import("@components/BetModal"))
 
@@ -157,33 +158,30 @@ const LeftContent: React.FC<{
   const renderYoutubeContent = (videoId: string) => {
     const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&rel=0&modestbranding`
     return (
-      <iframe
-        className="h-full w-full rounded-lg object-cover md:h-[400px] md:max-h-[400px] md:rounded-[32px]"
-        src={embedUrl}
-        title="YouTube Livestream"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowFullScreen
-      ></iframe>
+      <>
+        <iframe
+          className="aspect-[4/5] h-full w-full rounded-lg object-cover md:max-h-[440px] md:rounded-[32px]"
+          src={embedUrl}
+          title="YouTube Livestream"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+        />
+        {videoId ? (
+          <div className="absolute left-3 z-[100] flex w-fit flex-row items-center gap-1 rounded-2xl bg-[#FF0000] px-2 max-md:bottom-3 md:top-3 md:gap-2 md:py-[2px]">
+            <p className="text-12 text-white md:text-14">LIVE</p>
+            <div className="h-[8px] min-h-[8px] w-[8px] min-w-[8px] rounded-full bg-white" />
+          </div>
+        ) : null}
+      </>
     )
   }
 
   const isVideo = (url?: string) => /\.(mp4|webm|ogg)$/i.test(url || "")
 
-  function getYouTubeId(url: string) {
-    const youtubeRegex =
-      /^(https?:\/\/)?(www\.)?(youtube\.com\/(watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/
-
-    if (youtubeRegex.test(url)) {
-      const match = url.match(youtubeRegex)
-      return match?.[5] ?? null
-    }
-    return null
-  }
-
   return (
     <div
       className={twMerge(
-        "max-md:max-h-auto flex max-h-[calc(100dvh-68px)] w-full max-w-full flex-col transition-all duration-300 ease-linear scrollbar-hide md:relative md:overflow-y-auto md:pt-3 lg:max-w-[320px]",
+        "max-md:max-h-auto flex max-h-[calc(100dvh-68px)] w-full max-w-full flex-col transition-all duration-300 ease-linear scrollbar-hide md:relative md:overflow-y-auto md:pt-3 lg:max-w-[350px]",
         "max-md:absolute max-md:right-2 max-md:top-3 max-md:z-50 max-md:h-[182px] max-md:w-[146px]",
         maximizeImage &&
           "max-md:bottom-20 max-md:h-[calc(100%-80px)] max-md:w-[calc(100%-16px)]",
