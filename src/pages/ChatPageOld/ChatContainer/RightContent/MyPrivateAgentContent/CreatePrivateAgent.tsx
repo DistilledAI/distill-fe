@@ -99,6 +99,7 @@ const CreatePrivateAgent: React.FC<{
             <Button
               className="mt-4 h-[56px] w-full rounded-full bg-mercury-950 text-[18px] text-mercury-30 md:mt-6"
               onPress={handleCreateAgent}
+              isDisabled={true}
             >
               {isLogin && !isAnonymous ? "Create Agent" : "Connect Wallet"}
             </Button>

@@ -73,6 +73,7 @@ const MyAgentEmpty = () => {
           type="button"
           className="mt-4 h-14 rounded-full bg-mercury-950 text-[16px] font-bold text-mercury-30 md:mt-8"
           isLoading={loading}
+          isDisabled={true}
           onPress={() => {
             if (!isUserLogged) {
               navigate({ search: "action=create-agent" }, { replace: true })
