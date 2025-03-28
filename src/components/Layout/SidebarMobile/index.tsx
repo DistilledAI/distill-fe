@@ -92,9 +92,9 @@ const SidebarMobile = () => {
                 type="button"
                 className={twMerge(
                   "flex w-full cursor-pointer items-center gap-2 rounded-full border-1 border-white bg-mercury-30 px-3 py-3",
-                  !isAgentActive && !!myAgent && "opacity-50",
+                  !isAgentActive && "opacity-50",
                 )}
-                disabled={!isAgentActive && !!myAgent}
+                disabled={!isAgentActive}
                 onClick={() => {
                   onClose()
                   navigate(
