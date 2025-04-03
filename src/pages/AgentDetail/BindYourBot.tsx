@@ -116,7 +116,7 @@ const BinYourBot: React.FC<{ botWebhooks: any; refetch: any }> = ({
           <ModalBody className="gap-4 px-6 py-4 pb-10">
             <a
               className="ml-2 flex cursor-pointer items-center gap-2 hover:underline"
-              href="https://distilled.foundation/developer-resources/how-to-bind-your-twitter-and-telegram-account"
+              href="https://distilled.foundation/developer-resources/tutorials-mesh-101"
               target="_blank"
             >
               <BookIcon />
