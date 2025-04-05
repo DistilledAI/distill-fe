@@ -7,8 +7,9 @@ import { getTokensPriceByIds } from "@utils/index"
 import { useEffect, useState } from "react"
 import { SPL_DECIMAL } from "../config"
 import { useSearchParams } from "react-router-dom"
-import { getVaultAddress } from "./helpers"
 import { StakeTokenAddress } from ".."
+import { Web3Airdrop } from "./web3Airdrop"
+import { getDurationByAddress } from "../helpers"
 
 export type RewardByToken = {
   randomKp: string
@@ -22,6 +23,7 @@ export type RewardByToken = {
 }
 
 export const LIMIT = 20
+const web3Airdrop = new Web3Airdrop()
 
 const useGetRewardStrongVault = (
   coingeckoPrices: CoinGeckoPrices<CoinGeckoId> | undefined,
@@ -30,10 +32,33 @@ const useGetRewardStrongVault = (
   const [loading, setLoading] = useState(false)
   const [nextPage, setNextPage] = useState<string | null>(null)
   const [isLastPage, setIsLastPage] = useState(false)
+  const [stakingVaultAddress, setStakingVaultAddress] = useState<string | null>(
+    null,
+  )
   const wallet = useWallet()
   const [searchParams] = useSearchParams()
   const tokenAddress = searchParams.get("token")
-  const strongboxVaultAddr = getVaultAddress(tokenAddress as StakeTokenAddress)
+
+  useEffect(() => {
+    const fetchStakingVaultAddress = async () => {
+      if (!tokenAddress) return
+
+      try {
+        const address = await web3Airdrop.getStakingVaultAddress({
+          wallet,
+          stakeCurrencyMint: tokenAddress as StakeTokenAddress,
+          unbondingPeriod: getDurationByAddress(
+            tokenAddress as StakeTokenAddress,
+          ),
+        })
+        setStakingVaultAddress(address)
+      } catch (error) {
+        console.log("Error fetching staking vault address:", error)
+      }
+    }
+
+    fetchStakingVaultAddress()
+  }, [tokenAddress])
 
   const getListReward = async ({
     next,
@@ -47,14 +72,15 @@ const useGetRewardStrongVault = (
         setNextPage(null)
         setIsLastPage(false)
       }
-      if (!wallet.publicKey?.toBase58()) return
-      if (loading) return
+      if (!wallet.publicKey?.toBase58() || !stakingVaultAddress || loading)
+        return
+
       setLoading(true)
       const staker = wallet.publicKey?.toBase58()
-      const fetchURL = `${envConfig.stakingAirdropBackendUrl}/airdrops/vaults/${strongboxVaultAddr}/claimants/${staker}?limit=${LIMIT}`
+      const fetchURL = `${envConfig.stakingAirdropBackendUrl}/airdrops/vaults/${stakingVaultAddress}/claimants/${staker}?limit=${LIMIT}`
       const getURLByNextPage = (url: string) => {
         if (rewardToken)
-          return `${envConfig.stakingAirdropBackendUrl}/airdrops/vaults/${strongboxVaultAddr}/claimants/${staker}?rewardToken=${rewardToken}`
+          return `${envConfig.stakingAirdropBackendUrl}/airdrops/vaults/${stakingVaultAddress}/claimants/${staker}?rewardToken=${rewardToken}`
         return next ? `${url}&nextKey=${next}` : url
       }
       const res = await fetchRetry(getURLByNextPage(fetchURL))
@@ -91,8 +117,10 @@ const useGetRewardStrongVault = (
   }
 
   useEffect(() => {
-    getListReward({ next: null })
-  }, [wallet.publicKey])
+    if (stakingVaultAddress) {
+      getListReward({ next: null })
+    }
+  }, [wallet.publicKey, stakingVaultAddress])
 
   return {
     loading,
