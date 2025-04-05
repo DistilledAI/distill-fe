@@ -11,9 +11,15 @@ import { MerkleAirdrop } from "./idl/merkle_airdrop.ts"
 import idl from "./idl/merkle_airdrop.json"
 import { SOLANA_RPC, SOLANA_WS } from "program/utils/web3Utils.ts"
 import { handleTransaction } from "@utils/web3.ts"
+import { STAKING_VAULT_SEED } from "../config.ts"
+import { FungStakingVault } from "../idl/staking_vault.ts"
+import idlFungStakingVault from "../idl/staking_vault.json"
 
 export const vaultProgramId = new PublicKey(idl.address)
 export const vaultInterface = JSON.parse(JSON.stringify(idl))
+export const vaultFungStakingVaultInterface = JSON.parse(
+  JSON.stringify(idlFungStakingVault),
+)
 
 export class Web3Airdrop {
   constructor(
@@ -120,6 +126,44 @@ export class Web3Airdrop {
         console.log("----confirm----", { transaction, result })
         return { transaction, result }
       }
+    }
+  }
+
+  async getStakingVaultAddress({
+    wallet,
+    stakeCurrencyMint,
+    unbondingPeriod,
+  }: {
+    wallet: WalletContextState
+    stakeCurrencyMint: string
+    unbondingPeriod: number | string
+  }) {
+    let provider
+    try {
+      provider = new anchor.AnchorProvider(this.connection, wallet as any, {
+        preflightCommitment: "confirmed",
+      })
+      anchor.setProvider(provider)
+      provider = anchor.getProvider()
+      const program = new Program(
+        vaultFungStakingVaultInterface,
+        provider,
+      ) as Program<FungStakingVault>
+
+      const [vaultPda] = PublicKey.findProgramAddressSync(
+        [
+          Buffer.from(STAKING_VAULT_SEED),
+          new PublicKey(stakeCurrencyMint).toBytes(),
+          new BN(unbondingPeriod).toBuffer("le", 8),
+        ],
+        program.programId,
+      )
+
+      const stakingVault = vaultPda.toBase58()
+      return stakingVault
+    } catch (error) {
+      console.error("Get staking vault error:", error)
+      return null
     }
   }
 }
