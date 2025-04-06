@@ -90,7 +90,9 @@ const useGetRewardStrongVault = (
       } = await res.json()
       if (resJson.nextKey !== null) setNextPage(resJson.nextKey)
       else setIsLastPage(true)
-      const listRewards: RewardByToken[] = resJson.merkleClaims
+      const listRewards: RewardByToken[] = resJson.merkleClaims.filter(
+        (item) => !!item,
+      )
       const prices = await getTokensPriceByIds(
         listRewards.map((item) => item.rewardToken),
         coingeckoPrices,
