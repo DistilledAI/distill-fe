@@ -115,20 +115,22 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
                   </div>
                 </DropdownItem>
 
-                <DropdownItem
-                  key="my-profile"
-                  className="p-0 hover:!bg-transparent"
-                >
-                  <div
-                    className="mb-2 flex w-full cursor-pointer items-center gap-2 rounded-lg p-2 hover:bg-mercury-70"
-                    onClick={onOpen}
+                {totalxDstlPoint > 0 ? (
+                  <DropdownItem
+                    key="convert-xdstl"
+                    className="p-0 hover:!bg-transparent"
                   >
-                    <ConvertIcon />
-                    <span className="text-16 font-bold text-mercury-900">
-                      Convert xDSTL
-                    </span>
-                  </div>
-                </DropdownItem>
+                    <div
+                      className="mb-2 flex w-full cursor-pointer items-center gap-2 rounded-lg p-2 hover:bg-mercury-70"
+                      onClick={onOpen}
+                    >
+                      <ConvertIcon />
+                      <span className="text-16 font-bold text-mercury-900">
+                        Convert xDSTL
+                      </span>
+                    </div>
+                  </DropdownItem>
+                ) : null}
 
                 <DropdownItem
                   key="my-profile"

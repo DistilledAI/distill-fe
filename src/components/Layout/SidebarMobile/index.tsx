@@ -132,15 +132,17 @@ const SidebarMobile = () => {
                 </span>
               </button>
 
-              <div
-                className="flex w-full cursor-pointer items-center gap-2 rounded-full border-1 border-white bg-mercury-30 px-3 py-3"
-                onClick={onOpen}
-              >
-                <ConvertIcon />
-                <span className="text-16 font-bold text-mercury-900">
-                  Convert xDSTL
-                </span>
-              </div>
+              {totalxDstlPoint && totalxDstlPoint > 0 && (
+                <div
+                  className="flex w-full cursor-pointer items-center gap-2 rounded-full border-1 border-white bg-mercury-30 px-3 py-3"
+                  onClick={onOpen}
+                >
+                  <ConvertIcon />
+                  <span className="text-16 font-bold text-mercury-900">
+                    Convert xDSTL
+                  </span>
+                </div>
+              )}
 
               <div
                 onClick={() => {
