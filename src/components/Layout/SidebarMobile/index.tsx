@@ -1,23 +1,31 @@
 import { xDSTL } from "@assets/images"
 import AvatarCustom from "@components/AvatarCustom"
+import ConvertXDSTL from "@components/ConvertXDSTL"
+import { ConvertIcon } from "@components/Icons/ConvertIcon"
 import { CopyIcon } from "@components/Icons/Copy"
 import { CloseFilledIcon, EditFilledIcon } from "@components/Icons/DefiLens"
 import { LogoutIcon } from "@components/Icons/OutputIcon"
+import { PlusIcon } from "@components/Icons/Plus"
 import { CoinsOutlineIcon } from "@components/Icons/Sidebar"
 import { UserIcon } from "@components/Icons/UserIcon"
 import { PATH_NAMES, STATUS_AGENT } from "@constants/index"
+import { useAppSelector } from "@hooks/useAppRedux"
 import useAuthAction from "@hooks/useAuthAction"
 import useAuthState from "@hooks/useAuthState"
+import { useDisclosure } from "@nextui-org/react"
 import { numberWithCommas } from "@utils/format"
 import { centerTextEllipsis, copyClipboard } from "@utils/index"
-import { useNavigate } from "react-router-dom"
-import Socials from "../Sidebar/Socials"
-import { useAppSelector } from "@hooks/useAppRedux"
-import { twMerge } from "tailwind-merge"
-import { PlusIcon } from "@components/Icons/Plus"
 import { useState } from "react"
+import { useNavigate } from "react-router-dom"
+import { twMerge } from "tailwind-merge"
+import Socials from "../Sidebar/Socials"
 
 const SidebarMobile = () => {
+  const {
+    isOpen: isOpenConvertModal,
+    onOpen,
+    onClose: onCloseConvertModal,
+  } = useDisclosure()
   const navigate = useNavigate()
   const { user } = useAuthState()
   const { logout } = useAuthAction()
@@ -92,9 +100,9 @@ const SidebarMobile = () => {
                 type="button"
                 className={twMerge(
                   "flex w-full cursor-pointer items-center gap-2 rounded-full border-1 border-white bg-mercury-30 px-3 py-3",
-                  !isAgentActive && !!myAgent && "opacity-50",
+                  !isAgentActive && "opacity-50",
                 )}
-                disabled={!isAgentActive && !!myAgent}
+                disabled={!isAgentActive}
                 onClick={() => {
                   onClose()
                   navigate(
@@ -123,6 +131,19 @@ const SidebarMobile = () => {
                   {myAgent ? "Edit Agent" : "Create Agent"}
                 </span>
               </button>
+
+              {totalxDstlPoint && totalxDstlPoint > 0 && (
+                <div
+                  className="flex w-full cursor-pointer items-center gap-2 rounded-full border-1 border-white bg-mercury-30 px-3 py-3"
+                  onClick={onOpen}
+                >
+                  <ConvertIcon />
+                  <span className="text-16 font-bold text-mercury-900">
+                    Convert xDSTL
+                  </span>
+                </div>
+              )}
+
               <div
                 onClick={() => {
                   onClose()
@@ -166,6 +187,12 @@ const SidebarMobile = () => {
           </div>
         </div>
       </div>
+
+      <ConvertXDSTL
+        totalxDstlPoint={totalxDstlPoint}
+        isOpen={isOpenConvertModal}
+        onClose={onCloseConvertModal}
+      />
     </>
   )
 }

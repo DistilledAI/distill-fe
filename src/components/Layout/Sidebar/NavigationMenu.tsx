@@ -47,7 +47,8 @@ const NavigationMenu = ({ isMobile = false }: { isMobile?: boolean }) => {
   }, [currentPath, currentSearch])
 
   const getPathnameMyAgent = () => {
-    if (!myAgent) return "/create-agent"
+    // if (!myAgent) return "/create-agent"
+    if (!myAgent) return "/account"
     if (myAgent.status !== STATUS_AGENT.ACTIVE) return "/account"
     return `/agent/${myAgent.id}`
   }

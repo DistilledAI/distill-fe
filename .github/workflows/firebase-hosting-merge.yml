@@ -46,8 +46,8 @@ jobs:
           VITE_AGENTLAND_BACKEND_URL: https://backend.agents.land
           VITE_MEME_BACKEND_URL: https://backend-meme.agents.land
           VITE_STAKING_AIRDROP_BACKEND_URL: https://airdrop-backend.agents.land
-          VITE_SOLANA_RPC: https://solana-woker.distilled.ai
-          VITE_SOLANA_WS: wss://solana-woker.distilled.ai
+          VITE_SOLANA_RPC: https://solana-rpc.publicnode.com
+          VITE_SOLANA_WS: wss://solana-rpc.publicnode.com
           VITE_RACKS_VAULT_BACKEND_URL: https://racks-vault-be.distilled.ai
           VITE_PINATA_API_KEY: ade654b6702007403e17
           VITE_PINATA_SECRET_API_KEY: ea4bc37c0f9f6a5358c8850173b785cd3b313df6af1b4c281b564e9ce69dd725

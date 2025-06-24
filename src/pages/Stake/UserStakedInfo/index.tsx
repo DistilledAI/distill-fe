@@ -32,9 +32,6 @@ const UserStakedInfo = ({ total }: { total: number }) => {
   ).toNumber()
 
   const hasReward = tokens.length > 0
-  const isHasVault =
-    tokenInfo?.address === StakeTokenAddress.Degenerator ||
-    tokenInfo?.address === StakeTokenAddress.BlackRack
 
   const openModal = () => {
     getListReward({ next: null })
@@ -59,7 +56,7 @@ const UserStakedInfo = ({ total }: { total: number }) => {
         <p className="text-24 font-semibold text-brown-600 max-md:text-20">
           $ --
         </p>
-        {isHasVault && hasReward ? (
+        {hasReward ? (
           <div
             onClick={() => {
               if (hasReward) openModal()
@@ -89,11 +86,11 @@ const UserStakedInfo = ({ total }: { total: number }) => {
       </div>
       <div
         onClick={() => {
-          if (hasReward && isHasVault) openModal()
+          if (hasReward) openModal()
         }}
         className={twMerge(
           "font-semibold text-brown-600 opacity-65 max-md:mt-3 max-md:w-full max-md:text-center max-md:text-14",
-          hasReward && isHasVault && "cursor-pointer opacity-100",
+          hasReward && "cursor-pointer opacity-100",
         )}
       >
         Claim Rewards

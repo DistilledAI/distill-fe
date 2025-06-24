@@ -116,6 +116,9 @@ const endpoint = {
   //trending
   GET_TRENDING_AGENT: withBaseURL("/trending"),
   GET_TRENDING_AGENT_LIST: withBaseURL("/trending/list"),
+
+  //convert xDSTL to USDAI
+  CONVERT_XDSTL_TO_USDAI: withBaseURL("/point/xDstl/lfg-convert-to-usdai"),
 }
 
 export default endpoint

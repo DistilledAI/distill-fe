@@ -54,9 +54,9 @@ const Sidebar = () => {
               className={twMerge(
                 "group flex items-center gap-2",
                 sidebarCollapsed && "hidden",
-                !isAgentActive && !!myAgent && "opacity-50",
+                !isAgentActive && "opacity-50",
               )}
-              disabled={!isAgentActive && !!myAgent}
+              disabled={!isAgentActive}
               onClick={() =>
                 navigate(
                   myAgent

@@ -70,7 +70,8 @@ const CreateAgent = () => {
     return true
   }
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: any, isPause?: boolean) => {
+    if (isPause) return
     try {
       if (isBotCreated)
         return toast.info("Your agent is created, please check again!")
@@ -130,7 +131,7 @@ const CreateAgent = () => {
 
   return (
     <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(onSubmit)}>
+      <form onSubmit={methods.handleSubmit((data) => onSubmit(data, true))}>
         <div className="pt-[70px]">
           <AgentHeader isLoading={isLoading} />
           <div className="relative mx-auto flex max-w-[1206px] items-start gap-[40px] px-6 py-6 max-md:flex-col">

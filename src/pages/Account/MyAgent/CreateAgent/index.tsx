@@ -47,6 +47,7 @@ const CreateAgent = () => {
         <div className="max-md:flex max-md:w-full max-md:justify-center">
           <Button
             onPress={onOpen}
+            isDisabled={true}
             className="flex h-[56px] items-center rounded-full bg-mercury-950 text-white max-md:h-[44px]"
           >
             <PlusIcon size={16} color="white" />

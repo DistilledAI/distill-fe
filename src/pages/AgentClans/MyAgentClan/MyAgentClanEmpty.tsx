@@ -129,6 +129,7 @@ const MyAgentClanEmpty: React.FC<Props> = ({ imageUrl }) => {
             className={`${BUTTON_BASE_CLASS} bg-mercury-950 text-mercury-30`}
             isLoading={loading}
             onPress={handleNavCreateAgent}
+            isDisabled={true}
           >
             <PlusIcon color="#FAFAFA" />
             Create Agent
