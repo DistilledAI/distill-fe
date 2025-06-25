@@ -50,3 +50,11 @@ export const convertXDSTLToUSDI = async (walletLfg: string) => {
   })
   return res?.data
 }
+
+export const checkConvertXDSTLToUSDIStatus = async () => {
+  const res = await fetchApiAuth({
+    method: "GET",
+    url: endpoint.CONVERT_XDSTL_TO_USDAI,
+  })
+  return res?.data
+}

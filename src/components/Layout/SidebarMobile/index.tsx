@@ -20,7 +20,11 @@ import { useNavigate } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
 import Socials from "../Sidebar/Socials"
 
-const SidebarMobile = () => {
+const SidebarMobile: React.FC<{
+  convertStatusData: any
+  setIsRefreshStatus: any
+  isRefreshStatus: boolean
+}> = ({ convertStatusData, setIsRefreshStatus, isRefreshStatus }) => {
   const {
     isOpen: isOpenConvertModal,
     onOpen,
@@ -132,7 +136,7 @@ const SidebarMobile = () => {
                 </span>
               </button>
 
-              {totalxDstlPoint && totalxDstlPoint > 0 && (
+              {totalxDstlPoint && totalxDstlPoint > 0 && convertStatusData && (
                 <div
                   className="flex w-full cursor-pointer items-center gap-2 rounded-full border-1 border-white bg-mercury-30 px-3 py-3"
                   onClick={onOpen}
@@ -192,6 +196,9 @@ const SidebarMobile = () => {
         totalxDstlPoint={totalxDstlPoint}
         isOpen={isOpenConvertModal}
         onClose={onCloseConvertModal}
+        convertStatusData={convertStatusData}
+        setIsRefreshStatus={setIsRefreshStatus}
+        isRefreshStatus={isRefreshStatus}
       />
     </>
   )
