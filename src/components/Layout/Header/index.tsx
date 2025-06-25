@@ -1,11 +1,11 @@
+import { PATH_NAMES } from "@constants/index"
+import { useAppSelector } from "@hooks/useAppRedux"
 import useConnectWallet from "@hooks/useConnectWallet"
 import useReconnectWallet from "@hooks/useReconnectWallet"
 import UserAuth from "@pages/ChatPageOld/ChatContainer/UserAuth"
-import TitlePathName from "./TitlePathName"
-import { useAppSelector } from "@hooks/useAppRedux"
-import { twMerge } from "tailwind-merge"
-import { PATH_NAMES } from "@constants/index"
 import { useLocation } from "react-router-dom"
+import { twMerge } from "tailwind-merge"
+import TitlePathName from "./TitlePathName"
 
 const CLAN_SIDEBAR_PATH_NAMES = [
   PATH_NAMES.CLAN,

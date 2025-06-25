@@ -23,7 +23,9 @@ import {
 } from "@nextui-org/react"
 import { numberWithCommas } from "@utils/format"
 import { centerTextEllipsis, copyClipboard } from "@utils/index"
+import { useEffect, useState } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
+import { checkConvertXDSTLToUSDIStatus } from "services/point"
 import LoginPhantom from "./LoginPhantom"
 
 interface UserAuthProps {
@@ -37,6 +39,17 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
   const { pathname } = useLocation()
   const { logout } = useAuthAction()
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const [convertStatusData, setStatusData] = useState<any>()
+  const [isRefreshStatus, setIsRefreshStatus] = useState(false)
+
+  const callCheckConvertXDSTLToUSDIStatus = async () => {
+    try {
+      const res = await checkConvertXDSTLToUSDIStatus()
+      setStatusData(res?.data)
+    } catch (error) {
+      console.log("error:", error)
+    }
+  }
 
   const isShowInfo =
     user && user.publicAddress && user.role !== RoleUser.ANONYMOUS
@@ -45,6 +58,12 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
   const isActionWeb3 =
     pathname.startsWith(PATH_NAMES.STAKING) ||
     pathname.startsWith(PATH_NAMES.DAO)
+
+  useEffect(() => {
+    if (isShowInfo) {
+      callCheckConvertXDSTLToUSDIStatus()
+    }
+  }, [isShowInfo, isRefreshStatus])
 
   if (isActionWeb3) return <LoginPhantom />
 
@@ -56,13 +75,18 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
       {isShowInfo ? (
         <div className="inline-flex items-center gap-2 md:gap-3">
           {isMobile ? (
-            <SidebarMobile />
+            <SidebarMobile
+              convertStatusData={convertStatusData}
+              setIsRefreshStatus={setIsRefreshStatus}
+              isRefreshStatus={isRefreshStatus}
+            />
           ) : (
             <Dropdown placement="bottom" className="w-[250px]">
               <DropdownTrigger>
                 <button
                   type="button"
                   className="flex h-10 w-10 items-center justify-center rounded-full bg-mercury-30 p-1 !outline-none md:h-12 md:w-12"
+                  onClick={() => setIsRefreshStatus(!isRefreshStatus)}
                 >
                   <AvatarCustom
                     publicAddress={user.publicAddress}
@@ -115,7 +139,7 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
                   </div>
                 </DropdownItem>
 
-                {totalxDstlPoint > 0 ? (
+                {totalxDstlPoint > 0 && convertStatusData ? (
                   <DropdownItem
                     key="convert-xdstl"
                     className="p-0 hover:!bg-transparent"
@@ -183,6 +207,9 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
             totalxDstlPoint={totalxDstlPoint}
             isOpen={isOpen}
             onClose={onClose}
+            convertStatusData={convertStatusData}
+            setIsRefreshStatus={setIsRefreshStatus}
+            isRefreshStatus={isRefreshStatus}
           />
         </div>
       ) : (
