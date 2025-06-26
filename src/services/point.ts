@@ -39,3 +39,22 @@ export const getTotalExpPointUser = async (groupId: number) => {
   })
   return res?.data
 }
+
+export const convertXDSTLToUSDI = async (walletLfg: string) => {
+  const res = await fetchApiAuth({
+    method: "POST",
+    url: endpoint.CONVERT_XDSTL_TO_USDAI,
+    data: {
+      walletLfg,
+    },
+  })
+  return res?.data
+}
+
+export const checkConvertXDSTLToUSDIStatus = async () => {
+  const res = await fetchApiAuth({
+    method: "GET",
+    url: endpoint.CONVERT_XDSTL_TO_USDAI,
+  })
+  return res?.data
+}

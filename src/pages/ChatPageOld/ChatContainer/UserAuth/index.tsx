@@ -1,27 +1,32 @@
 import { xDSTL } from "@assets/images"
 import AvatarCustom from "@components/AvatarCustom"
 import ChatInfoCurrent from "@components/ChatInfoCurrent"
+import ConvertXDSTL from "@components/ConvertXDSTL"
+import { ConvertIcon } from "@components/Icons/ConvertIcon"
 import { CopyIcon } from "@components/Icons/Copy"
 import { LogoutIcon } from "@components/Icons/OutputIcon"
 import { CoinsOutlineIcon } from "@components/Icons/Sidebar"
 import { UserIcon } from "@components/Icons/UserIcon"
 import { WalletIcon } from "@components/Icons/Wallet"
+import SidebarMobile from "@components/Layout/SidebarMobile"
 import { PATH_NAMES, RoleUser } from "@constants/index"
 import useAuthAction from "@hooks/useAuthAction"
 import useAuthState from "@hooks/useAuthState"
+import useWindowSize from "@hooks/useWindowSize"
 import {
   Button,
   Dropdown,
   DropdownItem,
   DropdownMenu,
   DropdownTrigger,
+  useDisclosure,
 } from "@nextui-org/react"
 import { numberWithCommas } from "@utils/format"
 import { centerTextEllipsis, copyClipboard } from "@utils/index"
+import { useEffect, useState } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
+import { checkConvertXDSTLToUSDIStatus } from "services/point"
 import LoginPhantom from "./LoginPhantom"
-import useWindowSize from "@hooks/useWindowSize"
-import SidebarMobile from "@components/Layout/SidebarMobile"
 
 interface UserAuthProps {
   connectWallet: any
@@ -33,6 +38,18 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
   const { isMobile } = useWindowSize()
   const { pathname } = useLocation()
   const { logout } = useAuthAction()
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  const [convertStatusData, setStatusData] = useState<any>()
+  const [isRefreshStatus, setIsRefreshStatus] = useState(false)
+
+  const callCheckConvertXDSTLToUSDIStatus = async () => {
+    try {
+      const res = await checkConvertXDSTLToUSDIStatus()
+      setStatusData(res?.data)
+    } catch (error) {
+      console.log("error:", error)
+    }
+  }
 
   const isShowInfo =
     user && user.publicAddress && user.role !== RoleUser.ANONYMOUS
@@ -41,6 +58,12 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
   const isActionWeb3 =
     pathname.startsWith(PATH_NAMES.STAKING) ||
     pathname.startsWith(PATH_NAMES.DAO)
+
+  useEffect(() => {
+    if (isShowInfo) {
+      callCheckConvertXDSTLToUSDIStatus()
+    }
+  }, [isShowInfo, isRefreshStatus])
 
   if (isActionWeb3) return <LoginPhantom />
 
@@ -52,13 +75,18 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
       {isShowInfo ? (
         <div className="inline-flex items-center gap-2 md:gap-3">
           {isMobile ? (
-            <SidebarMobile />
+            <SidebarMobile
+              convertStatusData={convertStatusData}
+              setIsRefreshStatus={setIsRefreshStatus}
+              isRefreshStatus={isRefreshStatus}
+            />
           ) : (
             <Dropdown placement="bottom" className="w-[250px]">
               <DropdownTrigger>
                 <button
                   type="button"
                   className="flex h-10 w-10 items-center justify-center rounded-full bg-mercury-30 p-1 !outline-none md:h-12 md:w-12"
+                  onClick={() => setIsRefreshStatus(!isRefreshStatus)}
                 >
                   <AvatarCustom
                     publicAddress={user.publicAddress}
@@ -111,6 +139,23 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
                   </div>
                 </DropdownItem>
 
+                {totalxDstlPoint > 0 && convertStatusData ? (
+                  <DropdownItem
+                    key="convert-xdstl"
+                    className="p-0 hover:!bg-transparent"
+                  >
+                    <div
+                      className="mb-2 flex w-full cursor-pointer items-center gap-2 rounded-lg p-2 hover:bg-mercury-70"
+                      onClick={onOpen}
+                    >
+                      <ConvertIcon />
+                      <span className="text-16 font-bold text-mercury-900">
+                        Convert xDSTL
+                      </span>
+                    </div>
+                  </DropdownItem>
+                ) : null}
+
                 <DropdownItem
                   key="my-profile"
                   onPress={() => {
@@ -157,6 +202,15 @@ const UserAuth: React.FC<UserAuthProps> = ({ connectWallet, loading }) => {
               </DropdownMenu>
             </Dropdown>
           )}
+
+          <ConvertXDSTL
+            totalxDstlPoint={totalxDstlPoint}
+            isOpen={isOpen}
+            onClose={onClose}
+            convertStatusData={convertStatusData}
+            setIsRefreshStatus={setIsRefreshStatus}
+            isRefreshStatus={isRefreshStatus}
+          />
         </div>
       ) : (
         <div className="flex items-center gap-1">
