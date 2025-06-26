@@ -2,6 +2,7 @@ import CloseButton from "@components/CloseButton"
 import { Input, Modal, ModalContent, Spinner } from "@nextui-org/react"
 import { numberWithCommas } from "@utils/format"
 import React, { useState } from "react"
+import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 import { convertXDSTLToUSDI } from "services/point"
 
@@ -13,6 +14,17 @@ const convertXdstlToUsdai = (xDstlPoint: number) => {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   })
+}
+
+// Function to validate Oraichain wallet address
+const isValidOraichainAddress = (address: string): boolean => {
+  if (!address || address.trim() === "") return false
+  return address.toLowerCase().startsWith("orai")
+}
+
+// Form data interface
+interface ConvertFormData {
+  walletAddress: string
 }
 
 const ConvertXDSTL: React.FC<{
@@ -30,16 +42,27 @@ const ConvertXDSTL: React.FC<{
   setIsRefreshStatus,
   isRefreshStatus,
 }) => {
-  const [walletLfgAddress, setWalletLfgAddress] = useState<string>("")
   const [loading, setLoading] = useState<boolean>(false)
   const status = convertStatusData?.status
 
-  const onConvertXdstlToUsdai = async () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<ConvertFormData>({
+    defaultValues: {
+      walletAddress: "",
+    },
+  })
+
+  const onSubmit = async (data: ConvertFormData) => {
     try {
       setLoading(true)
-      const res = await convertXDSTLToUSDI(walletLfgAddress)
+      const res = await convertXDSTLToUSDI(data.walletAddress)
       if (res) {
         toast.success("Convert successfully")
+        reset() // Reset form after successful conversion
       }
     } catch (error: any) {
       toast.error(error?.response?.data?.message)
@@ -130,16 +153,22 @@ const ConvertXDSTL: React.FC<{
 
                 <Input
                   type="text"
-                  placeholder="Orai..."
+                  placeholder="orai..."
                   className="w-full"
                   classNames={{
-                    mainWrapper: "border border-mercury-400 rounded-lg",
+                    // mainWrapper: "border border-mercury-400 rounded-lg",
                     inputWrapper: "bg-mercury-70",
                   }}
-                  onChange={(e) => {
-                    const value = e.target.value
-                    setWalletLfgAddress(value)
-                  }}
+                  {...register("walletAddress", {
+                    required: "Wallet address is required",
+                    validate: {
+                      isValidOraichain: (value) =>
+                        isValidOraichainAddress(value) ||
+                        "Please enter a valid Oraichain wallet address (must start with 'orai')",
+                    },
+                  })}
+                  isInvalid={!!errors.walletAddress}
+                  errorMessage={errors.walletAddress?.message}
                 />
               </div>
 
@@ -164,22 +193,24 @@ const ConvertXDSTL: React.FC<{
                 </ol>
               </div>
 
-              <button
-                className="flex w-full items-center justify-center gap-2 rounded-full bg-mercury-950 py-3 font-semibold text-mercury-30 transition aria-checked:bg-mercury-900"
-                disabled={loading}
-                aria-checked={loading}
-                onClick={() => onConvertXdstlToUsdai()}
-              >
-                {loading && (
-                  <Spinner
-                    size="sm"
-                    classNames={{
-                      circle1: "border-[#E7E0D7] ",
-                    }}
-                  />
-                )}
-                Convert
-              </button>
+              <form onSubmit={handleSubmit(onSubmit)}>
+                <button
+                  type="submit"
+                  className="flex w-full items-center justify-center gap-2 rounded-full bg-mercury-950 py-3 font-semibold text-mercury-30 transition disabled:cursor-not-allowed disabled:opacity-50 aria-checked:bg-mercury-900"
+                  disabled={loading}
+                  aria-checked={loading}
+                >
+                  {loading && (
+                    <Spinner
+                      size="sm"
+                      classNames={{
+                        circle1: "border-[#E7E0D7] ",
+                      }}
+                    />
+                  )}
+                  Convert
+                </button>
+              </form>
             </div>
           )}
         </div>
