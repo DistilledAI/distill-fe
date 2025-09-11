@@ -11,10 +11,7 @@ export interface TokenInfo extends RewardByToken {
 }
 
 export const WRAPPED_BTC_ADDRESSES: string[] = [
-  "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599",
-  "So11111111111111111111111111111111111111112",
-  "0x7130d2a12b9bcbfae4f2634d864a1ee1ce3ead9c",
-  "0x2f2a2543b76a4166549f7aab2e75bef0aefc5b0f",
+  "3NZ9JMVBmGAqocybic2c7LQCJScmgsAZ6vQqTDzcqmJh",
 ]
 
 export const isWrappedBTC = (address: string | null): boolean => {
