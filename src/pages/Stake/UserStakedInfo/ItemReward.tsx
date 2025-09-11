@@ -2,13 +2,14 @@ import { GiftBorderIcon } from "@components/Icons"
 import { Button } from "@nextui-org/react"
 import { PublicKey } from "@solana/web3.js"
 import { toBN } from "@utils/format"
-import { fetchJSONDataFromUrl, formatNumberWithComma } from "@utils/index"
+import { fetchJSONDataFromUrl } from "@utils/index"
+import BigNumber from "bignumber.js"
 import React, { useEffect, useState } from "react"
 import { twMerge } from "tailwind-merge"
 import { IMAGE_TOKENS } from "./constants"
 import { getTokenInfoFromContract } from "./helpers"
 import useClaim from "./useClaim"
-import { TokenInfo } from "./useGetListToken"
+import { isWrappedBTC, TokenInfo } from "./useGetListToken"
 
 const ItemReward: React.FC<{
   className?: string
@@ -50,6 +51,11 @@ const ItemReward: React.FC<{
     if (!item.url) getInfoFromContract()
   }, [item.url])
 
+  const formatTokenAmount = (amount: BigNumber.Value, decimals: number) => {
+    const bn = toBN(amount)
+    return bn.toFormat(decimals)
+  }
+
   const imgUrl = item.url || url
 
   if (isClaimed) return null
@@ -69,14 +75,17 @@ const ItemReward: React.FC<{
         )}
         <div>
           <p className="text-14 font-semibold text-mercury-950">
-            {formatNumberWithComma(toBN(amount).toNumber())}{" "}
+            {/* {formatNumberWithComma(toBN(amount).toNumber())}{" "} */}
+
+            {formatTokenAmount(amount, isWrappedBTC(item?.rewardToken) ? 8 : 6)}
+
             {item.ticker || ticket}
           </p>
-          <p className="text-13 font-medium leading-4 text-brown-500">
+          {/* <p className="text-13 font-medium leading-4 text-brown-500">
             {item.amountUsd && item.amountUsd !== 0
               ? `$${formatNumberWithComma(item.amountUsd)}`
               : "$ --"}
-          </p>
+          </p> */}
         </div>
       </div>
       <Button

@@ -17,16 +17,16 @@ export const WRAPPED_BTC_ADDRESSES: string[] = [
   "0x2f2a2543b76a4166549f7aab2e75bef0aefc5b0f",
 ]
 
+export const isWrappedBTC = (address: string | null): boolean => {
+  if (!address) return false
+  return WRAPPED_BTC_ADDRESSES.some(
+    (btcAddr) => btcAddr.toLowerCase() === address.toLowerCase(),
+  )
+}
+
 const useGetListTokenWithInfo = (rewardList: RewardByToken[]) => {
   const [loading, setLoading] = useState(false)
   const [tokens, setTokens] = useState<TokenInfo[]>([])
-
-  const isWrappedBTC = (address: string | null): boolean => {
-    if (!address) return false
-    return WRAPPED_BTC_ADDRESSES.some(
-      (btcAddr) => btcAddr.toLowerCase() === address.toLowerCase(),
-    )
-  }
 
   const getListToken = async () => {
     try {
