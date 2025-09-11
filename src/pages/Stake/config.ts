@@ -23,6 +23,7 @@ export const SOL_PRICE_KEY = "SOL_PRICE_KEY"
 export const SOLANA_ENV = import.meta.env.VITE_APP_SOLANA_ENV || "mainnet-beta"
 
 export const SPL_DECIMAL = 6
+export const DECIMAL_8 = 8
 export const SOL_DECIMAL = 9
 export const MAX_RETRY_QUERY_TOKEN = 3
 export const LIMIT_PAGINATION = 8

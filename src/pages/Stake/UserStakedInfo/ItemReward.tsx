@@ -1,15 +1,14 @@
 import { GiftBorderIcon } from "@components/Icons"
 import { Button } from "@nextui-org/react"
+import { PublicKey } from "@solana/web3.js"
+import { toBN } from "@utils/format"
+import { fetchJSONDataFromUrl, formatNumberWithComma } from "@utils/index"
 import React, { useEffect, useState } from "react"
 import { twMerge } from "tailwind-merge"
-import { TokenInfo } from "./useGetListToken"
-import { toBN } from "@utils/format"
-import { SPL_DECIMAL } from "../config"
-import { getTokenInfoFromContract } from "./helpers"
-import { PublicKey } from "@solana/web3.js"
-import { fetchJSONDataFromUrl, formatNumberWithComma } from "@utils/index"
-import useClaim from "./useClaim"
 import { IMAGE_TOKENS } from "./constants"
+import { getTokenInfoFromContract } from "./helpers"
+import useClaim from "./useClaim"
+import { TokenInfo } from "./useGetListToken"
 
 const ItemReward: React.FC<{
   className?: string
@@ -21,15 +20,14 @@ const ItemReward: React.FC<{
   const [url, setUrl] = useState("")
   const [ticket, setTicket] = useState("--")
 
+  const amount = toBN(item.amount)
+    .div(10 ** item?.decimals)
+    .toFixed(6)
+
   const handleGetUrl = async (link: string) => {
     const resUrl = await fetchJSONDataFromUrl(link)
     if (resUrl && resUrl.image) setUrl(resUrl.image)
   }
-
-  const amount = toBN(item.amount)
-    .div(10 ** SPL_DECIMAL)
-    .toFixed(6)
-
   const getInfoFromContract = async () => {
     try {
       const res = await getTokenInfoFromContract(
