@@ -76,9 +76,10 @@ const ItemReward: React.FC<{
         <div>
           <p className="text-14 font-semibold text-mercury-950">
             {/* {formatNumberWithComma(toBN(amount).toNumber())}{" "} */}
-
-            {formatTokenAmount(amount, isWrappedBTC(item?.rewardToken) ? 8 : 6)}
-
+            {formatTokenAmount(
+              amount,
+              isWrappedBTC(item?.rewardToken) ? 8 : 6,
+            )}{" "}
             {item.ticker || ticket}
           </p>
           {/* <p className="text-13 font-medium leading-4 text-brown-500">
